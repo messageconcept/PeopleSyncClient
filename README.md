@@ -1,13 +1,16 @@
 
-DAVDROID
-========
+PeopleSync Client App
+=====================
 
-Please see the [DAVdroid Web site](http://davdroid.bitfire.at) for
-detailled information about DAVdroid.
+Please see the [PeopleSync product website](http://peoplesync.messageconcept.com) for
+detailed information about the software.
 
-DAVdroid is licensed under the [GPLv3 License](COPYING).
+The software is a CardDAV client for businesses using our PeopleSync server software. It synchronizes all address lists from the PeopleSync server. The management, which address lists will be synchronized, happens centrally on server side by the IT staff. Therefore for the personal usage of CardDAV and CalDAV we recommend to use the [davdroid](https://github.com/rfc2822/davdroid) app with more configuration options.
 
-Twitter: [@davdroidapp](https://twitter.com/davdroidapp)
+
+PeopleSync is licensed under the [GPLv3 License](COPYING).
+
+Twitter: [@messageconcept](https://twitter.com/messageconcept)
 
 
 USED THIRD-PARTY LIBRARIES
