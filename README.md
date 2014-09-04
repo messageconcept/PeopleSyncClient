@@ -8,7 +8,9 @@ detailed information about the software.
 The software is a CardDAV client for businesses using our PeopleSync server software. It synchronizes all address lists from the PeopleSync server. The management, which address lists will be synchronized, happens centrally on server side by the IT staff. Therefore for the personal usage of CardDAV and CalDAV we recommend to use the [davdroid](https://github.com/rfc2822/davdroid) app with more configuration options.
 
 
-PeopleSync is licensed under the [GPLv3 License](COPYING).
+The PeopleSync Client App is licensed under the [GPLv3 License](COPYING).
+
+The PeopleSync server software is propietary commercial software.
 
 Twitter: [@messageconcept](https://twitter.com/messageconcept)
 
