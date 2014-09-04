@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@drawable/section_background"
+       android:useDefaultMargins="true" >
+    <TextView 
+        android:id="@+id/txtAccountName"
+        android:layout_width="0dp"
+        android:layout_gravity="fill_horizontal"
+        android:layout_height="wrap_content"
+       	android:textColor="#005BBB"
+       	android:textAppearance="?android:attr/textAppearanceLarge"
+       	android:singleLine="true"
+       	android:scrollHorizontally="true"
+       	android:ellipsize="marquee"
+       	android:marqueeRepeatLimit="marquee_forever"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/arrow"
+        android:layout_marginLeft="5dp" />
+    
+    <LinearLayout 
+        android:id="@+id/listAddressBooks"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:clickable="false"
+        android:layout_below="@id/txtAccountName"
+        />
+    
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/select_account"
+        android:contentDescription="@string/label_next"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+</RelativeLayout>

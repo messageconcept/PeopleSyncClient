@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#ffffff" >
+        
+    <ScrollView 
+        android:layout_above="@+id/footer"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+       	<WebView
+       	    android:id="@+id/txtInfo"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:padding="10dp" />  
+    </ScrollView>
+ 	
+ 	<ImageView
+ 	    android:id="@+id/footer"
+ 	    android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="#005bbb"
+        android:src="@drawable/advert"
+        android:onClick="showWebsite"
+        android:contentDescription="@string/app_name" />
+
+</RelativeLayout>

@@ -1,7 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/section_background" >
 
-</FrameLayout>
+	    <RadioGroup 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	        
+		        <RadioButton 
+		            android:id="@+id/choice_existing"
+		            android:text="@string/label_selectExisting"
+		            android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content" />
+	
+		        <Spinner
+		            android:id="@+id/spinner_accounts"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="25dp" />
+	
+		        <RadioButton
+		            android:id="@+id/choice_email" 
+		            android:text="@string/label_enterEmail"
+		            android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content" />
+	
+		        <EditText 
+		            android:id="@+id/edit_email" 
+		            android:inputType="textEmailAddress"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="30dp" />
+
+	    </RadioGroup>
+	
+	    <GridLayout 
+	       android:columnCount="3"
+	       android:layout_width="match_parent"
+	       android:layout_height="wrap_content"
+	       android:useDefaultMargins="true"
+	        >
+		        
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_column="0"
+	            android:layout_gravity="left"
+	            android:layout_row="0"
+	            android:text="@string/label_enterPassword" />
+
+	        <EditText
+	            android:id="@+id/edit_pass"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_column="1"
+	            android:layout_gravity="fill_horizontal"
+	            android:layout_row="0"
+	            android:inputType="textPassword" />
+	        
+	        <ImageView 
+	            android:id="@+id/passOK"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:contentDescription="@string/label_ok"
+	            android:layout_row="0"
+	            android:layout_column="2"
+	            android:src="@drawable/ok"
+	            android:layout_gravity="center_vertical" />
+	        
+	        
+	        <TextView
+	            android:layout_row="1"
+	            android:layout_column="0"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/label_enterPasswordConfirm" />
+
+	        <EditText
+	            android:id="@+id/edit_pass_confirm"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_column="1"
+	            android:layout_gravity="fill_horizontal"
+	            android:layout_row="1"
+	            android:inputType="textPassword" />
+	        
+	        <ImageView 
+	            android:id="@+id/passConfirmOK"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:contentDescription="@string/label_ok"
+	            android:layout_row="1"
+	            android:layout_column="2"
+	            android:src="@drawable/ok"
+	            android:layout_gravity="center_vertical" />
+		    
+	    </GridLayout>
+        
+	    
+	    <RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+			<ImageButton 
+			    android:id="@+id/btn_back"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:src="@drawable/navigation_backward"
+			    android:contentDescription="@string/label_back"
+			    android:padding="0dp"
+			    android:layout_margin="10dp"
+			    android:layout_alignParentLeft="true" />
+			<TextView 
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/btn_back"
+			    android:layout_alignStart="@id/btn_back"
+			    android:layout_alignEnd="@id/btn_back"
+			    android:text="@string/label_back"
+			    android:textSize="12sp"
+			    android:gravity="center_horizontal"
+			    android:maxLines="1" />
+
+			
+			<ImageButton 
+			    android:id="@+id/btn_next"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:src="@drawable/navigation_forward"
+			    android:contentDescription="@string/label_next"
+			    android:padding="0dp"
+			    android:layout_margin="10dp"
+			    android:layout_alignParentRight="true" />
+			<TextView 
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/btn_next"
+			    android:layout_alignStart="@id/btn_next"
+			    android:layout_alignEnd="@id/btn_next"
+			    android:text="@string/label_next"
+			    android:textSize="12sp"
+			    android:gravity="center_horizontal"
+			    android:maxLines="1" />
+		</RelativeLayout>
+    </LinearLayout>
+</ScrollView>

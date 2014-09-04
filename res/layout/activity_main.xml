@@ -1,29 +1,38 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-	android:padding="20dp"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:background="#ffffff" >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txtNoAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_margin="5dp" />
+    
+    <ListView
+        android:id="@+id/account_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/footer"
+        android:layout_alignParentTop="true"
+        android:linksClickable="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+ 	<ImageView
+ 	    android:id="@+id/footer"
+ 	    android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_gravity="center_vertical"
+        android:background="#005bbb"
+        android:src="@drawable/advert"
+       	android:onClick="showWebsite"
+       	android:contentDescription="@string/app_name" />
 
-        <TextView
-            android:id="@+id/text_workaround"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:linksClickable="true" />
-        
-        <TextView
-            android:id="@+id/text_info"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-        
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

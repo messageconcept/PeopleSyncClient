@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -15,6 +15,7 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionOverflowButtonStyle">@style/blue</item>
     </style>
 
     <style name="TextView.Heading" parent="AppTheme">
@@ -22,5 +23,9 @@
         <item name="android:background">#7ca42b</item>
         <item name="android:textColor">#ffffff</item>
     </style>
+    
+   	<style name="blue" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+   	    <item name="android:src">@drawable/ic_menu_moreoverflow_blue</item>
+   	</style>
 
 </resources>

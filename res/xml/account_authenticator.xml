@@ -1,6 +1,7 @@
 <account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accountType="bitfire.at.davdroid"
+    android:accountType="com.messageconcept.peoplesync"
     android:icon="@drawable/ic_launcher"
-    android:label="@string/app_name"
+    android:label="@string/account_name"
     android:smallIcon="@drawable/ic_launcher"
+    android:userVisible="true"
     android:accountPreferences="@xml/account_prefs" />

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<group>
+        <item 
+            android:title="@string/label_info"
+            android:onClick="showInfo"
+            android:showAsAction="collapseActionView" />
+        <item 
+            android:title="@string/label_help"
+            android:onClick="showHelp"
+            android:showAsAction="collapseActionView" />
+    </group>
+</menu>

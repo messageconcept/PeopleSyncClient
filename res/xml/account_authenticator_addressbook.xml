@@ -1,0 +1,7 @@
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="com.messageconcept.peoplesync.addressbook"
+    android:icon="@drawable/ic_launcher"
+    android:label="@string/addressbook_account_name"
+    android:smallIcon="@drawable/ic_launcher"
+    android:userVisible="false"
+    android:accountPreferences="@xml/account_prefs_addressbook" />

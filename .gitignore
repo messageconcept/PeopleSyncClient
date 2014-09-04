@@ -14,6 +14,8 @@
 bin/
 doc/javadoc/
 gen/
+res/drawable
+res/drawable-*
 
 # Local configuration file (sdk path, etc)
 local.properties
