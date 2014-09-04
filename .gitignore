@@ -14,8 +14,12 @@
 bin/
 doc/javadoc/
 gen/
-res/drawable
-res/drawable-*
+res/drawable/
+res/drawable-hdpi/
+res/drawable-ldpi/
+res/drawable-mdpi/
+res/drawable-xhdpi/
+res/drawable-xxhdpi/
 
 # Local configuration file (sdk path, etc)
 local.properties
