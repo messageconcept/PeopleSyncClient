@@ -12,6 +12,8 @@
 
     <color name="grey100">#f5f5f5</color>
     <color name="grey200">#eeeeee</color>
+    <color name="grey300">#E0E0E0</color>
+    <color name="grey400">#BDBDBD</color>
     <color name="grey500">#9E9E9E</color>
     <color name="grey700">#616161</color>
     <color name="grey800">#424242</color>
@@ -19,14 +21,15 @@
     <color name="red400">#EF5350</color>
     <color name="red700">#d32f2f</color>
 
-    <color name="primaryColor">#7cb342</color>
-    <color name="primaryLightColor">#aee571</color>
-    <color name="primaryDarkColor">#4b830d</color>
-    <color name="colorOnPrimary">@android:color/black</color>
+    <!-- https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=005bbb&secondary.color=5a0943 -->
+    <color name="primaryColor">#005bbb</color>
+    <color name="primaryLightColor">#5887ee</color>
+    <color name="primaryDarkColor">#00338a</color>
+    <color name="colorOnPrimary">@android:color/white</color>
 
-    <color name="secondaryColor">#ff6d00</color>
-    <color name="secondaryLightColor">#ff9e40</color>
-    <color name="secondaryDarkColor">#c43c00</color>
+    <color name="secondaryColor">#5a0943</color>
+    <color name="secondaryLightColor">#8a3b6e</color>
+    <color name="secondaryDarkColor">#2f001d</color>
     <color name="colorOnSecondary">@android:color/white</color>
 
     <color name="primaryTextColor">@color/grey900</color>
@@ -39,7 +42,7 @@
 
     <!-- app theme -->
 
-    <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight"/>
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
     <style name="AppTheme" parent="AppTheme.Base">
         <!-- see https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md for component color names -->
         <item name="colorPrimary">@color/primaryColor</item>
@@ -83,7 +86,7 @@
 
     <!-- widgets -->
 
-    <color name="cardview_background">@color/secondaryLightColor</color>
+    <color name="cardview_background">@color/secondaryColor</color>
 
     <style name="MySwitchPreference" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/view_preference_switch</item>
