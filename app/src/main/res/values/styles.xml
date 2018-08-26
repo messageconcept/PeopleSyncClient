@@ -19,14 +19,17 @@
     <color name="red400">#EF5350</color>
     <color name="red700">#d32f2f</color>
 
-    <color name="primaryColor">#7cb342</color>
-    <color name="primaryLightColor">#aee571</color>
-    <color name="primaryDarkColor">#4b830d</color>
+    <!-- https://material.io/design/color/#tools-for-picking-colors -->
+    <!-- Blue 50 -->
+    <color name="primaryColor">#1E88E5</color> <!-- 600 -->
+    <color name="primaryLightColor">#42A5F5</color> <!-- 400 -->
+    <color name="primaryDarkColor">#1565C0</color> <!-- 800 -->
     <color name="colorOnPrimary">@android:color/black</color>
 
-    <color name="secondaryColor">#ff6d00</color>
-    <color name="secondaryLightColor">#ff9e40</color>
-    <color name="secondaryDarkColor">#c43c00</color>
+    <!-- Pink 50 -->
+    <color name="secondaryColor">#D81B60</color> <!-- 600 -->
+    <color name="secondaryLightColor">#EC407A</color> <!-- 400 -->
+    <color name="secondaryDarkColor">#AD1457</color> <!-- 800 -->
     <color name="colorOnSecondary">@android:color/white</color>
 
     <color name="primaryTextColor">@color/grey900</color>
@@ -42,13 +45,13 @@
 
     <!-- app theme -->
 
-    <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight"/>
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
     <style name="AppTheme" parent="AppTheme.Base">
         <!-- see https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md for component color names -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>       <!-- additionally required for AppCompatActivity -->
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
 
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
