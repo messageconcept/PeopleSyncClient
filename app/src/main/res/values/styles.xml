@@ -14,12 +14,15 @@
     <color name="grey500">#9E9E9E</color>
     <color name="grey700">#616161</color>
 
-    <color name="primaryColor">#7cb342</color>
-    <color name="primaryLightColor">#aee571</color>
-    <color name="primaryDarkColor">#4b830d</color>
-    <color name="secondaryColor">#ff6d00</color>
-    <color name="secondaryLightColor">#ff9e40</color>
-    <color name="secondaryDarkColor">#c43c00</color>
+    <!-- https://material.io/design/color/#tools-for-picking-colors -->
+    <!-- Blue 50 -->
+    <color name="primaryColor">#1E88E5</color> <!-- 600 -->
+    <color name="primaryLightColor">#42A5F5</color> <!-- 400 -->
+    <color name="primaryDarkColor">#1565C0</color> <!-- 800 -->
+    <!-- Pink 50 -->
+    <color name="secondaryColor">#D81B60</color> <!-- 600 -->
+    <color name="secondaryLightColor">#EC407A</color> <!-- 400 -->
+    <color name="secondaryDarkColor">#AD1457</color> <!-- 800 -->
     <color name="primaryTextColor">#000000</color>
 
     <color name="errorColor">#d32f2f</color>
@@ -27,12 +30,12 @@
 
     <!-- app theme -->
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- see https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md for component color names -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>       <!-- additionally required for AppCompatActivity -->
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
-        <item name="colorOnPrimary">@android:color/black</item>
+        <item name="colorOnPrimary">@android:color/white</item>
 
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
