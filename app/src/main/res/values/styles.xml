@@ -14,19 +14,22 @@
     <color name="grey500">#9E9E9E</color>
     <color name="grey700">#616161</color>
 
-    <color name="primaryColor">#7cb342</color>
-    <color name="primaryLightColor">#aee571</color>
-    <color name="primaryDarkColor">#4b830d</color>
-    <color name="secondaryColor">#ff6d00</color>
-    <color name="secondaryLightColor">#ff9e40</color>
-    <color name="secondaryDarkColor">#c43c00</color>
+    <!-- https://material.io/design/color/#tools-for-picking-colors -->
+    <!-- Blue 50 -->
+    <color name="primaryColor">#1E88E5</color> <!-- 600 -->
+    <color name="primaryLightColor">#42A5F5</color> <!-- 400 -->
+    <color name="primaryDarkColor">#1565C0</color> <!-- 800 -->
+    <!-- Pink 50 -->
+    <color name="secondaryColor">#D81B60</color> <!-- 600 -->
+    <color name="secondaryLightColor">#EC407A</color> <!-- 400 -->
+    <color name="secondaryDarkColor">#AD1457</color> <!-- 800 -->
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">@color/grey700</color>
 
 
     <!-- app theme -->
 
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light" />
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="colorPrimary">@color/primaryColor</item>
@@ -40,7 +43,7 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
-    <color name="actionBarButton">#FF000000</color>
+    <color name="actionBarButton">#FFFFFF</color>
 
     <style name="AppTheme.Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/secondaryColor</item>
