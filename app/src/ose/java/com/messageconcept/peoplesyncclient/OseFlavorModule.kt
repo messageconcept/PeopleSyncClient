@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient
 import com.messageconcept.peoplesyncclient.ui.AccountsDrawerHandler
 import com.messageconcept.peoplesyncclient.ui.OseAccountsDrawerHandler
 import com.messageconcept.peoplesyncclient.ui.intro.IntroFragmentFactory
-import com.messageconcept.peoplesyncclient.ui.intro.OpenSourceFragment
 import com.messageconcept.peoplesyncclient.ui.intro.PermissionsIntroFragment
 import com.messageconcept.peoplesyncclient.ui.intro.TasksIntroFragment
 import dagger.Binds
@@ -30,13 +29,6 @@ abstract class OseFlavorModule {
     //// intro fragments ////
 
     // WelcomeFragment and BatteryOptimizationsFragment modules are hardcoded there
-
-    @Module
-    @InstallIn(ActivityComponent::class)
-    abstract class OpenSourceFragmentModule {
-        @Binds @IntoSet
-        abstract fun getFactory(factory: OpenSourceFragment.Factory): IntroFragmentFactory
-    }
 
     @Module
     @InstallIn(ActivityComponent::class)
