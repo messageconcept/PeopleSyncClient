@@ -73,11 +73,6 @@ class App: Application(), Thread.UncaughtExceptionHandler {
             // watch storage because low storage means synchronization is stopped
             StorageLowReceiver.getInstance(this)
 
-            // watch installed/removed apps
-            TasksWatcher.watch(this)
-            // check whether a tasks app is currently installed
-            TasksWatcher.updateTaskSync(this)
-
             // create/update app shortcuts
             UiUtils.updateShortcuts(this)
 

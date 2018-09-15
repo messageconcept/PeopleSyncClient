@@ -8,7 +8,6 @@ import android.app.Application
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.*
 import android.widget.PopupMenu
@@ -31,7 +30,6 @@ import com.messageconcept.peoplesyncclient.databinding.AccountCollectionsBinding
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 import kotlinx.coroutines.Dispatchers
@@ -273,9 +271,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         val serviceId = MutableLiveData<Long>()
         private lateinit var collectionType: String
 
-        // cache task provider
-        val taskProvider by lazy { TaskUtils.currentProvider(context) }
-
         val hasWriteableCollections: LiveData<Boolean> =
             Transformations.switchMap(serviceId) { service ->
                 db.homeSetDao().hasBindableByService(service)
@@ -375,17 +370,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
                 isSyncActive.postValue(mainSyncActive || syncActive)
                 isSyncPending.postValue(mainSyncPending || syncPending)
-            } else {
-                val authorities = mutableListOf(CalendarContract.AUTHORITY)
-                taskProvider?.let {
-                    authorities += it.authority
-                }
-                isSyncActive.postValue(authorities.any {
-                    ContentResolver.isSyncActive(accountModel.account, it)
-                })
-                isSyncPending.postValue(authorities.any {
-                    ContentResolver.isSyncPending(accountModel.account, it)
-                })
             }
         }
 

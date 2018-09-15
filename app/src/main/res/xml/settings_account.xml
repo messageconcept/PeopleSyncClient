@@ -13,22 +13,6 @@
             android:entries="@array/settings_sync_interval_names"
             android:entryValues="@array/settings_sync_interval_seconds"/>
 
-        <ListPreference
-            android:key="@string/settings_sync_interval_calendars_key"
-            android:persistent="false"
-            android:title="@string/settings_sync_interval_calendars"
-            android:icon="@drawable/ic_today"
-            android:entries="@array/settings_sync_interval_names"
-            android:entryValues="@array/settings_sync_interval_seconds"/>
-
-        <ListPreference
-            android:key="@string/settings_sync_interval_tasks_key"
-            android:persistent="false"
-            android:title="@string/settings_sync_interval_tasks"
-            android:icon="@drawable/ic_playlist_add_check"
-            android:entries="@array/settings_sync_interval_names"
-            android:entryValues="@array/settings_sync_interval_seconds"/>
-
         <SwitchPreferenceCompat
             android:key="@string/settings_sync_wifi_only_key"
             android:persistent="false"
@@ -64,41 +48,6 @@
             android:key="@string/settings_certificate_alias_key"
             android:title="@string/settings_certificate_alias"
             android:persistent="false"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="@string/settings_caldav_key"
-        android:title="@string/settings_caldav">
-
-        <EditTextPreference
-            android:key="@string/settings_sync_time_range_past_key"
-            android:persistent="false"
-            android:title="@string/settings_sync_time_range_past"
-            android:icon="@drawable/ic_date_range"
-            android:dialogMessage="@string/settings_sync_time_range_past_message"
-            android:inputType="number"/>
-
-        <EditTextPreference
-            android:key="@string/settings_key_default_alarm"
-            android:persistent="false"
-            android:title="@string/settings_default_alarm"
-            android:dialogMessage="@string/settings_default_alarm_message"
-            android:inputType="number"/>
-
-        <SwitchPreferenceCompat
-            android:key="@string/settings_manage_calendar_colors_key"
-            android:persistent="false"
-            android:title="@string/settings_manage_calendar_colors"
-            android:summaryOn="@string/settings_manage_calendar_colors_on"
-            android:summaryOff="@string/settings_manage_calendar_colors_off"/>
-
-        <SwitchPreferenceCompat
-            android:key="@string/settings_event_colors_key"
-            android:persistent="false"
-            android:title="@string/settings_event_colors"
-            android:summaryOn="@string/settings_event_colors_on"
-            android:summaryOff="@string/settings_event_colors_off"/>
 
     </PreferenceCategory>
 

@@ -4,7 +4,6 @@
 
 package com.messageconcept.peoplesyncclient.resource
 
-import android.provider.CalendarContract.Events
 import com.messageconcept.peoplesyncclient.db.SyncState
 
 interface LocalCollection<out T: LocalResource<*>> {

@@ -29,7 +29,6 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Service
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
@@ -200,13 +199,6 @@ class AccountDetailsFragment : Fragment() {
                         // set default sync interval and enable sync regardless of permissions
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
                         accountSettings.setSyncInterval(CalendarContract.AUTHORITY, defaultSyncInterval)
-
-                        val taskProvider = TaskUtils.currentProvider(context)
-                        if (taskProvider != null) {
-                            ContentResolver.setIsSyncable(account, taskProvider.authority, 1)
-                            accountSettings.setSyncInterval(taskProvider.authority, defaultSyncInterval)
-                            // further changes will be handled by TasksWatcher on app start or when tasks app is (un)installed
-                        }
                     } else
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 0)
 

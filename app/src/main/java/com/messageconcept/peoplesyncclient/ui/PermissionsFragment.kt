@@ -20,15 +20,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.messageconcept.peoplesyncclient.BuildConfig
-import com.messageconcept.peoplesyncclient.PackageChangedReceiver
 import com.messageconcept.peoplesyncclient.PermissionUtils
-import com.messageconcept.peoplesyncclient.PermissionUtils.CALENDAR_PERMISSIONS
 import com.messageconcept.peoplesyncclient.PermissionUtils.CONTACT_PERMISSIONS
 import com.messageconcept.peoplesyncclient.PermissionUtils.havePermissions
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.ActivityPermissionsBinding
-import at.bitfire.ical4android.TaskProvider
-import at.bitfire.ical4android.TaskProvider.ProviderName
 
 class PermissionsFragment: Fragment() {
 
@@ -52,31 +48,9 @@ class PermissionsFragment: Fragment() {
             if (needContacts && model.haveContactsPermissions.value == false)
                 requestPermissions(CONTACT_PERMISSIONS, 0)
         })
-        model.needCalendarPermissions.observe(viewLifecycleOwner, { needCalendars ->
-            if (needCalendars && model.haveCalendarPermissions.value == false)
-                requestPermissions(CALENDAR_PERMISSIONS, 0)
-        })
-        model.needOpenTasksPermissions.observe(viewLifecycleOwner, { needOpenTasks ->
-            if (needOpenTasks == true && model.haveOpenTasksPermissions.value == false)
-                requestPermissions(TaskProvider.PERMISSIONS_OPENTASKS, 0)
-        })
-        model.needTasksOrgPermissions.observe(viewLifecycleOwner, { needTasksOrg ->
-            if (needTasksOrg == true && model.haveTasksOrgPermissions.value == false)
-                requestPermissions(TaskProvider.PERMISSIONS_TASKS_ORG, 0)
-        })
-        model.needJtxPermissions.observe(viewLifecycleOwner, { needJtx ->
-            if (needJtx == true && model.haveJtxPermissions.value == false)
-                requestPermissions(TaskProvider.PERMISSIONS_JTX, 0)
-        })
         model.needAllPermissions.observe(viewLifecycleOwner, { needAll ->
             if (needAll && model.haveAllPermissions.value == false) {
-                val all = mutableSetOf(*CONTACT_PERMISSIONS, *CALENDAR_PERMISSIONS)
-                if (model.haveOpenTasksPermissions.value != null)
-                    all.addAll(TaskProvider.PERMISSIONS_OPENTASKS)
-                if (model.haveTasksOrgPermissions.value != null)
-                    all.addAll(TaskProvider.PERMISSIONS_TASKS_ORG)
-                if (model.haveJtxPermissions.value != null)
-                    all.addAll(TaskProvider.PERMISSIONS_JTX)
+                val all = mutableSetOf(*CONTACT_PERMISSIONS)
                 requestPermissions(all.toTypedArray(), 0)
             }
         })
@@ -106,31 +80,12 @@ class PermissionsFragment: Fragment() {
 
         val haveContactsPermissions = MutableLiveData<Boolean>()
         val needContactsPermissions = MutableLiveData<Boolean>()
-        val haveCalendarPermissions = MutableLiveData<Boolean>()
-        val needCalendarPermissions = MutableLiveData<Boolean>()
-
-        val haveOpenTasksPermissions = MutableLiveData<Boolean>()
-        val needOpenTasksPermissions = MutableLiveData<Boolean>()
-        val haveTasksOrgPermissions = MutableLiveData<Boolean>()
-        val needTasksOrgPermissions = MutableLiveData<Boolean>()
-        val haveJtxPermissions = MutableLiveData<Boolean>()
-        val needJtxPermissions = MutableLiveData<Boolean>()
-        val tasksWatcher = object: PackageChangedReceiver(app) {
-            @MainThread
-            override fun onReceive(context: Context?, intent: Intent?) {
-                checkPermissions()
-            }
-        }
 
         val haveAllPermissions = MutableLiveData<Boolean>()
         val needAllPermissions = MutableLiveData<Boolean>()
 
         init {
             checkPermissions()
-        }
-
-        override fun onCleared() {
-            tasksWatcher.close()
         }
 
         @MainThread
@@ -149,50 +104,7 @@ class PermissionsFragment: Fragment() {
             haveContactsPermissions.value = contactPermissions
             needContactsPermissions.value = contactPermissions
 
-            val calendarPermissions = havePermissions(getApplication(), CALENDAR_PERMISSIONS)
-            haveCalendarPermissions.value = calendarPermissions
-            needCalendarPermissions.value = calendarPermissions
-
-            // OpenTasks
-            val openTasksAvailable = pm.resolveContentProvider(ProviderName.OpenTasks.authority, 0) != null
-            var openTasksPermissions: Boolean? = null
-            if (openTasksAvailable) {
-                openTasksPermissions = havePermissions(getApplication(), TaskProvider.PERMISSIONS_OPENTASKS)
-                haveOpenTasksPermissions.value = openTasksPermissions
-                needOpenTasksPermissions.value = openTasksPermissions
-            } else {
-                haveOpenTasksPermissions.value = null
-                needOpenTasksPermissions.value = null
-            }
-            // tasks.org
-            val tasksOrgAvailable = pm.resolveContentProvider(ProviderName.TasksOrg.authority, 0) != null
-            var tasksOrgPermissions: Boolean? = null
-            if (tasksOrgAvailable) {
-                tasksOrgPermissions = havePermissions(getApplication(), TaskProvider.PERMISSIONS_TASKS_ORG)
-                haveTasksOrgPermissions.value = tasksOrgPermissions
-                needTasksOrgPermissions.value = tasksOrgPermissions
-            } else {
-                haveTasksOrgPermissions.value = null
-                needTasksOrgPermissions.value = null
-            }
-            // jtx Board
-            val jtxAvailable = pm.resolveContentProvider(ProviderName.JtxBoard.authority, 0) != null
-            var jtxPermissions: Boolean? = null
-            if (jtxAvailable) {
-                jtxPermissions = havePermissions(getApplication(), TaskProvider.PERMISSIONS_JTX)
-                haveJtxPermissions.value = jtxPermissions
-                needJtxPermissions.value = jtxPermissions
-            } else {
-                haveJtxPermissions.value = null
-                needJtxPermissions.value = null
-            }
-
-            // "all permissions" switch
-            val allPermissions = contactPermissions &&
-                    calendarPermissions &&
-                    (!openTasksAvailable || openTasksPermissions == true) &&
-                    (!tasksOrgAvailable || tasksOrgPermissions == true) &&
-                    (!jtxAvailable || jtxPermissions == true)
+            val allPermissions = contactPermissions
             haveAllPermissions.value = allPermissions
             needAllPermissions.value = allPermissions
         }
