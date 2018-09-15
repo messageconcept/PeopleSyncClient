@@ -32,13 +32,10 @@ class StartupDialogFragment: DialogFragment() {
     enum class Mode {
         AUTOSTART_PERMISSIONS,
         BATTERY_OPTIMIZATIONS,
-        OPENTASKS_NOT_INSTALLED,
-        OSE_DONATE
+        OPENTASKS_NOT_INSTALLED
     }
 
     companion object {
-
-        private const val SETTING_NEXT_DONATION_POPUP = "time_nextDonationPopup"
 
         const val HINT_AUTOSTART_PERMISSIONS = "hint_AutostartPermissions"
         // see https://github.com/jaredrummler/AndroidDeviceNames/blob/master/json/ for manufacturer values
@@ -53,8 +50,6 @@ class StartupDialogFragment: DialogFragment() {
             val dialogs = LinkedList<StartupDialogFragment>()
             val settings = Settings.getInstance(context)
 
-            if (System.currentTimeMillis() > settings.getLong(SETTING_NEXT_DONATION_POPUP) ?: 0)
-                dialogs += StartupDialogFragment.instantiate(Mode.OSE_DONATE)
 
             // battery optimization white-listing
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && settings.getBoolean(HINT_BATTERY_OPTIMIZATIONS) != false) {
@@ -140,22 +135,6 @@ class StartupDialogFragment: DialogFragment() {
                         }
                         .create()
             }
-
-            Mode.OSE_DONATE ->
-                    return AlertDialog.Builder(activity)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.startup_donate)
-                            .setMessage(R.string.startup_donate_message)
-                            .setPositiveButton(R.string.startup_donate_now) { _, _ ->
-                                UiUtils.launchUri(requireActivity(), App.homepageUrl(requireActivity()).buildUpon()
-                                        .appendPath("donate")
-                                        .build())
-                                settings.putLong(SETTING_NEXT_DONATION_POPUP, System.currentTimeMillis() + 30 * 86400000L) // 30 days
-                            }
-                            .setNegativeButton(R.string.startup_donate_later) { _, _ ->
-                                settings.putLong(SETTING_NEXT_DONATION_POPUP, System.currentTimeMillis() + 14 * 86400000L) // 14 days
-                            }
-                            .create()
 
         }
     }
