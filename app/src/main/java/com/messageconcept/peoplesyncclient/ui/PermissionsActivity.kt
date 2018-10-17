@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

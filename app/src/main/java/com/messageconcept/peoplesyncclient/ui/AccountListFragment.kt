@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -34,8 +34,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import kotlinx.android.synthetic.main.account_list.*
 import kotlinx.android.synthetic.main.account_list_item.view.*
 

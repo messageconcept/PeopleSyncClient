@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 object Settings {
 

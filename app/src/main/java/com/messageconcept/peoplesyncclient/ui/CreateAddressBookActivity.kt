@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.app.Application
@@ -23,12 +23,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.ActivityCreateAddressBookBinding
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.model.Service
-import at.bitfire.davdroid.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityCreateAddressBookBinding
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.model.Service
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.apache.commons.lang3.StringUtils

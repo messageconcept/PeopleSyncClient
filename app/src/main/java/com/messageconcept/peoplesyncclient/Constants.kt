@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 object Constants {
 
@@ -15,7 +15,7 @@ object Constants {
 
     /**
      * Context label for [org.apache.commons.lang3.exception.ContextedException].
-     * Context value is the [at.bitfire.davdroid.resource.LocalResource]
+     * Context value is the [com.messageconcept.peoplesyncclient.resource.LocalResource]
      * which is related to the exception cause.
      */
     const val EXCEPTION_CONTEXT_LOCAL_RESOURCE = "localResource"

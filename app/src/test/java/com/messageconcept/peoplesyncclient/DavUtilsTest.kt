@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.*

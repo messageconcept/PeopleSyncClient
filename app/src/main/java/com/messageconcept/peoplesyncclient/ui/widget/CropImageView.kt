@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.widget
+package com.messageconcept.peoplesyncclient.ui.widget
 
 import android.content.Context
 import android.graphics.Matrix
@@ -6,7 +6,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.appcompat.widget.AppCompatImageView
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 
 /**
  * [android.widget.ImageView] that supports directional cropping in both vertical and

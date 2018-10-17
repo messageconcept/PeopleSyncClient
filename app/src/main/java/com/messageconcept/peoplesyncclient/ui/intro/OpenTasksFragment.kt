@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.app.Application
 import android.content.Context
@@ -17,15 +17,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.PackageChangedReceiver
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.IntroOpentasksBinding
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.UiUtils
-import at.bitfire.davdroid.ui.intro.IIntroFragmentFactory.ShowMode
-import at.bitfire.davdroid.ui.intro.OpenTasksFragment.Model.Companion.HINT_OPENTASKS_NOT_INSTALLED
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.PackageChangedReceiver
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.IntroOpentasksBinding
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.UiUtils
+import com.messageconcept.peoplesyncclient.ui.intro.IIntroFragmentFactory.ShowMode
+import com.messageconcept.peoplesyncclient.ui.intro.OpenTasksFragment.Model.Companion.HINT_OPENTASKS_NOT_INSTALLED
 import com.google.android.material.snackbar.Snackbar
 
 class OpenTasksFragment: Fragment() {

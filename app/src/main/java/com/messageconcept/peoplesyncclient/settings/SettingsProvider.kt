@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 /**
  * Defines a settings provider, which provides settings from a certain source

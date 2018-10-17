@@ -16,8 +16,8 @@
             android:summary="@string/app_settings_show_debug_info_details"
             android:icon="@drawable/ic_bug_report_dark">
             <intent
-                android:targetPackage="at.bitfire.davdroid"
-                android:targetClass="at.bitfire.davdroid.ui.DebugInfoActivity"/>
+                android:targetPackage="com.messageconcept.peoplesyncclient"
+                android:targetClass="com.messageconcept.peoplesyncclient.ui.DebugInfoActivity"/>
         </Preference>
 
         <SwitchPreferenceCompat
@@ -43,7 +43,7 @@
             android:title="@string/app_settings_override_proxy_host"
             android:inputType="textUri"/>
 
-        <at.bitfire.davdroid.ui.widget.IntEditTextPreference
+        <com.messageconcept.peoplesyncclient.ui.widget.IntEditTextPreference
             android:key="override_proxy_port"
             android:dependency="override_proxy"
             android:title="@string/app_settings_override_proxy_port"
@@ -68,8 +68,8 @@
             android:title="@string/app_settings_security_app_permissions"
             android:summary="@string/app_settings_security_app_permissions_summary">
             <intent
-                android:targetPackage="at.bitfire.davdroid"
-                android:targetClass="at.bitfire.davdroid.ui.PermissionsActivity"/>
+                android:targetPackage="com.messageconcept.peoplesyncclient"
+                android:targetClass="com.messageconcept.peoplesyncclient.ui.PermissionsActivity"/>
         </Preference>
 
     </PreferenceCategory>

@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.Manifest
 import android.accounts.Account
@@ -20,10 +20,10 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import at.bitfire.davdroid.PermissionUtils
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.account.SettingsActivity
+import com.messageconcept.peoplesyncclient.PermissionUtils
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.logging.Level

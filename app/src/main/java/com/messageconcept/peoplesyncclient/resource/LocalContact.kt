@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.ContentProviderOperation
 import android.content.ContentValues
@@ -15,9 +15,9 @@ import android.os.RemoteException
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.RawContacts.Data
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.UnknownProperties
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.UnknownProperties
 import at.bitfire.vcard4android.*
 import ezvcard.Ezvcard
 import java.io.FileNotFoundException

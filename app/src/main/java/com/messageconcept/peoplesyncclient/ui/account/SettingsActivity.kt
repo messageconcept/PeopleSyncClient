@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.Manifest
 import android.accounts.Account
@@ -31,13 +31,13 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.preference.*
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.syncadapter.SyncAdapterService
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService
 import at.bitfire.ical4android.TaskProvider
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

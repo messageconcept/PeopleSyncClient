@@ -1,7 +1,7 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.net.Uri
-import at.bitfire.davdroid.resource.LocalResource
+import com.messageconcept.peoplesyncclient.resource.LocalResource
 
 class LocalTestResource: LocalResource<Any> {
 

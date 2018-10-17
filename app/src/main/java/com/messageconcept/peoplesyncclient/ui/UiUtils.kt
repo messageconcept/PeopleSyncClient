@@ -6,13 +6,13 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 
 object UiUtils {
 

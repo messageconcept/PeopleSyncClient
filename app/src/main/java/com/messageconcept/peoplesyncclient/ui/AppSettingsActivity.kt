@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.Intent
 import android.os.Build
@@ -17,13 +17,13 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import at.bitfire.cert4android.CustomCertManager
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.intro.BatteryOptimizationsFragment
-import at.bitfire.davdroid.ui.intro.OpenSourceFragment
-import at.bitfire.davdroid.ui.intro.OpenTasksFragment
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment
+import com.messageconcept.peoplesyncclient.ui.intro.OpenSourceFragment
+import com.messageconcept.peoplesyncclient.ui.intro.OpenTasksFragment
 import com.google.android.material.snackbar.Snackbar
 import java.net.URI
 import java.net.URISyntaxException

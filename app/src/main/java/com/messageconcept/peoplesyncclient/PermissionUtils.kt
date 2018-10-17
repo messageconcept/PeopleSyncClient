@@ -1,4 +1,4 @@
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.Manifest
 import android.app.PendingIntent
@@ -8,8 +8,8 @@ import android.content.pm.PackageManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.PermissionsActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 import at.bitfire.ical4android.TaskProvider
 
 object PermissionUtils {

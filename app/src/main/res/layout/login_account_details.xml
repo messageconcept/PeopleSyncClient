@@ -14,7 +14,7 @@
     <data>
         <variable
             name="details"
-            type="at.bitfire.davdroid.ui.setup.AccountDetailsFragment.AccountDetailsModel"/>
+            type="com.messageconcept.peoplesyncclient.ui.setup.AccountDetailsFragment.AccountDetailsModel"/>
     </data>
 
     <LinearLayout

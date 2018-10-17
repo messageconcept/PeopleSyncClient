@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -10,10 +10,10 @@ import at.bitfire.dav4jvm.PropStat
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.Response.HrefRelation
 import at.bitfire.dav4jvm.property.GetETag
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import okhttp3.Protocol
 import okhttp3.internal.http.StatusLine
 import okhttp3.mockwebserver.MockResponse
