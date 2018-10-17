@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.app.Application
@@ -18,11 +18,11 @@ import androidx.annotation.MainThread
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.*
 import at.bitfire.dav4jvm.DavResource
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.databinding.DeleteCollectionBinding
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.databinding.DeleteCollectionBinding
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import kotlin.concurrent.thread
 
 class DeleteCollectionFragment: DialogFragment() {

@@ -6,10 +6,10 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import androidx.lifecycle.ViewModel
-import at.bitfire.davdroid.model.Credentials
+import com.messageconcept.peoplesyncclient.model.Credentials
 import java.net.URI
 
 class LoginModel: ViewModel() {

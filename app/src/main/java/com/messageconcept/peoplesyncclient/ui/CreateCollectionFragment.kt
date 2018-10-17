@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.app.Application
@@ -18,13 +18,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.*
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.XmlUtils
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import okhttp3.HttpUrl
 import java.io.IOException
 import java.io.StringWriter

@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
 import android.annotation.TargetApi
@@ -16,7 +16,7 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.log.Logger
 import at.bitfire.ical4android.TaskProvider
 import okhttp3.HttpUrl
 import org.xbill.DNS.*
