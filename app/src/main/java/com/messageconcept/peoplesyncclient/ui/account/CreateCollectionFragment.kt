@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
 import android.content.Context
@@ -15,15 +15,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.XmlUtils
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.servicedetection.RefreshCollectionsWorker
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.ExceptionInfoFragment
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.ExceptionInfoFragment
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

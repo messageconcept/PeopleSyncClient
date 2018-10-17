@@ -1,7 +1,7 @@
 /***************************************************************************************************
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.AbstractAccountAuthenticator
 import android.accounts.Account
@@ -11,7 +11,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import at.bitfire.davdroid.ui.setup.LoginActivity
+import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 
 
 /**

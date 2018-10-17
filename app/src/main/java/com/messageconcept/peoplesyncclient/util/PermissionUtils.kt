@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.util
+package com.messageconcept.peoplesyncclient.util
 
 import android.Manifest
 import android.app.PendingIntent
@@ -16,12 +16,12 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.location.LocationManagerCompat
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.NotificationUtils.notifyIfPossible
-import at.bitfire.davdroid.ui.PermissionsActivity
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 
 object PermissionUtils {
 

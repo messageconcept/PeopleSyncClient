@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
-import at.bitfire.davdroid.util.ConcurrentUtils
+import com.messageconcept.peoplesyncclient.util.ConcurrentUtils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger

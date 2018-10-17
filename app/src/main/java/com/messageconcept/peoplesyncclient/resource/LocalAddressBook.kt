@@ -1,7 +1,7 @@
 /***************************************************************************************************
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -14,14 +14,14 @@ import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.Groups
 import android.provider.ContactsContract.RawContacts
 import android.util.Base64
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.SyncState
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.syncadapter.AccountUtils
-import at.bitfire.davdroid.syncadapter.SyncUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.SyncState
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import at.bitfire.vcard4android.*
 import java.io.ByteArrayOutputStream
 import java.util.*

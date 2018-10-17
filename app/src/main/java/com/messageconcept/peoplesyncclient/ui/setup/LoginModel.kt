@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import androidx.lifecycle.ViewModel
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.servicedetection.DavResourceFinder
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
 import java.net.URI
 
 class LoginModel: ViewModel() {

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.*
 import android.net.ConnectivityManager
@@ -12,8 +12,8 @@ import android.net.NetworkRequest
 import android.os.Build
 import androidx.core.content.getSystemService
 import androidx.lifecycle.MutableLiveData
-import at.bitfire.davdroid.StorageLowReceiver
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.StorageLowReceiver
+import com.messageconcept.peoplesyncclient.log.Logger
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

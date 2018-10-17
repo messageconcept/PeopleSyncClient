@@ -11,8 +11,8 @@
     
     <PreferenceScreen android:title="@string/manage_accounts">
         <intent
-            android:targetPackage="at.bitfire.davdroid"
-            android:targetClass="at.bitfire.davdroid.ui.AccountsActivity"
+            android:targetPackage="com.messageconcept.peoplesyncclient"
+            android:targetClass="com.messageconcept.peoplesyncclient.ui.AccountsActivity"
             android:action="ACTION_VIEW" />
     </PreferenceScreen>
 

@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.app.Activity
 import android.os.Bundle
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.github.appintro.AppIntro2
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn

@@ -15,7 +15,7 @@ android {
     buildToolsVersion '33.0.0'
 
     defaultConfig {
-        applicationId "at.bitfire.davdroid"
+        applicationId "com.messageconcept.peoplesyncclient"
 
         versionCode 403000005
         versionName '4.3'
@@ -28,7 +28,7 @@ android {
 
         buildConfigField "String", "userAgent", "\"DAVx5\""
 
-        testInstrumentationRunner "at.bitfire.davdroid.CustomTestRunner"
+        testInstrumentationRunner "com.messageconcept.peoplesyncclient.CustomTestRunner"
 
         kapt {
             arguments {
@@ -64,7 +64,7 @@ android {
     }
 
     // Java namespace for our classes (not to be confused with Android package ID)
-    namespace 'at.bitfire.davdroid'
+    namespace 'com.messageconcept.peoplesyncclient'
 
     flavorDimensions "distribution"
     productFlavors {

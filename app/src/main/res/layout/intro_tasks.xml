@@ -9,6 +9,6 @@
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="at.bitfire.davdroid.ui.TasksFragment"/>
+        android:name="com.messageconcept.peoplesyncclient.ui.TasksFragment"/>
 
 </FrameLayout>

@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.IOException
 

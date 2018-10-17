@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
-import at.bitfire.davdroid.ui.AccountsDrawerHandler
-import at.bitfire.davdroid.ui.OseAccountsDrawerHandler
-import at.bitfire.davdroid.ui.intro.IntroFragmentFactory
-import at.bitfire.davdroid.ui.intro.OpenSourceFragment
-import at.bitfire.davdroid.ui.intro.PermissionsIntroFragment
-import at.bitfire.davdroid.ui.intro.TasksIntroFragment
+import com.messageconcept.peoplesyncclient.ui.AccountsDrawerHandler
+import com.messageconcept.peoplesyncclient.ui.OseAccountsDrawerHandler
+import com.messageconcept.peoplesyncclient.ui.intro.IntroFragmentFactory
+import com.messageconcept.peoplesyncclient.ui.intro.OpenSourceFragment
+import com.messageconcept.peoplesyncclient.ui.intro.PermissionsIntroFragment
+import com.messageconcept.peoplesyncclient.ui.intro.TasksIntroFragment
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

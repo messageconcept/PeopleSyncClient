@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
-import at.bitfire.davdroid.webdav.cache.MemoryCache
+import com.messageconcept.peoplesyncclient.webdav.cache.MemoryCache
 import org.apache.commons.io.FileUtils
 import org.junit.Assert.*
 import org.junit.Before

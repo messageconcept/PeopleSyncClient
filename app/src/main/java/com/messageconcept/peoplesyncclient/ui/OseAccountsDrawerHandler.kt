@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.MenuItem
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.webdav.WebdavMountsActivity
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.webdav.WebdavMountsActivity
 import javax.inject.Inject
 
 /**

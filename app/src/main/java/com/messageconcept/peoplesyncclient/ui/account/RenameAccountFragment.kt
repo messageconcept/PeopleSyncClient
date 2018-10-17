@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.Manifest
 import android.accounts.Account
@@ -28,15 +28,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.bitfire.davdroid.*
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.syncadapter.AccountsCleanupWorker
-import at.bitfire.davdroid.syncadapter.SyncWorker
-import at.bitfire.davdroid.util.closeCompat
+import com.messageconcept.peoplesyncclient.*
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.syncadapter.AccountsCleanupWorker
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
+import com.messageconcept.peoplesyncclient.util.closeCompat
 import at.bitfire.ical4android.TaskProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.webdav
+package com.messageconcept.peoplesyncclient.ui.webdav
 
 import android.content.Context
 import android.os.Bundle
@@ -17,17 +17,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.UrlUtils
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.ActivityAddWebdavMountBinding
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.db.WebDavMount
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.ui.UiUtils
-import at.bitfire.davdroid.webdav.CredentialsStore
-import at.bitfire.davdroid.webdav.DavDocumentsProvider
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityAddWebdavMountBinding
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.db.WebDavMount
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.ui.UiUtils
+import com.messageconcept.peoplesyncclient.webdav.CredentialsStore
+import com.messageconcept.peoplesyncclient.webdav.DavDocumentsProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import android.security.NetworkSecurityPolicy
 import androidx.test.filters.SmallTest
@@ -10,12 +10,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.property.AddressbookHomeSet
 import at.bitfire.dav4jvm.property.ResourceType
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.servicedetection.DavResourceFinder.Configuration.ServiceInfo
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.setup.LoginModel
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder.Configuration.ServiceInfo
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.setup.LoginModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.Dispatcher

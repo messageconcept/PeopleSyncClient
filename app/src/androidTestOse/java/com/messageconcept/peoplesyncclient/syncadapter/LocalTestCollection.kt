@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
-import at.bitfire.davdroid.db.SyncState
-import at.bitfire.davdroid.resource.LocalCollection
+import com.messageconcept.peoplesyncclient.db.SyncState
+import com.messageconcept.peoplesyncclient.resource.LocalCollection
 
 class LocalTestCollection: LocalCollection<LocalTestResource> {
 

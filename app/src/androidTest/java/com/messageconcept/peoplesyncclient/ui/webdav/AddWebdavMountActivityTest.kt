@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.webdav
+package com.messageconcept.peoplesyncclient.ui.webdav
 
 import android.security.NetworkSecurityPolicy
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.WebDavMount
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.WebDavMount
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.spyk

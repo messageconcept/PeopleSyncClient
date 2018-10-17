@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import org.apache.commons.lang3.StringUtils
 import java.util.*

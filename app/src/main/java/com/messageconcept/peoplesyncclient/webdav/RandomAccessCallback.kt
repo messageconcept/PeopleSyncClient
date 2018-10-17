@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.annotation.TargetApi
 import android.app.ActivityManager
@@ -20,13 +20,13 @@ import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.HttpUtils
 import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.davdroid.*
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.NotificationUtils.notifyIfPossible
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.webdav.cache.MemoryCache
-import at.bitfire.davdroid.webdav.cache.SegmentedCache
+import com.messageconcept.peoplesyncclient.*
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.webdav.cache.MemoryCache
+import com.messageconcept.peoplesyncclient.webdav.cache.SegmentedCache
 import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.MediaType

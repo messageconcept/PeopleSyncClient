@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.Manifest
 import android.accounts.Account
@@ -13,9 +13,9 @@ import android.provider.CalendarContract
 import androidx.annotation.RequiresApi
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalCalendar
-import at.bitfire.davdroid.resource.LocalEvent
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalCalendar
+import com.messageconcept.peoplesyncclient.resource.LocalEvent
 import at.bitfire.ical4android.AndroidCalendar
 import at.bitfire.ical4android.Event
 import net.fortuna.ical4j.model.property.DtStart

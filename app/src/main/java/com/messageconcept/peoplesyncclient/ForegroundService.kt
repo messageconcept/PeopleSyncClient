@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.app.PendingIntent
 import android.app.Service
@@ -12,11 +12,11 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.AppSettingsActivity
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.AppSettingsActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -17,18 +17,18 @@ import android.os.Build
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.util.PermissionUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
 import at.bitfire.ical4android.TaskProvider
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.util
+package com.messageconcept.peoplesyncclient.util
 
 import android.accounts.Account
 import android.content.ContentResolver
@@ -13,12 +13,12 @@ import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.core.content.getSystemService
 import androidx.work.WorkInfo
-import at.bitfire.davdroid.Android10Resolver
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.syncadapter.SyncWorker
+import com.messageconcept.peoplesyncclient.Android10Resolver
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.app.Activity
 import android.content.Context
@@ -12,8 +12,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.CallSuper
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
 
 /**
  * Default menu items control

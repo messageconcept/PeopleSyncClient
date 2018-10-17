@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.app.Application
 import android.app.Dialog
@@ -17,10 +17,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.servicedetection.DavResourceFinder
-import at.bitfire.davdroid.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.lang.ref.WeakReference
 import java.util.logging.Level

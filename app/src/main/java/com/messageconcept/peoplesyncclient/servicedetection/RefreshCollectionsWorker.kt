@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import android.accounts.Account
 import android.app.PendingIntent
@@ -16,20 +16,20 @@ import androidx.work.*
 import at.bitfire.dav4jvm.*
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.HomeSet
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.DebugInfoActivity
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -40,7 +40,7 @@ import kotlin.collections.*
 
 /**
  * Refreshes list of home sets and their respective collections of a service type (CardDAV or CalDAV).
- * Called from UI, when user wants to refresh all collections of a service ([at.bitfire.davdroid.ui.account.CollectionsFragment]).
+ * Called from UI, when user wants to refresh all collections of a service ([com.messageconcept.peoplesyncclient.ui.account.CollectionsFragment]).
  *
  * Input data:
  *

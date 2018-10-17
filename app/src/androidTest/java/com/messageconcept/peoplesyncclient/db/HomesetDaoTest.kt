@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry

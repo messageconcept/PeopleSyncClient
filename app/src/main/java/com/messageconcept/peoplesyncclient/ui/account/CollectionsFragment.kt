@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.content.*
 import android.os.Bundle
@@ -23,17 +23,17 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import androidx.work.WorkInfo
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.AccountCollectionsBinding
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.servicedetection.RefreshCollectionsWorker
-import at.bitfire.davdroid.syncadapter.SyncWorker
-import at.bitfire.davdroid.ui.PermissionsActivity
-import at.bitfire.davdroid.util.LiveDataUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.AccountCollectionsBinding
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
+import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
+import com.messageconcept.peoplesyncclient.util.LiveDataUtils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

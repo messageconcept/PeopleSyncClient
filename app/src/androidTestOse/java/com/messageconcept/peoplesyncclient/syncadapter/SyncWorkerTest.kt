@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -14,11 +14,11 @@ import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.testing.WorkManagerTestInitHelper
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.TestUtils.workScheduledOrRunning
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunning
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After

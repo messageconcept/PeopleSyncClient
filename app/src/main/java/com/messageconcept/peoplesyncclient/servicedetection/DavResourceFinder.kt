@@ -1,7 +1,7 @@
 /***************************************************************************************************
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import android.content.Context
 import at.bitfire.dav4jvm.DavResource
@@ -12,11 +12,11 @@ import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.exception.UnauthorizedException
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.log.StringHandler
-import at.bitfire.davdroid.ui.setup.LoginModel
-import at.bitfire.davdroid.util.DavUtils
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.StringHandler
+import com.messageconcept.peoplesyncclient.ui.setup.LoginModel
+import com.messageconcept.peoplesyncclient.util.DavUtils
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
@@ -33,7 +33,7 @@ import java.util.logging.Logger
 
 /**
  * Does initial resource detection (straight after app install). Called after user has supplied url in
- * app setup process [at.bitfire.davdroid.ui.setup.DetectConfigurationFragment].
+ * app setup process [com.messageconcept.peoplesyncclient.ui.setup.DetectConfigurationFragment].
  * It uses the (user given) base URL to find
  * - services (CalDAV and/or CardDAV),
  * - principal,

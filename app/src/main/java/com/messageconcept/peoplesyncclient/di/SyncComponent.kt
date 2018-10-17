@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.di
+package com.messageconcept.peoplesyncclient.di
 
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.log.Logger
 import dagger.hilt.DefineComponent
 import dagger.hilt.components.SingletonComponent
 import java.lang.ref.WeakReference
@@ -34,8 +34,8 @@ interface SyncComponentBuilder {
 /**
  * Manages the lifecycle of [SyncComponent] by using [WeakReference].
  *
- * @sample at.bitfire.davdroid.syncadapter.LicenseValidator
- * @sample at.bitfire.davdroid.syncadapter.PaymentValidator
+ * @sample com.messageconcept.peoplesyncclient.syncadapter.LicenseValidator
+ * @sample com.messageconcept.peoplesyncclient.syncadapter.PaymentValidator
  */
 @Singleton
 class SyncComponentManager @Inject constructor(

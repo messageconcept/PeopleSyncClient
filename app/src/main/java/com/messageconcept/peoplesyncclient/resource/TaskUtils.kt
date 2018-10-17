@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.Context
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.syncadapter.SyncUtils
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import at.bitfire.ical4android.TaskProvider.ProviderName
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -16,16 +16,16 @@ import at.bitfire.dav4jvm.MultiResponseCallback
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.util.DavUtils.sameTypeAs
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.SyncState
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.*
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.syncadapter.groups.CategoriesStrategy
-import at.bitfire.davdroid.syncadapter.groups.VCard4Strategy
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils.sameTypeAs
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.SyncState
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.*
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.syncadapter.groups.CategoriesStrategy
+import com.messageconcept.peoplesyncclient.syncadapter.groups.VCard4Strategy
 import at.bitfire.vcard4android.Contact
 import at.bitfire.vcard4android.GroupMethod
 import ezvcard.VCardVersion

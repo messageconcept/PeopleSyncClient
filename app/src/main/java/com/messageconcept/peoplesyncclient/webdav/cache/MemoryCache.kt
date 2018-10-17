@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav.cache
+package com.messageconcept.peoplesyncclient.webdav.cache
 
 import android.util.LruCache
 

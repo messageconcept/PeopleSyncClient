@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.content.Context
-import at.bitfire.davdroid.TextTable
+import com.messageconcept.peoplesyncclient.TextTable
 import java.io.Writer
 
 abstract class BaseDefaultsProvider(

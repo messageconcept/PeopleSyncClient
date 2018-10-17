@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.Manifest
 import android.content.ContentProviderClient
@@ -21,14 +21,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.room.Transaction
 import at.bitfire.dav4jvm.UrlUtils
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.util.PermissionUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.util.closeCompat
-import at.bitfire.davdroid.databinding.AccountCaldavItemBinding
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.util.closeCompat
+import com.messageconcept.peoplesyncclient.databinding.AccountCaldavItemBinding
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.google.android.material.snackbar.Snackbar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.ContentValues
 import android.os.Build
@@ -10,9 +10,9 @@ import android.os.RemoteException
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.RawContacts.Data
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.contactrow.*
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.contactrow.*
 import at.bitfire.vcard4android.*
 import ezvcard.Ezvcard
 import org.apache.commons.lang3.StringUtils

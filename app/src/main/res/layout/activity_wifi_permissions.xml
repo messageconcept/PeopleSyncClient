@@ -5,7 +5,7 @@
     tools:context=".ui.account.WifiPermissionsActivity">
 
     <data>
-        <variable name="model" type="at.bitfire.davdroid.ui.account.WifiPermissionsActivity.Model" />
+        <variable name="model" type="com.messageconcept.peoplesyncclient.ui.account.WifiPermissionsActivity.Model" />
         <import type="android.view.View" />
     </data>
 

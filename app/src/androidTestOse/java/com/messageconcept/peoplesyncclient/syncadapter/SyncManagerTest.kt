@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -14,12 +14,12 @@ import at.bitfire.dav4jvm.PropStat
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.Response.HrefRelation
 import at.bitfire.dav4jvm.property.GetETag
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.db.SyncState
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.db.SyncState
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.Protocol

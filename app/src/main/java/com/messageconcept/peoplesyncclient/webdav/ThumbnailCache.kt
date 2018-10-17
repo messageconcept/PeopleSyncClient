@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.content.Context
 import android.graphics.Point
@@ -10,10 +10,10 @@ import android.os.Build
 import android.os.storage.StorageManager
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
-import at.bitfire.davdroid.db.WebDavDocument
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.webdav.cache.CacheUtils
-import at.bitfire.davdroid.webdav.cache.DiskCache
+import com.messageconcept.peoplesyncclient.db.WebDavDocument
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.webdav.cache.CacheUtils
+import com.messageconcept.peoplesyncclient.webdav.cache.DiskCache
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.util.*

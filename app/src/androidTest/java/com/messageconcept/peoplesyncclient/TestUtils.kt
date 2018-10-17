@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.app.Application
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.google.common.util.concurrent.ListenableFuture
 
 object TestUtils {

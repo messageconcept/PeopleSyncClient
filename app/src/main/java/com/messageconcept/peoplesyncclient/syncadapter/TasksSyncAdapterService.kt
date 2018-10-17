@@ -1,7 +1,7 @@
 /***************************************************************************************************
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -11,13 +11,13 @@ import android.content.Context
 import android.content.SyncResult
 import android.os.Build
 import android.os.Bundle
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import at.bitfire.ical4android.AndroidTaskList
 import at.bitfire.ical4android.TaskProvider
 import okhttp3.HttpUrl

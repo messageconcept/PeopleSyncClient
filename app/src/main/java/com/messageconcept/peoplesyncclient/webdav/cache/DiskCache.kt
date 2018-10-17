@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav.cache
+package com.messageconcept.peoplesyncclient.webdav.cache
 
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.log.Logger
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException

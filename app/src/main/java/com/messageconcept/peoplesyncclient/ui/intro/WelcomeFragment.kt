@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import android.os.Bundle
@@ -10,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.databinding.IntroWelcomeBinding
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.databinding.IntroWelcomeBinding
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

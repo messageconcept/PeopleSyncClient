@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After

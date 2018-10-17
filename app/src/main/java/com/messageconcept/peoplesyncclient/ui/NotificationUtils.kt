@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.annotation.TargetApi
 import android.app.Notification
@@ -15,9 +15,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.core.content.res.ResourcesCompat
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
 import java.util.logging.Level
 
 object NotificationUtils {

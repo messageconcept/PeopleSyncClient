@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -13,7 +13,7 @@ import android.provider.CalendarContract
 import android.provider.CalendarContract.ACCOUNT_TYPE_LOCAL
 import android.provider.CalendarContract.Events
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.InitCalendarProviderRule
+import com.messageconcept.peoplesyncclient.InitCalendarProviderRule
 import at.bitfire.ical4android.AndroidCalendar
 import at.bitfire.ical4android.Event
 import at.bitfire.ical4android.util.MiscUtils.ContentProviderClientHelper.closeCompat

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.widget
+package com.messageconcept.peoplesyncclient.ui.widget
 
 import android.text.method.LinkMovementMethod
 import android.widget.AutoCompleteTextView

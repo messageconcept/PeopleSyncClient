@@ -2,17 +2,17 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.content.Intent
 import android.view.*
 import androidx.fragment.app.FragmentManager
-import at.bitfire.davdroid.util.PermissionUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.AccountCarddavItemBinding
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.AccountCarddavItemBinding
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

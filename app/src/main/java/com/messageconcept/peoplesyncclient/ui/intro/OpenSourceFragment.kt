@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import android.os.Bundle
@@ -13,12 +13,12 @@ import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.IntroOpenSourceBinding
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.UiUtils
-import at.bitfire.davdroid.ui.intro.OpenSourceFragment.Model.Companion.SETTING_NEXT_DONATION_POPUP
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.IntroOpenSourceBinding
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.UiUtils
+import com.messageconcept.peoplesyncclient.ui.intro.OpenSourceFragment.Model.Companion.SETTING_NEXT_DONATION_POPUP
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

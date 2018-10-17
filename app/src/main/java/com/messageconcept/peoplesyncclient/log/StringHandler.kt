@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.log
+package com.messageconcept.peoplesyncclient.log
 
 import java.util.logging.Handler
 import java.util.logging.LogRecord

@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import android.security.NetworkSecurityPolicy
 import androidx.test.filters.SmallTest
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.property.ResourceType
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.HttpUrl.Companion.toHttpUrl

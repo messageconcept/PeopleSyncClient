@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.Manifest
 import android.content.ContentProviderClient
@@ -12,7 +12,7 @@ import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import at.bitfire.vcard4android.BatchOperation
 import at.bitfire.vcard4android.CachedGroupMembership
 import at.bitfire.vcard4android.Contact

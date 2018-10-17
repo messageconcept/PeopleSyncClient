@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import androidx.room.*
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.UrlUtils
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.StringUtils

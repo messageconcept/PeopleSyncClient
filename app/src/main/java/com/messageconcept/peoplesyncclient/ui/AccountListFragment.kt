@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.Manifest
 import android.accounts.Account
@@ -26,12 +26,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.util.DavUtils.SyncStatus
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.AccountListBinding
-import at.bitfire.davdroid.databinding.AccountListItemBinding
-import at.bitfire.davdroid.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils.SyncStatus
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.AccountListBinding
+import com.messageconcept.peoplesyncclient.databinding.AccountListItemBinding
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel

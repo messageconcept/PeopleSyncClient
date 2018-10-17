@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.content.Context
 import android.content.Intent
-import at.bitfire.davdroid.syncadapter.SyncUtils.updateTaskSync
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils.updateTaskSync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

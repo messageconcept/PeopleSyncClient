@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import androidx.fragment.app.Fragment

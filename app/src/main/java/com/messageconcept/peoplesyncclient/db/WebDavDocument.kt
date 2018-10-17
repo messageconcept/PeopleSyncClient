@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import at.bitfire.davdroid.util.DavUtils.MEDIA_TYPE_OCTET_STREAM
+import com.messageconcept.peoplesyncclient.util.DavUtils.MEDIA_TYPE_OCTET_STREAM
 import okhttp3.HttpUrl
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

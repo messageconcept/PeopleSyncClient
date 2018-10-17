@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -17,12 +17,12 @@ import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.lifecycle.Transformations
 import androidx.work.*
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.util.LiveDataUtils
-import at.bitfire.davdroid.util.closeCompat
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.LiveDataUtils
+import com.messageconcept.peoplesyncclient.util.closeCompat
 import at.bitfire.ical4android.TaskProvider
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.assisted.Assisted

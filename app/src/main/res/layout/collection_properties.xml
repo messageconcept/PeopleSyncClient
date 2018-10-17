@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="at.bitfire.davdroid.ui.account.CollectionInfoFragment.Model"/>
+            type="com.messageconcept.peoplesyncclient.ui.account.CollectionInfoFragment.Model"/>
         <import type="android.view.View"/>
     </data>
 

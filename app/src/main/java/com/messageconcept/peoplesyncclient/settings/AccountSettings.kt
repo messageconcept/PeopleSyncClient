@@ -1,7 +1,7 @@
 /***************************************************************************************************
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -21,18 +21,18 @@ import android.util.Base64
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.util.closeCompat
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalTask
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.syncadapter.SyncUtils
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.util.closeCompat
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalTask
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import at.bitfire.ical4android.AndroidCalendar
 import at.bitfire.ical4android.AndroidEvent
 import at.bitfire.ical4android.TaskProvider

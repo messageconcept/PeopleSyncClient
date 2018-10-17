@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import android.content.Context
 import android.security.NetworkSecurityPolicy
@@ -14,17 +14,17 @@ import androidx.work.WorkManager
 import androidx.work.testing.WorkManagerTestInitHelper
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.property.AddressbookHomeSet
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.TestUtils.workScheduledOrRunning
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.db.HomeSet
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.setup.LoginModel
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunning
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.setup.LoginModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.Dispatcher
