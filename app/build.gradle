@@ -12,7 +12,7 @@ android {
     buildToolsVersion '32.0.0'
 
     defaultConfig {
-        applicationId "at.bitfire.davdroid"
+        applicationId "com.messageconcept.peoplesyncclient"
 
         versionCode 402010004
         versionName '4.2.1'

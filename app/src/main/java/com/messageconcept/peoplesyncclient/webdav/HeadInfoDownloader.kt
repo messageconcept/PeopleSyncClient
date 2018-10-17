@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.HttpUtils
 import at.bitfire.dav4jvm.QuotedStringUtils
-import at.bitfire.davdroid.HttpClient
+import com.messageconcept.peoplesyncclient.HttpClient
 import okhttp3.HttpUrl
 import java.util.*
 import java.util.concurrent.Callable

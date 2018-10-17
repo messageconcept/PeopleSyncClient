@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -27,13 +27,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.DavUtils.SyncStatus
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.StorageLowReceiver
-import at.bitfire.davdroid.databinding.AccountListBinding
-import at.bitfire.davdroid.databinding.AccountListItemBinding
-import at.bitfire.davdroid.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.DavUtils.SyncStatus
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.StorageLowReceiver
+import com.messageconcept.peoplesyncclient.databinding.AccountListBinding
+import com.messageconcept.peoplesyncclient.databinding.AccountListItemBinding
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import java.text.Collator
 
 class AccountListFragment: Fragment() {

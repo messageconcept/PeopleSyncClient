@@ -2,8 +2,8 @@
 # Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
 ####################################################################################################
 
-at.bitfire.davdroid.ui.intro.WelcomeFragment$Factory
-at.bitfire.davdroid.ui.intro.TasksFragmentFactory
-at.bitfire.davdroid.ui.intro.PermissionsFragmentFactory
-at.bitfire.davdroid.ui.intro.BatteryOptimizationsFragment$Factory
-at.bitfire.davdroid.ui.intro.OpenSourceFragment$Factory
+com.messageconcept.peoplesyncclient.ui.intro.WelcomeFragment$Factory
+com.messageconcept.peoplesyncclient.ui.intro.TasksFragmentFactory
+com.messageconcept.peoplesyncclient.ui.intro.PermissionsFragmentFactory
+com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment$Factory
+com.messageconcept.peoplesyncclient.ui.intro.OpenSourceFragment$Factory

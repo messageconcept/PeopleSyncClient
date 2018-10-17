@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.content.Context
 import android.util.NoSuchPropertyException
 import androidx.annotation.AnyThread
-import at.bitfire.davdroid.Singleton
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.Singleton
+import com.messageconcept.peoplesyncclient.log.Logger
 import java.io.Writer
 import java.lang.ref.WeakReference
 import java.util.*

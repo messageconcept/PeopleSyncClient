@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter.groups
+package com.messageconcept.peoplesyncclient.syncadapter.groups
 
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import at.bitfire.vcard4android.Contact
 
 class CategoriesStrategy(val addressBook: LocalAddressBook): ContactGroupStrategy {

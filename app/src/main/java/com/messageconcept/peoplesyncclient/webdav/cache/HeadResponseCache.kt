@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav.cache
+package com.messageconcept.peoplesyncclient.webdav.cache
 
 import android.util.LruCache
-import at.bitfire.davdroid.db.WebDavDocument
-import at.bitfire.davdroid.webdav.DocumentState
-import at.bitfire.davdroid.webdav.HeadResponse
+import com.messageconcept.peoplesyncclient.db.WebDavDocument
+import com.messageconcept.peoplesyncclient.webdav.DocumentState
+import com.messageconcept.peoplesyncclient.webdav.HeadResponse
 import java.util.*
 
 class HeadResponseCache {

@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.log.Logger
 import java.util.logging.Level
 
 class DaoTools<T: IdEntity>(dao: SyncableDao<T>): SyncableDao<T> by dao {

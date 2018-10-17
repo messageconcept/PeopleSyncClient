@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
-import at.bitfire.davdroid.webdav.cache.Cache
-import at.bitfire.davdroid.webdav.cache.SegmentedCache
+import com.messageconcept.peoplesyncclient.webdav.cache.Cache
+import com.messageconcept.peoplesyncclient.webdav.cache.SegmentedCache
 import org.apache.commons.io.FileUtils
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals

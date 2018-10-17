@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.db.Credentials
+import com.messageconcept.peoplesyncclient.db.Credentials
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

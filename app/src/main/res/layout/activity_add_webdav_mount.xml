@@ -7,7 +7,7 @@
     <data>
         <variable
             name="model"
-            type="at.bitfire.davdroid.ui.webdav.AddWebdavMountActivity.Model" />
+            type="com.messageconcept.peoplesyncclient.ui.webdav.AddWebdavMountActivity.Model" />
     </data>
 
     <LinearLayout

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -10,11 +10,11 @@ import android.accounts.OnAccountsUpdateListener
 import android.content.Context
 import android.os.Bundle
 import androidx.annotation.AnyThread
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.Singleton
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.Singleton
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

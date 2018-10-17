@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.Intent
 import android.graphics.drawable.InsetDrawable
@@ -17,14 +17,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.*
 import at.bitfire.cert4android.CustomCertManager
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.ForegroundService
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.intro.BatteryOptimizationsFragment
-import at.bitfire.davdroid.ui.intro.OpenSourceFragment
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.ForegroundService
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment
+import com.messageconcept.peoplesyncclient.ui.intro.OpenSourceFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

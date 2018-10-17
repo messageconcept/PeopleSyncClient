@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import android.accounts.AccountManager
 import android.app.PendingIntent
@@ -15,12 +15,12 @@ import androidx.core.database.getStringOrNull
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.Singleton
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.ui.AccountsActivity
-import at.bitfire.davdroid.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.Singleton
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.ui.AccountsActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import java.io.Writer
 
 @Suppress("ClassName")

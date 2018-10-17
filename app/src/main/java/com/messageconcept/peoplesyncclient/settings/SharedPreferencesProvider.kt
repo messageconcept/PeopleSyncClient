@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.db.AppDatabase
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.db.AppDatabase
 import java.io.Writer
 
 class SharedPreferencesProvider(

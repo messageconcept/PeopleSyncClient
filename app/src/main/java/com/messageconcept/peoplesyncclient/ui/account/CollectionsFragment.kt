@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.app.Application
 import android.content.*
@@ -24,16 +24,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.DavService
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.AccountCollectionsBinding
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.PermissionsActivity
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.DavService
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.AccountCollectionsBinding
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map

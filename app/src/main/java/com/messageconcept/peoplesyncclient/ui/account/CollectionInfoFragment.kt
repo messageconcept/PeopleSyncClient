@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.app.Application
 import android.os.Bundle
@@ -15,9 +15,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import at.bitfire.davdroid.databinding.CollectionPropertiesBinding
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
+import com.messageconcept.peoplesyncclient.databinding.CollectionPropertiesBinding
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -11,9 +11,9 @@ import android.os.Build
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Credentials
-import at.bitfire.davdroid.syncadapter.AccountUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

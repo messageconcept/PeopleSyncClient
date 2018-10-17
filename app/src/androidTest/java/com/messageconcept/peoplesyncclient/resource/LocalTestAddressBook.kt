@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -16,7 +16,7 @@ class LocalTestAddressBook(
 ): LocalAddressBook(context, ACCOUNT, provider) {
 
     companion object {
-        val ACCOUNT = Account("LocalTestAddressBook", "at.bitfire.davdroid.test")
+        val ACCOUNT = Account("LocalTestAddressBook", "com.messageconcept.peoplesyncclient.test")
     }
 
     override var mainAccount: Account

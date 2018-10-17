@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.webdav
+package com.messageconcept.peoplesyncclient.ui.webdav
 
-import at.bitfire.davdroid.TestUtils
-import at.bitfire.davdroid.db.WebDavMount
+import com.messageconcept.peoplesyncclient.TestUtils
+import com.messageconcept.peoplesyncclient.db.WebDavMount
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertFalse

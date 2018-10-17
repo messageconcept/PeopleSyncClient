@@ -4,7 +4,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <variable name="model" type="at.bitfire.davdroid.ui.PermissionsFragment.Model"/>
+        <variable name="model" type="com.messageconcept.peoplesyncclient.ui.PermissionsFragment.Model"/>
     </data>
 
     <ScrollView
@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/card_padding">
 
-                    <at.bitfire.davdroid.ui.widget.CropImageView
+                    <com.messageconcept.peoplesyncclient.ui.widget.CropImageView
                         android:id="@+id/image"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

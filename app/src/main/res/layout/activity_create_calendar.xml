@@ -8,7 +8,7 @@
         <import type="android.view.View"/>
         <variable
             name="model"
-            type="at.bitfire.davdroid.ui.account.CreateCalendarActivity.Model"/>
+            type="com.messageconcept.peoplesyncclient.ui.account.CreateCalendarActivity.Model"/>
     </data>
 
     <ScrollView

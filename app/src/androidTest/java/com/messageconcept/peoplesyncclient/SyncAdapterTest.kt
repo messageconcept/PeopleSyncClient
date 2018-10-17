@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -10,7 +10,7 @@ import android.content.Context
 import android.content.SyncResult
 import android.os.Bundle
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.syncadapter.SyncAdapterService
+import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

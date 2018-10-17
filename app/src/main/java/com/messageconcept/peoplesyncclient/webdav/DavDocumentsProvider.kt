@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.app.AuthenticationRequiredException
 import android.app.PendingIntent
@@ -28,13 +28,13 @@ import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.MemoryCookieStore
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.db.*
-import at.bitfire.davdroid.ui.webdav.WebdavMountsActivity
-import at.bitfire.davdroid.webdav.cache.HeadResponseCache
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.MemoryCookieStore
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.db.*
+import com.messageconcept.peoplesyncclient.ui.webdav.WebdavMountsActivity
+import com.messageconcept.peoplesyncclient.webdav.cache.HeadResponseCache
 import okhttp3.CookieJar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody

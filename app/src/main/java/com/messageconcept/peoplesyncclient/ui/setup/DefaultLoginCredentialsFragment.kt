@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Intent
 import android.net.MailTo
@@ -16,9 +16,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.LoginCredentialsFragmentBinding
-import at.bitfire.davdroid.db.Credentials
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.LoginCredentialsFragmentBinding
+import com.messageconcept.peoplesyncclient.db.Credentials
 import com.google.android.material.snackbar.Snackbar
 import java.net.URI
 import java.net.URISyntaxException

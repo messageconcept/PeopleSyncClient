@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.app.Application
 import android.content.Context
@@ -19,11 +19,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import at.bitfire.davdroid.PackageChangedReceiver
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.ActivityTasksBinding
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.PackageChangedReceiver
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityTasksBinding
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import at.bitfire.ical4android.TaskProvider.ProviderName
 import com.google.android.material.snackbar.Snackbar
 

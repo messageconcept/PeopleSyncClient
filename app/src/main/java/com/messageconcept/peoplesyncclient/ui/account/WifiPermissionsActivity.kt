@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.Manifest
 import android.accounts.Account
@@ -26,10 +26,10 @@ import androidx.core.location.LocationManagerCompat
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import at.bitfire.davdroid.PermissionUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.ActivityWifiPermissionsBinding
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityWifiPermissionsBinding
+import com.messageconcept.peoplesyncclient.log.Logger
 
 class WifiPermissionsActivity: AppCompatActivity() {
 

@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.os.Bundle
 import androidx.test.filters.SmallTest
-import at.bitfire.davdroid.syncadapter.SyncAdapterService.SyncAdapter
+import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService.SyncAdapter
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
