@@ -1,9 +1,9 @@
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.Context
-import at.bitfire.davdroid.TasksWatcher
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.TasksWatcher
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import at.bitfire.ical4android.TaskProvider.ProviderName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

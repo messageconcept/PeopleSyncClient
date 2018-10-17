@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.app.Application
 import android.content.Context
@@ -15,10 +15,10 @@ import android.net.Uri
 import android.os.StrictMode
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.ui.DebugInfoActivity
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.UiUtils
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.UiUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

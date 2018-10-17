@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.app.Application
 import android.content.Context
@@ -15,14 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.PackageChangedReceiver
-import at.bitfire.davdroid.PermissionUtils
-import at.bitfire.davdroid.PermissionUtils.CALENDAR_PERMISSIONS
-import at.bitfire.davdroid.PermissionUtils.CONTACT_PERMISSIONS
-import at.bitfire.davdroid.PermissionUtils.havePermissions
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.ActivityPermissionsBinding
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.PackageChangedReceiver
+import com.messageconcept.peoplesyncclient.PermissionUtils
+import com.messageconcept.peoplesyncclient.PermissionUtils.CALENDAR_PERMISSIONS
+import com.messageconcept.peoplesyncclient.PermissionUtils.CONTACT_PERMISSIONS
+import com.messageconcept.peoplesyncclient.PermissionUtils.havePermissions
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityPermissionsBinding
 import at.bitfire.ical4android.TaskProvider
 import at.bitfire.ical4android.TaskProvider.ProviderName
 

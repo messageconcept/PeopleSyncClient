@@ -14,7 +14,7 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="at.bitfire.davdroid.ui.AccountsActivity">
+    tools:context="com.messageconcept.peoplesyncclient.ui.AccountsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/account_list"
-        android:name="at.bitfire.davdroid.ui.AccountListFragment"
+        android:name="com.messageconcept.peoplesyncclient.ui.AccountListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/account_list"

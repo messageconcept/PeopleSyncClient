@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.Context
@@ -8,10 +8,10 @@ import at.bitfire.dav4jvm.DavCollection
 import at.bitfire.dav4jvm.DavResponseCallback
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.property.GetCTag
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.resource.LocalResource
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.resource.LocalResource
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody

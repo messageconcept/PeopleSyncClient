@@ -1,4 +1,4 @@
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import org.apache.commons.lang3.StringUtils
 import java.util.*

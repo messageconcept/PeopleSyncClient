@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -18,12 +18,12 @@ import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.Groups
 import android.provider.ContactsContract.RawContacts
 import android.util.Base64
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.syncadapter.AccountUtils
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
 import at.bitfire.vcard4android.*
 import java.io.ByteArrayOutputStream
 import java.util.*

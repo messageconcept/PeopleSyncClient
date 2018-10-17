@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.annotation.TargetApi
 import android.app.NotificationChannel
@@ -17,8 +17,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.core.content.res.ResourcesCompat
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.R
 
 object NotificationUtils {
 

@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.app.PendingIntent
@@ -27,14 +27,14 @@ import at.bitfire.dav4jvm.property.GetCTag
 import at.bitfire.dav4jvm.property.GetETag
 import at.bitfire.dav4jvm.property.ScheduleTag
 import at.bitfire.dav4jvm.property.SyncToken
-import at.bitfire.davdroid.*
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.resource.*
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.DebugInfoActivity
-import at.bitfire.davdroid.ui.NotificationUtils
-import at.bitfire.davdroid.ui.account.SettingsActivity
+import com.messageconcept.peoplesyncclient.*
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.resource.*
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import at.bitfire.ical4android.CalendarStorageException
 import at.bitfire.ical4android.Ical4Android
 import at.bitfire.ical4android.TaskProvider

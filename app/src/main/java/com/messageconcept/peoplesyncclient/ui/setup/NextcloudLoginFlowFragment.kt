@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -20,11 +20,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

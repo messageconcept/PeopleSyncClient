@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
 import android.app.PendingIntent
@@ -22,12 +22,12 @@ import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.UrlUtils
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.*
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.DebugInfoActivity
-import at.bitfire.davdroid.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.*
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

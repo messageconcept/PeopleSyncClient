@@ -6,13 +6,13 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.content.Context
 import android.util.NoSuchPropertyException
 import androidx.annotation.AnyThread
-import at.bitfire.davdroid.AndroidSingleton
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.AndroidSingleton
+import com.messageconcept.peoplesyncclient.log.Logger
 import java.io.Writer
 import java.lang.ref.WeakReference
 import java.util.*

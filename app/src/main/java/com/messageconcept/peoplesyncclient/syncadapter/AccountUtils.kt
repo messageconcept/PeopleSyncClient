@@ -1,10 +1,10 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
 import android.os.Bundle
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.log.Logger
 
 object AccountUtils {
 

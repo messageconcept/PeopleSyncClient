@@ -6,10 +6,10 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.provider.CalendarContract.Events
-import at.bitfire.davdroid.model.SyncState
+import com.messageconcept.peoplesyncclient.model.SyncState
 
 interface LocalCollection<out T: LocalResource<*>> {
 

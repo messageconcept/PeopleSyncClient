@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.model
+package com.messageconcept.peoplesyncclient.model
 
 import android.content.Context
 import android.database.sqlite.SQLiteQueryBuilder
@@ -9,9 +9,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import at.bitfire.davdroid.AndroidSingleton
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.log.Logger
+import com.messageconcept.peoplesyncclient.AndroidSingleton
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.log.Logger
 import java.io.Writer
 
 @Suppress("ClassName")

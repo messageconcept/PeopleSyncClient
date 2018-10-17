@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 
 class WelcomeFragment: Fragment() {
 

@@ -6,15 +6,15 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
 import java.io.Writer
 
 class SharedPreferencesProvider(

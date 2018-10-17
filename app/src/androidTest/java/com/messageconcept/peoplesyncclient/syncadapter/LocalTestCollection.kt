@@ -1,7 +1,7 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.resource.LocalCollection
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.resource.LocalCollection
 
 class LocalTestCollection: LocalCollection<LocalTestResource> {
 

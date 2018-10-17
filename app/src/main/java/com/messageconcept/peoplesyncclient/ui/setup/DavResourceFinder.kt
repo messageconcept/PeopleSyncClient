@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Context
 import at.bitfire.dav4jvm.DavResource
@@ -15,10 +15,10 @@ import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.exception.UnauthorizedException
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.log.StringHandler
-import at.bitfire.davdroid.model.Collection
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.log.StringHandler
+import com.messageconcept.peoplesyncclient.model.Collection
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder

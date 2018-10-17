@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -15,11 +15,11 @@ import android.content.ContentValues
 import android.net.Uri
 import android.provider.CalendarContract.Calendars
 import android.provider.CalendarContract.Events
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.model.SyncState
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.model.SyncState
 import at.bitfire.ical4android.AndroidCalendar
 import at.bitfire.ical4android.AndroidCalendarFactory
 import at.bitfire.ical4android.BatchOperation

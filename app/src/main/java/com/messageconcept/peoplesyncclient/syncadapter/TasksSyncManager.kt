@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.Context
@@ -20,14 +20,14 @@ import at.bitfire.dav4jvm.property.CalendarData
 import at.bitfire.dav4jvm.property.GetCTag
 import at.bitfire.dav4jvm.property.GetETag
 import at.bitfire.dav4jvm.property.SyncToken
-import at.bitfire.davdroid.DavUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.resource.LocalResource
-import at.bitfire.davdroid.resource.LocalTask
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.resource.LocalResource
+import com.messageconcept.peoplesyncclient.resource.LocalTask
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import at.bitfire.ical4android.InvalidCalendarException
 import at.bitfire.ical4android.Task
 import okhttp3.HttpUrl

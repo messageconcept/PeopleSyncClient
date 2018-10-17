@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import android.os.Build
@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.resource.TaskUtils
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.TasksFragment
-import at.bitfire.davdroid.ui.intro.IIntroFragmentFactory.ShowMode
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.resource.TaskUtils
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.TasksFragment
+import com.messageconcept.peoplesyncclient.ui.intro.IIntroFragmentFactory.ShowMode
 
 class TasksFragmentFactory: IIntroFragmentFactory {
 

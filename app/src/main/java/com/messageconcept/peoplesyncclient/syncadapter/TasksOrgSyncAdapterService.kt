@@ -1,3 +1,3 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 class TasksOrgSyncAdapterService: TasksSyncAdapterService()

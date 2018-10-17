@@ -1,10 +1,10 @@
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.os.Bundle
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

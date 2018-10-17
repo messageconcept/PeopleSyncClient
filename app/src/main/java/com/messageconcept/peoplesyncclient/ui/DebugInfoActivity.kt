@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -40,16 +40,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.databinding.ActivityDebugInfoBinding
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.databinding.ActivityDebugInfoBinding
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import at.bitfire.ical4android.TaskProvider
 import at.bitfire.ical4android.TaskProvider.ProviderName
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.Manifest
 import android.app.Activity
@@ -24,13 +24,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.room.Transaction
 import at.bitfire.dav4jvm.UrlUtils
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.PermissionUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.closeCompat
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Collection
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.closeCompat
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Collection
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.account_caldav_item.view.*
 import kotlinx.android.synthetic.main.account_collections.*

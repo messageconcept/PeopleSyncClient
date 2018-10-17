@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.app.Service
@@ -16,11 +16,11 @@ import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import androidx.core.content.getSystemService
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.PermissionUtils
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.account.WifiPermissionsActivity
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.PermissionUtils
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.account.WifiPermissionsActivity
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.logging.Level

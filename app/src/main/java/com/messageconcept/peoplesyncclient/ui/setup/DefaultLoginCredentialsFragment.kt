@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Intent
 import android.net.MailTo
@@ -20,9 +20,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.LoginCredentialsFragmentBinding
-import at.bitfire.davdroid.model.Credentials
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.LoginCredentialsFragmentBinding
+import com.messageconcept.peoplesyncclient.model.Credentials
 import java.net.URI
 import java.net.URISyntaxException
 

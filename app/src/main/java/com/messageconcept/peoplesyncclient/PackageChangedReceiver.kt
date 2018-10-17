@@ -1,4 +1,4 @@
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.content.BroadcastReceiver
 import android.content.Context
