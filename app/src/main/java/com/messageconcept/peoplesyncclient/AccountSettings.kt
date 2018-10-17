@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -17,17 +17,17 @@ import android.os.Parcel
 import android.os.RemoteException
 import android.provider.CalendarContract
 import android.provider.ContactsContract
-import at.bitfire.davdroid.*
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.CollectionInfo
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.model.ServiceDB
-import at.bitfire.davdroid.model.ServiceDB.*
-import at.bitfire.davdroid.model.ServiceDB.Collections
-import at.bitfire.davdroid.model.SyncState
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalCalendar
-import at.bitfire.davdroid.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.*
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.CollectionInfo
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.model.ServiceDB
+import com.messageconcept.peoplesyncclient.model.ServiceDB.*
+import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
+import com.messageconcept.peoplesyncclient.model.SyncState
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalCalendar
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import at.bitfire.ical4android.AndroidCalendar
 import at.bitfire.ical4android.AndroidTaskList
 import at.bitfire.ical4android.CalendarStorageException

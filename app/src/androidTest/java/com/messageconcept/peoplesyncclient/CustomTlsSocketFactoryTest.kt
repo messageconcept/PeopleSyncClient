@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import at.bitfire.cert4android.CustomCertManager

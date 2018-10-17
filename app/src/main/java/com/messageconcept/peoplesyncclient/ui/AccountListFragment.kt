@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -24,7 +24,7 @@ import androidx.fragment.app.ListFragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.AsyncTaskLoader
 import androidx.loader.content.Loader
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import kotlinx.android.synthetic.main.account_list_item.view.*
 
 class AccountListFragment: ListFragment(), LoaderManager.LoaderCallbacks<Array<Account>> {

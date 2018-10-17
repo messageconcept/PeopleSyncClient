@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="true"/>
 
-                <at.bitfire.davdroid.ui.widget.MaximizedListView
+                <com.messageconcept.peoplesyncclient.ui.widget.MaximizedListView
                     android:id="@+id/address_books"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="true"/>
 
-                <at.bitfire.davdroid.ui.widget.MaximizedListView
+                <com.messageconcept.peoplesyncclient.ui.widget.MaximizedListView
                     android:id="@+id/calendars"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                     app:title="@string/account_webcal"
                     android:elevation="2dp" tools:ignore="UnusedAttribute"/>
 
-                <at.bitfire.davdroid.ui.widget.MaximizedListView
+                <com.messageconcept.peoplesyncclient.ui.widget.MaximizedListView
                     android:id="@+id/webcals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

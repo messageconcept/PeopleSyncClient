@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.net.Uri
 import android.os.Bundle
@@ -19,7 +19,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
 import at.bitfire.dav4jvm.Constants
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import kotlinx.android.synthetic.main.login_credentials_fragment.view.*
 import java.net.IDN
 import java.net.URI

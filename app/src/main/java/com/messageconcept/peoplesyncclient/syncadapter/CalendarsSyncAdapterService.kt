@@ -5,19 +5,19 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.*
 import android.database.DatabaseUtils
 import android.os.Bundle
 import android.provider.CalendarContract
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.CollectionInfo
-import at.bitfire.davdroid.model.ServiceDB
-import at.bitfire.davdroid.model.ServiceDB.Collections
-import at.bitfire.davdroid.resource.LocalCalendar
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.CollectionInfo
+import com.messageconcept.peoplesyncclient.model.ServiceDB
+import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
+import com.messageconcept.peoplesyncclient.resource.LocalCalendar
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import at.bitfire.ical4android.AndroidCalendar
 import okhttp3.HttpUrl
 import java.util.logging.Level

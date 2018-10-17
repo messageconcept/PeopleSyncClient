@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.model
+package com.messageconcept.peoplesyncclient.model
 
 import android.content.ContentValues
 import android.os.Parcel
@@ -14,7 +14,7 @@ import android.os.Parcelable
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.UrlUtils
 import at.bitfire.dav4jvm.property.*
-import at.bitfire.davdroid.model.ServiceDB.Collections
+import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
 import okhttp3.HttpUrl
 
 /**

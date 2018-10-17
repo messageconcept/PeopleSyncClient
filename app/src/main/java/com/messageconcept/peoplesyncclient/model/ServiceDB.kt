@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.model
+package com.messageconcept.peoplesyncclient.model
 
 import android.content.ContentValues
 import android.content.Context
@@ -14,9 +14,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.preference.PreferenceManager
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.ui.StartupDialogFragment
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.ui.StartupDialogFragment
 import java.util.logging.Level
 
 @Suppress("ObjectPropertyName")

@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.widget
+package com.messageconcept.peoplesyncclient.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet

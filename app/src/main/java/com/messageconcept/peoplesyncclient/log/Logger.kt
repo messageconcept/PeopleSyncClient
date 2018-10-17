@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.log
+package com.messageconcept.peoplesyncclient.log
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -19,9 +19,9 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.AppSettingsActivity
-import at.bitfire.davdroid.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.AppSettingsActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import java.io.File
 import java.io.IOException
 import java.util.logging.FileHandler
