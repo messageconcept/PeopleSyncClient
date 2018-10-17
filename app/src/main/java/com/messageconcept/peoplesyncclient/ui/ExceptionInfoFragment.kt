@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.app.Dialog
@@ -15,7 +15,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import java.io.IOException
 
 class ExceptionInfoFragment: DialogFragment() {

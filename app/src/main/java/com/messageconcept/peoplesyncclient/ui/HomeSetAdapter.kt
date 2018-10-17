@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.Context
 import android.text.TextUtils
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import at.bitfire.davdroid.model.HomeSet
+import com.messageconcept.peoplesyncclient.model.HomeSet
 
 class HomeSetAdapter(
         context: Context

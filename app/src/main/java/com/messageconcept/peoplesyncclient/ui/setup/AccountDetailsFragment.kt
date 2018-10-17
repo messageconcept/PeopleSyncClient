@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -20,19 +20,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.DavService
-import at.bitfire.davdroid.InvalidAccountException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.LoginAccountDetailsBinding
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.model.HomeSet
-import at.bitfire.davdroid.model.Service
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.Settings
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.DavService
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.LoginAccountDetailsBinding
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.model.HomeSet
+import com.messageconcept.peoplesyncclient.model.Service
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Settings
 import at.bitfire.ical4android.TaskProvider
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar

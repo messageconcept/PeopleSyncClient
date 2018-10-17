@@ -17,7 +17,7 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "at.bitfire.davdroid"
+        applicationId "com.messageconcept.peoplesyncclient"
 
         versionCode 291
         buildConfigField "long", "buildTime", System.currentTimeMillis() + "L"

@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.content.Context
 import android.os.Build
@@ -15,10 +15,10 @@ import at.bitfire.cert4android.CustomCertManager
 import at.bitfire.dav4jvm.BasicDigestAuthHandler
 import at.bitfire.dav4jvm.Constants
 import at.bitfire.dav4jvm.UrlUtils
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.Settings
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Settings
 import okhttp3.*
 import okhttp3.internal.tls.OkHostnameVerifier
 import okhttp3.logging.HttpLoggingInterceptor

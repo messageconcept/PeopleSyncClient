@@ -1,2 +1,2 @@
-at.bitfire.davdroid.settings.DefaultsProvider$Factory
-at.bitfire.davdroid.settings.SharedPreferencesProvider$Factory
+com.messageconcept.peoplesyncclient.settings.DefaultsProvider$Factory
+com.messageconcept.peoplesyncclient.settings.SharedPreferencesProvider$Factory

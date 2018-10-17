@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertFalse

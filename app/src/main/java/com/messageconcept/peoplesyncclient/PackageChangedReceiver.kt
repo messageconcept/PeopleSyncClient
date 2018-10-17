@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
 import android.content.BroadcastReceiver
@@ -15,10 +15,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.WorkerThread
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Service
-import at.bitfire.davdroid.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Service
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import at.bitfire.ical4android.TaskProvider.ProviderName.OpenTasks
 import kotlin.concurrent.thread
 
