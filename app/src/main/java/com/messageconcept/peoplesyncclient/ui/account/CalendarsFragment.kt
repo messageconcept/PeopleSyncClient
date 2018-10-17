@@ -1,13 +1,13 @@
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.content.Intent
 import android.view.*
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.PermissionUtils
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.ui.CreateCalendarActivity
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.ui.CreateCalendarActivity
 import kotlinx.android.synthetic.main.account_caldav_item.view.*
 import kotlinx.android.synthetic.main.account_collections.*
 

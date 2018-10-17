@@ -16,7 +16,7 @@
         <import type="android.view.View"/>
         <variable
             name="model"
-            type="at.bitfire.davdroid.ui.CreateAddressBookActivity.Model"/>
+            type="com.messageconcept.peoplesyncclient.ui.CreateAddressBookActivity.Model"/>
     </data>
 
     <ScrollView

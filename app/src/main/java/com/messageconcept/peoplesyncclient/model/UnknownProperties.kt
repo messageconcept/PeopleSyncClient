@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.model
+package com.messageconcept.peoplesyncclient.model
 
 import android.provider.ContactsContract.RawContacts
 

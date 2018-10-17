@@ -1,8 +1,8 @@
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import androidx.fragment.app.Fragment
-import at.bitfire.davdroid.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.Settings
 
 interface IIntroFragmentFactory {
 

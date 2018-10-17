@@ -13,7 +13,7 @@
         <import type="android.view.View"/>
         <variable
             name="model"
-            type="at.bitfire.davdroid.ui.DebugInfoActivity.ReportModel"/>
+            type="com.messageconcept.peoplesyncclient.ui.DebugInfoActivity.ReportModel"/>
     </data>
 
     <LinearLayout

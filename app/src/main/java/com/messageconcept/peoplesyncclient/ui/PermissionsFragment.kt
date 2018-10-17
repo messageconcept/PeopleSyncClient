@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.app.Application
 import android.content.Context
@@ -13,15 +13,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.PackageChangedReceiver
-import at.bitfire.davdroid.PermissionUtils.CALENDAR_PERMISSIONS
-import at.bitfire.davdroid.PermissionUtils.CONTACT_PERMSSIONS
-import at.bitfire.davdroid.PermissionUtils.TASKS_PERMISSIONS
-import at.bitfire.davdroid.PermissionUtils.havePermissions
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.databinding.ActivityPermissionsBinding
-import at.bitfire.davdroid.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.PackageChangedReceiver
+import com.messageconcept.peoplesyncclient.PermissionUtils.CALENDAR_PERMISSIONS
+import com.messageconcept.peoplesyncclient.PermissionUtils.CONTACT_PERMSSIONS
+import com.messageconcept.peoplesyncclient.PermissionUtils.TASKS_PERMISSIONS
+import com.messageconcept.peoplesyncclient.PermissionUtils.havePermissions
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityPermissionsBinding
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 
 class PermissionsFragment: Fragment() {
 

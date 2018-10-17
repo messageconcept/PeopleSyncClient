@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.log
+package com.messageconcept.peoplesyncclient.log
 
 import android.util.Log
 

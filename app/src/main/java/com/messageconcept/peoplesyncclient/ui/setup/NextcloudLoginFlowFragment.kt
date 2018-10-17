@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import android.webkit.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.Credentials
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.Credentials
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_webview.view.*
 import okhttp3.HttpUrl.Companion.toHttpUrl

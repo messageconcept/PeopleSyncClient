@@ -16,7 +16,7 @@
         <import type="android.view.View"/>
         <variable
             name="model"
-            type="at.bitfire.davdroid.ui.CreateCalendarActivity.Model"/>
+            type="com.messageconcept.peoplesyncclient.ui.CreateCalendarActivity.Model"/>
     </data>
 
     <ScrollView
