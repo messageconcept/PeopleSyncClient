@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.app.Application
 import android.content.*
@@ -19,13 +19,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import at.bitfire.davdroid.DavService
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.ui.DeleteCollectionFragment
+import com.messageconcept.peoplesyncclient.DavService
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.ui.DeleteCollectionFragment
 import at.bitfire.ical4android.TaskProvider
 import kotlinx.android.synthetic.main.account_collections.view.*
 import java.util.concurrent.Executors

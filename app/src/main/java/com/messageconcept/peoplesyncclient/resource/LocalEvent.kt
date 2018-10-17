@@ -6,12 +6,12 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.ContentProviderOperation
 import android.content.ContentValues
 import android.provider.CalendarContract.Events
-import at.bitfire.davdroid.BuildConfig
+import com.messageconcept.peoplesyncclient.BuildConfig
 import at.bitfire.ical4android.*
 import net.fortuna.ical4j.model.property.ProdId
 import java.util.*

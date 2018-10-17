@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid.syncadapter
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.AbstractAccountAuthenticator
 import android.accounts.Account
@@ -15,7 +15,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import at.bitfire.davdroid.ui.AccountsActivity
+import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 
 class NullAuthenticatorService: Service() {
 

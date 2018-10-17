@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.model
+package com.messageconcept.peoplesyncclient.model
 
 import androidx.room.Dao
 import androidx.room.Insert

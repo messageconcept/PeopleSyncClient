@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -19,12 +19,12 @@ import android.os.Bundle
 import android.os.PowerManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import at.bitfire.davdroid.App
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.settings.Settings
+import com.messageconcept.peoplesyncclient.App
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.settings.Settings
 import java.util.*
 
 class StartupDialogFragment: DialogFragment() {

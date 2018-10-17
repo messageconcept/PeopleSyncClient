@@ -6,7 +6,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.app.Application
 import androidx.test.filters.SmallTest
@@ -14,10 +14,10 @@ import androidx.test.platform.app.InstrumentationRegistry
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.property.AddressbookHomeSet
 import at.bitfire.dav4jvm.property.ResourceType
-import at.bitfire.davdroid.HttpClient
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.ui.setup.DavResourceFinder.Configuration.ServiceInfo
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.ui.setup.DavResourceFinder.Configuration.ServiceInfo
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer

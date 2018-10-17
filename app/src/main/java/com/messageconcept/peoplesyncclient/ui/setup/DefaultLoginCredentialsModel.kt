@@ -1,4 +1,4 @@
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Intent
 import androidx.annotation.MainThread

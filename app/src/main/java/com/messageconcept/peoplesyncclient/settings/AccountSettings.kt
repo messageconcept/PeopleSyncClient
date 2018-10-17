@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
  */
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -19,13 +19,13 @@ import android.os.Parcel
 import android.os.RemoteException
 import android.provider.CalendarContract
 import android.provider.ContactsContract
-import at.bitfire.davdroid.*
-import at.bitfire.davdroid.log.Logger
-import at.bitfire.davdroid.model.AppDatabase
-import at.bitfire.davdroid.model.Collection
-import at.bitfire.davdroid.model.Credentials
-import at.bitfire.davdroid.model.Service
-import at.bitfire.davdroid.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.*
+import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
+import com.messageconcept.peoplesyncclient.model.Collection
+import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.model.Service
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import at.bitfire.ical4android.AndroidCalendar
 import at.bitfire.ical4android.TaskProvider
 import at.bitfire.ical4android.TaskProvider.ProviderName.OpenTasks
