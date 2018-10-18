@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
-  <string name="account_title_address_book">DAVx⁵-Adressbuch</string>
+  <string name="app_name">PeopleSync</string>
+  <string name="account_title_address_book">PeopleSync-Adressbuch</string>
   <string name="address_books_authority_title">Adressbücher</string>
   <string name="help">Hilfe</string>
   <string name="manage_accounts">Konten verwalten</string>
@@ -20,18 +20,18 @@
   <string name="startup_autostart_permission">Automatische Synchronisierung</string>
   <string name="startup_autostart_permission_message">%s-Firmware verhindert oftmals das automatische Synchronisieren. In diesem Fall müssen Sie das automatische Synchronisieren in den Android-Einstellung erlauben.</string>
   <string name="startup_battery_optimization">Geplante Synchronisierung</string>
-  <string name="startup_battery_optimization_message">Ihr Gerät wird die DAVx⁵- Synchronisierung einschränken. Damit regelmäßig synchronisiert werden kann, muss die »Akku-Leistungsoptimierung« deaktiviert werden.</string>
-  <string name="startup_battery_optimization_disable">Für DAVx⁵ deaktivieren</string>
+  <string name="startup_battery_optimization_message">Ihr Gerät wird die PeopleSync- Synchronisierung einschränken. Damit regelmäßig synchronisiert werden kann, muss die »Akku-Leistungsoptimierung« deaktiviert werden.</string>
+  <string name="startup_battery_optimization_disable">Für PeopleSync deaktivieren</string>
   <string name="startup_dont_show_again">Nicht mehr anzeigen</string>
   <string name="startup_not_now">Später</string>
   <string name="startup_donate">Open-Source-Information</string>
-  <string name="startup_donate_message">Es freut uns, dass Sie DAVx⁵ und damit Open-Source-Software (GPLv3) verwenden. Da in DAVx⁵ tausende Stunden harter Arbeit stecken und es immer noch weiter entwickelt wird, gibt es die Möglichkeit, uns zu spenden.</string>
+  <string name="startup_donate_message">Es freut uns, dass Sie PeopleSync und damit Open-Source-Software (GPLv3) verwenden. Da in PeopleSync tausende Stunden harter Arbeit stecken und es immer noch weiter entwickelt wird, gibt es die Möglichkeit, uns zu spenden.</string>
   <string name="startup_donate_now">Spendenseite anzeigen</string>
   <string name="startup_donate_later">Vielleicht später</string>
   <string name="startup_more_info">Mehr Infos</string>
   <string name="startup_opentasks_not_installed">OpenTasks nicht installiert</string>
   <string name="startup_opentasks_not_installed_message">Für die Synchronisierung von Aufgaben wird die freie App OpenTasks benötigt. (Nicht benötigt für Kontakte/Termine.)</string>
-  <string name="startup_opentasks_reinstall_davx5">Nach der Installation von OpenTasks muss DAVx⁵ NEU INSTALLIERT und die Konten neu hinzugefügt werden (Android-Bug).</string>
+  <string name="startup_opentasks_reinstall_davx5">Nach der Installation von OpenTasks muss PeopleSync NEU INSTALLIERT und die Konten neu hinzugefügt werden (Android-Bug).</string>
   <string name="startup_opentasks_not_installed_install">OpenTasks installieren</string>
   <!--AboutActivity-->
   <string name="about_libraries">Bibliotheken</string>
@@ -41,8 +41,8 @@
   <string name="about_license_info_no_warranty">Dieses Programm wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt. Es ist freie Software – Sie können es also unter bestimmten Bedingungen weiterverbreiten.</string>
   <!--global settings-->
   <string name="logging_couldnt_create_file">Protokolldatei konnte nicht angelegt werden</string>
-  <string name="logging_notification_title">DAVx⁵-Protokollierung</string>
-  <string name="logging_notification_text">Alle DAVx⁵-Aktivitäten werden protokolliert</string>
+  <string name="logging_notification_title">PeopleSync-Protokollierung</string>
+  <string name="logging_notification_text">Alle PeopleSync-Aktivitäten werden protokolliert</string>
   <string name="logging_notification_send_log">Protokoll senden</string>
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Hauptmenü anzeigen</string>
@@ -199,8 +199,8 @@
   </plurals>
   <string name="settings_sync_time_range_past_message">Termine, die mehr als diese Anzahl von Tagen in der Vergangenheit liegen, werden ignoriert (kann 0 sein). Feld leer lassen, um alle Termine zu synchronisieren.</string>
   <string name="settings_manage_calendar_colors">Kalenderfarben verwalten</string>
-  <string name="settings_manage_calendar_colors_on">Kalenderfarben werden von DAVx⁵ verwaltet</string>
-  <string name="settings_manage_calendar_colors_off">DAVx⁵ setzt keine Kalenderfarben</string>
+  <string name="settings_manage_calendar_colors_on">Kalenderfarben werden von PeopleSync verwaltet</string>
+  <string name="settings_manage_calendar_colors_off">PeopleSync setzt keine Kalenderfarben</string>
   <string name="settings_event_colors">Unterstützung für Terminfarben</string>
   <string name="settings_event_colors_on">Terminfarben werden synchronisiert</string>
   <string name="settings_event_colors_off">Terminfarben werden nicht synchronisiert</string>
@@ -242,7 +242,7 @@
   <string name="debug_info_title">Informationen zur Fehlersuche</string>
   <string name="debug_info_logs_attached">Das Protokoll liegt als Anhang bei (benötigt Unterstützung für Anhänge in der empfangenden App).</string>
   <string name="sync_contacts_read_only_address_book">Schreibgeschütztes Adressbuch</string>
-  <string name="sync_error_permissions">DAVx⁵-Berechtigungen</string>
+  <string name="sync_error_permissions">PeopleSync-Berechtigungen</string>
   <string name="sync_error_permissions_text">Zusätzliche Berechtigungen benötigt</string>
   <string name="sync_error_opentasks_too_old">OpenTasks zu alt</string>
   <string name="sync_error_opentasks_required_version">Version %1$s benötigt (derzeit %2$s)</string>
@@ -257,6 +257,6 @@
   <string name="sync_invalid_task">Ungültige Aufgabe vom Server erhalten</string>
   <string name="sync_invalid_resources_ignoring">Eine/mehrere ungültige Ressourcen ignoriert</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Verbindungssicherheit</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ ist auf ein unbekanntes Zertifikat gestoßen. Ist dieses vertrauenswürdig?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Verbindungssicherheit</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync ist auf ein unbekanntes Zertifikat gestoßen. Ist dieses vertrauenswürdig?</string>
 </resources>
