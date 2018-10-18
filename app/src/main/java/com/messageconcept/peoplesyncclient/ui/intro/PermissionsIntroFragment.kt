@@ -11,10 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
-import com.messageconcept.peoplesyncclient.util.PermissionUtils.CALENDAR_PERMISSIONS
 import com.messageconcept.peoplesyncclient.util.PermissionUtils.CONTACT_PERMISSIONS
 import com.messageconcept.peoplesyncclient.R
-import at.bitfire.ical4android.TaskProvider
 import javax.inject.Inject
 
 class PermissionsIntroFragment : Fragment() {
@@ -27,7 +25,7 @@ class PermissionsIntroFragment : Fragment() {
 
         override fun getOrder(context: Context): Int {
             // show PermissionsFragment as intro fragment when no permissions are granted
-            val permissions = CONTACT_PERMISSIONS + CALENDAR_PERMISSIONS + TaskProvider.PERMISSIONS_OPENTASKS
+            val permissions = CONTACT_PERMISSIONS
             return if (PermissionUtils.haveAnyPermission(context, permissions))
                 IntroFragmentFactory.DONT_SHOW
             else

@@ -8,7 +8,6 @@ import com.messageconcept.peoplesyncclient.ui.AccountsDrawerHandler
 import com.messageconcept.peoplesyncclient.ui.OseAccountsDrawerHandler
 import com.messageconcept.peoplesyncclient.ui.intro.IntroFragmentFactory
 import com.messageconcept.peoplesyncclient.ui.intro.PermissionsIntroFragment
-import com.messageconcept.peoplesyncclient.ui.intro.TasksIntroFragment
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,13 +34,6 @@ abstract class OseFlavorModule {
     abstract class PermissionsIntroFragmentModule {
         @Binds @IntoSet
         abstract fun getFactory(factory: PermissionsIntroFragment.Factory): IntroFragmentFactory
-    }
-
-    @Module
-    @InstallIn(ActivityComponent::class)
-    abstract class TasksIntroFragmentModule {
-        @Binds @IntoSet
-        abstract fun getFactory(factory: TasksIntroFragment.Factory): IntroFragmentFactory
     }
 
 }

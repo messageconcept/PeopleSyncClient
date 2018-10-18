@@ -23,7 +23,6 @@ import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.util.DavUtils
 import com.messageconcept.peoplesyncclient.util.LiveDataUtils
 import com.messageconcept.peoplesyncclient.util.closeCompat
-import at.bitfire.ical4android.TaskProvider
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -124,15 +123,8 @@ class SyncWorker @AssistedInject constructor(
         val syncAdapter = when (authority) {
             applicationContext.getString(R.string.address_books_authority) ->
                 AddressBooksSyncAdapterService.AddressBooksSyncAdapter(applicationContext)
-            CalendarContract.AUTHORITY ->
-                CalendarsSyncAdapterService.CalendarsSyncAdapter(applicationContext)
             ContactsContract.AUTHORITY ->
                 ContactsSyncAdapterService.ContactsSyncAdapter(applicationContext)
-            TaskProvider.ProviderName.JtxBoard.authority ->
-                JtxSyncAdapterService.JtxSyncAdapter(applicationContext)
-            TaskProvider.ProviderName.OpenTasks.authority,
-            TaskProvider.ProviderName.TasksOrg.authority ->
-                TasksSyncAdapterService.TasksSyncAdapter(applicationContext)
             else ->
                 throw IllegalArgumentException("Invalid authority $authority")
         }

@@ -13,7 +13,6 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.*
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.View
 import android.widget.Toast
@@ -43,13 +42,8 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import at.bitfire.ical4android.TaskProvider.ProviderName
-import at.bitfire.ical4android.util.MiscUtils
-import at.bitfire.ical4android.util.MiscUtils.ContentProviderClientHelper.closeCompat
-import at.bitfire.ical4android.util.MiscUtils.UriHelper.asSyncAdapter as asCalendarSyncAdapter
+import com.messageconcept.peoplesyncclient.util.closeCompat
 import at.bitfire.vcard4android.Utils.asSyncAdapter as asContactsSyncAdapter
-import at.techbee.jtx.JtxContract
-import at.techbee.jtx.JtxContract.asSyncAdapter as asJtxSyncAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -62,7 +56,6 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dmfs.tasks.contract.TaskContract
 import java.io.*
 import java.util.*
 import java.util.logging.Level
@@ -300,20 +293,14 @@ class DebugInfoActivity : AppCompatActivity() {
                     val pm = context.packageManager
 
                     val packageNames = mutableSetOf(      // we always want info about these packages:
-                        BuildConfig.APPLICATION_ID,            // PeopleSync
-                        ProviderName.JtxBoard.packageName,     // jtx Board
-                        ProviderName.OpenTasks.packageName,    // OpenTasks
-                        ProviderName.TasksOrg.packageName      // tasks.org
+                        BuildConfig.APPLICATION_ID             // PeopleSync
                     )
-                    // ... and info about contact and calendar provider
-                    for (authority in arrayOf(ContactsContract.AUTHORITY, CalendarContract.AUTHORITY))
+                    // ... and info about contact provider
+                    for (authority in arrayOf(ContactsContract.AUTHORITY))
                         pm.resolveContentProvider(authority, 0)?.let { packageNames += it.packageName }
-                    // ... and info about contact, calendar, task-editing apps
+                    // ... and info about contact apps
                     val dataUris = arrayOf(
-                        ContactsContract.Contacts.CONTENT_URI,
-                        CalendarContract.Events.CONTENT_URI,
-                        TaskContract.Tasks.getContentUri(ProviderName.OpenTasks.authority),
-                        TaskContract.Tasks.getContentUri(ProviderName.TasksOrg.authority)
+                        ContactsContract.Contacts.CONTENT_URI
                     )
                     for (uri in dataUris) {
                         val viewIntent = Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(uri, /* some random ID */ 1))
@@ -560,11 +547,7 @@ class DebugInfoActivity : AppCompatActivity() {
                     writer.append(", SSIDs: ${ssids.joinToString(", ")}")
                 }
                 writer.append(
-                    "\n  Contact group method: ${accountSettings.getGroupMethod()}\n" +
-                            "  Time range (past days): ${accountSettings.getTimeRangePastDays()}\n" +
-                            "  Default alarm (min before): ${accountSettings.getDefaultAlarm()}\n" +
-                            "  Manage calendar colors: ${accountSettings.getManageCalendarColors()}\n" +
-                            "  Use event colors: ${accountSettings.getEventColors()}\n"
+                    "\n  Contact group method: ${accountSettings.getGroupMethod()}\n"
                 )
             } catch (e: InvalidAccountException) {
                 writer.append("$e\n")
@@ -626,10 +609,6 @@ class DebugInfoActivity : AppCompatActivity() {
 
             fun mainAccount(context: Context, account: Account) = listOf(
                 AccountDumpInfo(account, context.getString(R.string.address_books_authority), null, null),
-                AccountDumpInfo(account, CalendarContract.AUTHORITY, CalendarContract.Events.CONTENT_URI.asCalendarSyncAdapter(account), "event(s)"),
-                AccountDumpInfo(account, ProviderName.JtxBoard.authority, JtxContract.JtxICalObject.CONTENT_URI.asJtxSyncAdapter(account), "jtx Board ICalObject(s)"),
-                AccountDumpInfo(account, ProviderName.OpenTasks.authority, TaskContract.Tasks.getContentUri(ProviderName.OpenTasks.authority).asCalendarSyncAdapter(account), "OpenTasks task(s)"),
-                AccountDumpInfo(account, ProviderName.TasksOrg.authority, TaskContract.Tasks.getContentUri(ProviderName.TasksOrg.authority).asCalendarSyncAdapter(account), "tasks.org task(s)"),
                 AccountDumpInfo(account, ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI.asContactsSyncAdapter(account), "wrongly assigned raw contact(s)")
             )
 

@@ -10,7 +10,6 @@ import android.net.Uri
 import android.view.MenuItem
 import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.ui.webdav.WebdavMountsActivity
 import javax.inject.Inject
 
 /**
@@ -36,9 +35,6 @@ class OseAccountsDrawerHandler @Inject constructor(): BaseAccountsDrawerHandler(
                     activity,
                     Uri.parse("https://fosstodon.org/@davx5app")
                 )
-
-            R.id.nav_webdav_mounts ->
-                activity.startActivity(Intent(activity, WebdavMountsActivity::class.java))
 
             R.id.nav_website ->
                 UiUtils.launchUri(

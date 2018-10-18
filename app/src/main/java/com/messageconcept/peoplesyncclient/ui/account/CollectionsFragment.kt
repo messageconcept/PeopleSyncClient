@@ -29,7 +29,6 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
@@ -278,9 +277,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
             fun create(accountModel: AccountActivity.Model, serviceId: Long, collectionType: String): Model
         }
 
-        // cache task provider
-        val taskProvider by lazy { TaskUtils.currentProvider(context) }
-
         val hasWriteableCollections = db.homeSetDao().hasBindableByServiceLive(serviceId)
         val collectionColors = db.collectionDao().colorsByServiceLive(serviceId)
         val collections: LiveData<PagingData<Collection>> =
@@ -315,7 +311,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
             if (collectionType == Collection.TYPE_ADDRESSBOOK)
                 listOf(context.getString(R.string.address_books_authority), ContactsContract.AUTHORITY)
             else
-                listOf(CalendarContract.AUTHORITY, taskProvider?.authority).filterNotNull()
+                listOf(CalendarContract.AUTHORITY).filterNotNull()
         private val isSyncWorkerRunning = SyncWorker.isSomeWorkerInState(context,
             WorkInfo.State.RUNNING,
             accountModel.account,
@@ -364,19 +360,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
                 isSyncFrameworkActive.postValue(mainSyncActive || syncActive)
                 isSyncFrameworkPending.postValue(mainSyncPending || syncPending)
-
-            } else {
-                // CalDAV tab
-                val authorities = mutableListOf(CalendarContract.AUTHORITY)
-                taskProvider?.let {
-                    authorities += it.authority
-                }
-                isSyncFrameworkActive.postValue(authorities.any {
-                    ContentResolver.isSyncActive(accountModel.account, it)
-                })
-                isSyncFrameworkPending.postValue(authorities.any {
-                    ContentResolver.isSyncPending(accountModel.account, it)
-                })
             }
         }
 

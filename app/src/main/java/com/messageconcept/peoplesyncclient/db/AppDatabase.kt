@@ -34,13 +34,8 @@ import javax.inject.Singleton
     Service::class,
     HomeSet::class,
     Collection::class,
-    SyncStats::class,
-    WebDavDocument::class,
-    WebDavMount::class
-], exportSchema = true, version = 11, autoMigrations = [
-    AutoMigration(from = 9, to = 10),
-    AutoMigration(from = 10, to = 11)
-])
+    SyncStats::class
+], exportSchema = true, version = 9)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -234,8 +229,6 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun homeSetDao(): HomeSetDao
     abstract fun collectionDao(): CollectionDao
     abstract fun syncStatsDao(): SyncStatsDao
-    abstract fun webDavDocumentDao(): WebDavDocumentDao
-    abstract fun webDavMountDao(): WebDavMountDao
 
 
     // helpers

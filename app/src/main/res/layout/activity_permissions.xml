@@ -186,39 +186,6 @@
                         android:checked="@={model.needNotificationPermissions}" />
 
                     <TextView
-                        android:id="@+id/calendarHeading"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_margin_title_text"
-                        android:text="@string/permissions_calendar_title"
-                        android:textAlignment="viewStart"
-                        app:layout_constraintBottom_toTopOf="@id/calendarStatus"
-                        app:layout_constraintEnd_toStartOf="@id/calendarSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/notificationStatus" />
-
-                    <TextView
-                        android:id="@+id/calendarStatus"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.haveCalendarPermissions ? @string/permissions_calendar_status_on : @string/permissions_calendar_status_off}"
-                        android:textAlignment="viewStart"
-                        app:layout_constraintEnd_toStartOf="@id/calendarSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/calendarHeading" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/calendarSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/calendarHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/calendarStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:clickable="@{!model.haveCalendarPermissions}"
-                        android:checked="@={model.needCalendarPermissions}" />
-
-                    <TextView
                         android:id="@+id/contactsHeading"
                         style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="0dp"
@@ -229,7 +196,7 @@
                         app:layout_constraintBottom_toTopOf="@id/contactsStatus"
                         app:layout_constraintEnd_toStartOf="@id/contactsSwitch"
                         app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/calendarStatus" />
+                        app:layout_constraintTop_toBottomOf="@id/notificationStatus" />
 
                     <TextView
                         android:id="@+id/contactsStatus"
@@ -252,114 +219,6 @@
                         android:checked="@={model.needContactsPermissions}" />
 
                     <TextView
-                        android:id="@+id/jtxHeading"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_margin_title_text"
-                        android:text="@string/permissions_jtx_title"
-                        android:textAlignment="viewStart"
-                        android:visibility="@{model.haveJtxPermissions != null ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintBottom_toTopOf="@id/jtxStatus"
-                        app:layout_constraintEnd_toStartOf="@id/jtxSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/contactsStatus" />
-
-                    <TextView
-                        android:id="@+id/jtxStatus"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.haveJtxPermissions != null ? (model.haveJtxPermissions ? @string/permissions_jtx_status_on : @string/permissions_jtx_status_off) : @string/permissions_jtx_status_not_installed}"
-                        android:textAlignment="viewStart"
-                        android:visibility="@{model.haveJtxPermissions != null ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintEnd_toStartOf="@id/jtxSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/jtxHeading" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/jtxSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/jtxHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/jtxStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:visibility="@{model.haveJtxPermissions != null ? View.VISIBLE : View.GONE}"
-                        android:clickable="@{!model.haveJtxPermissions}"
-                        android:checked="@={model.needJtxPermissions}" />
-
-                    <TextView
-                        android:id="@+id/openTasksHeading"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_margin_title_text"
-                        android:text="@string/permissions_opentasks_title"
-                        android:textAlignment="viewStart"
-                        android:visibility="@{model.haveOpenTasksPermissions != null ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintBottom_toTopOf="@id/openTasksStatus"
-                        app:layout_constraintEnd_toStartOf="@id/openTasksSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/jtxStatus" />
-
-                    <TextView
-                        android:id="@+id/openTasksStatus"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.haveOpenTasksPermissions != null ? (model.haveOpenTasksPermissions ? @string/permissions_tasks_status_on : @string/permissions_tasks_status_off) : @string/permissions_tasks_status_not_installed}"
-                        android:textAlignment="viewStart"
-                        android:visibility="@{model.haveOpenTasksPermissions != null ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintEnd_toStartOf="@id/openTasksSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/openTasksHeading" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/openTasksSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/openTasksHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/openTasksStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:visibility="@{model.haveOpenTasksPermissions != null ? View.VISIBLE : View.GONE}"
-                        android:clickable="@{!model.haveOpenTasksPermissions}"
-                        android:checked="@={model.needOpenTasksPermissions}" />
-
-                    <TextView
-                        android:id="@+id/tasksOrgHeading"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_margin_title_text"
-                        android:text="@string/permissions_tasksorg_title"
-                        android:textAlignment="viewStart"
-                        android:visibility="@{model.haveTasksOrgPermissions != null ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintBottom_toTopOf="@id/tasksOrgStatus"
-                        app:layout_constraintEnd_toStartOf="@id/tasksOrgSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/openTasksStatus" />
-
-                    <TextView
-                        android:id="@+id/tasksOrgStatus"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.haveTasksOrgPermissions != null ? (model.haveTasksOrgPermissions ? @string/permissions_tasks_status_on : @string/permissions_tasks_status_off) : @string/permissions_tasks_status_not_installed}"
-                        android:textAlignment="viewStart"
-                        android:visibility="@{model.haveTasksOrgPermissions != null ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintEnd_toStartOf="@id/tasksOrgSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/tasksOrgHeading" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/tasksOrgSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/tasksOrgHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/tasksOrgStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:visibility="@{model.haveTasksOrgPermissions != null ? View.VISIBLE : View.GONE}"
-                        android:clickable="@{!model.haveTasksOrgPermissions}"
-                        android:checked="@={model.needTasksOrgPermissions}" />
-
-                    <TextView
                         android:id="@+id/appSettingsHint"
                         style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="0dp"
@@ -369,7 +228,7 @@
                         android:textAlignment="viewStart"
                         app:layout_constraintEnd_toEndOf="@id/end"
                         app:layout_constraintStart_toStartOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/tasksOrgSwitch" />
+                        app:layout_constraintTop_toBottomOf="@id/contactsSwitch" />
 
                     <Button
                         android:id="@+id/appSettings"

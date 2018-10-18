@@ -9,7 +9,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.core.content.getSystemService
 import androidx.work.WorkInfo
@@ -17,7 +16,6 @@ import com.messageconcept.peoplesyncclient.Android10Resolver
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import okhttp3.HttpUrl
 import okhttp3.MediaType
@@ -212,13 +210,8 @@ object DavUtils {
      */
     fun syncAuthorities(context: Context): List<String> {
         val result = mutableListOf(
-                context.getString(R.string.address_books_authority),
-                CalendarContract.AUTHORITY
+                context.getString(R.string.address_books_authority)
         )
-
-        TaskUtils.currentProvider(context)?.let { taskProvider ->
-            result += taskProvider.authority
-        }
 
         return result
     }

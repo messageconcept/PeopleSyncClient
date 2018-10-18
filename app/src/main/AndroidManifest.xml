@@ -24,9 +24,6 @@
     <!-- android.permission-group.CONTACTS -->
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
-    <!-- android.permission-group.CALENDAR -->
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
 
     <!-- android.permission-group.LOCATION -->
     <!-- getting the WiFi name (for "sync in Wifi only") requires
@@ -36,8 +33,6 @@
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- required since Android 10 to get the WiFi name while in background (= while syncing) -->
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-
-    <!-- ical4android declares task access permissions -->
 
     <application
         android:name=".App"
@@ -102,10 +97,6 @@
             android:name=".ui.PermissionsActivity"
             android:label="@string/app_settings_security_app_permissions"
             android:parentActivityName=".ui.AppSettingsActivity" />
-        <activity
-            android:name=".ui.TasksActivity"
-            android:label="@string/intro_tasks_title"
-            android:parentActivityName=".ui.AppSettingsActivity" />
 
         <activity
             android:name=".ui.setup.LoginActivity"
@@ -144,26 +135,12 @@
             android:label="@string/create_addressbook"
             android:parentActivityName=".ui.account.AccountActivity" />
         <activity
-            android:name=".ui.account.CreateCalendarActivity"
-            android:label="@string/create_calendar"
-            android:parentActivityName=".ui.account.AccountActivity" />
-        <activity
             android:name=".ui.account.SettingsActivity"
             android:parentActivityName=".ui.account.AccountActivity" />
         <activity
             android:name=".ui.account.WifiPermissionsActivity"
             android:label="@string/wifi_permissions_label"
             android:parentActivityName=".ui.account.SettingsActivity" />
-
-        <activity
-            android:name=".ui.webdav.WebdavMountsActivity"
-            android:label="@string/webdav_mounts_title"
-            android:parentActivityName=".ui.AccountsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.webdav.AddWebdavMountActivity"
-            android:label="@string/webdav_add_mount_title"
-            android:parentActivityName=".ui.webdav.WebdavMountsActivity" />
 
         <!-- account type "PeopleSync" -->
         <service
@@ -176,60 +153,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/account_authenticator"/>
         </service>
-        <service
-            android:name=".syncadapter.CalendarsSyncAdapterService"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/sync_calendars"/>
-        </service>
-        <service
-            android:name=".syncadapter.JtxSyncAdapterService"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/sync_notes"/>
-        </service>
-        <service
-            android:name=".syncadapter.OpenTasksSyncAdapterService"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/sync_opentasks"/>
-        </service>
-        <service
-            android:name=".syncadapter.TasksOrgSyncAdapterService"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/sync_tasks_org"/>
-        </service>
-        <provider
-            android:authorities="@string/webdav_authority"
-            android:name=".webdav.DavDocumentsProvider"
-            android:exported="true"
-            android:grantUriPermissions="true"
-            android:permission="android.permission.MANAGE_DOCUMENTS">
-            <intent-filter>
-                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
-            </intent-filter>
-        </provider>
 
         <!-- account type "PeopleSync Address book" -->
         <service
@@ -312,25 +235,12 @@
     <queries>
         <!-- system providers (listing them is technically not required, but some apps like the
         Huawei calendar take this as indication of whether these providers are accessed) -->
-        <provider android:authorities="com.android.calendar"/>
         <provider android:authorities="com.android.contacts"/>
 
-        <!-- task providers -->
-        <package android:name="at.techbee.jtx" />
-        <package android:name="org.dmfs.tasks" />
-        <package android:name="org.tasks" />
-
-        <!-- ICSx5 for Webcal feeds -->
-        <package android:name="at.bitfire.icsdroid"/>
-
-        <!-- apps that interact with contact, calendar, task data (for debug info) -->
+        <!-- apps that interact with contact data (for debug info) -->
         <intent>
             <action android:name="*" />
             <data android:scheme="content" android:host="com.android.contacts" />
-        </intent>
-        <intent>
-            <action android:name="*" />
-            <data android:scheme="content" android:host="com.android.calendar" />
         </intent>
 
         <!-- Open URLs in a browser or other app [https://developer.android.com/training/package-visibility/use-cases#open-urls-browser-or-other-app] -->

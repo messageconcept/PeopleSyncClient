@@ -14,7 +14,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -32,12 +31,10 @@ import com.messageconcept.peoplesyncclient.*
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.AccountsCleanupWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.util.closeCompat
-import at.bitfire.ical4android.TaskProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -122,9 +119,7 @@ class RenameAccountFragment: DialogFragment() {
             }
 
             val authorities = arrayOf(
-                context.getString(R.string.address_books_authority),
-                CalendarContract.AUTHORITY,
-                TaskProvider.ProviderName.OpenTasks.authority
+                context.getString(R.string.address_books_authority)
             )
             val syncIntervals = authorities.map { Pair(it, oldSettings.getSyncInterval(it)) }
 
@@ -198,13 +193,6 @@ class RenameAccountFragment: DialogFragment() {
 
             // calendar provider doesn't allow changing account_name of Events
             // (all events will have to be downloaded again)
-
-            // update account_name of local tasks
-            try {
-                LocalTaskList.onRenameAccount(context, oldAccount.name, newName)
-            } catch (e: Exception) {
-                Logger.log.log(Level.SEVERE, "Couldn't propagate new account name to tasks provider", e)
-            }
 
             // retain sync intervals
             val newAccount = Account(newName, oldAccount.type)
