@@ -29,8 +29,6 @@ class DefaultAccountsDrawerHandler: IAccountsDrawerHandler {
     override fun initMenu(context: Context, menu: Menu) {
         if (BuildConfig.VERSION_NAME.contains("-beta") || BuildConfig.VERSION_NAME.contains("-rc"))
             menu.findItem(R.id.nav_beta_feedback).isVisible = true
-        if (/* ose */ true)
-            menu.findItem(R.id.nav_donate).isVisible = true
     }
 
     override fun onNavigationItemSelected(activity: Activity, item: MenuItem): Boolean {
@@ -42,28 +40,9 @@ class DefaultAccountsDrawerHandler: IAccountsDrawerHandler {
             R.id.nav_beta_feedback ->
                 if (!UiUtils.launchUri(activity, Uri.parse(BETA_FEEDBACK_URI), Intent.ACTION_SENDTO, false))
                     Toast.makeText(activity, R.string.install_email_client, Toast.LENGTH_LONG).show()
-            R.id.nav_twitter ->
-                UiUtils.launchUri(activity,
-                        Uri.parse("https://twitter.com/" + activity.getString(R.string.twitter_handle)))
             R.id.nav_website ->
                 UiUtils.launchUri(activity,
                         App.homepageUrl(activity))
-            R.id.nav_manual ->
-                UiUtils.launchUri(activity,
-                        App.homepageUrl(activity).buildUpon().appendPath("manual").build())
-            R.id.nav_faq ->
-                UiUtils.launchUri(activity,
-                        App.homepageUrl(activity).buildUpon().appendPath("faq").build())
-            R.id.nav_forums ->
-                UiUtils.launchUri(activity,
-                        App.homepageUrl(activity).buildUpon().appendPath("forums").build())
-            R.id.nav_donate ->
-                //if (BuildConfig.FLAVOR != App.FLAVOR_GOOGLE_PLAY)
-                    UiUtils.launchUri(activity,
-                            App.homepageUrl(activity).buildUpon().appendPath("donate").build())
-            R.id.nav_privacy ->
-                UiUtils.launchUri(activity,
-                        App.homepageUrl(activity).buildUpon().appendPath("privacy").build())
             else ->
                 return false
         }
