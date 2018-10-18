@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <item
+        android:visible="false"
         android:id="@+id/help"
         android:title="@string/help"
         android:icon="@drawable/ic_help"
