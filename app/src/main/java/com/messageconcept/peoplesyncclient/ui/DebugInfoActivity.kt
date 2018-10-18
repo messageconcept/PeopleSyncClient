@@ -284,7 +284,7 @@ class DebugInfoActivity: AppCompatActivity() {
                     val pm = context.packageManager
 
                     val packageNames = mutableSetOf(      // we always want info about these packages:
-                            BuildConfig.APPLICATION_ID,            // DAVx5
+                            BuildConfig.APPLICATION_ID,            // PeopleSync
                             ProviderName.OpenTasks.packageName,    // OpenTasks
                             ProviderName.TasksOrg.packageName      // tasks.org
                     )

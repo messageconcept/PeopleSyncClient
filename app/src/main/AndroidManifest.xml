@@ -123,7 +123,7 @@
             android:label="@string/wifi_permissions_label"
             android:parentActivityName=".ui.account.SettingsActivity" />
 
-        <!-- account type "DAVx⁵" -->
+        <!-- account type "PeopleSync" -->
         <service
             android:name=".syncadapter.AccountAuthenticatorService"
             android:exported="false">
@@ -168,7 +168,7 @@
                 android:resource="@xml/sync_tasks_org"/>
         </service>
 
-        <!-- account type "DAVx⁵ Address book" -->
+        <!-- account type "PeopleSync Address book" -->
         <service
             android:name=".syncadapter.NullAuthenticatorService"
             android:exported="true">   <!-- Since Android 11, this must be true so that Google Contacts shows the address book accounts -->

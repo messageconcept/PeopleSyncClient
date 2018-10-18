@@ -16,7 +16,7 @@ import com.messageconcept.peoplesyncclient.ui.intro.IIntroFragmentFactory.ShowMo
 class TasksFragmentFactory: IIntroFragmentFactory {
 
     override fun shouldBeShown(context: Context, settingsManager: SettingsManager): ShowMode {
-        // On Android <6, OpenTasks must be installed before DAVx5, so this fragment is not useful.
+        // On Android <6, OpenTasks must be installed before PeopleSync, so this fragment is not useful.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return ShowMode.DONT_SHOW
 

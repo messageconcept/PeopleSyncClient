@@ -33,7 +33,7 @@ class SharedPreferencesProvider(
         val meta = context.getSharedPreferences("meta", MODE_PRIVATE)
         val version = meta.getInt(META_VERSION, -1)
         if (version == -1) {
-            // first call, check whether to migrate from SQLite database (DAVdroid <1.9)
+            // first call, check whether to migrate from SQLite database (PeopleSync <1.9)
             firstCall(context)
             meta.edit().putInt(META_VERSION, CURRENT_VERSION).apply()
         }
@@ -119,7 +119,7 @@ class SharedPreferencesProvider(
 
 
     private fun firstCall(context: Context) {
-        // remove possible artifacts from DAVdroid <1.9
+        // remove possible artifacts from PeopleSync <1.9
         val edit = preferences.edit()
         edit.remove("override_proxy")
         edit.remove("proxy_host")

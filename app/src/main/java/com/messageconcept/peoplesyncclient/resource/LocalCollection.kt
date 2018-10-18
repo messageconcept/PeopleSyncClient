@@ -13,7 +13,7 @@ import com.messageconcept.peoplesyncclient.model.SyncState
 
 interface LocalCollection<out T: LocalResource<*>> {
 
-    /** a tag that uniquely identifies the collection (DAVx5-wide) */
+    /** a tag that uniquely identifies the collection (PeopleSync-wide) */
     val tag: String
 
     /** collection title (used for user notifications etc.) **/
