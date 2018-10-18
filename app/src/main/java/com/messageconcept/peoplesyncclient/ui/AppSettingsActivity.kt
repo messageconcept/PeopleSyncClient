@@ -22,7 +22,6 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment
-import com.messageconcept.peoplesyncclient.ui.intro.OpenTasksFragment
 import com.google.android.material.snackbar.Snackbar
 import java.net.URI
 import java.net.URISyntaxException
@@ -149,7 +148,6 @@ class AppSettingsActivity: AppCompatActivity() {
             val settings = SettingsManager.getInstance(requireActivity())
             settings.remove(BatteryOptimizationsFragment.Model.HINT_BATTERY_OPTIMIZATIONS)
             settings.remove(BatteryOptimizationsFragment.Model.HINT_AUTOSTART_PERMISSION)
-            settings.remove(OpenTasksFragment.Model.HINT_OPENTASKS_NOT_INSTALLED)
             Snackbar.make(requireView(), R.string.app_settings_reset_hints_success, Snackbar.LENGTH_LONG).show()
         }
 
