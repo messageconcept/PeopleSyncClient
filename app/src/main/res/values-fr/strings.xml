@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">Le compte n’existe plus (désormais)</string>
-  <string name="account_title_address_book">Carnet d\'adresses DAVx⁵</string>
+  <string name="account_title_address_book">Carnet d\'adresses PeopleSync</string>
   <string name="address_books_authority_title">Carnets d\'adresses</string>
   <string name="help">Aide</string>
   <string name="manage_accounts">Gestion des comptes</string>
@@ -69,8 +69,8 @@
   <string name="about_translations_thanks"><![CDATA[<i>Merci à : </i> %s]]></string>
   <!--global settings-->
   <string name="logging_couldnt_create_file">Impossible de créer le fichier journal</string>
-  <string name="logging_notification_title">Journalisation de DAVx⁵</string>
-  <string name="logging_notification_text">Journaliser dès maintenant toutes les activités de DAVx⁵</string>
+  <string name="logging_notification_title">Journalisation de PeopleSync</string>
+  <string name="logging_notification_text">Journaliser dès maintenant toutes les activités de PeopleSync</string>
   <string name="logging_notification_send_log">Envoyer le journal</string>
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
@@ -90,7 +90,7 @@
   <string name="navigation_drawer_donate">Faire un don</string>
   <string name="navigation_drawer_privacy_policy">Politique de confidentialité</string>
   <string name="account_list_no_internet">Pas de connectivité Internet. Android ne pourra pas exécuter la synchronisation.</string>
-  <string name="account_list_empty">Bienvenue sur DAVx⁵!\n\nVous pouvez maintenant ajouter un compte CalDAV ou CardDAV.</string>
+  <string name="account_list_empty">Bienvenue sur PeopleSync!\n\nVous pouvez maintenant ajouter un compte CalDAV ou CardDAV.</string>
   <string name="accounts_global_sync_disabled">La synchronisation automatique globale est désactivée</string>
   <string name="accounts_global_sync_enable">Activer</string>
   <!--DavService-->
@@ -236,8 +236,8 @@
   <string name="settings_default_alarm_off">Aucun rappel par défaut</string>
   <string name="settings_default_alarm_message">Si des rappels par défaut doivent être créé pour des événements sans rappel: le nombre de minutes avant l\'événement. Laisser blanc pour désactiver les rappels par défaut.</string>
   <string name="settings_manage_calendar_colors">Choisir couleur du calendrier</string>
-  <string name="settings_manage_calendar_colors_on">Les couleurs de calendrier sont gérées par DAVx⁵</string>
-  <string name="settings_manage_calendar_colors_off">Les couleurs de calendrier ne sont pas gérées par DAVx⁵</string>
+  <string name="settings_manage_calendar_colors_on">Les couleurs de calendrier sont gérées par PeopleSync</string>
+  <string name="settings_manage_calendar_colors_off">Les couleurs de calendrier ne sont pas gérées par PeopleSync</string>
   <string name="settings_event_colors">Couleur associée aux événements</string>
   <string name="settings_event_colors_on">Synchroniser la couleur associée aux événements</string>
   <string name="settings_event_colors_off">Ne pas synchroniser la couleur associée aux événements</string>
@@ -285,7 +285,7 @@
   <string name="debug_info_title">Infos de débogage</string>
   <string name="debug_info_logs_attached">Les logs seront joints à ce message (nécessite la prise en charge de pièce jointe par l\'application destinataire).</string>
   <string name="sync_contacts_read_only_address_book">Carnet d\'adresse en lecture seulement</string>
-  <string name="sync_error_permissions">Autorisations DAVx⁵</string>
+  <string name="sync_error_permissions">Autorisations PeopleSync</string>
   <string name="sync_error_permissions_text">Autorisations supplémentaires demandées</string>
   <string name="sync_error_opentasks_too_old">Version d\'OpenTask trop ancienne</string>
   <string name="sync_error_opentasks_required_version">Version requise %1$s (actuellement %2$s)</string>
@@ -300,6 +300,6 @@
   <string name="sync_invalid_task">Reçu une tâche invalide du serveur</string>
   <string name="sync_invalid_resources_ignoring">Ignorer une ou plusieurs ressources non valides</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵ : Sécurité de la connexion</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ a rencontré un certificat inconnu. Voulez-vous lui faire confiance?</string>
+  <string name="certificate_notification_connection_security">PeopleSync : Sécurité de la connexion</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync a rencontré un certificat inconnu. Voulez-vous lui faire confiance?</string>
 </resources>

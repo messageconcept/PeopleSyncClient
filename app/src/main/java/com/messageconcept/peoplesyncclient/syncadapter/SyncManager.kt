@@ -612,7 +612,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
      *   3. If there are two methods to download resources (GET and multi-get), both methods
      *      have to be implemented, tested and maintained. Given that multi-get is required
      *      in any case, it's better to have only one method.
-     *   4. For users, it's strange behavior when DAVx5 can download multiple remote changes,
+     *   4. For users, it's strange behavior when PeopleSync can download multiple remote changes,
      *      but not a single one (or vice versa). So only one method is more user-friendly.
      *   5. March 2020: iCloud now crashes with HTTP 500 upon CardDAV GET requests.
      */

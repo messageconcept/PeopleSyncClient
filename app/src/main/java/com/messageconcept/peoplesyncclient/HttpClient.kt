@@ -194,7 +194,7 @@ class HttpClient private constructor(
                     val key = KeyChain.getPrivateKey(context, alias) ?: return@let
                     logger.fine("Using provider certificate $alias for authentication (chain length: ${certs.size})")
 
-                    // create Android KeyStore (performs key operations without revealing secret data to DAVx5)
+                    // create Android KeyStore (performs key operations without revealing secret data to PeopleSync)
                     val keyStore = KeyStore.getInstance("AndroidKeyStore")
                     keyStore.load(null)
 
