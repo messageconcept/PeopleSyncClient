@@ -32,7 +32,6 @@ class StartupDialogFragment: DialogFragment() {
     enum class Mode {
         AUTOSTART_PERMISSIONS,
         BATTERY_OPTIMIZATIONS,
-        OPENTASKS_NOT_INSTALLED
     }
 
     companion object {
@@ -42,7 +41,6 @@ class StartupDialogFragment: DialogFragment() {
         private val autostartManufacturers = arrayOf("huawei", "letv", "oneplus", "vivo", "xiaomi", "zte")
 
         const val HINT_BATTERY_OPTIMIZATIONS = "hint_BatteryOptimizations"
-        const val HINT_OPENTASKS_NOT_INSTALLED = "hint_OpenTasksNotInstalled"
 
         const val ARGS_MODE = "mode"
 
@@ -61,10 +59,6 @@ class StartupDialogFragment: DialogFragment() {
             // vendor-specific auto-start information
             if (autostartManufacturers.contains(Build.MANUFACTURER.toLowerCase()) && settings.getBoolean(HINT_AUTOSTART_PERMISSIONS) != false)
                 dialogs.add(StartupDialogFragment.instantiate(Mode.AUTOSTART_PERMISSIONS))
-
-            // OpenTasks information
-            if (!LocalTaskList.tasksProviderAvailable(context) && settings.getBoolean(HINT_OPENTASKS_NOT_INSTALLED) != false)
-                dialogs.add(StartupDialogFragment.instantiate(Mode.OPENTASKS_NOT_INSTALLED))
 
             return dialogs.reversed()
         }
@@ -117,25 +111,6 @@ class StartupDialogFragment: DialogFragment() {
                             settings.putBoolean(HINT_BATTERY_OPTIMIZATIONS, false)
                         }
                         .create()
-
-            Mode.OPENTASKS_NOT_INSTALLED -> {
-                val builder = StringBuilder(getString(R.string.startup_opentasks_not_installed_message))
-                if (Build.VERSION.SDK_INT < 23)
-                    builder.append("\n\n").append(getString(R.string.startup_opentasks_reinstall_davx5))
-                return AlertDialog.Builder(activity)
-                        .setIcon(R.drawable.ic_playlist_add_check_dark)
-                        .setTitle(R.string.startup_opentasks_not_installed)
-                        .setMessage(builder.toString())
-                        .setPositiveButton(R.string.startup_opentasks_not_installed_install) { _, _ ->
-                            if (!UiUtils.launchUri(requireActivity(), Uri.parse("market://details?id=org.dmfs.tasks")))
-                                Logger.log.warning("No market app available, can't install OpenTasks")
-                        }
-                        .setNeutralButton(R.string.startup_not_now) { _, _ -> }
-                        .setNegativeButton(R.string.startup_dont_show_again) { _: DialogInterface, _: Int ->
-                            settings.putBoolean(HINT_OPENTASKS_NOT_INSTALLED, false)
-                        }
-                        .create()
-            }
 
         }
     }
