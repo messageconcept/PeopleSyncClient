@@ -78,12 +78,12 @@ class AccountSettings(
          */
         const val KEY_DEFAULT_ALARM = "default_alarm"
 
-        /* Whether DAVx5 sets the local calendar color to the value from service DB at every sync
+        /* Whether PeopleSync sets the local calendar color to the value from service DB at every sync
            value = null (not existing)     true (default)
                    "0"                     false */
         const val KEY_MANAGE_CALENDAR_COLORS = "manage_calendar_colors"
 
-        /* Whether DAVx5 populates and uses CalendarContract.Colors
+        /* Whether PeopleSync populates and uses CalendarContract.Colors
            value = null (not existing)     false (default)
                    "1"                     true */
         const val KEY_EVENT_COLORS = "event_colors"

@@ -97,7 +97,7 @@ object Logger : SharedPreferences.OnSharedPreferenceChangeListener {
                 log.fine("Now logging to file: $logFile -> $logFileUri")
 
                 val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "DAVx⁵ logs")
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "PeopleSync logs")
                 shareIntent.putExtra(Intent.EXTRA_STREAM, logFileUri)
                 shareIntent.type = "text/plain"
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)

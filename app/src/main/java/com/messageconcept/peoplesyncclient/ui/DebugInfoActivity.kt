@@ -180,8 +180,8 @@ class DebugInfoActivity: AppCompatActivity() {
                     text.append("\nSOFTWARE INFORMATION\n")
                     val pm = context.packageManager
                     val appIDs = mutableSetOf(      // we always want info about these packages
-                            BuildConfig.APPLICATION_ID,                     // DAVx5
-                            "${BuildConfig.APPLICATION_ID}.jbworkaround",   // DAVdroid JB Workaround
+                            BuildConfig.APPLICATION_ID,                     // PeopleSync
+                            "${BuildConfig.APPLICATION_ID}.jbworkaround",   // PeopleSync JB Workaround
                             "org.dmfs.tasks"                               // OpenTasks
                     )
                     // add info about contact, calendar, task provider

@@ -9,11 +9,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- common strings -->
-    <string name="app_name">DAVx⁵</string>
+    <string name="app_name">PeopleSync</string>
     <string name="account_invalid">Account does not exist (anymore)</string>
     <string name="account_type" translatable="false">bitfire.at.davdroid</string>
     <string name="account_type_address_book" translatable="false">com.messageconcept.peoplesyncclient.address_book</string>
-    <string name="account_title_address_book">DAVx⁵ Address book</string>
+    <string name="account_title_address_book">PeopleSync Address book</string>
     <string name="address_books_authority" translatable="false">com.messageconcept.peoplesyncclient.addressbooks</string>
     <string name="address_books_authority_title">Address books</string>
     <string name="help">Help</string>
@@ -88,8 +88,8 @@
 
     <!-- global settings -->
     <string name="logging_couldnt_create_file">Couldn\'t create log file</string>
-    <string name="logging_notification_title">DAVx⁵ logging</string>
-    <string name="logging_notification_text">Now logging all DAVx⁵ activities</string>
+    <string name="logging_notification_title">PeopleSync logging</string>
+    <string name="logging_notification_text">Now logging all PeopleSync activities</string>
     <string name="logging_notification_send_log">Send log</string>
 
     <!-- AccountsActivity -->
@@ -110,7 +110,7 @@
     <string name="navigation_drawer_donate">Donate</string>
     <string name="navigation_drawer_privacy_policy">Privacy policy</string>
     <string name="account_list_no_internet">No Internet connectivity. Android will not run synchronization.</string>
-    <string name="account_list_empty">Welcome to DAVx⁵!\n\nYou can add a CalDAV/CardDAV account now.</string>
+    <string name="account_list_empty">Welcome to PeopleSync!\n\nYou can add a CalDAV/CardDAV account now.</string>
     <string name="accounts_global_sync_disabled">System-wide automatic synchronization is disabled</string>
     <string name="accounts_global_sync_enable">Enable</string>
 
@@ -286,8 +286,8 @@
     <string name="settings_default_alarm_message">If default reminders shall be created for events without reminder: the desired number of minutes before the event. Leave blank to disable default reminders.</string>
     <string name="settings_manage_calendar_colors_key" translatable="false">manage_calendar_colors</string>
     <string name="settings_manage_calendar_colors">Manage calendar colors</string>
-    <string name="settings_manage_calendar_colors_on">Calendar colors are managed by DAVx⁵</string>
-    <string name="settings_manage_calendar_colors_off">Calendar colors are not set by DAVx⁵</string>
+    <string name="settings_manage_calendar_colors_on">Calendar colors are managed by PeopleSync</string>
+    <string name="settings_manage_calendar_colors_off">Calendar colors are not set by PeopleSync</string>
     <string name="settings_event_colors_key" translatable="false">event_colors</string>
     <string name="settings_event_colors">Event color support</string>
     <string name="settings_event_colors_on">Sync event colors</string>
@@ -345,7 +345,7 @@
     <string name="debug_info_title">Debug info</string>
     <string name="debug_info_logs_attached">Logs are attached to this message (requires attachment support of the receiving app).</string>
     <string name="sync_contacts_read_only_address_book">Read-only address book</string>
-    <string name="sync_error_permissions">DAVx⁵ permissions</string>
+    <string name="sync_error_permissions">PeopleSync permissions</string>
     <string name="sync_error_permissions_text">Additional permissions required</string>
     <string name="sync_error_opentasks_too_old">OpenTasks too old</string>
     <string name="sync_error_opentasks_required_version">Required version: %1$s (currently %2$s)</string>
@@ -361,7 +361,7 @@
     <string name="sync_invalid_resources_ignoring">Ignoring one or more invalid resources</string>
 
     <!-- cert4android -->
-    <string name="certificate_notification_connection_security">DAVx⁵: Connection security</string>
-    <string name="trust_certificate_unknown_certificate_found">DAVx⁵ has encountered an unknown certificate. Do you want to trust it?</string>
+    <string name="certificate_notification_connection_security">PeopleSync: Connection security</string>
+    <string name="trust_certificate_unknown_certificate_found">PeopleSync has encountered an unknown certificate. Do you want to trust it?</string>
 
 </resources>

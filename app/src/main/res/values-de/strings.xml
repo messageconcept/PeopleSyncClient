@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">Konto nicht (mehr) vorhanden</string>
-  <string name="account_title_address_book">DAVx⁵-Adressbuch</string>
+  <string name="account_title_address_book">PeopleSync-Adressbuch</string>
   <string name="address_books_authority_title">Adressbücher</string>
   <string name="help">Hilfe</string>
   <string name="manage_accounts">Konten verwalten</string>
@@ -69,8 +69,8 @@
   <string name="about_translations_thanks"><![CDATA[<i>Dank an: </i> %s]]></string>
   <!--global settings-->
   <string name="logging_couldnt_create_file">Protokolldatei konnte nicht angelegt werden</string>
-  <string name="logging_notification_title">DAVx⁵-Protokollierung</string>
-  <string name="logging_notification_text">Alle DAVx⁵-Aktivitäten werden protokolliert</string>
+  <string name="logging_notification_title">PeopleSync-Protokollierung</string>
+  <string name="logging_notification_text">Alle PeopleSync-Aktivitäten werden protokolliert</string>
   <string name="logging_notification_send_log">Protokoll senden</string>
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Hauptmenü anzeigen</string>
@@ -239,8 +239,8 @@
   <string name="settings_default_alarm_off">Keine Standard-Erinnerungen</string>
   <string name="settings_default_alarm_message">Wenn Standard-Erinnerungen für Termine ohne Erinnerung erzeugt werden sollen: gewünschte Anzahl der Minuten vor dem Ereignis. Leer lassen, um Standard-Erinnerungen zu deaktivieren.</string>
   <string name="settings_manage_calendar_colors">Kalenderfarben verwalten</string>
-  <string name="settings_manage_calendar_colors_on">Kalenderfarben werden von DAVx⁵ verwaltet</string>
-  <string name="settings_manage_calendar_colors_off">DAVx⁵ setzt keine Kalenderfarben</string>
+  <string name="settings_manage_calendar_colors_on">Kalenderfarben werden von PeopleSync verwaltet</string>
+  <string name="settings_manage_calendar_colors_off">PeopleSync setzt keine Kalenderfarben</string>
   <string name="settings_event_colors">Unterstützung für Terminfarben</string>
   <string name="settings_event_colors_on">Terminfarben werden synchronisiert</string>
   <string name="settings_event_colors_off">Terminfarben werden nicht synchronisiert</string>
@@ -288,7 +288,7 @@
   <string name="debug_info_title">Informationen zur Fehlersuche</string>
   <string name="debug_info_logs_attached">Das Protokoll liegt als Anhang bei (benötigt Unterstützung für Anhänge in der empfangenden App).</string>
   <string name="sync_contacts_read_only_address_book">Schreibgeschütztes Adressbuch</string>
-  <string name="sync_error_permissions">DAVx⁵-Berechtigungen</string>
+  <string name="sync_error_permissions">PeopleSync-Berechtigungen</string>
   <string name="sync_error_permissions_text">Zusätzliche Berechtigungen benötigt</string>
   <string name="sync_error_opentasks_too_old">OpenTasks zu alt</string>
   <string name="sync_error_opentasks_required_version">Version %1$s benötigt (derzeit %2$s)</string>
@@ -303,6 +303,6 @@
   <string name="sync_invalid_task">Ungültige Aufgabe vom Server erhalten</string>
   <string name="sync_invalid_resources_ignoring">Eine/mehrere ungültige Ressourcen ignoriert</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Verbindungssicherheit</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ ist auf ein unbekanntes Zertifikat gestoßen. Ist dieses vertrauenswürdig?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Verbindungssicherheit</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync ist auf ein unbekanntes Zertifikat gestoßen. Ist dieses vertrauenswürdig?</string>
 </resources>

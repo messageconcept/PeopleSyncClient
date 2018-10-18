@@ -119,7 +119,7 @@
             android:label="@string/app_settings_security_app_permissions"
             android:parentActivityName=".ui.AppSettingsActivity" />
 
-        <!-- account type "DAVx⁵" -->
+        <!-- account type "PeopleSync" -->
         <service
             android:name=".syncadapter.AccountAuthenticatorService"
             android:exported="false">
@@ -156,7 +156,7 @@
                 android:resource="@xml/sync_tasks"/>
         </service>
 
-        <!-- account type "DAVx⁵ Address book" -->
+        <!-- account type "PeopleSync Address book" -->
         <service
             android:name=".syncadapter.NullAuthenticatorService"
             android:exported="false">
