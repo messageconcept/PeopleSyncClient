@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="DAVx⁵"
+            android:text="PeopleSync"
             tools:ignore="HardcodedText" />
 
         <TextView

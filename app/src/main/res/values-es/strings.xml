@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
-  <string name="account_title_address_book">Agenda DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
+  <string name="account_title_address_book">Agenda PeopleSync</string>
   <string name="address_books_authority_title">Agendas</string>
   <string name="help">Ayuda</string>
   <string name="manage_accounts">Administrar cuentas</string>
@@ -15,16 +15,16 @@
   <string name="notification_channel_sync_io_errors">Errores de Red y E/S</string>
   <string name="notification_channel_sync_status">Mensajes de estado</string>
   <!--startup dialogs-->
-  <string name="startup_battery_optimization_disable">Apagar para DAVx⁵</string>
+  <string name="startup_battery_optimization_disable">Apagar para PeopleSync</string>
   <string name="startup_dont_show_again">No mostrar de nuevo</string>
   <string name="startup_donate">Información de código abierto</string>
-  <string name="startup_donate_message">Nos alegra que uses DAVx⁵, que es software de código abierto (GPLv3). Debido al duro trabajo que supone el desarrollo de DAVx⁵ y los cientos de horas de trabajo, por favor, considera hacer una donación.</string>
+  <string name="startup_donate_message">Nos alegra que uses PeopleSync, que es software de código abierto (GPLv3). Debido al duro trabajo que supone el desarrollo de PeopleSync y los cientos de horas de trabajo, por favor, considera hacer una donación.</string>
   <string name="startup_donate_now">Mostrar página de donación</string>
   <string name="startup_donate_later">Quizás luego</string>
   <string name="startup_more_info">Más información</string>
   <string name="startup_opentasks_not_installed">OpenTasks no está instalado</string>
   <string name="startup_opentasks_not_installed_message">Para sincronizar tareas, la aplicación libre OpenTasks es requerida. (No necesaria para contactos/eventos.)</string>
-  <string name="startup_opentasks_reinstall_davx5">Tras instalar OpenTasks, tendrás que re-instalar DAVx⁵ y añadir tus cuentas de nuevo (por un error de Android).</string>
+  <string name="startup_opentasks_reinstall_davx5">Tras instalar OpenTasks, tendrás que re-instalar PeopleSync y añadir tus cuentas de nuevo (por un error de Android).</string>
   <string name="startup_opentasks_not_installed_install">Instalar OpenTasks</string>
   <!--AboutActivity-->
   <string name="about_license_info_no_warranty">Este programa viene sin NINGÚN TIPO DE GARANTÍA. Es software libre, y cualquier contribución es bienvenida y redistribuida bajo ciertas condiciones.</string>
@@ -43,7 +43,7 @@
   <string name="navigation_drawer_faq">Preguntas frequentes</string>
   <string name="navigation_drawer_forums">Ayuda / Foros</string>
   <string name="navigation_drawer_donate">Donar</string>
-  <string name="account_list_empty">Bienvenido a DAVx⁵!\n\nAhora puedes añadir una cuenta CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Bienvenido a PeopleSync!\n\nAhora puedes añadir una cuenta CalDAV/CardDAV.</string>
   <string name="accounts_global_sync_disabled">Sincronización automática del sistema completo está deshabilitada</string>
   <string name="accounts_global_sync_enable">Activar</string>
   <!--DavService-->
@@ -159,8 +159,8 @@
   </plurals>
   <string name="settings_sync_time_range_past_message">Los eventos anteriores a este número de días serán ignorados (puede ser 0). Deja en blanco el campo para sincronizar todos los eventos.</string>
   <string name="settings_manage_calendar_colors">Colores de calendario</string>
-  <string name="settings_manage_calendar_colors_on">Los colores de los calendarios son administrados por DAVx⁵</string>
-  <string name="settings_manage_calendar_colors_off">Los colores de los calendarios no son establecidos por DAVx⁵</string>
+  <string name="settings_manage_calendar_colors_on">Los colores de los calendarios son administrados por PeopleSync</string>
+  <string name="settings_manage_calendar_colors_off">Los colores de los calendarios no son establecidos por PeopleSync</string>
   <string name="settings_event_colors">Soporte de colores en eventos</string>
   <string name="settings_event_colors_on">Sincronizar colores de eventos</string>
   <string name="settings_event_colors_off">No sincronizar colores de eventos</string>
@@ -199,7 +199,7 @@
     <item quantity="one">Cambio de contacto local descartado</item>
     <item quantity="other">%d cambios de contactos locales descartados</item>
   </plurals>
-  <string name="sync_error_permissions">Permisos de DAVx⁵</string>
+  <string name="sync_error_permissions">Permisos de PeopleSync</string>
   <string name="sync_error_permissions_text">Permisos adicionales requeridos</string>
   <string name="sync_error_opentasks_too_old">OpenTasks muy viejo</string>
   <string name="sync_error_opentasks_required_version">Versión requerida: %1$s (actual %2$s)</string>
@@ -210,6 +210,6 @@
   <string name="sync_error_retry">Reintentar</string>
   <string name="sync_error_view_item">Ver item</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Seguridad de conexión</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ ha encontrado un certificado desconocido. ¿Quieres que sea válido?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Seguridad de conexión</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync ha encontrado un certificado desconocido. ¿Quieres que sea válido?</string>
 </resources>
