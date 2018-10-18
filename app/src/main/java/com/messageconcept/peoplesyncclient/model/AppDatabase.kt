@@ -189,8 +189,6 @@ abstract class AppDatabase: RoomDatabase() {
 
                             StartupDialogFragment.HINT_GOOGLE_PLAY_ACCOUNTS_REMOVED ->
                                 edit.putBoolean(StartupDialogFragment.HINT_GOOGLE_PLAY_ACCOUNTS_REMOVED, cursor.getInt(1) != 0)
-                            StartupDialogFragment.HINT_OPENTASKS_NOT_INSTALLED ->
-                                edit.putBoolean(StartupDialogFragment.HINT_OPENTASKS_NOT_INSTALLED, cursor.getInt(1) != 0)
                         }
                     }
                 }
