@@ -182,7 +182,7 @@ abstract class AppDatabase: RoomDatabase() {
             object : Migration(2, 3) {
                 override fun migrate(db: SupportSQLiteDatabase) {
                     // We don't have access to the context in a Room migration now, so
-                    // we will just drop those settings from old DAVx5 versions.
+                    // we will just drop those settings from old PeopleSync versions.
                     Logger.log.warning("Dropping settings distrustSystemCerts and overrideProxy*")
 
                     /*val edit = PreferenceManager.getDefaultSharedPreferences(context).edit()

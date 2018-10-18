@@ -28,9 +28,9 @@ import java.util.logging.Level
 
 /**
  * A local address book. Requires an own Android account, because Android manages contacts per
- * account and there is no such thing as "address books". So, DAVx5 creates a "DAVx5
+ * account and there is no such thing as "address books". So, PeopleSync creates a "PeopleSync
  * address book" account for every CardDAV address book. These accounts are bound to a
- * DAVx5 main account.
+ * PeopleSync main account.
  */
 open class LocalAddressBook(
         private val context: Context,

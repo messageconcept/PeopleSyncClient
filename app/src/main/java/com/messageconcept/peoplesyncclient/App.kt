@@ -67,7 +67,7 @@ class App: Application(), Thread.UncaughtExceptionHandler {
             // watch for account changes/deletions
             AccountUtils.registerAccountsUpdateListener(this)
 
-            // foreground service (possible workaround for devices which prevent DAVx5 from being started)
+            // foreground service (possible workaround for devices which prevent PeopleSync from being started)
             ForegroundService.startIfActive(this)
 
             // watch storage because low storage means synchronization is stopped

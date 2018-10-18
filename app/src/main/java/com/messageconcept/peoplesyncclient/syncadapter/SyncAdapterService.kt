@@ -75,7 +75,7 @@ abstract class SyncAdapterService: Service() {
         context: Context
     ): AbstractThreadedSyncAdapter(
         context,
-        true    // isSyncable shouldn't be -1 because DAVx5 sets it to 0 or 1.
+        true    // isSyncable shouldn't be -1 because PeopleSync sets it to 0 or 1.
                             // However, if it is -1 by accident, set it to 1 to avoid endless sync loops.
     ) {
 
