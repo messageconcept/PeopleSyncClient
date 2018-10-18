@@ -6,7 +6,7 @@
     <string name="twitter_handle" translatable="false">davx5app</string>
 
     <string name="account_invalid">Account does not exist (anymore)</string>
-    <string name="account_type" translatable="false">bitfire.at.davdroid</string>
+    <string name="account_type" translatable="false">com.messageconcept.peoplesyncclient</string>
     <string name="account_type_address_book" translatable="false">com.messageconcept.peoplesyncclient.address_book</string>
     <string name="account_title_address_book">PeopleSync Address book</string>
     <string name="address_books_authority" translatable="false">com.messageconcept.peoplesyncclient.addressbooks</string>
