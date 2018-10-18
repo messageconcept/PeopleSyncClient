@@ -3,6 +3,5 @@
 ####################################################################################################
 
 com.messageconcept.peoplesyncclient.ui.intro.WelcomeFragment$Factory
-com.messageconcept.peoplesyncclient.ui.intro.TasksFragmentFactory
 com.messageconcept.peoplesyncclient.ui.intro.PermissionsFragmentFactory
 com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment$Factory
