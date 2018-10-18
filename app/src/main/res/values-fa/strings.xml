@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">حساب کاربری موجود نیست (بیشتر از این)</string>
-  <string name="account_title_address_book">کتاب آدرس DAVx⁵</string>
+  <string name="account_title_address_book">کتاب آدرس PeopleSync</string>
   <string name="address_books_authority_title">کتاب آدرس</string>
   <string name="dialog_remove">حذف</string>
   <string name="dialog_deny">لغو</string>
@@ -132,7 +132,7 @@
   <string name="account_list_manage_storage">مدیریت حافظه</string>
   <string name="account_list_datasaver_enabled">محافظ داده فعال است. همگام سازی در پس زمینه محدود می شود.</string>
   <string name="account_list_manage_datasaver">مدیریت محافظ داده</string>
-  <string name="account_list_empty">به همگام‌ساز DAVx⁵ خوش آمدید</string>
+  <string name="account_list_empty">به همگام‌ساز PeopleSync خوش آمدید</string>
   <string name="accounts_global_sync_disabled">همگام سازی خودکار در کل سیستم غیرفعال است</string>
   <string name="accounts_global_sync_enable">فعال</string>
   <string name="accounts_sync_all">همگام سازی همه حساب‌ها</string>
@@ -400,7 +400,7 @@
   <string name="webdav_notification_download">بارگیری فایل WebDAV</string>
   <string name="webdav_notification_upload">بارگذاری فایل WebDAV</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">مجوزهای همگام‌ساز DAVx⁵</string>
+  <string name="sync_error_permissions">مجوزهای همگام‌ساز PeopleSync</string>
   <string name="sync_error_permissions_text">مجوزهای اضافی لازم است</string>
   <string name="sync_error_tasks_too_old">%s خیلی قدیمی است</string>
   <string name="sync_error_tasks_required_version">حداقل نسخه مورد نیاز: %1$s</string>
@@ -415,6 +415,6 @@
   <string name="sync_invalid_task">کار نامعتبر از سرور دریافت شد</string>
   <string name="sync_invalid_resources_ignoring">نادیده گرفتن یک یا چند منبع نامعتبر</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">همگام ساز DAVx⁵: امنیت اتصال</string>
-  <string name="trust_certificate_unknown_certificate_found">همگام ساز DAVx⁵ با یک گواهی ناشناخته روبرو شده است. آیا می خواهید به آن اعتماد کنید؟</string>
+  <string name="certificate_notification_connection_security">همگام ساز PeopleSync: امنیت اتصال</string>
+  <string name="trust_certificate_unknown_certificate_found">همگام ساز PeopleSync با یک گواهی ناشناخته روبرو شده است. آیا می خواهید به آن اعتماد کنید؟</string>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">El compte no existeix (eliminat)</string>
-  <string name="account_title_address_book">Llibreta d’adreces del DAVx⁵</string>
+  <string name="account_title_address_book">Llibreta d’adreces del PeopleSync</string>
   <string name="address_books_authority_title">Llibreta d’adreces</string>
   <string name="dialog_remove">Elimina</string>
   <string name="dialog_deny">Cancel·la</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Gestiona l\'emmagatzematge</string>
   <string name="account_list_datasaver_enabled">S\'ha activat l\'estalviador de dades. La sincronització en segon pla està restringida.</string>
   <string name="account_list_manage_datasaver">Gestió de l\'estalviador de dades</string>
-  <string name="account_list_empty">Us donem la benvinguda a DAVx⁵! \n\nAra podeu afegir un compte CalDAV / CardDAV.</string>
+  <string name="account_list_empty">Us donem la benvinguda a PeopleSync! \n\nAra podeu afegir un compte CalDAV / CardDAV.</string>
   <string name="accounts_global_sync_disabled">La sincronització automàtica de tot el sistema està inhabilitada</string>
   <string name="accounts_global_sync_enable">Activa</string>
   <string name="accounts_sync_all">Sincronitza tots els comptes</string>
@@ -413,7 +413,7 @@
   <string name="webdav_notification_upload">S\'està pujant el fitxer WebDAV</string>
   <string name="webdav_provider_root_title">Muntatge WebDAV</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">Permisos del DAVx⁵</string>
+  <string name="sync_error_permissions">Permisos del PeopleSync</string>
   <string name="sync_error_permissions_text">Es requereixen permisos addicionals</string>
   <string name="sync_error_tasks_too_old">%s és massa antiga</string>
   <string name="sync_error_tasks_required_version">Versió mínima requerida: %1$s</string>
@@ -428,6 +428,6 @@
   <string name="sync_invalid_task">S\'ha rebut una tasca no vàlida del servidor</string>
   <string name="sync_invalid_resources_ignoring">S\'ha ignorat un o més recursos no vàlids</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Seguretat de la connexió</string>
-  <string name="trust_certificate_unknown_certificate_found">El DAVx⁵ ha trobat un certificat desconegut. Voleu confiar-hi?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Seguretat de la connexió</string>
+  <string name="trust_certificate_unknown_certificate_found">El PeopleSync ha trobat un certificat desconegut. Voleu confiar-hi?</string>
 </resources>

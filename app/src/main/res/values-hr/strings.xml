@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">Račun (više) ne postoji</string>
-  <string name="account_title_address_book">DAVx⁵ Adresar</string>
+  <string name="account_title_address_book">PeopleSync Adresar</string>
   <string name="address_books_authority_title">Adresari</string>
   <string name="help">Pomoć</string>
   <string name="manage_accounts">Upravljaj računima</string>
@@ -106,7 +106,7 @@
   <string name="navigation_drawer_donate">Doniraj</string>
   <string name="navigation_drawer_privacy_policy">Pravila o zaštiti privatnosti</string>
   <string name="account_list_no_internet">Nema internet veze. Android neće pokrenuti sinkronizaciju.</string>
-  <string name="account_list_empty">Dobrodošli u DAVx⁵!\n\nSada možete dodati CalDAV/CardDAV račun.</string>
+  <string name="account_list_empty">Dobrodošli u PeopleSync!\n\nSada možete dodati CalDAV/CardDAV račun.</string>
   <string name="accounts_global_sync_disabled">Automatska sinkronizacija je onemogućena na razini sustava</string>
   <string name="accounts_global_sync_enable">Omogući</string>
   <string name="accounts_sync_all">Sinkroniziraj sve račune</string>
@@ -339,7 +339,7 @@
   <string name="webdav_add_mount_username">Korisničko ime</string>
   <string name="webdav_add_mount_password">Lozinka</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">DAVx⁵ dopuštenja</string>
+  <string name="sync_error_permissions">PeopleSync dopuštenja</string>
   <string name="sync_error_permissions_text">Dodatna dopuštenja su potrebna</string>
   <string name="sync_error_tasks_too_old">%s prestar</string>
   <string name="sync_error_tasks_required_version">Najmanja potrebno verzija: %1$s</string>
@@ -354,6 +354,6 @@
   <string name="sync_invalid_task">Primljen je nevažeći zadatak sa poslužitelja</string>
   <string name="sync_invalid_resources_ignoring">Zanemarivanje jednog ili više nevaljanih resursa</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Sigurnost veze</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ je naišao na nepoznati certifikat. Želite li mu vjerovati?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Sigurnost veze</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync je naišao na nepoznati certifikat. Želite li mu vjerovati?</string>
 </resources>

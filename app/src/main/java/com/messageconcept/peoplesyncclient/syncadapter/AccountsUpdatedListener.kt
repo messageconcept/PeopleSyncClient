@@ -35,7 +35,7 @@ class AccountsUpdatedListener private constructor(
 
     /**
      * Called when the system accounts have been updated. The interesting case for us is when
-     * a DAVx5 account has been removed. Then we enqueue an [AccountsCleanupWorker] to remove
+     * a PeopleSync account has been removed. Then we enqueue an [AccountsCleanupWorker] to remove
      * the orphaned entries from the database.
      */
     @AnyThread

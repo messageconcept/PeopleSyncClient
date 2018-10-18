@@ -171,7 +171,7 @@ class BatteryOptimizationsFragment: Fragment() {
             isWhitelisted.value = whitelisted
             shouldBeWhitelisted.value = whitelisted
 
-            // if DAVx5 is whitelisted, always show a reminder as soon as it's not whitelisted anymore
+            // if PeopleSync is whitelisted, always show a reminder as soon as it's not whitelisted anymore
             if (whitelisted)
                 settings.remove(HINT_BATTERY_OPTIMIZATIONS)
         }
@@ -192,7 +192,7 @@ class BatteryOptimizationsFragment: Fragment() {
 
         override fun getOrder(context: Context) =
                 // show fragment when:
-                // 1. DAVx5 is not whitelisted yet and "don't show anymore" has not been clicked, and/or
+                // 1. PeopleSync is not whitelisted yet and "don't show anymore" has not been clicked, and/or
                 // 2a. evil manufacturer AND
                 // 2b. "don't show anymore" has not been clicked
                 if (

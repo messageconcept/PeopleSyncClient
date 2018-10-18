@@ -30,7 +30,7 @@ class TasksIntroFragment : Fragment() {
     ): IntroFragmentFactory {
 
         override fun getOrder(context: Context): Int {
-            // On Android <6, OpenTasks must be installed before DAVx5, so this fragment is not useful.
+            // On Android <6, OpenTasks must be installed before PeopleSync, so this fragment is not useful.
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
                 return IntroFragmentFactory.DONT_SHOW
 

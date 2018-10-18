@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">A conta non existe (definitivamente)</string>
-  <string name="account_title_address_book">DAVx⁵ libreta de enderezos</string>
+  <string name="account_title_address_book">PeopleSync libreta de enderezos</string>
   <string name="address_books_authority_title">Libretas de enderezos</string>
   <string name="dialog_remove">Eliminar</string>
   <string name="dialog_deny">Desbotar</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Xestionar almacenaxe</string>
   <string name="account_list_datasaver_enabled">O aforro de datos está activado. A sincronización en segundo plano está restrinxida.</string>
   <string name="account_list_manage_datasaver">Xestionar aforro de datos</string>
-  <string name="account_list_empty">Benvida a DAVx⁵!\n\nXa podes engadir unha conta CalDAV/CardDAV</string>
+  <string name="account_list_empty">Benvida a PeopleSync!\n\nXa podes engadir unha conta CalDAV/CardDAV</string>
   <string name="accounts_global_sync_disabled">A sincronización global automática do sistema está desactivada</string>
   <string name="accounts_global_sync_enable">Activar</string>
   <string name="accounts_sync_all">Sincroniza todas as contas</string>
@@ -413,7 +413,7 @@
   <string name="webdav_notification_upload">Subindo ficheiro WebDAV</string>
   <string name="webdav_provider_root_title">Montaxe WebDAV</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">Permisos DAVx⁵</string>
+  <string name="sync_error_permissions">Permisos PeopleSync</string>
   <string name="sync_error_permissions_text">Precísanse permisos adicionais</string>
   <string name="sync_error_tasks_too_old">%s demasiado antigo</string>
   <string name="sync_error_tasks_required_version">Versión mínima requerida: %1$s</string>
@@ -428,6 +428,6 @@
   <string name="sync_invalid_task">Recibida tarefa non válida desde o servidor</string>
   <string name="sync_invalid_resources_ignoring">Ignorando un ou varios recursos non válidos</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: seguridade da conexión</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ atopou un certificado descoñecido. Queres confiar nel?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: seguridade da conexión</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync atopou un certificado descoñecido. Queres confiar nel?</string>
 </resources>

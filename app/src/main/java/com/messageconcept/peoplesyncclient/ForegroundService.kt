@@ -34,7 +34,7 @@ class ForegroundService : Service() {
 
         /**
          * Starts/stops a foreground service, according to the app setting [Settings.FOREGROUND_SERVICE]
-         * if [Settings.BATTERY_OPTIMIZATION] is enabled - meaning DAVx5 is whitelisted from optimization.
+         * if [Settings.BATTERY_OPTIMIZATION] is enabled - meaning PeopleSync is whitelisted from optimization.
          */
         const val ACTION_FOREGROUND = "foreground"
 

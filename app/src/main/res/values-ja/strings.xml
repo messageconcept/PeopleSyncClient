@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">アカウントがありません</string>
-  <string name="account_title_address_book">DAVx⁵ アドレス帳</string>
+  <string name="account_title_address_book">PeopleSync アドレス帳</string>
   <string name="address_books_authority_title">アドレス帳</string>
   <string name="dialog_remove">削除</string>
   <string name="dialog_deny">キャンセル</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">ストレージを管理</string>
   <string name="account_list_datasaver_enabled">データサーバーが有効です。バックグラウンド同期が制限されています</string>
   <string name="account_list_manage_datasaver">データサーバーを管理</string>
-  <string name="account_list_empty">DAVx⁵ にようこそ！\n\nCalDAV/CardDAV アカウントを追加できるようになりました。</string>
+  <string name="account_list_empty">PeopleSync にようこそ！\n\nCalDAV/CardDAV アカウントを追加できるようになりました。</string>
   <string name="accounts_global_sync_disabled">システム全体の自動同期が無効です</string>
   <string name="accounts_global_sync_enable">有効</string>
   <string name="accounts_sync_all">すべてのアカウントを同期</string>
@@ -411,7 +411,7 @@
   <string name="webdav_notification_upload">WebDAV ファイルをアップロードしています</string>
   <string name="webdav_provider_root_title">WebDAV マウント</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">DAVx⁵ の権限</string>
+  <string name="sync_error_permissions">PeopleSync の権限</string>
   <string name="sync_error_permissions_text">アクセス権限の許可が必要です</string>
   <string name="sync_error_tasks_too_old">%s が古すぎます</string>
   <string name="sync_error_tasks_required_version">最小要求バージョン: %1$s</string>
@@ -426,6 +426,6 @@
   <string name="sync_invalid_task">サーバーから無効なタスクを受信しました</string>
   <string name="sync_invalid_resources_ignoring">1 または複数の無効なリソースを無視します</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: 接続セキュリティ</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ が未知の証明書を検出しました。信頼しますか？</string>
+  <string name="certificate_notification_connection_security">PeopleSync: 接続セキュリティ</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync が未知の証明書を検出しました。信頼しますか？</string>
 </resources>

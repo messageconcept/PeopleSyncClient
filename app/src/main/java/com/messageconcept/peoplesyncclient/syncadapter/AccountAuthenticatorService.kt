@@ -15,7 +15,7 @@ import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 
 
 /**
- * Account authenticator for the main DAVx5 account type.
+ * Account authenticator for the main PeopleSync account type.
  */
 class AccountAuthenticatorService: Service() {
 

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="address_books_authority_title">Rehberler</string>
   <string name="help">Yardım</string>
   <string name="manage_accounts">Hesapları yönet</string>
@@ -28,7 +28,7 @@
   <string name="navigation_drawer_website">Web sitesi</string>
   <string name="navigation_drawer_faq">SSS</string>
   <string name="navigation_drawer_donate">Bağış yap</string>
-  <string name="account_list_empty">DAVx⁵\'e hoşgeldin!\n\nŞimdi bir CalDAV/CardDAV hesabı ekleyebilirsin.</string>
+  <string name="account_list_empty">PeopleSync\'e hoşgeldin!\n\nŞimdi bir CalDAV/CardDAV hesabı ekleyebilirsin.</string>
   <!--RefreshCollectionsWorker-->
   <string name="refresh_collections_worker_refresh_failed">Servis keşfi başarısız</string>
   <string name="refresh_collections_worker_refresh_couldnt_refresh">Kolleksiyon listesi yenilenemedi</string>
@@ -130,7 +130,7 @@
   <string name="webdav_add_mount_username">Kullanıcı adı</string>
   <string name="webdav_add_mount_password">Parola</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">DAVx⁵ izinleri</string>
+  <string name="sync_error_permissions">PeopleSync izinleri</string>
   <string name="sync_error_permissions_text">Ek izinler zorunludur</string>
   <!--cert4android-->
 </resources>

@@ -62,7 +62,7 @@ import java.util.logging.Level
  * settings will be taken from the corresponding main account instead.
  *
  * @throws InvalidAccountException on construction when the account doesn't exist (anymore)
- * @throws IllegalArgumentException when the account type is not _DAVx5_ or _DAVx5 address book_
+ * @throws IllegalArgumentException when the account type is not _PeopleSync_ or _PeopleSync address book_
  */
 @Suppress("FunctionName")
 class AccountSettings(
@@ -110,12 +110,12 @@ class AccountSettings(
          */
         const val KEY_DEFAULT_ALARM = "default_alarm"
 
-        /** Whether DAVx5 sets the local calendar color to the value from service DB at every sync
+        /** Whether PeopleSync sets the local calendar color to the value from service DB at every sync
          value = *null* (not existing): true (default);
                  "0"                    false */
         const val KEY_MANAGE_CALENDAR_COLORS = "manage_calendar_colors"
 
-        /** Whether DAVx5 populates and uses CalendarContract.Colors
+        /** Whether PeopleSync populates and uses CalendarContract.Colors
          value = *null* (not existing)   false (default);
                  "1"                     true */
         const val KEY_EVENT_COLORS = "event_colors"

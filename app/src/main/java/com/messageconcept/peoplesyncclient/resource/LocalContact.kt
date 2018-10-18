@@ -204,7 +204,7 @@ class LocalContact: AndroidContact, LocalAddress {
 
     /**
      * Returns the IDs of all groups the contact was member of (cached memberships).
-     * Cached memberships are kept in sync with memberships by DAVx5 and are used to determine
+     * Cached memberships are kept in sync with memberships by PeopleSync and are used to determine
      * whether a membership has been deleted/added when a raw contact is dirty.
      * @return set of {@link GroupMembership#GROUP_ROW_ID} (may be empty)
      * @throws FileNotFoundException if the current contact can't be found

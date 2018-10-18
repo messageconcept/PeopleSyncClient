@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">Konto findes ikke (længere)</string>
-  <string name="account_title_address_book">DAVx⁵ adressebog</string>
+  <string name="account_title_address_book">PeopleSync adressebog</string>
   <string name="address_books_authority_title">Adressebøger</string>
   <string name="dialog_remove">Fjern</string>
   <string name="dialog_deny">Annullere</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Administrer lagerplads</string>
   <string name="account_list_datasaver_enabled">Gemning af data slået til. Synkronisering i baggrunden er begrænset.</string>
   <string name="account_list_manage_datasaver">Administrer gemning af data</string>
-  <string name="account_list_empty">Velkommen til DAVx⁵!\n\nDu kan nu tilføje en CalDAV/CardDAV konto.</string>
+  <string name="account_list_empty">Velkommen til PeopleSync!\n\nDu kan nu tilføje en CalDAV/CardDAV konto.</string>
   <string name="accounts_global_sync_disabled">Automatisk synkronisering på tværs af systemet er deaktiveret</string>
   <string name="accounts_global_sync_enable">Aktivere</string>
   <string name="accounts_sync_all">Synkroniser alle konti</string>
@@ -413,7 +413,7 @@
   <string name="webdav_notification_upload">Overfør WebDAV fil</string>
   <string name="webdav_provider_root_title">Montere WebDAV</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">DAVx⁵-rettigheder</string>
+  <string name="sync_error_permissions">PeopleSync-rettigheder</string>
   <string name="sync_error_permissions_text">Yderligere adgang påkrævet</string>
   <string name="sync_error_tasks_too_old">%s for gammel</string>
   <string name="sync_error_tasks_required_version">Påkrævet version: %1$s</string>
@@ -428,6 +428,6 @@
   <string name="sync_invalid_task">Modtaget ugyldig opgave fra server</string>
   <string name="sync_invalid_resources_ignoring">Ignorere en eller flere ugyldige kilder</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Forbindelsessikkerhed</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ er stødt på et ukendt certifikat. Vil du stole på det? </string>
+  <string name="certificate_notification_connection_security">PeopleSync: Forbindelsessikkerhed</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync er stødt på et ukendt certifikat. Vil du stole på det? </string>
 </resources>

@@ -165,7 +165,7 @@
             android:label="@string/webdav_add_mount_title"
             android:parentActivityName=".ui.webdav.WebdavMountsActivity" />
 
-        <!-- account type "DAVx⁵" -->
+        <!-- account type "PeopleSync" -->
         <service
             android:name=".syncadapter.AccountAuthenticatorService"
             android:exported="false">
@@ -231,7 +231,7 @@
             </intent-filter>
         </provider>
 
-        <!-- account type "DAVx⁵ Address book" -->
+        <!-- account type "PeopleSync Address book" -->
         <service
             android:name=".syncadapter.AddressBookAuthenticatorService"
             android:exported="true">   <!-- Since Android 11, this must be true so that Google Contacts shows the address book accounts -->

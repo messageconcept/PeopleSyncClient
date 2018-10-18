@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">Účet (už) neexistuje</string>
-  <string name="account_title_address_book">DAVx⁵ adresář kontaktů</string>
+  <string name="account_title_address_book">PeopleSync adresář kontaktů</string>
   <string name="address_books_authority_title">Adresáře kontaktů</string>
   <string name="dialog_remove">Odebrat</string>
   <string name="dialog_deny">Storno</string>
@@ -130,7 +130,7 @@
   <string name="account_list_manage_connections">Spravovat spojení</string>
   <string name="account_list_low_storage">Zbývá málo místa na úložišti. Systém Android nespustí synchronizaci.</string>
   <string name="account_list_manage_storage">Spravovat úložiště</string>
-  <string name="account_list_empty">Vítejte v aplikaci DAVx⁵!\n\nNyní můžete přidat CalDAV/CardDAV účet.</string>
+  <string name="account_list_empty">Vítejte v aplikaci PeopleSync!\n\nNyní můžete přidat CalDAV/CardDAV účet.</string>
   <string name="accounts_global_sync_disabled">Automatická synchronizace v rámci celého systému je vypnutá</string>
   <string name="accounts_global_sync_enable">Zapnout</string>
   <string name="accounts_sync_all">Synchronizovat všechny účty</string>
@@ -413,7 +413,7 @@
   <string name="webdav_notification_upload">Nahrává se WebDAV soubor</string>
   <string name="webdav_provider_root_title">WebDAV připojení</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">DAVx⁵ oprávnění</string>
+  <string name="sync_error_permissions">PeopleSync oprávnění</string>
   <string name="sync_error_permissions_text">Vyžadována dodatečná oprávnění</string>
   <string name="sync_error_tasks_too_old">Příliš stará verze %s</string>
   <string name="sync_error_tasks_required_version">Nejnižší požadovaná verze: %1$s</string>
@@ -428,6 +428,6 @@
   <string name="sync_invalid_task">Ze serveru obdržen neplatný úkol</string>
   <string name="sync_invalid_resources_ignoring">Ignoruje se jeden či více neplatný prostředků</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Zabezpečení připojení</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ nalezlo neznámý certifikát. Chcete mu důvěřovat?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Zabezpečení připojení</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync nalezlo neznámý certifikát. Chcete mu důvěřovat?</string>
 </resources>

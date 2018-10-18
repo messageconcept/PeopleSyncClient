@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
-  <string name="app_name">DAVx⁵</string>
+  <string name="app_name">PeopleSync</string>
   <string name="account_invalid">Konto (już) nie istnieje</string>
-  <string name="account_title_address_book">Książka adresowa DAVx⁵</string>
+  <string name="account_title_address_book">Książka adresowa PeopleSync</string>
   <string name="address_books_authority_title">Książka adresowa</string>
   <string name="dialog_remove">Usuń</string>
   <string name="dialog_deny">Anuluj</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Zarządzaj pamięcią</string>
   <string name="account_list_datasaver_enabled">Włączono oszczędzanie danych. Synchronizacja w tle jest ograniczona.</string>
   <string name="account_list_manage_datasaver">Zarządzaj oszczędzaniem danych</string>
-  <string name="account_list_empty">Witamy w DAVx⁵!\n\nMożesz teraz dodać konto CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Witamy w PeopleSync!\n\nMożesz teraz dodać konto CalDAV/CardDAV.</string>
   <string name="accounts_global_sync_disabled">Automatyczna synchronizacja dla całego systemu jest wyłączona</string>
   <string name="accounts_global_sync_enable">Włącz</string>
   <string name="accounts_sync_all">Synchronizuj wszystkie konta</string>
@@ -417,7 +417,7 @@
   <string name="webdav_notification_upload">Wgrywanie pliku WebDAV</string>
   <string name="webdav_provider_root_title">Punkt linkowania WebDAV</string>
   <!--sync adapters-->
-  <string name="sync_error_permissions">Uprawnienia DAVx⁵</string>
+  <string name="sync_error_permissions">Uprawnienia PeopleSync</string>
   <string name="sync_error_permissions_text">Wymagane dodatkowe uprawnienia</string>
   <string name="sync_error_tasks_too_old">%s zbyt stary/a</string>
   <string name="sync_error_tasks_required_version">Minimalna wymagana wersja: %1$s</string>
@@ -432,6 +432,6 @@
   <string name="sync_invalid_task">Otrzymano błędne zadanie z serwera</string>
   <string name="sync_invalid_resources_ignoring">Zignorowano jeden lub więcej nieważnych zasobów</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">DAVx⁵: Bezpieczeństwo połączenia</string>
-  <string name="trust_certificate_unknown_certificate_found">DAVx⁵ napotkał nieznany certyfikat. Czy chcesz go dodać?</string>
+  <string name="certificate_notification_connection_security">PeopleSync: Bezpieczeństwo połączenia</string>
+  <string name="trust_certificate_unknown_certificate_found">PeopleSync napotkał nieznany certyfikat. Czy chcesz go dodać?</string>
 </resources>
