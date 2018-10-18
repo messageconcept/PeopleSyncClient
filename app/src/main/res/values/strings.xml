@@ -66,7 +66,7 @@
     <!-- AccountsActivity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync Adapter</string>
+    <string name="navigation_drawer_subtitle">CardDAV Sync Adapter</string>
     <string name="navigation_drawer_about">About / License</string>
     <string name="navigation_drawer_beta_feedback">Beta feedback</string>
     <string name="navigation_drawer_settings">Settings</string>
@@ -78,7 +78,7 @@
     <string name="navigation_drawer_forums">Help / Forums</string>
     <string name="navigation_drawer_donate">Donate</string>
 
-    <string name="account_list_empty">Welcome to PeopleSync!\n\nYou can add a CalDAV/CardDAV account now.</string>
+    <string name="account_list_empty">Welcome to PeopleSync!\n\nYou can add a CardDAV account now.</string>
     <string name="accounts_global_sync_disabled">System-wide automatic synchronization is disabled</string>
     <string name="accounts_global_sync_enable">Enable</string>
 
