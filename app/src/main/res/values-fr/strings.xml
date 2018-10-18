@@ -75,7 +75,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
   <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
-  <string name="navigation_drawer_subtitle">Adaptateur de synchronisation CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptateur de synchronisation CardDAV</string>
   <string name="navigation_drawer_about">À propos / Licence</string>
   <string name="navigation_drawer_beta_feedback">Commentaire pour la version Beta</string>
   <string name="install_email_client">Veuillez installer un client mail</string>
