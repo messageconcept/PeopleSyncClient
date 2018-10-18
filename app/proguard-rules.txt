@@ -1,8 +1,8 @@
 
-# ProGuard usage for DAVx⁵:
+# ProGuard usage for PeopleSync:
 #       shrinking        yes (main reason for using ProGuard)
 #       optimization     yes
-#       obfuscation      no (DAVx⁵ is open-source)
+#       obfuscation      no (PeopleSync is open-source)
 #       preverification  no
 
 -dontobfuscate
@@ -43,5 +43,5 @@
 # dnsjava
 -dontwarn sun.net.spi.nameservice.**   # not available on Android
 
-# DAVx⁵ + libs
--keep class at.bitfire.** { *; }       # all DAVx⁵ code is required
+# PeopleSync + libs
+-keep class at.bitfire.** { *; }       # all PeopleSync code is required

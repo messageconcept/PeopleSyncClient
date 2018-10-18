@@ -27,7 +27,7 @@ android {
         targetSdkVersion 28     // Android 9.0
         multiDexEnabled true    // >64k methods for Android 4.4
 
-        buildConfigField "String", "userAgent", "\"DAVx5\""
+        buildConfigField "String", "userAgent", "\"PeopleSync\""
 
         // when using this, make sure that notification icons are real bitmaps
         vectorDrawables.useSupportLibrary = true
