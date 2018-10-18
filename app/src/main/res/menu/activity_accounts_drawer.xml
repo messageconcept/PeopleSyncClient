@@ -18,51 +18,12 @@
         android:icon="@drawable/ic_settings"
         android:title="@string/navigation_drawer_settings"/>
 
-    <item android:title="@string/navigation_drawer_news_updates">
-        <menu>
-            <item
-                android:id="@+id/nav_twitter"
-                android:icon="@drawable/twitter"
-                android:title="\@davx5app"
-                tools:ignore="HardcodedText"/>
-        </menu>
-    </item>
-
-    <item android:title="@string/navigation_drawer_tools">
-        <menu>
-            <item
-                android:id="@+id/nav_webdav_mounts"
-                android:icon="@drawable/ic_storage"
-                android:title="@string/webdav_mounts_title" />
-        </menu>
-    </item>
-
     <item android:title="@string/navigation_drawer_external_links">
         <menu>
             <item
                 android:id="@+id/nav_website"
                 android:icon="@drawable/ic_home"
                 android:title="@string/navigation_drawer_website"/>
-            <item
-                android:id="@+id/nav_manual"
-                android:icon="@drawable/ic_info"
-                android:title="@string/navigation_drawer_manual"/>
-            <item
-                android:id="@+id/nav_faq"
-                android:icon="@drawable/ic_help"
-                android:title="@string/navigation_drawer_faq"/>
-            <item
-                android:id="@+id/nav_community"
-                android:icon="@drawable/ic_forum"
-                android:title="@string/navigation_drawer_community"/>
-            <item
-                android:id="@+id/nav_donate"
-                android:icon="@drawable/ic_attach_money"
-                android:title="@string/navigation_drawer_donate"/>
-            <item
-                android:id="@+id/nav_privacy"
-                android:icon="@drawable/ic_cloud_off"
-                android:title="@string/navigation_drawer_privacy_policy"/>
         </menu>
     </item>
 
