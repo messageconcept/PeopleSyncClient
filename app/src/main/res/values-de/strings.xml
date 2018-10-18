@@ -47,7 +47,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Hauptmenü anzeigen</string>
   <string name="navigation_drawer_close">Hauptmenü schließen</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV-Sync-Adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV-Sync-Adapter</string>
   <string name="navigation_drawer_about">Über / Lizenz</string>
   <string name="navigation_drawer_beta_feedback">Beta-Rückmeldung</string>
   <string name="navigation_drawer_settings">Einstellungen</string>
@@ -59,7 +59,7 @@
   <string name="navigation_drawer_forums">Hilfe / Forum</string>
   <string name="navigation_drawer_donate">Spenden</string>
   <string name="account_list_no_internet">Keine Internet-Verbindung. Android wird die Synchronisierung daher nicht starten.</string>
-  <string name="account_list_empty">Herzlich willkommen!\n\nSie können jetzt ein CalDAV/CardDAV-Konto hinzufügen.</string>
+  <string name="account_list_empty">Herzlich willkommen!\n\nSie können jetzt ein CardDAV-Konto hinzufügen.</string>
   <string name="accounts_global_sync_disabled">Systemweite automatische Synchronisierung ist nicht aktiv</string>
   <string name="accounts_global_sync_enable">Aktivieren</string>
   <!--DavService-->
