@@ -21,7 +21,6 @@ import androidx.preference.SwitchPreferenceCompat
 import at.bitfire.cert4android.CustomCertManager
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment
@@ -154,28 +153,6 @@ class AppSettingsActivity: AppCompatActivity() {
             // security settings
             findPreference<SwitchPreferenceCompat>(Settings.DISTRUST_SYSTEM_CERTIFICATES)!!
                     .isChecked = settings.getBoolean(Settings.DISTRUST_SYSTEM_CERTIFICATES)
-
-            // integration settings
-            findPreference<Preference>(Settings.PREFERRED_TASKS_PROVIDER)!!.apply {
-                val pm = context.packageManager
-                val taskProvider = TaskUtils.currentProvider(context)
-                if (taskProvider != null) {
-                    val tasksAppInfo = pm.getApplicationInfo(taskProvider.packageName, 0)
-                    val inset = (24*resources.displayMetrics.density).roundToInt()  // 24dp
-                    icon = InsetDrawable(
-                            tasksAppInfo.loadIcon(pm),
-                            0, inset, inset, inset
-                    )
-                    summary = getString(R.string.app_settings_tasks_provider_synchronizing_with, tasksAppInfo.loadLabel(pm))
-                } else {
-                    setIcon(R.drawable.ic_playlist_add_check_dark)
-                    setSummary(R.string.app_settings_tasks_provider_none)
-                }
-                setOnPreferenceClickListener {
-                    startActivity(Intent(requireActivity(), TasksActivity::class.java))
-                    false
-                }
-            }
         }
 
         override fun onSettingsChanged() {
@@ -190,7 +167,6 @@ class AppSettingsActivity: AppCompatActivity() {
             val settings = SettingsManager.getInstance(requireActivity())
             settings.remove(BatteryOptimizationsFragment.Model.HINT_BATTERY_OPTIMIZATIONS)
             settings.remove(BatteryOptimizationsFragment.Model.HINT_AUTOSTART_PERMISSION)
-            settings.remove(TasksFragment.Model.HINT_OPENTASKS_NOT_INSTALLED)
             Snackbar.make(requireView(), R.string.app_settings_reset_hints_success, Snackbar.LENGTH_LONG).show()
         }
 
