@@ -32,7 +32,7 @@ object Logger : SharedPreferences.OnSharedPreferenceChangeListener {
 
     private const val LOG_TO_FILE = "log_to_file"
 
-    val log: java.util.logging.Logger = java.util.logging.Logger.getLogger("davx5")
+    val log: java.util.logging.Logger = java.util.logging.Logger.getLogger("peoplesync")
 
     private lateinit var context: Application
     private lateinit var preferences: SharedPreferences
@@ -77,7 +77,7 @@ object Logger : SharedPreferences.OnSharedPreferenceChangeListener {
         // log to external file according to preferences
         if (logToFile) {
             val logDir = debugDir() ?: return
-            val logFile = File(logDir, "davx5-log.txt")
+            val logFile = File(logDir, "peoplesync-log.txt")
             if (logFile.createNewFile())
                 logFile.writeText("Log file created at ${Date()}; PID ${Process.myPid()}; UID ${Process.myUid()}\n")
 
