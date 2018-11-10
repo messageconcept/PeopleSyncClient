@@ -15,10 +15,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.CalendarContract
 import androidx.core.content.getSystemService
 import com.messageconcept.peoplesyncclient.log.Logger
-import at.bitfire.ical4android.TaskProvider
 import okhttp3.HttpUrl
 import org.xbill.DNS.*
 import java.util.*
@@ -131,9 +129,7 @@ object DavUtils {
 
     fun requestSync(context: Context, account: Account) {
         val authorities = arrayOf(
-                context.getString(R.string.address_books_authority),
-                CalendarContract.AUTHORITY,
-                TaskProvider.ProviderName.OpenTasks.authority
+                context.getString(R.string.address_books_authority)
         )
 
         for (authority in authorities) {

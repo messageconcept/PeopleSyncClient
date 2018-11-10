@@ -10,21 +10,12 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
-import at.bitfire.ical4android.TaskProvider
 
 object PermissionUtils {
 
     val CONTACT_PERMSSIONS = arrayOf(
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS
-    )
-    val CALENDAR_PERMISSIONS = arrayOf(
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR
-    )
-    val TASKS_PERMISSIONS = arrayOf(
-            TaskProvider.PERMISSION_READ_TASKS,
-            TaskProvider.PERMISSION_WRITE_TASKS
     )
 
     /**

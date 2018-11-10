@@ -137,72 +137,10 @@
                         android:checked="@={model.needContactsPermissions}" />
 
                     <TextView
-                        android:id="@+id/calendarHeading"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_margin_title_text"
-                        app:layout_constraintTop_toBottomOf="@id/contactsStatus"
-                        app:layout_constraintBottom_toTopOf="@id/calendarStatus"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintEnd_toStartOf="@id/calendarSwitch"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:text="@string/permissions_calendar_title" />
-                    <TextView
-                        android:id="@+id/calendarStatus"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/calendarHeading"
-                        app:layout_constraintBottom_toTopOf="@id/tasksHeading"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintEnd_toStartOf="@id/calendarSwitch"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:text="@{model.haveCalendarPermissions ? @string/permissions_calendar_status_on : @string/permissions_calendar_status_off}" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/calendarSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/calendarHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/calendarStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:clickable="@{!model.haveCalendarPermissions}"
-                        android:checked="@={model.needCalendarPermissions}" />
-
-                    <TextView
-                        android:id="@+id/tasksHeading"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/card_margin_title_text"
-                        app:layout_constraintTop_toBottomOf="@id/calendarStatus"
-                        app:layout_constraintBottom_toTopOf="@id/tasksStatus"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintEnd_toStartOf="@id/tasksSwitch"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:text="@string/permissions_tasks_title" />
-                    <TextView
-                        android:id="@+id/tasksStatus"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tasksHeading"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintEnd_toStartOf="@id/tasksSwitch"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:text="@{model.haveTasksPermissions != null ? (model.haveTasksPermissions ? @string/permissions_tasks_status_on : @string/permissions_tasks_status_off) : @string/permissions_tasks_status_not_installed}" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/tasksSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/tasksHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/tasksStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:enabled="@{model.haveTasksPermissions != null}"
-                        android:clickable="@{!model.haveTasksPermissions}"
-                        android:checked="@={model.needTasksPermissions}" />
-
-                    <TextView
                         android:id="@+id/appSettingsHint"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tasksSwitch"
+                        app:layout_constraintTop_toBottomOf="@id/contactsSwitch"
                         app:layout_constraintStart_toStartOf="@id/start"
                         app:layout_constraintEnd_toEndOf="@id/end"
                         android:layout_marginTop="24dp"

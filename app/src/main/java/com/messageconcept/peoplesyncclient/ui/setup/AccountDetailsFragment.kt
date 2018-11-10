@@ -34,10 +34,8 @@ import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.model.HomeSet
 import com.messageconcept.peoplesyncclient.model.Service
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import at.bitfire.ical4android.TaskProvider
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -193,12 +191,6 @@ class AccountDetailsFragment: Fragment() {
                         // set default sync interval and enable sync regardless of permissions
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
                         accountSettings.setSyncInterval(CalendarContract.AUTHORITY, Constants.DEFAULT_SYNC_INTERVAL)
-
-                        if (LocalTaskList.tasksProviderAvailable(context)) {
-                            ContentResolver.setIsSyncable(account, TaskProvider.ProviderName.OpenTasks.authority, 1)
-                            accountSettings.setSyncInterval(TaskProvider.ProviderName.OpenTasks.authority, Constants.DEFAULT_SYNC_INTERVAL)
-                            // further changes will be handled by OpenTasksWatcher on app start or when OpenTasks is (un)installed
-                        }
                     }
 
                 } catch(e: InvalidAccountException) {
