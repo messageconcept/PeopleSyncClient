@@ -43,7 +43,6 @@ import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.account_caldav_item.view.*
 import kotlinx.android.synthetic.main.activity_account.*
 import java.lang.ref.WeakReference
 import java.util.*
@@ -88,16 +87,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
         carddav_menu.overflowIcon = icMenu
         carddav_menu.inflateMenu(R.menu.carddav_actions)
         carddav_menu.setOnMenuItemClickListener(this)
-
-        // CalDAV toolbar
-        caldav_menu.overflowIcon = icMenu
-        caldav_menu.inflateMenu(R.menu.caldav_actions)
-        caldav_menu.setOnMenuItemClickListener(this)
-
-        // Webcal toolbar
-        webcal_menu.overflowIcon = icMenu
-        webcal_menu.inflateMenu(R.menu.webcal_actions)
-        webcal_menu.setOnMenuItemClickListener(this)
 
         // load CardDAV/CalDAV collections
         LoaderManager.getInstance(this).initLoader(0, null, this)
@@ -212,52 +201,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
         true
     }
 
-    private val webcalOnItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
-        val info = parent.getItemAtPosition(position) as CollectionInfo
-        var uri = Uri.parse(info.source)
-
-        val nowChecked = !info.selected
-        if (nowChecked) {
-            // subscribe to Webcal feed
-            when {
-                uri.scheme.equals("http", true) -> uri = uri.buildUpon().scheme("webcal").build()
-                uri.scheme.equals("https", true) -> uri = uri.buildUpon().scheme("webcals").build()
-            }
-
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            info.displayName?.let { intent.putExtra("title", it) }
-            info.color?.let { intent.putExtra("color", it) }
-            if (packageManager.resolveActivity(intent, 0) != null)
-                startActivity(intent)
-            else {
-                val snack = Snackbar.make(parent, R.string.account_no_webcal_handler_found, Snackbar.LENGTH_LONG)
-
-                val installIntent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=at.bitfire.icsdroid"))
-                if (packageManager.resolveActivity(installIntent, 0) != null)
-                    snack.setAction(R.string.account_install_icsx5) {
-                        startActivity(installIntent)
-                    }
-
-                snack.show()
-            }
-        } else {
-            // unsubscribe from Webcal feed
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED)
-                contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-                    try {
-                        provider.delete(CalendarContract.Calendars.CONTENT_URI, "${CalendarContract.Calendars.NAME}=?", arrayOf(info.source))
-                        reload()
-                    } finally {
-                        @Suppress("DEPRECATION")
-                        if (Build.VERSION.SDK_INT >= 24)
-                            provider.close()
-                        else
-                            provider.release()
-                    }
-                }
-        }
-    }
-
 
     /* TASKS */
 
@@ -364,36 +307,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
             address_books.onItemClickListener = onItemClickListener
 
             View.VISIBLE
-        } ?: View.GONE
-
-        caldav.visibility = info?.caldav?.let { caldav ->
-            caldav_refreshing.visibility = if (caldav.refreshing) View.VISIBLE else View.GONE
-
-            calendars.isEnabled = !caldav.refreshing
-            calendars.alpha = if (caldav.refreshing) 0.5f else 1f
-
-            caldav_menu.menu.findItem(R.id.create_calendar).isEnabled = caldav.hasHomeSets
-
-            val adapter = CalendarAdapter(this)
-            adapter.addAll(caldav.collections.filter { it.type == CollectionInfo.Type.CALENDAR })
-            calendars.adapter = adapter
-            calendars.onItemClickListener = onItemClickListener
-
-            View.VISIBLE
-        } ?: View.GONE
-
-        webcal.visibility = info?.caldav?.let {
-            val collections = it.collections.filter { it.type == CollectionInfo.Type.WEBCAL }
-
-            val adapter = CalendarAdapter(this)
-            adapter.addAll(collections)
-            webcals.adapter = adapter
-            webcals.onItemClickListener = webcalOnItemClickListener
-
-            if (collections.isNotEmpty())
-                View.VISIBLE
-            else
-                View.GONE
         } ?: View.GONE
 
         // ask for permissions
@@ -532,28 +445,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
                 }
             }
 
-            // Webcal: check whether calendar is already subscribed by ICSdroid
-            // (or any other app that stores the URL in Calendars.NAME)
-            val webcalCollections = collections.filter { it.type == CollectionInfo.Type.WEBCAL }
-            if (webcalCollections.isNotEmpty() && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED)
-                context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-                    try {
-                        for (info in webcalCollections) {
-                            provider.query(CalendarContract.Calendars.CONTENT_URI, null,
-                                    "${CalendarContract.Calendars.NAME}=?", arrayOf(info.source), null)?.use { cursor ->
-                                if (cursor.moveToNext())
-                                    info.selected = true
-                            }
-                        }
-                    } finally {
-                        @Suppress("DEPRECATION")
-                        if (Build.VERSION.SDK_INT >= 24)
-                            provider.close()
-                        else
-                            provider.release()
-                    }
-                }
-
             return collections
         }
 
@@ -596,61 +487,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
             return v
         }
     }
-
-    class CalendarAdapter(
-            context: Context
-    ): ArrayAdapter<CollectionInfo>(context, R.layout.account_caldav_item) {
-        override fun getView(position: Int, _v: View?, parent: ViewGroup?): View {
-            val v = _v ?: LayoutInflater.from(context).inflate(R.layout.account_caldav_item, parent, false)
-            val info = getItem(position)!!
-
-            val enabled = info.selected || info.supportsVEVENT || info.supportsVTODO
-            v.isEnabled = enabled
-            v.checked.isEnabled = enabled
-
-            val checked: CheckBox = v.findViewById(R.id.checked)
-            checked.isChecked = info.selected
-
-            val vColor: View = v.findViewById(R.id.color)
-            vColor.visibility = info.color?.let {
-                vColor.setBackgroundColor(it)
-                View.VISIBLE
-            } ?: View.INVISIBLE
-
-            var tv: TextView = v.findViewById(R.id.title)
-            tv.text = if (!info.displayName.isNullOrBlank()) info.displayName else info.url.toString()
-
-            tv = v.findViewById(R.id.description)
-            if (info.description.isNullOrBlank())
-                tv.visibility = View.GONE
-            else {
-                tv.visibility = View.VISIBLE
-                tv.text = info.description
-            }
-
-            v.findViewById<ImageView>(R.id.read_only).visibility =
-                    if (!info.privWriteContent || info.forceReadOnly) View.VISIBLE else View.GONE
-
-            v.findViewById<ImageView>(R.id.events).visibility =
-                    if (info.supportsVEVENT) View.VISIBLE else View.GONE
-
-            v.findViewById<ImageView>(R.id.tasks).visibility =
-                    if (info.supportsVTODO) View.VISIBLE else View.GONE
-
-            val overflow = v.findViewById<ImageView>(R.id.action_overflow)
-            if (info.type == CollectionInfo.Type.WEBCAL)
-                overflow.visibility = View.GONE
-            else
-                overflow.setOnClickListener { view ->
-                    (context as? AccountActivity)?.let {
-                        it.onActionOverflowListener(view, info)
-                    }
-                }
-
-            return v
-        }
-    }
-
 
     /* DIALOG FRAGMENTS */
 
