@@ -31,12 +31,9 @@ import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.closeCompat
 import com.messageconcept.peoplesyncclient.model.Credentials
-import com.messageconcept.peoplesyncclient.resource.LocalCalendar
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
-import at.bitfire.ical4android.AndroidCalendar
-import at.bitfire.ical4android.TaskProvider
 import at.bitfire.vcard4android.GroupMethod
 import org.apache.commons.lang3.StringUtils
 
@@ -166,7 +163,6 @@ class AccountSettingsActivity: AppCompatActivity() {
             // those are null if the respective sync type is not available for this account:
             val syncIntervalContacts = accountSettings.getSyncInterval(getString(R.string.address_books_authority))
             val syncIntervalCalendars = accountSettings.getSyncInterval(CalendarContract.AUTHORITY)
-            val syncIntervalTasks = accountSettings.getSyncInterval(TaskProvider.ProviderName.OpenTasks.authority)
 
             findPreference<ListPreference>("sync_interval_contacts")!!.let {
                 if (syncIntervalContacts != null) {
@@ -202,27 +198,6 @@ class AccountSettingsActivity: AppCompatActivity() {
                         Handler(Looper.myLooper()).post {
                             pref.isEnabled = false
                             accountSettings.setSyncInterval(CalendarContract.AUTHORITY, (newValue as String).toLong())
-                            reload()
-                        }
-                        false
-                    }
-                } else
-                    it.isVisible = false
-            }
-
-            findPreference<ListPreference>("sync_interval_tasks")!!.let {
-                if (syncIntervalTasks != null) {
-                    it.isEnabled = true
-                    it.isVisible = true
-                    it.value = syncIntervalTasks.toString()
-                    if (syncIntervalTasks == AccountSettings.SYNC_INTERVAL_MANUALLY)
-                        it.setSummary(R.string.settings_sync_summary_manually)
-                    else
-                        it.summary = getString(R.string.settings_sync_summary_periodically, syncIntervalTasks / 60)
-                    it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-                        Handler(Looper.myLooper()).post {
-                            pref.isEnabled = false
-                            accountSettings.setSyncInterval(TaskProvider.ProviderName.OpenTasks.authority, (newValue as String).toLong())
                             reload()
                         }
                         false
@@ -301,59 +276,6 @@ class AccountSettingsActivity: AppCompatActivity() {
             }
 
             // preference group: CalDAV
-            findPreference<EditTextPreference>("time_range_past_days")!!.let {
-                if (syncIntervalCalendars != null) {
-                    it.isVisible = true
-                    val pastDays = accountSettings.getTimeRangePastDays()
-                    if (pastDays != null) {
-                        it.text = pastDays.toString()
-                        it.summary = resources.getQuantityString(R.plurals.settings_sync_time_range_past_days, pastDays, pastDays)
-                    } else {
-                        it.text = null
-                        it.setSummary(R.string.settings_sync_time_range_past_none)
-                    }
-                    it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                        val days = try {
-                            (newValue as String).toInt()
-                        } catch(e: NumberFormatException) {
-                            -1
-                        }
-                        accountSettings.setTimeRangePastDays(if (days < 0) null else days)
-
-                        // reset sync state of all calendars in this account to trigger a full sync
-                        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-                            requireContext().contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-                                try {
-                                    AndroidCalendar.find(account, provider, LocalCalendar.Factory, null, null).forEach { calendar ->
-                                        calendar.lastSyncState = null
-                                    }
-                                } finally {
-                                    provider.closeCompat()
-                                }
-                            }
-                        }
-
-                        reload()
-                        false
-                    }
-                } else
-                    it.isVisible = false
-            }
-
-            findPreference<SwitchPreferenceCompat>("manage_calendar_colors")!!.let {
-                if (syncIntervalCalendars != null || syncIntervalTasks != null) {
-                    it.isVisible = true
-                    it.isEnabled = !settings.has(AccountSettings.KEY_MANAGE_CALENDAR_COLORS)
-                    it.isChecked = accountSettings.getManageCalendarColors()
-                    it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                        accountSettings.setManageCalendarColors(newValue as Boolean)
-                        reload()
-                        false
-                    }
-                } else
-                    it.isVisible = false
-            }
-
             findPreference<SwitchPreferenceCompat>("event_colors")!!.let {
                 if (syncIntervalCalendars != null) {
                     it.isVisible = true

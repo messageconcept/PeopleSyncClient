@@ -26,14 +26,10 @@ import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import at.bitfire.ical4android.AndroidCalendar
-import at.bitfire.ical4android.TaskProvider
-import at.bitfire.ical4android.TaskProvider.ProviderName.OpenTasks
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
 import okhttp3.HttpUrl
 import org.apache.commons.lang3.StringUtils
-import org.dmfs.tasks.contract.TaskContract
 import java.util.logging.Level
 
 /**
@@ -243,12 +239,7 @@ class AccountSettings(
      * Disable it on those accounts for the future.
      */
     private fun update_8_9() {
-        val db = AppDatabase.getInstance(context)
-        val hasCalDAV = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CALDAV) != null
-        if (!hasCalDAV && ContentResolver.getIsSyncable(account, OpenTasks.authority) != 0) {
-            Logger.log.info("Disabling OpenTasks sync for $account")
-            ContentResolver.setIsSyncable(account, OpenTasks.authority, 0)
-        }
+        // nothing to do
     }
 
     @Suppress("unused","FunctionName")
@@ -258,42 +249,14 @@ class AccountSettings(
      * SEQUENCE and should not be used for the eTag.
      */
     private fun update_7_8() {
-        TaskProvider.acquire(context, OpenTasks)?.use { provider ->
-            // ETag is now in sync_version instead of sync1
-            // UID  is now in _uid         instead of sync2
-            provider.client.query(TaskProvider.syncAdapterUri(provider.tasksUri(), account),
-                    arrayOf(TaskContract.Tasks._ID, TaskContract.Tasks.SYNC1, TaskContract.Tasks.SYNC2),
-                    "${TaskContract.Tasks.ACCOUNT_TYPE}=? AND ${TaskContract.Tasks.ACCOUNT_NAME}=?",
-                    arrayOf(account.type, account.name), null)!!.use { cursor ->
-                while (cursor.moveToNext()) {
-                    val id = cursor.getLong(0)
-                    val eTag = cursor.getString(1)
-                    val uid = cursor.getString(2)
-                    val values = ContentValues(4)
-                    values.put(TaskContract.Tasks._UID, uid)
-                    values.put(TaskContract.Tasks.SYNC_VERSION, eTag)
-                    values.putNull(TaskContract.Tasks.SYNC1)
-                    values.putNull(TaskContract.Tasks.SYNC2)
-                    Logger.log.log(Level.FINER, "Updating task $id", values)
-                    provider.client.update(
-                            TaskProvider.syncAdapterUri(ContentUris.withAppendedId(provider.tasksUri(), id), account),
-                            values, null, null)
-                }
-            }
-        }
+        // nothing to do
     }
 
     @Suppress("unused")
     @SuppressLint("Recycle")
     private fun update_6_7() {
         // add calendar colors
-        context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-            try {
-                AndroidCalendar.insertColors(provider, account)
-            } finally {
-                provider.closeCompat()
-            }
-        }
+        // nothing to do
 
         // update allowed WiFi settings key
         val onlySSID = accountManager.getUserData(account, "wifi_only_ssid")
@@ -368,7 +331,7 @@ class AccountSettings(
     @Suppress("unused")
     private fun update_4_5() {
         // call PackageChangedReceiver which then enables/disables OpenTasks sync when it's (not) available
-        PackageChangedReceiver.updateTaskSync(context)
+        // nothing to do
     }
 
     @Suppress("unused")

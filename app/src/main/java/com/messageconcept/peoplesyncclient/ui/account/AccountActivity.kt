@@ -27,9 +27,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.model.Service
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.ui.AccountSettingsActivity
-import at.bitfire.ical4android.TaskProvider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import java.util.concurrent.Executors
@@ -307,10 +305,6 @@ class AccountActivity: AppCompatActivity() {
                     Manifest.permission.READ_CALENDAR,
                     Manifest.permission.WRITE_CALENDAR
             )
-            val taskPermissions = arrayOf(
-                    TaskProvider.PERMISSION_READ_TASKS,
-                    TaskProvider.PERMISSION_WRITE_TASKS
-            )
         }
 
         private var usesContacts: Boolean? = null
@@ -334,12 +328,6 @@ class AccountActivity: AppCompatActivity() {
             val required = mutableListOf<String>()
             if (contacts)
                 required.addAll(contactPermissions)
-
-            if (calendar) {
-                required.addAll(calendarPermissions)
-                if (LocalTaskList.tasksProviderAvailable(context))
-                    required.addAll(taskPermissions)
-            }
 
             // only ask for permissions which are not granted
             val askFor = required.filter {

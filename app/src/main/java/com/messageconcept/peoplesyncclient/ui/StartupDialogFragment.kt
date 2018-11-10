@@ -23,7 +23,6 @@ import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.settings.Settings
 import java.util.*
 
