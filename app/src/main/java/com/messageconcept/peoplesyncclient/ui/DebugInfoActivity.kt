@@ -22,7 +22,6 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.Menu
@@ -48,11 +47,9 @@ import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
-import at.bitfire.ical4android.TaskProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dmfs.tasks.contract.TaskContract
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -181,14 +178,13 @@ class DebugInfoActivity: AppCompatActivity() {
                     val pm = context.packageManager
                     val appIDs = mutableSetOf(      // we always want info about these packages
                             BuildConfig.APPLICATION_ID,                     // PeopleSync
-                            "${BuildConfig.APPLICATION_ID}.jbworkaround",   // PeopleSync JB Workaround
-                            "org.dmfs.tasks"                               // OpenTasks
+                            "${BuildConfig.APPLICATION_ID}.jbworkaround"    // PeopleSync JB Workaround
                     )
-                    // add info about contact, calendar, task provider
-                    for (authority in arrayOf(ContactsContract.AUTHORITY, CalendarContract.AUTHORITY, TaskProvider.ProviderName.OpenTasks.authority))
+                    // add info about contact provider
+                    for (authority in arrayOf(ContactsContract.AUTHORITY))
                         pm.resolveContentProvider(authority, 0)?.let { appIDs += it.packageName }
-                    // add info about available contact, calendar, task apps
-                    for (uri in arrayOf(ContactsContract.Contacts.CONTENT_URI, CalendarContract.Events.CONTENT_URI, TaskContract.Tasks.getContentUri(TaskProvider.ProviderName.OpenTasks.authority))) {
+                    // add info about available contact apps
+                    for (uri in arrayOf(ContactsContract.Contacts.CONTENT_URI)) {
                         val viewIntent = Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(uri, 1))
                         for (info in pm.queryIntentActivities(viewIntent, 0))
                             appIDs += info.activityInfo.packageName
@@ -263,8 +259,6 @@ class DebugInfoActivity: AppCompatActivity() {
                 // permissions
                 text.append("Permissions:\n")
                 for (permission in arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
-                        Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR,
-                        TaskProvider.PERMISSION_READ_TASKS, TaskProvider.PERMISSION_WRITE_TASKS,
                         Manifest.permission.ACCESS_COARSE_LOCATION)) {
                     val shortPermission = permission.replace(Regex("^.+\\.permission\\."), "")
                     text    .append("  $shortPermission: ")
@@ -297,19 +291,11 @@ class DebugInfoActivity: AppCompatActivity() {
                         val accountSettings = AccountSettings(context, acct)
                         text.append("Account: ${acct.name}\n" +
                                 "  Address book sync. interval: ${syncStatus(accountSettings, context.getString(R.string.address_books_authority))}\n" +
-                                "  Calendar     sync. interval: ${syncStatus(accountSettings, CalendarContract.AUTHORITY)}\n" +
-                                "  OpenTasks    sync. interval: ${syncStatus(accountSettings, TaskProvider.ProviderName.OpenTasks.authority)}\n" +
                                 "  WiFi only: ").append(accountSettings.getSyncWifiOnly())
                         accountSettings.getSyncWifiOnlySSIDs()?.let {
                             text.append(", SSIDs: ${accountSettings.getSyncWifiOnlySSIDs()}")
                         }
-                        text    .append("\n  getIsSyncable(CalendarContract): ${ContentResolver.getIsSyncable(acct, CalendarContract.AUTHORITY)}")
-                                .append("\n  getIsSyncable(OpenTasks): ${ContentResolver.getIsSyncable(acct, TaskProvider.ProviderName.OpenTasks.authority)}")
-                                .append("\n  [CardDAV] Contact group method: ${accountSettings.getGroupMethod()}")
-                                .append("\n  [CalDAV] Time range (past days): ${accountSettings.getTimeRangePastDays()}")
-                                .append("\n           Default alarm (min before): ${accountSettings.getDefaultAlarm()}")
-                                .append("\n           Manage calendar colors: ${accountSettings.getManageCalendarColors()}")
-                                .append("\n           Use event colors: ${accountSettings.getEventColors()}")
+                        text.append("\n  [CardDAV] Contact group method: ${accountSettings.getGroupMethod()}")
                                 .append("\n")
                     } catch (e: InvalidAccountException) {
                         text.append("$acct is invalid (unsupported settings version) or does not exist\n")

@@ -21,9 +21,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.logging.Level
 import kotlin.system.exitProcess
 
@@ -72,15 +69,6 @@ class App: Application(), Thread.UncaughtExceptionHandler {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         NotificationUtils.createChannels(this)
-
-        // don't block UI for some background checks
-        CoroutineScope(Dispatchers.Default).launch {
-            // watch installed/removed apps
-            OpenTasksWatcher(this@App)
-
-            // check whether a tasks app is currently installed
-            OpenTasksWatcher.updateTaskSync(this@App)
-        }
     }
 
     override fun uncaughtException(t: Thread, e: Throwable) {

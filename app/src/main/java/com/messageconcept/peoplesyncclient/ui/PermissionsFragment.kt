@@ -14,14 +14,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.messageconcept.peoplesyncclient.BuildConfig
-import com.messageconcept.peoplesyncclient.PackageChangedReceiver
-import com.messageconcept.peoplesyncclient.PermissionUtils.CALENDAR_PERMISSIONS
 import com.messageconcept.peoplesyncclient.PermissionUtils.CONTACT_PERMSSIONS
-import com.messageconcept.peoplesyncclient.PermissionUtils.TASKS_PERMISSIONS
 import com.messageconcept.peoplesyncclient.PermissionUtils.havePermissions
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.ActivityPermissionsBinding
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 
 class PermissionsFragment: Fragment() {
 
@@ -43,18 +39,9 @@ class PermissionsFragment: Fragment() {
             if (needContacts && model.haveContactsPermissions.value == false)
                 requestPermissions(CONTACT_PERMSSIONS, 0)
         })
-        model.needCalendarPermissions.observe(viewLifecycleOwner, Observer { needCalendars ->
-            if (needCalendars && model.haveCalendarPermissions.value == false)
-                requestPermissions(CALENDAR_PERMISSIONS, 0)
-        })
-        model.needTasksPermissions.observe(viewLifecycleOwner, Observer { needTasks ->
-            if (needTasks == true && model.haveTasksPermissions.value == false)
-                requestPermissions(TASKS_PERMISSIONS, 0)
-        })
         model.needAllPermissions.observe(viewLifecycleOwner, Observer { needAll ->
             if (needAll && model.haveAllPermissions.value == false) {
-                val all = CONTACT_PERMSSIONS + CALENDAR_PERMISSIONS +
-                    if (model.haveTasksPermissions.value != null) TASKS_PERMISSIONS else emptyArray()
+                val all = CONTACT_PERMSSIONS
                 requestPermissions(all, 0)
             }
         })
@@ -84,16 +71,6 @@ class PermissionsFragment: Fragment() {
 
         val haveContactsPermissions = MutableLiveData<Boolean>()
         val needContactsPermissions = MutableLiveData<Boolean>()
-        val haveCalendarPermissions = MutableLiveData<Boolean>()
-        val needCalendarPermissions = MutableLiveData<Boolean>()
-
-        val haveTasksPermissions = MutableLiveData<Boolean>()
-        val needTasksPermissions = MutableLiveData<Boolean>()
-        val tasksWatcher = object: PackageChangedReceiver(app) {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                checkPermissions()
-            }
-        }
 
         val haveAllPermissions = MutableLiveData<Boolean>()
         val needAllPermissions = MutableLiveData<Boolean>()
@@ -102,31 +79,12 @@ class PermissionsFragment: Fragment() {
             checkPermissions()
         }
 
-        override fun onCleared() {
-            tasksWatcher.close()
-        }
-
         fun checkPermissions() {
             val contactPermissions = havePermissions(getApplication(), CONTACT_PERMSSIONS)
             haveContactsPermissions.value = contactPermissions
             needContactsPermissions.value = contactPermissions
 
-            val calendarPermissions = havePermissions(getApplication(), CALENDAR_PERMISSIONS)
-            haveCalendarPermissions.value = calendarPermissions
-            needCalendarPermissions.value = calendarPermissions
-
-            val tasksAvailable = LocalTaskList.tasksProviderAvailable(getApplication())
-            var tasksPermissions: Boolean? = null
-            if (tasksAvailable) {
-                tasksPermissions = havePermissions(getApplication(), TASKS_PERMISSIONS)
-                haveTasksPermissions.value = tasksPermissions
-                needTasksPermissions.value = tasksPermissions
-            } else {
-                haveTasksPermissions.value = null
-                needTasksPermissions.value = null
-            }
-
-            val allPermissions = contactPermissions && calendarPermissions && (!tasksAvailable || tasksPermissions == true)
+            val allPermissions = contactPermissions
             haveAllPermissions.value = allPermissions
             needAllPermissions.value = allPermissions
         }

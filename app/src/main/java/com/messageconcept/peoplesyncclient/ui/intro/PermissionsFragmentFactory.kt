@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.messageconcept.peoplesyncclient.PermissionUtils
-import com.messageconcept.peoplesyncclient.PermissionUtils.CALENDAR_PERMISSIONS
 import com.messageconcept.peoplesyncclient.PermissionUtils.CONTACT_PERMSSIONS
-import com.messageconcept.peoplesyncclient.PermissionUtils.TASKS_PERMISSIONS
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.ui.intro.IIntroFragmentFactory.ShowMode
@@ -17,7 +15,7 @@ class PermissionsFragmentFactory: IIntroFragmentFactory {
 
     override fun shouldBeShown(context: Context, settings: Settings): IIntroFragmentFactory.ShowMode {
         // show PermissionsFragment as intro fragment when no permissions are granted
-        val permissions = CONTACT_PERMSSIONS + CALENDAR_PERMISSIONS + TASKS_PERMISSIONS
+        val permissions = CONTACT_PERMSSIONS
         return if (PermissionUtils.haveAnyPermission(context, permissions))
             ShowMode.DONT_SHOW
         else
