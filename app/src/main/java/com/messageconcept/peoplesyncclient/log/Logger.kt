@@ -31,7 +31,7 @@ object Logger : SharedPreferences.OnSharedPreferenceChangeListener {
 
     private const val LOG_TO_FILE = "log_to_file"
 
-    val log: java.util.logging.Logger = java.util.logging.Logger.getLogger("davx5")
+    val log: java.util.logging.Logger = java.util.logging.Logger.getLogger("peoplesync")
 
     private lateinit var context: Application
     private lateinit var preferences: SharedPreferences
@@ -74,7 +74,7 @@ object Logger : SharedPreferences.OnSharedPreferenceChangeListener {
                     .setContentTitle(context.getString(R.string.logging_notification_title))
 
             val logDir = debugDir(context) ?: return
-            val logFile = File(logDir, "davx5-log.txt")
+            val logFile = File(logDir, "peoplesync-log.txt")
 
             try {
                 val fileHandler = FileHandler(logFile.toString(), true)
