@@ -62,9 +62,6 @@ class AccountActivity: AppCompatActivity() {
         model.cardDavService.observe(this, Observer {
             tabsAdapter.cardDavSvcId = it
         })
-        model.calDavService.observe(this, Observer {
-            tabsAdapter.calDavSvcId = it
-        })
 
         model.askForPermissions.observe(this, Observer { permissions ->
             if (permissions.isNotEmpty())
@@ -159,15 +156,8 @@ class AccountActivity: AppCompatActivity() {
                 field = value
                 recalculate()
             }
-        var calDavSvcId: Long? = null
-            set(value) {
-                field = value
-                recalculate()
-            }
 
         private var idxCardDav: Int? = null
-        private var idxCalDav: Int? = null
-        private var idxWebcal: Int? = null
 
         private fun recalculate() {
             var currentIndex = 0
@@ -177,21 +167,11 @@ class AccountActivity: AppCompatActivity() {
             else
                 null
 
-            if (calDavSvcId != null) {
-                idxCalDav = currentIndex++
-                idxWebcal = currentIndex
-            } else {
-                idxCalDav = null
-                idxWebcal = null
-            }
-
             notifyDataSetChanged()
         }
 
         override fun getCount() =
-                (if (idxCardDav != null) 1 else 0) +
-                (if (idxCalDav != null) 1 else 0) +
-                (if (idxWebcal != null) 1 else 0)
+                (if (idxCardDav != null) 1 else 0)
 
         override fun getItem(position: Int): Fragment {
             val args = Bundle(1)
@@ -203,20 +183,6 @@ class AccountActivity: AppCompatActivity() {
                     frag.arguments = args
                     return frag
                 }
-                idxCalDav -> {
-                    val frag = CalendarsFragment()
-                    args.putLong(CollectionsFragment.EXTRA_SERVICE_ID, calDavSvcId!!)
-                    args.putString(CollectionsFragment.EXTRA_COLLECTION_TYPE, Collection.TYPE_CALENDAR)
-                    frag.arguments = args
-                    return frag
-                }
-                idxWebcal -> {
-                    val frag = WebcalFragment()
-                    args.putLong(CollectionsFragment.EXTRA_SERVICE_ID, calDavSvcId!!)
-                    args.putString(CollectionsFragment.EXTRA_COLLECTION_TYPE, Collection.TYPE_WEBCAL)
-                    frag.arguments = args
-                    return frag
-                }
             }
             throw IllegalArgumentException()
         }
@@ -224,8 +190,6 @@ class AccountActivity: AppCompatActivity() {
         override fun getPageTitle(position: Int): String =
                 when (position) {
                     idxCardDav -> activity.getString(R.string.account_carddav)
-                    idxCalDav -> activity.getString(R.string.account_caldav)
-                    idxWebcal -> activity.getString(R.string.account_webcal)
                     else -> throw IllegalArgumentException()
                 }
 
@@ -252,10 +216,7 @@ class AccountActivity: AppCompatActivity() {
             else
                 MutableLiveData<Boolean>().apply { value = false }
         }
-        private val needCalendarPermissions: LiveData<Boolean> = Transformations.map(calDavService) { calDavId ->
-            calDavId != null
-        }
-        val askForPermissions = PermissionCalculator(application, needContactPermissions, needCalendarPermissions)
+        val askForPermissions = PermissionCalculator(application, needContactPermissions)
 
 
         @MainThread
@@ -292,8 +253,7 @@ class AccountActivity: AppCompatActivity() {
 
     class PermissionCalculator(
             val context: Context,
-            needContactPermissions: LiveData<Boolean>,
-            needCalendarPermissions: LiveData<Boolean>
+            needContactPermissions: LiveData<Boolean>
     ): MediatorLiveData<List<String>>() {
 
         companion object {
@@ -301,29 +261,19 @@ class AccountActivity: AppCompatActivity() {
                     Manifest.permission.READ_CONTACTS,
                     Manifest.permission.WRITE_CONTACTS
             )
-            val calendarPermissions = arrayOf(
-                    Manifest.permission.READ_CALENDAR,
-                    Manifest.permission.WRITE_CALENDAR
-            )
         }
 
         private var usesContacts: Boolean? = null
-        private var usesCalendars: Boolean? = null
 
         init {
             addSource(needContactPermissions) {
                 usesContacts = it
                 calculate()
             }
-            addSource(needCalendarPermissions) {
-                usesCalendars = it
-                calculate()
-            }
         }
 
         fun calculate() {
             val contacts = usesContacts ?: return
-            val calendar = usesCalendars ?: return
 
             val required = mutableListOf<String>()
             if (contacts)

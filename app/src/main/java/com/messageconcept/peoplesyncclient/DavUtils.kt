@@ -15,7 +15,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.CalendarContract
 import com.messageconcept.peoplesyncclient.log.Logger
 import okhttp3.HttpUrl
 import org.xbill.DNS.*
@@ -91,8 +90,7 @@ object DavUtils {
 
     fun requestSync(context: Context, account: Account) {
         val authorities = arrayOf(
-                context.getString(R.string.address_books_authority),
-                CalendarContract.AUTHORITY
+                context.getString(R.string.address_books_authority)
         )
 
         for (authority in authorities) {

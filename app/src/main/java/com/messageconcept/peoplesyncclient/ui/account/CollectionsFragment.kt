@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.*
 import android.widget.PopupMenu

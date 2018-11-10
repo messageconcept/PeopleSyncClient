@@ -18,7 +18,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.CalendarContract
 import android.security.KeyChain
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -162,7 +161,6 @@ class AccountSettingsActivity: AppCompatActivity() {
             // preference group: sync
             // those are null if the respective sync type is not available for this account:
             val syncIntervalContacts = accountSettings.getSyncInterval(getString(R.string.address_books_authority))
-            val syncIntervalCalendars = accountSettings.getSyncInterval(CalendarContract.AUTHORITY)
 
             findPreference<ListPreference>("sync_interval_contacts")!!.let {
                 if (syncIntervalContacts != null) {
@@ -177,27 +175,6 @@ class AccountSettingsActivity: AppCompatActivity() {
                         Handler(Looper.myLooper()).post {
                             pref.isEnabled = false
                             accountSettings.setSyncInterval(getString(R.string.address_books_authority), (newValue as String).toLong())
-                            reload()
-                        }
-                        false
-                    }
-                } else
-                    it.isVisible = false
-            }
-
-            findPreference<ListPreference>("sync_interval_calendars")!!.let {
-                if (syncIntervalCalendars != null) {
-                    it.isEnabled = true
-                    it.isVisible = true
-                    it.value = syncIntervalCalendars.toString()
-                    if (syncIntervalCalendars == AccountSettings.SYNC_INTERVAL_MANUALLY)
-                        it.setSummary(R.string.settings_sync_summary_manually)
-                    else
-                        it.summary = getString(R.string.settings_sync_summary_periodically, syncIntervalCalendars / 60)
-                    it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-                        Handler(Looper.myLooper()).post {
-                            pref.isEnabled = false
-                            accountSettings.setSyncInterval(CalendarContract.AUTHORITY, (newValue as String).toLong())
                             reload()
                         }
                         false
@@ -270,33 +247,6 @@ class AccountSettingsActivity: AppCompatActivity() {
                                     .show()
                             false
                         }
-                    }
-                } else
-                    it.isVisible = false
-            }
-
-            // preference group: CalDAV
-            findPreference<SwitchPreferenceCompat>("event_colors")!!.let {
-                if (syncIntervalCalendars != null) {
-                    it.isVisible = true
-                    it.isEnabled = !settings.has(AccountSettings.KEY_EVENT_COLORS)
-                    it.isChecked = accountSettings.getEventColors()
-                    it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                        if (newValue as Boolean) {
-                            accountSettings.setEventColors(true)
-                            reload()
-                        } else
-                            AlertDialog.Builder(requireActivity())
-                                    .setIcon(R.drawable.ic_error_dark)
-                                    .setTitle(R.string.settings_event_colors)
-                                    .setMessage(R.string.settings_event_colors_off_confirm)
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                                        accountSettings.setEventColors(false)
-                                        reload()
-                                    }
-                                    .show()
-                        false
                     }
                 } else
                     it.isVisible = false
