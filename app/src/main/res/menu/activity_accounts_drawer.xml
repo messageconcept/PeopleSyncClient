@@ -26,49 +26,12 @@
         android:icon="@drawable/ic_settings_dark"
         android:title="@string/navigation_drawer_settings"/>
 
-    <item
-        android:title="@string/navigation_drawer_news_updates"
-        android:visible="false">
-        <menu>
-            <item
-                android:id="@+id/nav_twitter"
-                android:icon="@drawable/twitter"
-                android:title="\@davx5app"
-                tools:ignore="HardcodedText"/>
-        </menu>
-    </item>
-
     <item android:title="@string/navigation_drawer_external_links">
         <menu>
             <item
                 android:id="@+id/nav_website"
                 android:icon="@drawable/ic_home_dark"
                 android:title="@string/navigation_drawer_website"/>
-            <item
-                android:visible="false"
-                android:id="@+id/nav_manual"
-                android:icon="@drawable/ic_info_dark"
-                android:title="@string/navigation_drawer_manual"/>
-            <item
-                android:visible="false"
-                android:id="@+id/nav_faq"
-                android:icon="@drawable/ic_help_dark"
-                android:title="@string/navigation_drawer_faq"/>
-            <item
-                android:visible="false"
-                android:id="@+id/nav_forums"
-                android:icon="@drawable/ic_forum_dark"
-                android:title="@string/navigation_drawer_forums"/>
-            <item
-                android:id="@+id/nav_donate"
-                android:icon="@drawable/ic_attach_money_dark"
-                android:title="@string/navigation_drawer_donate"
-                android:visible="false"/>
-            <item
-                android:visible="false"
-                android:id="@+id/nav_privacy"
-                android:icon="@drawable/ic_cloud_off_dark"
-                android:title="@string/navigation_drawer_privacy_policy"/>
         </menu>
     </item>
 
