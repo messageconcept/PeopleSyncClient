@@ -160,7 +160,6 @@ class AccountSettingsActivity: AppCompatActivity() {
             // preference group: sync
             // those are null if the respective sync type is not available for this account:
             val syncIntervalContacts = accountSettings.getSyncInterval(getString(R.string.address_books_authority))
-            val syncIntervalCalendars = accountSettings.getSyncInterval(CalendarContract.AUTHORITY)
 
             (findPreference("sync_interval_contacts") as ListPreference).let {
                 if (syncIntervalContacts != null) {
@@ -175,27 +174,6 @@ class AccountSettingsActivity: AppCompatActivity() {
                         Handler(Looper.myLooper()).post {
                             pref.isEnabled = false
                             accountSettings.setSyncInterval(getString(R.string.address_books_authority), (newValue as String).toLong())
-                            reload()
-                        }
-                        false
-                    }
-                } else
-                    it.isVisible = false
-            }
-
-            (findPreference("sync_interval_calendars") as ListPreference).let {
-                if (syncIntervalCalendars != null) {
-                    it.isEnabled = true
-                    it.isVisible = true
-                    it.value = syncIntervalCalendars.toString()
-                    if (syncIntervalCalendars == AccountSettings.SYNC_INTERVAL_MANUALLY)
-                        it.setSummary(R.string.settings_sync_summary_manually)
-                    else
-                        it.summary = getString(R.string.settings_sync_summary_periodically, syncIntervalCalendars / 60)
-                    it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-                        Handler(Looper.myLooper()).post {
-                            pref.isEnabled = false
-                            accountSettings.setSyncInterval(CalendarContract.AUTHORITY, (newValue as String).toLong())
                             reload()
                         }
                         false

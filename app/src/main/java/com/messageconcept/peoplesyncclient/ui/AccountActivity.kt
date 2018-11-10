@@ -324,7 +324,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
 
     override fun onLoaderReset(loader: Loader<AccountInfo>) {
         address_books?.adapter = null
-        calendars?.adapter = null
     }
 
 
