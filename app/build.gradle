@@ -77,7 +77,6 @@ android {
 
 dependencies {
     implementation project(':cert4android')
-    implementation project(':ical4android')
     implementation project(':vcard4android')
 
     implementation 'androidx.multidex:multidex:2.0.1'

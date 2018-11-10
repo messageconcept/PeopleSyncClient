@@ -5,7 +5,6 @@ import android.view.*
 import com.messageconcept.peoplesyncclient.Constants
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.model.Collection
-import com.messageconcept.peoplesyncclient.ui.CreateCalendarActivity
 import kotlinx.android.synthetic.main.account_caldav_item.view.*
 
 class CalendarsFragment: CollectionsFragment() {
@@ -18,13 +17,6 @@ class CalendarsFragment: CollectionsFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (super.onOptionsItemSelected(item))
             return true
-
-        if (item.itemId == R.id.create) {
-            val intent = Intent(requireActivity(), CreateCalendarActivity::class.java)
-            intent.putExtra(CreateCalendarActivity.EXTRA_ACCOUNT, accountModel.account)
-            startActivity(intent)
-            return true
-        }
 
         return false
     }
