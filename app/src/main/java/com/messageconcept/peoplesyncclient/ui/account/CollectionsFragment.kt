@@ -24,9 +24,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.ui.DeleteCollectionFragment
-import at.bitfire.ical4android.TaskProvider
 import kotlinx.android.synthetic.main.account_collections.view.*
 import java.util.concurrent.Executors
 
@@ -292,16 +290,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
                 isSyncActive.postValue(mainSyncActive || syncActive)
                 isSyncPending.postValue(mainSyncPending || syncPending)
-            } else {
-                val authorities = mutableListOf(CalendarContract.AUTHORITY)
-                if (LocalTaskList.tasksProviderAvailable(context))
-                    authorities += TaskProvider.ProviderName.OpenTasks.authority
-                isSyncActive.postValue(authorities.any {
-                    ContentResolver.isSyncActive(accountModel.account, it)
-                })
-                isSyncPending.postValue(authorities.any {
-                    ContentResolver.isSyncPending(accountModel.account, it)
-                })
             }
         }
 
