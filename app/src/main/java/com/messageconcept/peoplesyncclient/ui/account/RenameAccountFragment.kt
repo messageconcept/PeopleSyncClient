@@ -12,7 +12,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -99,8 +98,7 @@ class RenameAccountFragment: DialogFragment() {
                 // remember sync intervals
                 val oldSettings = AccountSettings(context, oldAccount)
                 val authorities = arrayOf(
-                        context.getString(R.string.address_books_authority),
-                        CalendarContract.AUTHORITY
+                        context.getString(R.string.address_books_authority)
                 )
                 val syncIntervals = authorities.map { Pair(it, oldSettings.getSyncInterval(it)) }
 

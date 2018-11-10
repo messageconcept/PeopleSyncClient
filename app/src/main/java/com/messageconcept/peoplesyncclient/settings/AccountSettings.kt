@@ -17,7 +17,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcel
 import android.os.RemoteException
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import com.messageconcept.peoplesyncclient.*
 import com.messageconcept.peoplesyncclient.log.Logger
@@ -53,24 +52,6 @@ class AccountSettings(
         const val KEY_WIFI_ONLY = "wifi_only"               // sync on WiFi only (default: false)
         const val WIFI_ONLY_DEFAULT = false
         const val KEY_WIFI_ONLY_SSIDS = "wifi_only_ssids"   // restrict sync to specific WiFi SSIDs
-
-        /** Time range limitation to the past [in days]
-        value = null            default value (DEFAULT_TIME_RANGE_PAST_DAYS)
-        < 0 (-1)          no limit
-        >= 0              entries more than n days in the past won't be synchronized
-         */
-        const val KEY_TIME_RANGE_PAST_DAYS = "time_range_past_days"
-        const val DEFAULT_TIME_RANGE_PAST_DAYS = 90
-
-        /* Whether PeopleSync sets the local calendar color to the value from service DB at every sync
-           value = null (not existing)     true (default)
-                   "0"                     false */
-        const val KEY_MANAGE_CALENDAR_COLORS = "manage_calendar_colors"
-
-        /* Whether PeopleSync populates and uses CalendarContract.Colors
-           value = null (not existing)     false (default)
-                   "1"                     true */
-        const val KEY_EVENT_COLORS = "event_colors"
 
         /** Contact group method:
         value = null (not existing)     groups as separate VCards (default)
@@ -166,34 +147,6 @@ class AccountSettings(
     fun setSyncWifiOnlySSIDs(ssids: List<String>?) =
             accountManager.setUserData(account, KEY_WIFI_ONLY_SSIDS, StringUtils.trimToNull(ssids?.joinToString(",")))
 
-
-    // CalDAV settings
-
-    fun getTimeRangePastDays(): Int? {
-        val strDays = accountManager.getUserData(account, KEY_TIME_RANGE_PAST_DAYS)
-        return if (strDays != null) {
-            val days = Integer.valueOf(strDays)
-            if (days < 0) null else days
-        } else
-            DEFAULT_TIME_RANGE_PAST_DAYS
-    }
-
-    fun setTimeRangePastDays(days: Int?) =
-            accountManager.setUserData(account, KEY_TIME_RANGE_PAST_DAYS, (days ?: -1).toString())
-
-    fun getManageCalendarColors() = if (settings.has(KEY_MANAGE_CALENDAR_COLORS))
-        settings.getBoolean(KEY_MANAGE_CALENDAR_COLORS) ?: false
-    else
-        accountManager.getUserData(account, KEY_MANAGE_CALENDAR_COLORS) == null
-    fun setManageCalendarColors(manage: Boolean) =
-            accountManager.setUserData(account, KEY_MANAGE_CALENDAR_COLORS, if (manage) null else "0")
-
-    fun getEventColors() = if (settings.has(KEY_EVENT_COLORS))
-            settings.getBoolean(KEY_EVENT_COLORS) ?: false
-                else
-            accountManager.getUserData(account, KEY_EVENT_COLORS) != null
-    fun setEventColors(useColors: Boolean) =
-            accountManager.setUserData(account, KEY_EVENT_COLORS, if (useColors) "1" else null)
 
     // CardDAV settings
 
