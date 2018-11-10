@@ -14,7 +14,6 @@ import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.RemoteException
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
