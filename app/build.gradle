@@ -69,7 +69,6 @@ android {
 
 dependencies {
     implementation project(':cert4android')
-    implementation project(':ical4android')
     implementation project(':vcard4android')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

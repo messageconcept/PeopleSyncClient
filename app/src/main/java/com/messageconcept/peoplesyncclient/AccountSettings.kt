@@ -26,18 +26,10 @@ import com.messageconcept.peoplesyncclient.model.ServiceDB.*
 import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
 import com.messageconcept.peoplesyncclient.model.SyncState
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalCalendar
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
-import at.bitfire.ical4android.AndroidCalendar
-import at.bitfire.ical4android.AndroidTaskList
-import at.bitfire.ical4android.CalendarStorageException
-import at.bitfire.ical4android.TaskProvider
-import at.bitfire.ical4android.TaskProvider.ProviderName.OpenTasks
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
 import okhttp3.HttpUrl
 import org.apache.commons.lang3.StringUtils
-import org.dmfs.tasks.contract.TaskContract
 import java.util.*
 import java.util.logging.Level
 
@@ -249,17 +241,7 @@ class AccountSettings(
      * Disable it on those accounts for the future.
      */
     private fun update_8_9() {
-        ServiceDB.OpenHelper(context).use { dbHelper ->
-            val db = dbHelper.readableDatabase
-            db.query(ServiceDB.Services._TABLE, null, "${ServiceDB.Services.ACCOUNT_NAME}=? AND ${ServiceDB.Services.SERVICE}=?",
-                    arrayOf(account.name, ServiceDB.Services.SERVICE_CALDAV), null, null, null).use { result ->
-                val hasCalDAV = result.count >= 1
-                if (!hasCalDAV && ContentResolver.getIsSyncable(account, OpenTasks.authority) != 0) {
-                    Logger.log.info("Disabling OpenTasks sync for $account")
-                    ContentResolver.setIsSyncable(account, OpenTasks.authority, 0)
-                }
-            }
-        }
+        // nothing to do
     }
 
     @Suppress("unused")
@@ -269,46 +251,14 @@ class AccountSettings(
      * SEQUENCE and should not be used for the eTag.
      */
     private fun update_7_8() {
-        TaskProvider.acquire(context, TaskProvider.ProviderName.OpenTasks)?.let { provider ->
-            // ETag is now in sync_version instead of sync1
-            // UID  is now in _uid         instead of sync2
-            provider.client.query(TaskProvider.syncAdapterUri(provider.tasksUri(), account),
-                    arrayOf(TaskContract.Tasks._ID, TaskContract.Tasks.SYNC1, TaskContract.Tasks.SYNC2),
-                    "${TaskContract.Tasks.ACCOUNT_TYPE}=? AND ${TaskContract.Tasks.ACCOUNT_NAME}=?",
-                    arrayOf(account.type, account.name), null)!!.use { cursor ->
-                while (cursor.moveToNext()) {
-                    val id = cursor.getLong(0)
-                    val eTag = cursor.getString(1)
-                    val uid = cursor.getString(2)
-                    val values = ContentValues(4)
-                    values.put(TaskContract.Tasks._UID, uid)
-                    values.put(TaskContract.Tasks.SYNC_VERSION, eTag)
-                    values.putNull(TaskContract.Tasks.SYNC1)
-                    values.putNull(TaskContract.Tasks.SYNC2)
-                    Logger.log.log(Level.FINER, "Updating task $id", values)
-                    provider.client.update(
-                            TaskProvider.syncAdapterUri(ContentUris.withAppendedId(provider.tasksUri(), id), account),
-                            values, null, null)
-                }
-            }
-        }
+        // nothing to do
     }
 
     @Suppress("unused")
     @SuppressLint("Recycle")
     private fun update_6_7() {
         // add calendar colors
-        context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-            try {
-                AndroidCalendar.insertColors(provider, account)
-            } finally {
-                @Suppress("DEPRECATION")
-                if (Build.VERSION.SDK_INT >= 24)
-                    provider.close()
-                else
-                    provider.release()
-            }
-        }
+        // nothing to do
 
         // update allowed WiFi settings key
         val onlySSID = accountManager.getUserData(account, "wifi_only_ssid")
@@ -389,7 +339,7 @@ class AccountSettings(
     @Suppress("unused")
     private fun update_4_5() {
         // call PackageChangedReceiver which then enables/disables OpenTasks sync when it's (not) available
-        PackageChangedReceiver.updateTaskSync(context)
+        // nothing to do
     }
 
     @Suppress("unused")
@@ -450,67 +400,7 @@ class AccountSettings(
             }
 
             // CalDAV: migrate calendars + task lists
-            val collections = HashSet<String>()
-            val homeSets = HashSet<HttpUrl>()
-
-            context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { client ->
-                try {
-                    val calendars = AndroidCalendar.find(account, client, LocalCalendar.Factory, null, null)
-                    for (calendar in calendars)
-                        calendar.name?.let { url ->
-                            Logger.log.fine("Migrating calendar $url")
-                            collections.add(url)
-                            HttpUrl.parse(url)?.resolve("../")?.let { homeSets.add(it) }
-                        }
-                } catch (e: CalendarStorageException) {
-                    Logger.log.log(Level.SEVERE, "Couldn't migrate calendars", e)
-                } finally {
-                    if (Build.VERSION.SDK_INT >= 24)
-                        client.close()
-                    else
-                        @Suppress("deprecation")
-                        client.release()
-                }
-            }
-
-            AndroidTaskList.acquireTaskProvider(context)?.use { provider ->
-                try {
-                    val taskLists = AndroidTaskList.find(account, provider, LocalTaskList.Factory, null, null)
-                    for (taskList in taskLists)
-                        taskList.syncId?.let { url ->
-                            Logger.log.fine("Migrating task list $url")
-                            collections.add(url)
-                            HttpUrl.parse(url)?.resolve("../")?.let { homeSets.add(it) }
-                        }
-                } catch (e: CalendarStorageException) {
-                    Logger.log.log(Level.SEVERE, "Couldn't migrate task lists", e)
-                }
-            }
-
-            if (!collections.isEmpty()) {
-                // insert CalDAV service
-                val values = ContentValues(3)
-                values.put(Services.ACCOUNT_NAME, account.name)
-                values.put(Services.SERVICE, Services.SERVICE_CALDAV)
-                serviceCalDAV = db.insert(Services._TABLE, null, values)
-
-                // insert collections
-                for (url in collections) {
-                    values.clear()
-                    values.put(Collections.SERVICE_ID, serviceCalDAV)
-                    values.put(Collections.URL, url)
-                    values.put(Collections.SYNC, 1)
-                    db.insert(Collections._TABLE, null, values)
-                }
-
-                // insert home sets
-                for (homeSet in homeSets) {
-                    values.clear()
-                    values.put(HomeSets.SERVICE_ID, serviceCalDAV)
-                    values.put(HomeSets.URL, homeSet.toString())
-                    db.insert(HomeSets._TABLE, null, values)
-                }
-            }
+            // nothing to do
         }
 
         // initiate service detection (refresh) to get display names, colors etc.

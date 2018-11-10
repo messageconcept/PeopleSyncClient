@@ -43,9 +43,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.ServiceDB
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
-import at.bitfire.ical4android.TaskProvider
 import kotlinx.android.synthetic.main.activity_debug_info.*
-import org.dmfs.tasks.contract.TaskContract
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -189,14 +187,13 @@ class DebugInfoActivity: AppCompatActivity(), LoaderManager.LoaderCallbacks<Stri
                 val pm = context.packageManager
                 val appIDs = mutableSetOf(      // we always want info about these packages
                         BuildConfig.APPLICATION_ID,                     // PeopleSync
-                        "${BuildConfig.APPLICATION_ID}.jbworkaround",   // PeopleSync JB Workaround
-                        "org.dmfs.tasks"                               // OpenTasks
+                        "${BuildConfig.APPLICATION_ID}.jbworkaround"    // PeopleSync JB Workaround
                 )
-                // add info about contact, calendar, task provider
-                for (authority in arrayOf(ContactsContract.AUTHORITY, CalendarContract.AUTHORITY, TaskProvider.ProviderName.OpenTasks.authority))
+                // add info about contact provider
+                for (authority in arrayOf(ContactsContract.AUTHORITY))
                     pm.resolveContentProvider(authority, 0)?.let { appIDs += it.packageName }
-                // add info about available contact, calendar, task apps
-                for (uri in arrayOf(ContactsContract.Contacts.CONTENT_URI, CalendarContract.Events.CONTENT_URI, TaskContract.Tasks.getContentUri(TaskProvider.ProviderName.OpenTasks.authority))) {
+                // add info about available contact apps
+                for (uri in arrayOf(ContactsContract.Contacts.CONTENT_URI)) {
                     val viewIntent = Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(uri, 1))
                     for (info in pm.queryIntentActivities(viewIntent, 0))
                         appIDs += info.activityInfo.packageName
@@ -250,8 +247,6 @@ class DebugInfoActivity: AppCompatActivity(), LoaderManager.LoaderCallbacks<Stri
                       .append("\n")
             // permissions
             for (permission in arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
-                                       Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR,
-                                       TaskProvider.PERMISSION_READ_TASKS, TaskProvider.PERMISSION_WRITE_TASKS,
                                        Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 report  .append(permission).append(": ")
                         .append(if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED)
@@ -271,8 +266,6 @@ class DebugInfoActivity: AppCompatActivity(), LoaderManager.LoaderCallbacks<Stri
                     val accountSettings = AccountSettings(context, acct)
                     report.append("Account: ${acct.name}\n" +
                             "  Address book sync. interval: ${syncStatus(accountSettings, context.getString(R.string.address_books_authority))}\n" +
-                            "  Calendar     sync. interval: ${syncStatus(accountSettings, CalendarContract.AUTHORITY)}\n" +
-                            "  OpenTasks    sync. interval: ${syncStatus(accountSettings, TaskProvider.ProviderName.OpenTasks.authority)}\n" +
                             "  WiFi only: ").append(accountSettings.getSyncWifiOnly())
                     accountSettings.getSyncWifiOnlySSIDs()?.let {
                         report.append(", SSIDs: ${accountSettings.getSyncWifiOnlySSIDs()}")

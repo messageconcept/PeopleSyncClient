@@ -41,9 +41,7 @@ import com.messageconcept.peoplesyncclient.model.ServiceDB
 import com.messageconcept.peoplesyncclient.model.ServiceDB.*
 import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
-import at.bitfire.ical4android.TaskProvider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.account_caldav_item.view.*
 import kotlinx.android.synthetic.main.activity_account.*
@@ -58,9 +56,7 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
 
         private fun requestSync(context: Context, account: Account) {
             val authorities = arrayOf(
-                    context.getString(R.string.address_books_authority),
-                    CalendarContract.AUTHORITY,
-                    TaskProvider.ProviderName.OpenTasks.authority
+                    context.getString(R.string.address_books_authority)
             )
 
             for (authority in authorities) {
@@ -165,18 +161,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
             R.id.create_address_book -> {
                 val intent = Intent(this, CreateAddressBookActivity::class.java)
                 intent.putExtra(CreateAddressBookActivity.EXTRA_ACCOUNT, account)
-                startActivity(intent)
-            }
-            R.id.refresh_calendars ->
-                accountInfo?.caldav?.let { caldav ->
-                    val intent = Intent(this, DavService::class.java)
-                    intent.action = DavService.ACTION_REFRESH_COLLECTIONS
-                    intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, caldav.id)
-                    startService(intent)
-                }
-            R.id.create_calendar -> {
-                val intent = Intent(this, CreateCalendarActivity::class.java)
-                intent.putExtra(CreateCalendarActivity.EXTRA_ACCOUNT, account)
                 startActivity(intent)
             }
         }
@@ -420,17 +404,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
             requiredPermissions += Manifest.permission.WRITE_CONTACTS
         }
 
-        if (info?.caldav != null) {
-            // if there is a CalDAV service, ask for calendar and tasks permissions
-            requiredPermissions += Manifest.permission.READ_CALENDAR
-            requiredPermissions += Manifest.permission.WRITE_CALENDAR
-
-            if (LocalTaskList.tasksProviderAvailable(this)) {
-                requiredPermissions += TaskProvider.PERMISSION_READ_TASKS
-                requiredPermissions += TaskProvider.PERMISSION_WRITE_TASKS
-            }
-        }
-
         val askPermissions = requiredPermissions.filter { ActivityCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }
         if (askPermissions.isNotEmpty())
             ActivityCompat.requestPermissions(this, askPermissions.toTypedArray(), 0)
@@ -530,17 +503,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
 
                                 carddav.hasHomeSets = hasHomeSets(db, id)
                                 carddav.collections = readCollections(db, id)
-                            }
-                            Services.SERVICE_CALDAV -> {
-                                val caldav = AccountInfo.ServiceInfo()
-                                info.caldav = caldav
-                                caldav.id = id
-                                caldav.refreshing =
-                                        davService?.isRefreshing(id) ?: false ||
-                                        ContentResolver.isSyncActive(account, CalendarContract.AUTHORITY) ||
-                                        ContentResolver.isSyncActive(account, TaskProvider.ProviderName.OpenTasks.authority)
-                                caldav.hasHomeSets = hasHomeSets(db, id)
-                                caldav.collections = readCollections(db, id)
                             }
                         }
                     }
@@ -728,9 +690,7 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
                         // remember sync intervals
                         val oldSettings = AccountSettings(requireActivity(), oldAccount)
                         val authorities = arrayOf(
-                                getString(R.string.address_books_authority),
-                                CalendarContract.AUTHORITY,
-                                TaskProvider.ProviderName.OpenTasks.authority
+                                getString(R.string.address_books_authority)
                         )
                         val syncIntervals = authorities.map { Pair(it, oldSettings.getSyncInterval(it)) }
 
@@ -773,13 +733,6 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
 
                                 // calendar provider doesn't allow changing account_name of Events
                                 // (all events will have to be downloaded again)
-
-                                // update account_name of local tasks
-                                try {
-                                    LocalTaskList.onRenameAccount(activity!!.contentResolver, oldAccount.name, newName)
-                                } catch(e: Exception) {
-                                    Logger.log.log(Level.SEVERE, "Couldn't propagate new account name to tasks provider", e)
-                                }
 
                                 // retain sync intervals
                                 val newAccount = Account(newName, oldAccount.type)

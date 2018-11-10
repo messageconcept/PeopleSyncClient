@@ -29,10 +29,8 @@ import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.ServiceDB.*
-import com.messageconcept.peoplesyncclient.resource.LocalTaskList
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
-import at.bitfire.ical4android.TaskProvider.ProviderName.OpenTasks
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.login_account_details.*
@@ -177,15 +175,8 @@ class AccountDetailsFragment: Fragment() {
                         // calendar sync is automatically enabled by isAlwaysSyncable="true" in res/xml/sync_calendars.xml
                         accountSettings.setSyncInterval(CalendarContract.AUTHORITY, Constants.DEFAULT_SYNC_INTERVAL)
 
-                        // enable task sync if OpenTasks is installed
-                        // further changes will be handled by PackageChangedReceiver
-                        if (LocalTaskList.tasksProviderAvailable(appContext)) {
-                            ContentResolver.setIsSyncable(account, OpenTasks.authority, 1)
-                            accountSettings.setSyncInterval(OpenTasks.authority, Constants.DEFAULT_SYNC_INTERVAL)
-                        }
                     } else {
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 0)
-                        ContentResolver.setIsSyncable(account, OpenTasks.authority, 0)
                     }
 
                 } catch(e: InvalidAccountException) {

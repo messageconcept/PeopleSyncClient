@@ -32,13 +32,10 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountSettingsActivity
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
-import at.bitfire.ical4android.CalendarStorageException
-import at.bitfire.ical4android.TaskProvider
 import at.bitfire.vcard4android.ContactsStorageException
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
 import org.apache.commons.lang3.exception.ContextedException
-import org.dmfs.tasks.contract.TaskContract
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.net.HttpURLConnection
@@ -641,11 +638,6 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                 message = context.getString(R.string.sync_error_http_dav, e.localizedMessage)
                 syncResult.stats.numParseExceptions++       // numIoExceptions would indicate a soft error
             }
-            is CalendarStorageException, is ContactsStorageException, is RemoteException -> {
-                Logger.log.log(Level.SEVERE, "Couldn't access local storage", e)
-                message = context.getString(R.string.sync_error_local_storage, e.localizedMessage)
-                syncResult.databaseError = true
-            }
             else -> {
                 Logger.log.log(Level.SEVERE, "Unclassified sync error", e)
                 message = e.localizedMessage ?: e::class.java.simpleName
@@ -742,10 +734,6 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
             when (local) {
                 is LocalContact ->
                     Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, id))
-                is LocalEvent ->
-                    Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, id))
-                is LocalTask ->
-                    Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(TaskContract.Tasks.getContentUri(TaskProvider.ProviderName.OpenTasks.authority), id))
                 else ->
                     null
             }
