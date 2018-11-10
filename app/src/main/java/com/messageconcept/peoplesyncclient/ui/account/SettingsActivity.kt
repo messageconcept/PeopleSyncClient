@@ -33,12 +33,10 @@ import com.messageconcept.peoplesyncclient.PermissionUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.Credentials
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService
 import com.messageconcept.peoplesyncclient.ui.UiUtils
-import at.bitfire.ical4android.TaskProvider
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -124,45 +122,6 @@ class SettingsActivity: AppCompatActivity() {
                         it.isVisible = false
                 })
             }
-            findPreference<ListPreference>(getString(R.string.settings_sync_interval_calendars_key))!!.let {
-                model.syncIntervalCalendars.observe(viewLifecycleOwner, { interval: Long? ->
-                    if (interval != null) {
-                        it.isEnabled = true
-                        it.isVisible = true
-                        it.value = interval.toString()
-                        if (interval == AccountSettings.SYNC_INTERVAL_MANUALLY)
-                            it.setSummary(R.string.settings_sync_summary_manually)
-                        else
-                            it.summary = getString(R.string.settings_sync_summary_periodically, interval / 60)
-                        it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-                            pref.isEnabled = false
-                            model.updateSyncInterval(CalendarContract.AUTHORITY, (newValue as String).toLong())
-                            false
-                        }
-                    } else
-                        it.isVisible = false
-                })
-            }
-            findPreference<ListPreference>(getString(R.string.settings_sync_interval_tasks_key))!!.let {
-                model.syncIntervalTasks.observe(viewLifecycleOwner, { interval: Long? ->
-                    val provider = model.tasksProvider
-                    if (provider != null && interval != null) {
-                        it.isEnabled = true
-                        it.isVisible = true
-                        it.value = interval.toString()
-                        if (interval == AccountSettings.SYNC_INTERVAL_MANUALLY)
-                            it.setSummary(R.string.settings_sync_summary_manually)
-                        else
-                            it.summary = getString(R.string.settings_sync_summary_periodically, interval / 60)
-                        it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-                            pref.isEnabled = false
-                            model.updateSyncInterval(provider.authority, (newValue as String).toLong())
-                            false
-                        }
-                    } else
-                        it.isVisible = false
-                })
-            }
 
             findPreference<SwitchPreferenceCompat>(getString(R.string.settings_sync_wifi_only_key))!!.let {
                 model.syncWifiOnly.observe(viewLifecycleOwner, { wifiOnly ->
@@ -241,99 +200,6 @@ class SettingsActivity: AppCompatActivity() {
                 }
             })
 
-            // preference group: CalDAV
-            model.hasCalDav.observe(viewLifecycleOwner, { hasCalDav ->
-                if (!hasCalDav)
-                    findPreference<PreferenceGroup>(getString(R.string.settings_caldav_key))!!.isVisible = false
-                else {
-                    findPreference<PreferenceGroup>(getString(R.string.settings_caldav_key))!!.isVisible = true
-
-                    // when model.hasCalDav is available, model.syncInterval* are also available
-                    // (because hasCalDav is calculated from them)
-                    val hasCalendars = model.syncIntervalCalendars.value != null
-                    val hasTasks = model.syncIntervalTasks.value != null
-                    
-                    findPreference<EditTextPreference>(getString(R.string.settings_sync_time_range_past_key))!!.let { pref ->
-                        if (hasCalendars)
-                            model.timeRangePastDays.observe(viewLifecycleOwner, { pastDays ->
-                                if (model.syncIntervalCalendars.value != null) {
-                                    pref.isVisible = true
-                                    if (pastDays != null) {
-                                        pref.text = pastDays.toString()
-                                        pref.summary = resources.getQuantityString(R.plurals.settings_sync_time_range_past_days, pastDays, pastDays)
-                                    } else {
-                                        pref.text = null
-                                        pref.setSummary(R.string.settings_sync_time_range_past_none)
-                                    }
-                                    pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                                        val days = try {
-                                            (newValue as String).toInt()
-                                        } catch(e: NumberFormatException) {
-                                            -1
-                                        }
-                                        model.updateTimeRangePastDays(if (days < 0) null else days)
-                                        false
-                                    }
-                                } else
-                                    pref.isVisible = false
-                            })
-                        else
-                            pref.isVisible = false
-                    }
-
-                    findPreference<EditTextPreference>(getString(R.string.settings_key_default_alarm))!!.let { pref ->
-                        if (hasCalendars)
-                            model.defaultAlarmMinBefore.observe(viewLifecycleOwner, { minBefore ->
-                                pref.isVisible = true
-                                if (minBefore != null) {
-                                    pref.text = minBefore.toString()
-                                    pref.summary = resources.getQuantityString(R.plurals.settings_default_alarm_on, minBefore, minBefore)
-                                } else {
-                                    pref.text = null
-                                    pref.summary = getString(R.string.settings_default_alarm_off)
-                                }
-                                pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                                    val minBefore = try {
-                                        (newValue as String).toInt()
-                                    } catch (e: java.lang.NumberFormatException) {
-                                        null
-                                    }
-                                    model.updateDefaultAlarm(minBefore)
-                                    false
-                                }
-                            })
-                        else
-                            pref.isVisible = false
-                    }
-
-                    findPreference<SwitchPreferenceCompat>(getString(R.string.settings_manage_calendar_colors_key))!!.let {
-                        model.manageCalendarColors.observe(viewLifecycleOwner, { manageCalendarColors ->
-                            it.isEnabled = !settings.containsKey(AccountSettings.KEY_MANAGE_CALENDAR_COLORS)
-                            it.isChecked = manageCalendarColors
-                            it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                                model.updateManageCalendarColors(newValue as Boolean)
-                                false
-                            }
-                        })
-                    }
-
-                    findPreference<SwitchPreferenceCompat>(getString(R.string.settings_event_colors_key))!!.let { pref ->
-                        if (hasCalendars)
-                            model.eventColors.observe(viewLifecycleOwner, { eventColors ->
-                                pref.isVisible = true
-                                pref.isEnabled = !settings.containsKey(AccountSettings.KEY_EVENT_COLORS)
-                                pref.isChecked = eventColors
-                                pref.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                                    model.updateEventColors(newValue as Boolean)
-                                    false
-                                }
-                            })
-                        else
-                            pref.isVisible = false
-                    }
-                }
-            })
-
             // preference group: CardDAV
             model.syncIntervalContacts.observe(viewLifecycleOwner, { contactsSyncInterval ->
                 val hasCardDav = contactsSyncInterval != null
@@ -389,28 +255,10 @@ class SettingsActivity: AppCompatActivity() {
 
         // settings
         val syncIntervalContacts = MutableLiveData<Long>()
-        val syncIntervalCalendars = MutableLiveData<Long>()
-        val tasksProvider = TaskUtils.currentProvider(getApplication())
-        val syncIntervalTasks = MutableLiveData<Long>()
-        val hasCalDav = object: MediatorLiveData<Boolean>() {
-            init {
-                addSource(syncIntervalCalendars) { calculate() }
-                addSource(syncIntervalTasks) { calculate() }
-            }
-            private fun calculate() {
-                value = syncIntervalCalendars.value != null || syncIntervalTasks.value != null
-            }
-        }
-
         val syncWifiOnly = MutableLiveData<Boolean>()
         val syncWifiOnlySSIDs = MutableLiveData<List<String>>()
 
         val credentials = MutableLiveData<Credentials>()
-
-        val timeRangePastDays = MutableLiveData<Int>()
-        val defaultAlarmMinBefore = MutableLiveData<Int>()
-        val manageCalendarColors = MutableLiveData<Boolean>()
-        val eventColors = MutableLiveData<Boolean>()
 
         val contactGroupMethod = MutableLiveData<GroupMethod>()
 
@@ -454,18 +302,10 @@ class SettingsActivity: AppCompatActivity() {
             val context = getApplication<Application>()
 
             syncIntervalContacts.postValue(accountSettings.getSyncInterval(context.getString(R.string.address_books_authority)))
-            syncIntervalCalendars.postValue(accountSettings.getSyncInterval(CalendarContract.AUTHORITY))
-            syncIntervalTasks.postValue(tasksProvider?.let { accountSettings.getSyncInterval(it.authority) })
-
             syncWifiOnly.postValue(accountSettings.getSyncWifiOnly())
             syncWifiOnlySSIDs.postValue(accountSettings.getSyncWifiOnlySSIDs())
 
             credentials.postValue(accountSettings.credentials())
-
-            timeRangePastDays.postValue(accountSettings.getTimeRangePastDays())
-            defaultAlarmMinBefore.postValue(accountSettings.getDefaultAlarm())
-            manageCalendarColors.postValue(accountSettings.getManageCalendarColors())
-            eventColors.postValue(accountSettings.getEventColors())
 
             contactGroupMethod.postValue(accountSettings.getGroupMethod())
         }
@@ -493,58 +333,11 @@ class SettingsActivity: AppCompatActivity() {
             reload()
         }
 
-        fun updateTimeRangePastDays(days: Int?) {
-            accountSettings?.setTimeRangePastDays(days)
-            reload()
-
-            /* If the new setting is a certain number of days, no full resync is required,
-            because every sync will cause a REPORT calendar-query with the given number of days.
-            However, if the new setting is "all events", collection sync may/should be used, so
-            the last sync-token has to be reset, which is done by setting fullResync=true.
-             */
-            resyncCalendars(fullResync = days == null, tasks = false)
-        }
-
-        fun updateDefaultAlarm(minBefore: Int?) {
-            accountSettings?.setDefaultAlarm(minBefore)
-            reload()
-
-            resyncCalendars(fullResync = true, tasks = false)
-        }
-
-        fun updateManageCalendarColors(manage: Boolean) {
-            accountSettings?.setManageCalendarColors(manage)
-            reload()
-
-            resyncCalendars(fullResync = false, tasks = true)
-        }
-
-        fun updateEventColors(manageColors: Boolean) {
-            accountSettings?.setEventColors(manageColors)
-            reload()
-
-            resyncCalendars(fullResync = true, tasks = false)
-        }
-
         fun updateContactGroupMethod(groupMethod: GroupMethod) {
             accountSettings?.setGroupMethod(groupMethod)
             reload()
 
             resync(getApplication<Application>().getString(R.string.address_books_authority), fullResync = true)
-        }
-
-        /**
-         * Initiates calendar re-synchronization.
-         *
-         * @param fullResync whether sync shall download all events again
-         * (_true_: sets [SyncAdapterService.SYNC_EXTRAS_FULL_RESYNC],
-         * _false_: sets [ContentResolver.SYNC_EXTRAS_MANUAL])
-         * @param tasks whether tasks shall be synchronized, too (false: only events, true: events and tasks)
-         */
-        private fun resyncCalendars(fullResync: Boolean, tasks: Boolean) {
-            resync(CalendarContract.AUTHORITY, fullResync)
-            if (tasks)
-                resync(TaskProvider.ProviderName.OpenTasks.authority, fullResync)
         }
 
         private fun resync(authority: String, fullResync: Boolean) {

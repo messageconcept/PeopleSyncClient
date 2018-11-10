@@ -1,3 +1,0 @@
-package com.messageconcept.peoplesyncclient.syncadapter
-
-class TasksOrgSyncAdapterService: TasksSyncAdapterService()

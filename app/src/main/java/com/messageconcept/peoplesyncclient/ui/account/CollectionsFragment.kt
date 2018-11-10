@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.*
 import android.widget.PopupMenu
@@ -27,7 +26,6 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import kotlinx.android.synthetic.main.account_collections.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -216,9 +214,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         val serviceId = MutableLiveData<Long>()
         private lateinit var collectionType: String
 
-        // cache task provider
-        val taskProvider by lazy { TaskUtils.currentProvider(getApplication()) }
-
         val collections: LiveData<PagedList<Collection>> =
                 Transformations.switchMap(serviceId) { service ->
                     db.collectionDao().pageByServiceAndType(service, collectionType).toLiveData(25)
@@ -305,17 +300,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
                 isSyncActive.postValue(mainSyncActive || syncActive)
                 isSyncPending.postValue(mainSyncPending || syncPending)
-            } else {
-                val authorities = mutableListOf(CalendarContract.AUTHORITY)
-                taskProvider?.let {
-                    authorities += it.authority
-                }
-                isSyncActive.postValue(authorities.any {
-                    ContentResolver.isSyncActive(accountModel.account, it)
-                })
-                isSyncPending.postValue(authorities.any {
-                    ContentResolver.isSyncPending(accountModel.account, it)
-                })
             }
         }
 

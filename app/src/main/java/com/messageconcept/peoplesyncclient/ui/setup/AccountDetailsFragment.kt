@@ -34,7 +34,6 @@ import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.model.HomeSet
 import com.messageconcept.peoplesyncclient.model.Service
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import at.bitfire.vcard4android.GroupMethod
@@ -193,13 +192,6 @@ class AccountDetailsFragment: Fragment() {
                         // set default sync interval and enable sync regardless of permissions
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
                         accountSettings.setSyncInterval(CalendarContract.AUTHORITY, Constants.DEFAULT_SYNC_INTERVAL)
-
-                        val taskProvider = TaskUtils.currentProvider(context)
-                        if (taskProvider != null) {
-                            ContentResolver.setIsSyncable(account, taskProvider.authority, 1)
-                            accountSettings.setSyncInterval(taskProvider.authority, Constants.DEFAULT_SYNC_INTERVAL)
-                            // further changes will be handled by TasksWatcher on app start or when tasks app is (un)installed
-                        }
                     }
 
                 } catch(e: InvalidAccountException) {

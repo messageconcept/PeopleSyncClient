@@ -18,7 +18,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcel
 import android.os.RemoteException
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
@@ -29,16 +28,10 @@ import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalTask
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
-import at.bitfire.ical4android.AndroidCalendar
-import at.bitfire.ical4android.TaskProvider
-import at.bitfire.ical4android.TaskProvider.ProviderName.OpenTasks
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.StringUtils
-import org.dmfs.tasks.contract.TaskContract
 import java.util.logging.Level
 
 /**
@@ -65,32 +58,6 @@ class AccountSettings(
 
         const val KEY_WIFI_ONLY = "wifi_only"               // sync on WiFi only (default: false)
         const val KEY_WIFI_ONLY_SSIDS = "wifi_only_ssids"   // restrict sync to specific WiFi SSIDs
-
-        /** Time range limitation to the past [in days]. Values:
-         *
-         * - null: default value (DEFAULT_TIME_RANGE_PAST_DAYS)
-         * - <0 (typically -1): no limit
-         * - n>0: entries more than n days in the past won't be synchronized
-         */
-        const val KEY_TIME_RANGE_PAST_DAYS = "time_range_past_days"
-        const val DEFAULT_TIME_RANGE_PAST_DAYS = 90
-
-        /**
-         * Whether a default alarm shall be assigned to received events/tasks which don't have an alarm.
-         * Value can be null (no default alarm) or an integer (default alarm shall be created this
-         * number of minutes before the event/task).
-         */
-        const val KEY_DEFAULT_ALARM = "default_alarm"
-
-        /* Whether PeopleSync sets the local calendar color to the value from service DB at every sync
-           value = null (not existing)     true (default)
-                   "0"                     false */
-        const val KEY_MANAGE_CALENDAR_COLORS = "manage_calendar_colors"
-
-        /* Whether PeopleSync populates and uses CalendarContract.Colors
-           value = null (not existing)     false (default)
-                   "1"                     true */
-        const val KEY_EVENT_COLORS = "event_colors"
 
         /** Contact group method:
         value = null (not existing)     groups as separate VCards (default)
@@ -212,14 +179,8 @@ class AccountSettings(
         if (!success)
             return false
 
-        // store task sync interval in account settings (used when the provider is switched)
-        if (TaskProvider.ProviderName.values().any { it.authority == authority })
-            accountManager.setUserData(account, KEY_SYNC_INTERVAL_TASKS, seconds.toString())
-
         return true
     }
-
-    fun getSavedTasksSyncInterval() = accountManager.getUserData(account, KEY_SYNC_INTERVAL_TASKS)?.toLong()
 
     fun getSyncWifiOnly() =
             if (settings.containsKey(KEY_WIFI_ONLY))
@@ -240,66 +201,6 @@ class AccountSettings(
     fun setSyncWifiOnlySSIDs(ssids: List<String>?) =
             accountManager.setUserData(account, KEY_WIFI_ONLY_SSIDS, StringUtils.trimToNull(ssids?.joinToString(",")))
 
-
-    // CalDAV settings
-
-    fun getTimeRangePastDays(): Int? {
-        val strDays = accountManager.getUserData(account, KEY_TIME_RANGE_PAST_DAYS)
-        return if (strDays != null) {
-            val days = strDays.toInt()
-            if (days < 0)
-                null
-            else
-                days
-        } else
-            DEFAULT_TIME_RANGE_PAST_DAYS
-    }
-
-    fun setTimeRangePastDays(days: Int?) =
-            accountManager.setUserData(account, KEY_TIME_RANGE_PAST_DAYS, (days ?: -1).toString())
-
-    /**
-     * Takes the default alarm setting (in this order) from
-     *
-     * 1. the local account settings
-     * 2. the settings provider (unless the value is -1 there).
-     *
-     * @return A default reminder shall be created this number of minutes before the start of every
-     * non-full-day event without reminder. *null*: No default reminders shall be created.
-     */
-    fun getDefaultAlarm() =
-            accountManager.getUserData(account, KEY_DEFAULT_ALARM)?.toInt() ?:
-            settings.getIntOrNull(KEY_DEFAULT_ALARM)?.takeIf { it != -1 }
-
-    /**
-     * Sets the default alarm value in the local account settings, if the new value differs
-     * from the value of the settings provider. If the new value is the same as the value of
-     * the settings provider, the local setting will be deleted, so that the settings provider
-     * value applies.
-     *
-     * @param minBefore The number of minutes a default reminder shall be created before the
-     * start of every non-full-day event without reminder. *null*: No default reminders shall be created.
-     */
-    fun setDefaultAlarm(minBefore: Int?) =
-            accountManager.setUserData(account, KEY_DEFAULT_ALARM,
-                    if (minBefore == settings.getIntOrNull(KEY_DEFAULT_ALARM)?.takeIf { it != -1 })
-                        null
-                    else
-                        minBefore?.toString())
-
-    fun getManageCalendarColors() = if (settings.containsKey(KEY_MANAGE_CALENDAR_COLORS))
-        settings.getBoolean(KEY_MANAGE_CALENDAR_COLORS)
-    else
-        accountManager.getUserData(account, KEY_MANAGE_CALENDAR_COLORS) == null
-    fun setManageCalendarColors(manage: Boolean) =
-            accountManager.setUserData(account, KEY_MANAGE_CALENDAR_COLORS, if (manage) null else "0")
-
-    fun getEventColors() = if (settings.containsKey(KEY_EVENT_COLORS))
-            settings.getBoolean(KEY_EVENT_COLORS)
-                else
-            accountManager.getUserData(account, KEY_EVENT_COLORS) != null
-    fun setEventColors(useColors: Boolean) =
-            accountManager.setUserData(account, KEY_EVENT_COLORS, if (useColors) "1" else null)
 
     // CardDAV settings
 
@@ -345,11 +246,7 @@ class AccountSettings(
      * again when the tasks provider is switched.
      */
     private fun update_10_11() {
-        TaskUtils.currentProvider(context)?.let { provider ->
-            val interval = getSyncInterval(provider.authority)
-            if (interval != null)
-                accountManager.setUserData(account, KEY_SYNC_INTERVAL_TASKS, interval.toString())
-        }
+        // nothing to do
     }
 
     @Suppress("unused","FunctionName")
@@ -360,20 +257,7 @@ class AccountSettings(
      * Also update the allowed reminder types for calendars.
      **/
     private fun update_9_10() {
-        TaskProvider.acquire(context, OpenTasks)?.use { provider ->
-            val tasksUri = TaskProvider.syncAdapterUri(provider.tasksUri(), account)
-            val emptyETag = ContentValues(1)
-            emptyETag.putNull(LocalTask.COLUMN_ETAG)
-            provider.client.update(tasksUri, emptyETag, "${TaskContract.Tasks._DIRTY}=0 AND ${TaskContract.Tasks._DELETED}=0", null)
-        }
-
-        @SuppressLint("Recycle")
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED)
-            context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-                provider.update(AndroidCalendar.syncAdapterURI(CalendarContract.Calendars.CONTENT_URI, account),
-                        AndroidCalendar.calendarBaseValues, null, null)
-                provider.closeCompat()
-            }
+        // nothing to do
     }
 
     @Suppress("unused","FunctionName")
@@ -382,12 +266,7 @@ class AccountSettings(
      * Disable it on those accounts for the future.
      */
     private fun update_8_9() {
-        val db = AppDatabase.getInstance(context)
-        val hasCalDAV = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CALDAV) != null
-        if (!hasCalDAV && ContentResolver.getIsSyncable(account, OpenTasks.authority) != 0) {
-            Logger.log.info("Disabling OpenTasks sync for $account")
-            ContentResolver.setIsSyncable(account, OpenTasks.authority, 0)
-        }
+        // nothing to do
     }
 
     @Suppress("unused","FunctionName")
@@ -397,42 +276,14 @@ class AccountSettings(
      * SEQUENCE and should not be used for the eTag.
      */
     private fun update_7_8() {
-        TaskProvider.acquire(context, OpenTasks)?.use { provider ->
-            // ETag is now in sync_version instead of sync1
-            // UID  is now in _uid         instead of sync2
-            provider.client.query(TaskProvider.syncAdapterUri(provider.tasksUri(), account),
-                    arrayOf(TaskContract.Tasks._ID, TaskContract.Tasks.SYNC1, TaskContract.Tasks.SYNC2),
-                    "${TaskContract.Tasks.ACCOUNT_TYPE}=? AND ${TaskContract.Tasks.ACCOUNT_NAME}=?",
-                    arrayOf(account.type, account.name), null)!!.use { cursor ->
-                while (cursor.moveToNext()) {
-                    val id = cursor.getLong(0)
-                    val eTag = cursor.getString(1)
-                    val uid = cursor.getString(2)
-                    val values = ContentValues(4)
-                    values.put(TaskContract.Tasks._UID, uid)
-                    values.put(TaskContract.Tasks.SYNC_VERSION, eTag)
-                    values.putNull(TaskContract.Tasks.SYNC1)
-                    values.putNull(TaskContract.Tasks.SYNC2)
-                    Logger.log.log(Level.FINER, "Updating task $id", values)
-                    provider.client.update(
-                            TaskProvider.syncAdapterUri(ContentUris.withAppendedId(provider.tasksUri(), id), account),
-                            values, null, null)
-                }
-            }
-        }
+        // nothing to do
     }
 
     @Suppress("unused")
     @SuppressLint("Recycle")
     private fun update_6_7() {
         // add calendar colors
-        context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)?.let { provider ->
-            try {
-                AndroidCalendar.insertColors(provider, account)
-            } finally {
-                provider.closeCompat()
-            }
-        }
+        // nothing to do
 
         // update allowed WiFi settings key
         val onlySSID = accountManager.getUserData(account, "wifi_only_ssid")
@@ -506,8 +357,7 @@ class AccountSettings(
     /* Android 7.1.1 OpenTasks fix */
     @Suppress("unused")
     private fun update_4_5() {
-        // call PackageChangedReceiver which then enables/disables OpenTasks sync when it's (not) available
-        TasksWatcher.updateTaskSync(context)
+        // nothing to do
     }
 
     @Suppress("unused")

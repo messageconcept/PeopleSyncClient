@@ -15,12 +15,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.core.content.getSystemService
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.TaskUtils
 import okhttp3.HttpUrl
 import org.xbill.DNS.*
 import java.util.*
@@ -190,13 +188,8 @@ object DavUtils {
      */
     fun syncAuthorities(context: Context): List<String> {
         val result = mutableListOf(
-                context.getString(R.string.address_books_authority),
-                CalendarContract.AUTHORITY
+                context.getString(R.string.address_books_authority)
         )
-
-        TaskUtils.currentProvider(context)?.let { taskProvider ->
-            result += taskProvider.authority
-        }
 
         return result
     }

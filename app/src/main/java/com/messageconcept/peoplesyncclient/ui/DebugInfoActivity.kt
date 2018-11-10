@@ -20,7 +20,6 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.View
 import android.widget.Toast
@@ -50,15 +49,12 @@ import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import at.bitfire.ical4android.TaskProvider
-import at.bitfire.ical4android.TaskProvider.ProviderName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.commons.io.ByteOrderMark
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.dmfs.tasks.contract.TaskContract
 import java.io.*
 import java.util.logging.Level
 import java.util.zip.ZipEntry
@@ -284,19 +280,14 @@ class DebugInfoActivity: AppCompatActivity() {
                     val pm = context.packageManager
 
                     val packageNames = mutableSetOf(      // we always want info about these packages:
-                            BuildConfig.APPLICATION_ID,            // PeopleSync
-                            ProviderName.OpenTasks.packageName,    // OpenTasks
-                            ProviderName.TasksOrg.packageName      // tasks.org
+                            BuildConfig.APPLICATION_ID             // PeopleSync
                     )
-                    // ... and info about contact and calendar provider
-                    for (authority in arrayOf(ContactsContract.AUTHORITY, CalendarContract.AUTHORITY))
+                    // ... and info about contact provider
+                    for (authority in arrayOf(ContactsContract.AUTHORITY))
                         pm.resolveContentProvider(authority, 0)?.let { packageNames += it.packageName }
-                    // ... and info about contact, calendar, task-editing apps
+                    // ... and info about contact apps
                     val dataUris = arrayOf(
-                            ContactsContract.Contacts.CONTENT_URI,
-                            CalendarContract.Events.CONTENT_URI,
-                            TaskContract.Tasks.getContentUri(ProviderName.OpenTasks.authority),
-                            TaskContract.Tasks.getContentUri(ProviderName.TasksOrg.authority)
+                            ContactsContract.Contacts.CONTENT_URI
                     )
                     for (uri in dataUris) {
                         val viewIntent = Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(uri, /* some random ID */ 1))
@@ -492,9 +483,7 @@ class DebugInfoActivity: AppCompatActivity() {
 
             for (authority in arrayOf(
                     context.getString(R.string.address_books_authority),
-                    CalendarContract.AUTHORITY,
-                    ContactsContract.AUTHORITY,     // Should never be set! Main accounts shall not contain contacts.
-                    TaskProvider.ProviderName.OpenTasks.authority
+                    ContactsContract.AUTHORITY      // Should never be set! Main accounts shall not contain contacts.
             ))
                 table.addLine(
                         authority,
@@ -512,11 +501,7 @@ class DebugInfoActivity: AppCompatActivity() {
                 accountSettings.getSyncWifiOnlySSIDs()?.let { ssids ->
                     writer.append(", SSIDs: ${ssids.joinToString(", ")}")
                 }
-                writer.append("\n  Contact group method: ${accountSettings.getGroupMethod()}\n" +
-                        "  Time range (past days): ${accountSettings.getTimeRangePastDays()}\n" +
-                        "  Default alarm (min before): ${accountSettings.getDefaultAlarm()}\n" +
-                        "  Manage calendar colors: ${accountSettings.getManageCalendarColors()}\n" +
-                        "  Use event colors: ${accountSettings.getEventColors()}\n")
+                writer.append("\n  Contact group method: ${accountSettings.getGroupMethod()}\n")
             } catch(e: InvalidAccountException) {
                 writer.append("$e\n")
             }

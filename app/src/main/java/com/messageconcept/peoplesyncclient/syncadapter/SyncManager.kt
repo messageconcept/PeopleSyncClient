@@ -17,7 +17,6 @@ import android.content.SyncResult
 import android.net.Uri
 import android.os.Bundle
 import android.os.RemoteException
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -35,10 +34,6 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
-import at.bitfire.ical4android.CalendarStorageException
-import at.bitfire.ical4android.Ical4Android
-import at.bitfire.ical4android.TaskProvider
-import at.bitfire.ical4android.UsesThreadContextClassLoader
 import at.bitfire.vcard4android.ContactsStorageException
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -47,7 +42,6 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
 import org.apache.commons.lang3.exception.ContextedException
-import org.dmfs.tasks.contract.TaskContract
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.net.HttpURLConnection
@@ -62,7 +56,6 @@ import java.util.logging.Level
 import javax.net.ssl.SSLHandshakeException
 import kotlin.math.min
 
-@UsesThreadContextClassLoader
 abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: LocalCollection<ResourceType>, RemoteType: DavCollection>(
         val context: Context,
         val account: Account,
@@ -80,11 +73,6 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
 
     companion object {
         const val MAX_MULTIGET_RESOURCES = 10
-    }
-
-    init {
-        // required for ServiceLoader -> ical4j -> ical4android
-        Ical4Android.checkThreadContextClassLoader()
     }
 
     /**
@@ -681,7 +669,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                 message = context.getString(R.string.sync_error_http_dav, e.localizedMessage)
                 syncResult.stats.numParseExceptions++       // numIoExceptions would indicate a soft error
             }
-            is CalendarStorageException, is ContactsStorageException, is RemoteException -> {
+            is ContactsStorageException, is RemoteException -> {
                 Logger.log.log(Level.SEVERE, "Couldn't access local storage", e)
                 message = context.getString(R.string.sync_error_local_storage, e.localizedMessage)
                 syncResult.databaseError = true
@@ -782,10 +770,6 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
             when (local) {
                 is LocalContact ->
                     Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, id))
-                is LocalEvent ->
-                    Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, id))
-                is LocalTask ->
-                    Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(TaskContract.Tasks.getContentUri(TaskProvider.ProviderName.OpenTasks.authority), id))
                 else ->
                     null
             }

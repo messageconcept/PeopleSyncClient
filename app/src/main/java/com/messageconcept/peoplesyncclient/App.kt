@@ -67,12 +67,6 @@ class App: Application(), Thread.UncaughtExceptionHandler {
         CoroutineScope(Dispatchers.Default).launch {
             // create/update app shortcuts
             UiUtils.updateShortcuts(this@App)
-
-            // watch installed/removed apps
-            TasksWatcher(this@App)
-
-            // check whether a tasks app is currently installed
-            TasksWatcher.updateTaskSync(this@App)
         }
     }
 

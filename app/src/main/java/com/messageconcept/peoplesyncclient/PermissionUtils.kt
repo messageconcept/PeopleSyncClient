@@ -22,10 +22,6 @@ object PermissionUtils {
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS
     )
-    val CALENDAR_PERMISSIONS = arrayOf(
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR
-    )
 
     val WIFI_SSID_PERMISSIONS =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
