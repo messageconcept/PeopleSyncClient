@@ -86,16 +86,13 @@ class AccountDetailsFragment: Fragment() {
                     return@setOnClickListener
                 }
 
-                val idx = view!!.contact_group_method.selectedItemPosition
-                val groupMethodName = resources.getStringArray(R.array.settings_contact_group_method_values)[idx]
-
                 v.create_account.visibility = View.GONE
                 v.create_account_progress.visibility = View.VISIBLE
 
                 CreateAccountTask(requireActivity(),
                         name,
                         args.getParcelable(KEY_CONFIG) as DavResourceFinder.Configuration,
-                        GroupMethod.valueOf(groupMethodName)).execute()
+                        GroupMethod.CATEGORIES).execute()
             }
         }
 
