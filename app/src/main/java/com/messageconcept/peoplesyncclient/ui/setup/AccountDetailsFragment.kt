@@ -88,9 +88,6 @@ class AccountDetailsFragment: Fragment() {
                     return@setOnClickListener
                 }
 
-                val idx = v.contactGroupMethod.selectedItemPosition
-                val groupMethodName = resources.getStringArray(R.array.settings_contact_group_method_values)[idx]
-
                 v.createAccountProgress.visibility = View.VISIBLE
                 v.createAccount.visibility = View.GONE
 
@@ -98,7 +95,7 @@ class AccountDetailsFragment: Fragment() {
                         name,
                         loginModel.credentials!!,
                         config,
-                        GroupMethod.valueOf(groupMethodName)
+                        GroupMethod.CATEGORIES
                 ).observe(viewLifecycleOwner, Observer<Boolean> { success ->
                     if (success)
                         requireActivity().finish()
