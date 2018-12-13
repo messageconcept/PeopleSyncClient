@@ -44,7 +44,7 @@ data class CollectionInfo(
         var timeZone: String? = null,
         var supportsVEVENT: Boolean = false,
         var supportsVTODO: Boolean = false,
-        var selected: Boolean = false,
+        var selected: Boolean = true,
 
         // subscriptions
         var source: String? = null,
