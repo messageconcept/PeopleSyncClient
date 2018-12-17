@@ -12,11 +12,13 @@ import android.accounts.Account
 import android.content.ContentProviderClient
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.content.SyncResult
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
+import com.messageconcept.peoplesyncclient.DavService
 import com.messageconcept.peoplesyncclient.closeCompat
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
@@ -66,6 +68,14 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
         private fun updateLocalAddressBooks(account: Account, syncResult: SyncResult): Boolean {
             val db = AppDatabase.getInstance(context)
             val service = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CARDDAV)
+
+            if (service != null) {
+                Logger.log.info("Refreshing CardDAV collections")
+                val intent = Intent(context, DavService::class.java)
+                intent.action = DavService.ACTION_REFRESH_COLLECTIONS
+                intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, service.id)
+                context.startService(intent)
+            }
 
             val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()
             if (service != null)
