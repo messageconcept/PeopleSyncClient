@@ -97,12 +97,10 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
                 val service = getService()
 
                 Logger.log.info("Refreshing CardDAV collections")
-
                 val intent = Intent(context, DavService::class.java)
                 intent.action = DavService.ACTION_REFRESH_COLLECTIONS
                 intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, service)
                 intent.putExtra(DavService.AUTO_SYNC, true)
-
                 context.startService(intent)
 
                 val remote = remoteAddressBooks(service)

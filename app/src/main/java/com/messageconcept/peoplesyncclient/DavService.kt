@@ -317,6 +317,8 @@ class DavService: Service() {
                     collections.values
                             .filter { it.selected == false }
                             .forEach { (url, _) -> deselectedCollections += url }
+                    // remember number of collections before the refresh
+                    val numCollectionsOld = collections.size
 
                     // now refresh collections (taken from home sets)
                     val itHomeSets = homeSets.iterator()
@@ -377,6 +379,15 @@ class DavService: Service() {
                         collections[url]?.let { it.selected = true }
                     for (url in deselectedCollections)
                         collections[url]?.let { it.selected = false }
+
+                    val numCollectionsNew = collections.size;
+                    if (numCollectionsOld != numCollectionsNew) {
+                        Logger.log.info("Number of collections changed for ${account.name} from ${numCollectionsOld} -> ${numCollectionsNew}, triggering sync")
+                        val args = Bundle(1)
+                        args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
+                        ContentResolver.requestSync(account, getString(R.string.address_books_authority), args)
+                    }
+
                 }
 
                 db.beginTransactionNonExclusive()
