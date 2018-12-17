@@ -27,6 +27,7 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -58,6 +59,7 @@ class AccountActivity: AppCompatActivity() {
                 modelFactory.create(account) as T
         }
     }
+    private var refreshed = false
 
     private lateinit var binding: ActivityAccountBinding
 
@@ -82,6 +84,13 @@ class AccountActivity: AppCompatActivity() {
         binding.viewPager.adapter = tabsAdapter
         model.cardDavService.observe(this, Observer {
             tabsAdapter.cardDavSvcId = it
+            if (!refreshed) {
+                Logger.log.info("Refreshing collections")
+                RefreshCollectionsWorker.refreshCollections(this, it)
+
+                refreshed = true
+            }
+
         })
 
         binding.sync.setOnClickListener {
