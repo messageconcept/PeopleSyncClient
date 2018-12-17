@@ -70,6 +70,7 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
 
     lateinit var account: Account
     private var accountInfo: AccountInfo? = null
+    private var refreshed = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -320,6 +321,17 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
         val askPermissions = requiredPermissions.filter { ActivityCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED }
         if (askPermissions.isNotEmpty())
             ActivityCompat.requestPermissions(this, askPermissions.toTypedArray(), 0)
+
+        if (!refreshed) {
+            Logger.log.info("Refreshing CardDAV collections")
+            info?.carddav?.let { carddav ->
+                val intent = Intent(this, DavService::class.java)
+                intent.action = DavService.ACTION_REFRESH_COLLECTIONS
+                intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, carddav.id)
+                startService(intent)
+            }
+            refreshed = true
+        }
     }
 
     override fun onLoaderReset(loader: Loader<AccountInfo>) {
