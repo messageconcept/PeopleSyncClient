@@ -16,6 +16,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
+import com.messageconcept.peoplesyncclient.DavService
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.CollectionInfo
 import com.messageconcept.peoplesyncclient.model.ServiceDB
@@ -94,6 +95,15 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
 
                 // enumerate remote and local address books
                 val service = getService()
+
+                Logger.log.info("Refreshing CardDAV collections")
+
+                val intent = Intent(context, DavService::class.java)
+                intent.action = DavService.ACTION_REFRESH_COLLECTIONS
+                intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, service)
+
+                context.startService(intent)
+
                 val remote = remoteAddressBooks(service)
 
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
