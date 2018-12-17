@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.*
+import com.messageconcept.peoplesyncclient.DavService
 import com.messageconcept.peoplesyncclient.DavUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
@@ -41,6 +42,7 @@ class AccountActivity: AppCompatActivity() {
     }
 
     lateinit var model: Model
+    private var refreshed = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,16 @@ class AccountActivity: AppCompatActivity() {
         view_pager.adapter = tabsAdapter
         model.cardDavService.observe(this, Observer {
             tabsAdapter.cardDavSvcId = it
+            if (!refreshed) {
+                Logger.log.info("Refreshing CardDAV collections")
+                val intent = Intent(this, DavService::class.java)
+                intent.action = DavService.ACTION_REFRESH_COLLECTIONS
+                intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, it)
+                startService(intent)
+
+                refreshed = true
+            }
+
         })
 
         model.askForPermissions.observe(this, Observer { permissions ->
