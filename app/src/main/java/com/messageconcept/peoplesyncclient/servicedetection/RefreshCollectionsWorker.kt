@@ -27,6 +27,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
@@ -137,6 +138,9 @@ class RefreshCollectionsWorker @AssistedInject constructor(
     var refreshThread: Thread? = null
 
     override fun doWork(): Result {
+        // remember old collections before the refresh
+        val oldCollections = db.collectionDao().getByService(serviceId)
+
         try {
             Logger.log.info("Refreshing ${service.type} collections of service #$service")
 
@@ -165,6 +169,12 @@ class RefreshCollectionsWorker @AssistedInject constructor(
                     refresher.refreshHomelessCollections()
                 }
 
+            val collections = db.collectionDao().getByService(serviceId)
+
+            if (collections != oldCollections) {
+                Logger.log.info("Collections changed for ${account.name}, requesting sync")
+                SyncWorker.requestSync(applicationContext, account)
+            }
         } catch(e: InvalidAccountException) {
             Logger.log.log(Level.SEVERE, "Invalid account", e)
             return Result.failure()
