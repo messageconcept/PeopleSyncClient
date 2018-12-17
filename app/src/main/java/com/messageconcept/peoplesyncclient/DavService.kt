@@ -52,6 +52,8 @@ class DavService: Service() {
             contents://<authority>/<account.type>/<account name>
          **/
         const val ACTION_FORCE_SYNC = "forceSync"
+
+        const val AUTO_SYNC = "autoSync"
     }
 
     private val runningRefresh = HashSet<Long>()
@@ -61,11 +63,12 @@ class DavService: Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
             val id = intent.getLongExtra(EXTRA_DAV_SERVICE_ID, -1)
+            val auto = intent.getBooleanExtra(AUTO_SYNC, false)
 
             when (intent.action) {
                 ACTION_REFRESH_COLLECTIONS ->
                     if (runningRefresh.add(id)) {
-                        thread { refreshCollections(id) }
+                        thread { refreshCollections(id, auto) }
                         refreshingStatusListeners.forEach { listener ->
                             listener.get()?.onDavRefreshStatusChanged(id, true)
                         }
@@ -132,7 +135,7 @@ class DavService: Service() {
         ContentResolver.requestSync(account, authority, extras)
     }
 
-    private fun refreshCollections(service: Long) {
+    private fun refreshCollections(service: Long, autoSync: Boolean) {
         OpenHelper(this@DavService).use { dbHelper ->
             val db = dbHelper.writableDatabase
 
@@ -394,12 +397,27 @@ class DavService: Service() {
                 debugIntent.putExtra(DebugInfoActivity.KEY_THROWABLE, e)
                 debugIntent.putExtra(DebugInfoActivity.KEY_ACCOUNT, account)
 
-                val notify = NotificationUtils.newBuilder(this, NotificationUtils.CHANNEL_GENERAL)
+                val priority: Int
+                val alertOnlyOnce: Boolean
+                val channel: String
+
+                if (autoSync) {
+                    priority = NotificationCompat.PRIORITY_MIN
+                    channel = NotificationUtils.CHANNEL_SYNC_IO_ERRORS
+                    alertOnlyOnce = true
+                } else {
+                    priority = NotificationCompat.PRIORITY_DEFAULT
+                    channel = NotificationUtils.CHANNEL_GENERAL
+                    alertOnlyOnce = false
+                }
+                val notify = NotificationUtils.newBuilder(this, channel)
                         .setSmallIcon(R.drawable.ic_sync_error_notification)
                         .setContentTitle(getString(R.string.dav_service_refresh_failed))
                         .setContentText(getString(R.string.dav_service_refresh_couldnt_refresh))
                         .setContentIntent(PendingIntent.getActivity(this, 0, debugIntent, PendingIntent.FLAG_UPDATE_CURRENT))
                         .setSubText(account.name)
+                        .setOnlyAlertOnce(alertOnlyOnce)
+                        .setPriority(priority)
                         .setCategory(NotificationCompat.CATEGORY_ERROR)
                         .build()
                 NotificationManagerCompat.from(this)

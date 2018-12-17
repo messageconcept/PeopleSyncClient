@@ -328,6 +328,7 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
                 val intent = Intent(this, DavService::class.java)
                 intent.action = DavService.ACTION_REFRESH_COLLECTIONS
                 intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, carddav.id)
+                intent.putExtra(DavService.AUTO_SYNC, true)
                 startService(intent)
             }
             refreshed = true
