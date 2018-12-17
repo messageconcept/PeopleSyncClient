@@ -65,6 +65,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
 
         const val ARG_SERVICE_ID = "serviceId"
         const val REFRESH_COLLECTIONS_WORKER_TAG = "refreshCollectionsWorker"
+        const val AUTO_SYNC = "autoSync"
 
         // Collection properties to ask for in a propfind request to the Cal- or CardDAV server
         val DAV_COLLECTION_PROPERTIES = arrayOf(
@@ -93,12 +94,13 @@ class RefreshCollectionsWorker @AssistedInject constructor(
          *
          * @throws IllegalArgumentException when there's no service with this ID
          */
-        fun refreshCollections(context: Context, serviceId: Long): String {
+        fun refreshCollections(context: Context, serviceId: Long, autoSync: Boolean = false): String {
             if (serviceId == -1L)
                 throw IllegalArgumentException("Service with ID \"$serviceId\" does not exist")
 
             val arguments = Data.Builder()
                 .putLong(ARG_SERVICE_ID, serviceId)
+                .putBoolean(AUTO_SYNC, autoSync)
                 .build()
             val workRequest = OneTimeWorkRequestBuilder<RefreshCollectionsWorker>()
                 .setInputData(arguments)
@@ -127,6 +129,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
     }
 
     val serviceId: Long = inputData.getLong(ARG_SERVICE_ID, -1)
+    val autoSync: Boolean = inputData.getBoolean(AUTO_SYNC, false)
     val service = db.serviceDao().get(serviceId) ?: throw IllegalArgumentException("Service #$serviceId not found")
     val account = Account(service.accountName, applicationContext.getString(R.string.account_type))
 
@@ -172,12 +175,28 @@ class RefreshCollectionsWorker @AssistedInject constructor(
                 .withCause(e)
                 .withAccount(account)
                 .build()
-            val notify = NotificationUtils.newBuilder(applicationContext, NotificationUtils.CHANNEL_GENERAL)
+
+            val priority: Int
+            val alertOnlyOnce: Boolean
+            val channel: String
+
+            if (autoSync) {
+                priority = NotificationCompat.PRIORITY_MIN
+                channel = NotificationUtils.CHANNEL_SYNC_IO_ERRORS
+                alertOnlyOnce = true
+            } else {
+                priority = NotificationCompat.PRIORITY_DEFAULT
+                channel = NotificationUtils.CHANNEL_GENERAL
+                alertOnlyOnce = false
+            }
+            val notify = NotificationUtils.newBuilder(applicationContext, channel)
                 .setSmallIcon(R.drawable.ic_sync_problem_notify)
                 .setContentTitle(applicationContext.getString(R.string.refresh_collections_worker_refresh_failed))
                 .setContentText(applicationContext.getString(R.string.refresh_collections_worker_refresh_couldnt_refresh))
                 .setContentIntent(PendingIntent.getActivity(applicationContext, 0, debugIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 .setSubText(account.name)
+                .setOnlyAlertOnce(alertOnlyOnce)
+                .setPriority(priority)
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .build()
             NotificationManagerCompat.from(applicationContext)

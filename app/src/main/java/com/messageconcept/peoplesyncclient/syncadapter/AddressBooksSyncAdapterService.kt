@@ -74,7 +74,7 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
 
             if (service != null) {
                 Logger.log.info("Refreshing collections")
-                RefreshCollectionsWorker.refreshCollections(context, service.id)
+                RefreshCollectionsWorker.refreshCollections(context, service.id, true)
             }
 
             val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()

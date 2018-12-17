@@ -86,7 +86,7 @@ class AccountActivity: AppCompatActivity() {
             tabsAdapter.cardDavSvcId = it
             if (!refreshed) {
                 Logger.log.info("Refreshing collections")
-                RefreshCollectionsWorker.refreshCollections(this, it)
+                RefreshCollectionsWorker.refreshCollections(this, it, true)
 
                 refreshed = true
             }
