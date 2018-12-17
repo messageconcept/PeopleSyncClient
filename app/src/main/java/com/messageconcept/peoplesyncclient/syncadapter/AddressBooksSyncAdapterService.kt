@@ -19,6 +19,7 @@ import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
@@ -70,6 +71,11 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
 
         private fun updateLocalAddressBooks(account: Account, syncResult: SyncResult): Boolean {
             val service = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CARDDAV)
+
+            if (service != null) {
+                Logger.log.info("Refreshing collections")
+                RefreshCollectionsWorker.refreshCollections(context, service.id)
+            }
 
             val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()
             if (service != null)
