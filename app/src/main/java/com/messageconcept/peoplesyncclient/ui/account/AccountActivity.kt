@@ -76,6 +76,7 @@ class AccountActivity: AppCompatActivity() {
                 val intent = Intent(this, DavService::class.java)
                 intent.action = DavService.ACTION_REFRESH_COLLECTIONS
                 intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, it)
+                intent.putExtra(DavService.AUTO_SYNC, true)
                 startService(intent)
 
                 refreshed = true
