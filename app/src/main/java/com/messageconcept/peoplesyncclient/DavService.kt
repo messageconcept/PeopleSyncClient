@@ -310,6 +310,9 @@ class DavService: IntentService("DavService") {
                     queryHomeSets(httpClient, principalUrl)
                 }
 
+                // remember number of collections before the refresh
+                val numCollectionsOld = collections.size
+
                 // now refresh homesets and their member collections
                 val itHomeSets = homeSets.iterator()
                 while (itHomeSets.hasNext()) {
@@ -385,6 +388,14 @@ class DavService: IntentService("DavService") {
                             else
                                 throw e
                         }
+                }
+
+                val numCollectionsNew = collections.size;
+                if (numCollectionsOld != numCollectionsNew) {
+                    Logger.log.info("Number of collections changed for ${account.name} from ${numCollectionsOld} -> ${numCollectionsNew}, triggering sync")
+                    val args = Bundle(1)
+                    args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
+                    ContentResolver.requestSync(account, getString(R.string.address_books_authority), args)
                 }
             }
 
