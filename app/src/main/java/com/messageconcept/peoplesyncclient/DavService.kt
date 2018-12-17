@@ -294,6 +294,8 @@ class DavService: android.app.Service() {
                     else
                         deselectedCollections += url
                 }
+                // remember number of collections before the refresh
+                val numCollectionsOld = collections.size
 
                 // now refresh homesets and their member collections
                 val itHomeSets = homeSets.iterator()
@@ -363,6 +365,14 @@ class DavService: android.app.Service() {
                     collections[url]?.let { it.sync = true }
                 for (url in deselectedCollections)
                     collections[url]?.let { it.sync = false }
+
+                val numCollectionsNew = collections.size;
+                if (numCollectionsOld != numCollectionsNew) {
+                    Logger.log.info("Number of collections changed for ${account.name} from ${numCollectionsOld} -> ${numCollectionsNew}, triggering sync")
+                    val args = Bundle(1)
+                    args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
+                    ContentResolver.requestSync(account, getString(R.string.address_books_authority), args)
+                }
             }
 
             saveResults()
