@@ -312,9 +312,12 @@ class DavService: android.app.Service() {
 
                 // remember selected collections
                 val selectedCollections = HashSet<HttpUrl>()
+                val deselectedCollections = HashSet<HttpUrl>()
                 collections.forEach { (url, collection) ->
                     if (collection.sync)
                         selectedCollections += url
+                    else
+                        deselectedCollections += url
                 }
 
                 // now refresh collections (taken from home sets)
@@ -374,6 +377,8 @@ class DavService: android.app.Service() {
                 // restore selections
                 for (url in selectedCollections)
                     collections[url]?.let { it.sync = true }
+                for (url in deselectedCollections)
+                    collections[url]?.let { it.sync = false }
             }
 
             saveResults()
