@@ -310,6 +310,10 @@ class DavService: Service() {
                     collections.values
                             .filter { it.selected }
                             .forEach { (url, _) -> selectedCollections += url }
+                    val deselectedCollections = HashSet<HttpUrl>()
+                    collections.values
+                            .filter { it.selected == false }
+                            .forEach { (url, _) -> deselectedCollections += url }
 
                     // now refresh collections (taken from home sets)
                     val itHomeSets = homeSets.iterator()
@@ -368,6 +372,8 @@ class DavService: Service() {
                     // restore selections
                     for (url in selectedCollections)
                         collections[url]?.let { it.selected = true }
+                    for (url in deselectedCollections)
+                        collections[url]?.let { it.selected = false }
                 }
 
                 db.beginTransactionNonExclusive()
