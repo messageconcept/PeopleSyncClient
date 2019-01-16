@@ -19,7 +19,8 @@
 -keep class org.xmlpull.** { *; }
 
 # PeopleSync + libs
--keep class at.bitfire.** { *; }       # all PeopleSync code is required
+-keep class at.bitfire.** { *; }         # all DAVx⁵ code is required
+-keep class com.messageconcept.** { *; } # all PeopleSync code is required
 
 # we use enum classes (https://www.guardsquare.com/en/products/proguard/manual/examples#enumerations)
 -keepclassmembers,allowoptimization enum * {
