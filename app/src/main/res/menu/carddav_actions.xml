@@ -13,6 +13,7 @@
           android:title="@string/account_refresh_address_book_list"/>
 
     <item android:id="@+id/create_address_book"
-          android:title="@string/account_create_new_address_book"/>
+          android:title="@string/account_create_new_address_book"
+          android:visible="false"/>
 
 </menu>
