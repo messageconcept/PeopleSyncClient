@@ -17,6 +17,7 @@
         android:title="@string/collection_properties"/>
 
     <item android:id="@+id/delete_collection"
-        android:title="@string/delete_collection"/>
+        android:title="@string/delete_collection"
+        android:visible="false"/>
 
 </menu>

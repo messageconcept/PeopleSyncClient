@@ -181,7 +181,7 @@ class AccountActivity: AppCompatActivity(), Toolbar.OnMenuItemClickListener, Pop
                 isVisible = false
         }
 
-        popup.menu.findItem(R.id.delete_collection).isVisible = info.privUnbind
+        popup.menu.findItem(R.id.delete_collection).isVisible = false
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
