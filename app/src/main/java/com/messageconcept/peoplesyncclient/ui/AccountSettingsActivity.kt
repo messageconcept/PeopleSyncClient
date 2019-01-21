@@ -18,7 +18,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.CalendarContract
 import android.security.KeyChain
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog

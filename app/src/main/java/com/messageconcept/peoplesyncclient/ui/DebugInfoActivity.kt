@@ -22,7 +22,6 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.Menu
@@ -271,9 +270,6 @@ class DebugInfoActivity: AppCompatActivity(), LoaderManager.LoaderCallbacks<Stri
                         report.append(", SSIDs: ${accountSettings.getSyncWifiOnlySSIDs()}")
                     }
                     report.append("\n  [CardDAV] Contact group method: ${accountSettings.getGroupMethod()}")
-                            .append("\n  [CalDAV] Time range (past days): ${accountSettings.getTimeRangePastDays()}")
-                            .append("\n           Manage calendar colors: ${accountSettings.getManageCalendarColors()}")
-                            .append("\n           Use event colors: ${accountSettings.getEventColors()}")
                             .append("\n")
                 } catch (e: InvalidAccountException) {
                     report.append("$acct is invalid (unsupported settings version) or does not exist\n")

@@ -19,7 +19,6 @@ import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.*
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.*
 import android.widget.*
