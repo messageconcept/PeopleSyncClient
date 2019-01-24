@@ -1,42 +1,37 @@
+![PeopleSync logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
-[![Website](https://img.shields.io/website?style=flat-square&up_color=%237cb342&url=https%3A%2F%2Fwww.davx5.com)](https://www.davx5.com/)
-[![Twitter](https://img.shields.io/twitter/follow/davx5app?color=%237cb342&label=%40davx5app&style=flat-square)](https://twitter.com/davx5app)
-[![F-Droid](https://img.shields.io/f-droid/v/at.bitfire.davdroid?style=flat-square)](https://f-droid.org/packages/at.bitfire.davdroid/)
-[![License](https://img.shields.io/github/license/bitfireAT/davx5-ose?style=flat-square)](https://github.com/bitfireAT/davx5-ose/blob/main/LICENSE)
-[![Development tests](https://github.com/bitfireAT/davx5-ose/actions/workflows/test-dev.yml/badge.svg)](https://github.com/bitfireAT/davx5-ose/actions/workflows/test-dev.yml)
+PeopleSync Client App
+=====================
 
-![DAVx⁵ logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+Please see the [PeopleSync product website](https://peoplesync.messageconcept.com) for
+detailed information about the software.
+
+The software is a CardDAV client for businesses using our PeopleSync server
+software. It synchronizes all address lists from the PeopleSync server. The
+management, which address lists will be synchronized, happens centrally on
+server side by the IT staff. Therefore for the personal usage of CardDAV and
+CalDAV we recommend to use the [DAVx⁵](https://www.davx5.com)
+app with more configuration options.
 
 
-DAVx⁵
-========
+The PeopleSync client app is licensed under the [GPLv3 License](LICENSE).
 
-Please see the [DAVx⁵ Web site](https://www.davx5.com) for
-comprehensive information about DAVx⁵.
+The PeopleSync server software is proprietary commercial software.
 
-DAVx⁵ is licensed under the [GPLv3 License](LICENSE).
+Twitter: [@messageconcept](https://twitter.com/messageconcept)
 
-News and updates: [@davx5app](https://twitter.com/davx5app) on Twitter
 
-**Help, discussion, feature requests, bug reports: [DAVx⁵ forums](https://www.davx5.com/forums)**
-
-Parts of DAVx⁵ have been outsourced into these libraries:
+The PeopleSync client app is based on [DAVx⁵](https://www.davx5.com) and parts of DAVx⁵ have been
+outsourced into these libraries:
 
 * [cert4android](https://github.com/bitfireAT/cert4android) – custom certificate management
 * [dav4jvm](https://github.com/bitfireAT/dav4jvm) – WebDAV/CalDav/CardDAV framework
-* [ical4android](https://github.com/bitfireAT/ical4android) – iCalendar processing and Calendar Provider access
 * [vcard4android](https://github.com/bitfireAT/vcard4android) – vCard processing and Contacts Provider access
-
-**If you want to support DAVx⁵, please consider [donating to DAVx⁵](https://www.davx5.com/donate)
-or [purchasing it](https://www.davx5.com/download).**
 
 
 USED THIRD-PARTY LIBRARIES
 ==========================
 
-The most important libraries which are used by DAVx⁵ (alphabetically):
-
 * [dnsjava](http://www.xbill.org/dnsjava/) – [BSD License](http://www.xbill.org/dnsjava/dnsjava-current/LICENSE)
 * [ez-vcard](https://github.com/mangstadt/ez-vcard) – [New BSD License](http://opensource.org/licenses/BSD-3-Clause)
-* [iCal4j](https://github.com/ical4j/ical4j) – [New BSD License](http://sourceforge.net/p/ical4j/ical4j/ci/default/tree/LICENSE)
 * [okhttp](https://square.github.io/okhttp) – [Apache License, Version 2.0](https://square.github.io/okhttp/#license)
