@@ -61,6 +61,10 @@ android {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -83,7 +87,7 @@ dependencies {
         exclude group: 'org.ogce', module: 'xpp3'	// Android comes with its own XmlPullParser
     }
     implementation 'com.jaredrummler:colorpicker:1.0.5'
-    implementation 'com.mikepenz:aboutlibraries:6.2.0'
+    implementation 'com.mikepenz:aboutlibraries:6.2.3'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     implementation 'commons-io:commons-io:2.6'
