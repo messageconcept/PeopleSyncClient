@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="define_plu_davx5" translatable="false" />
+    <string name="library_davx5_author" translatable="false">Ricki Hirner</string>
+    <string name="library_davx5_authorWebsite" translatable="false">https://www.davx5.com/</string>
+    <string name="library_davx5_libraryName" translatable="false">davx5</string>
+    <string name="library_davx5_libraryDescription" translatable="false">DAVx⁵ is a CalDAV/CardDAV management and sync app for Android.</string>
+    <string name="library_davx5_libraryVersion" translatable="false">4.1-ose</string>
+    <string name="library_davx5_repositoryLink" translatable="false">https://github.com/bitfireAT/davx5-ose</string>
+    <string name="library_davx5_isOpenSource" translatable="false">true</string>
+    <string name="library_davx5_licenseIds" translatable="false">GPL_3_0_or_later</string>
+
+    <string name="define_plu_cert4android" translatable="false" />
+    <string name="library_cert4android_author" translatable="false">Ricki Hirner</string>
+    <string name="library_cert4android_authorWebsite" translatable="false">https://www.davx5.com/</string>
+    <string name="library_cert4android_libraryName" translatable="false">cert4android</string>
+    <string name="library_cert4android_libraryDescription" translatable="false">Android service + TrustManager for managing custom certificates in an app-private key store.</string>
+    <string name="library_cert4android_libraryVersion" translatable="false">68f51b8</string>
+    <string name="library_cert4android_repositoryLink" translatable="false">https://github.com/bitfireAT/cert4android</string>
+    <string name="library_cert4android_isOpenSource" translatable="false">true</string>
+    <string name="library_cert4android_licenseIds" translatable="false">GPL_3_0_or_later</string>
+
+    <string name="define_plu_vcard4android" translatable="false" />
+    <string name="library_vcard4android_author" translatable="false">Ricki Hirner</string>
+    <string name="library_vcard4android_authorWebsite" translatable="false">https://www.davx5.com/</string>
+    <string name="library_vcard4android_libraryName" translatable="false">vcard4android</string>
+    <string name="library_vcard4android_libraryDescription" translatable="false">vCard processing and Contacts Provider access.</string>
+    <string name="library_vcard4android_libraryVersion" translatable="false">055da9b</string>
+    <string name="library_vcard4android_repositoryLink" translatable="false">https://github.com/bitfireAT/vcard4android</string>
+    <string name="library_vcard4android_isOpenSource" translatable="false">true</string>
+    <string name="library_vcard4android_licenseIds" translatable="false">GPL_3_0_or_later</string>
+</resources>
