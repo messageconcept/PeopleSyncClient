@@ -59,6 +59,14 @@
             android:textAlignment="viewStart" />
 
         <TextView
+            android:id="@+id/contact_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:text="@string/about_contact_info" />
+
+        <TextView
             android:id="@+id/warranty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
