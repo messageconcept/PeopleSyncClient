@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="define_cert4android" translatable="false" />
+    <string name="library_cert4android_author" translatable="false">Ricki Hirner, Bernhard Stockmann</string>
+    <string name="library_cert4android_authorWebsite">https://www.davx5.com/</string>
+    <string name="library_cert4android_libraryName" translatable="false">cert4android</string>
+    <string name="library_cert4android_libraryDescription">Android service + TrustManager for managing custom certificates in an app-private key store.</string>
+    <string name="library_cert4android_libraryWebsite" translatable="false">https://gitlab.com/bitfireAT/cert4android</string>
+    <string name="library_cert4android_isOpenSource" translatable="false">true</string>
+    <string name="library_cert4android_licenseId">gpl_3_0</string>
+
+    <string name="define_dav4jvm" translatable="false" />
+    <string name="library_dav4jvm_author" translatable="false">Ricki Hirner, Bernhard Stockmann</string>
+    <string name="library_dav4jvm_authorWebsite">https://www.davx5.com/</string>
+    <string name="library_dav4jvm_libraryName" translatable="false">dav4jvm</string>
+    <string name="library_dav4jvm_libraryDescription">WebDAV/CalDav/CardDAV framework.</string>
+    <string name="library_dav4jvm_libraryWebsite" translatable="false">https://gitlab.com/bitfireAT/dav4jvm</string>
+    <string name="library_dav4jvm_isOpenSource" translatable="false">true</string>
+    <string name="library_dav4jvm_licenseId">gpl_3_0</string>
+
+    <string name="define_vcard4android" translatable="false" />
+    <string name="library_vcard4android_author" translatable="false">Ricki Hirner, Bernhard Stockmann</string>
+    <string name="library_vcard4android_authorWebsite">https://www.davx5.com/</string>
+    <string name="library_vcard4android_libraryName" translatable="false">vcard4android</string>
+    <string name="library_vcard4android_libraryDescription">vCard processing and Contacts Provider access.</string>
+    <string name="library_vcard4android_libraryWebsite" translatable="false">https://gitlab.com/bitfireAT/vcard4android</string>
+    <string name="library_vcard4android_isOpenSource" translatable="false">true</string>
+    <string name="library_vcard4android_licenseId">gpl_3_0</string>
+
+</resources>
