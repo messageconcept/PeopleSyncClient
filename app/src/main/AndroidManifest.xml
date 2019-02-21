@@ -164,6 +164,12 @@
                 android:resource="@xml/contacts"/>
         </service>
 
+        <receiver android:name=".UpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
