@@ -179,6 +179,12 @@
                 android:resource="@xml/debug_paths" />
         </provider>
 
+        <receiver android:name=".UpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
     <!-- package visiblity – which apps do we need to see? -->
