@@ -18,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.annotation.AnyThread
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.AndroidViewModel
@@ -98,6 +99,8 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
         // handle "Sync all" intent from launcher shortcut
         if (savedInstanceState == null && intent.action == Intent.ACTION_SYNC)
             syncAllAccounts()
+
+        NotificationManagerCompat.from(this).cancel(NotificationUtils.NOTIFY_UPDATE)
     }
 
     override fun onResume() {
