@@ -47,6 +47,7 @@ class LocalAddressBook(
         const val USER_DATA_MAIN_ACCOUNT_NAME = "real_account_name"
         const val USER_DATA_URL = "url"
         const val USER_DATA_READ_ONLY = "read_only"
+        const val USER_DATA_MAIN_ACCOUNT_NAME_OLD = "parent_account_name"
 
         fun create(context: Context, provider: ContentProviderClient, mainAccount: Account, info: CollectionInfo): LocalAddressBook {
             val accountManager = AccountManager.get(context)
@@ -126,7 +127,9 @@ class LocalAddressBook(
 
             AccountManager.get(context).let { accountManager ->
                 val name = accountManager.getUserData(account, USER_DATA_MAIN_ACCOUNT_NAME)
+                        ?: accountManager.getUserData(account, USER_DATA_MAIN_ACCOUNT_NAME_OLD)
                 val type = accountManager.getUserData(account, USER_DATA_MAIN_ACCOUNT_TYPE)
+                        ?: context.getString(R.string.account_type)
                 if (name != null && type != null)
                     return Account(name, type)
                 else
