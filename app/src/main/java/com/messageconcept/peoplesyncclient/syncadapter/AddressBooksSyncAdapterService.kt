@@ -9,6 +9,7 @@ package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.Manifest
 import android.accounts.Account
+import android.accounts.AccountManager
 import android.content.*
 import android.content.pm.PackageManager
 import android.database.DatabaseUtils
@@ -17,11 +18,13 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
 import com.messageconcept.peoplesyncclient.DavService
+import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.CollectionInfo
 import com.messageconcept.peoplesyncclient.model.ServiceDB
 import com.messageconcept.peoplesyncclient.model.ServiceDB.Collections
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook.Companion.USER_DATA_MAIN_ACCOUNT_NAME_OLD
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountActivity
 import okhttp3.HttpUrl
@@ -153,8 +156,10 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
                         LocalAddressBook.create(context, contactsProvider, account, info)
                     }
                     // trigger cleanup of old accounts now that we discovered new address books
-                    // TODO: only trigger if there are actually still old address book accounts?
-                    if (remote.isNotEmpty()) {
+                    val accountManager = AccountManager.get(context)
+                    val oldAccounts = accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))
+                            .filter { accountManager.getUserData(it, USER_DATA_MAIN_ACCOUNT_NAME_OLD) != null }
+                    if (remote.isNotEmpty() && oldAccounts.isNotEmpty()) {
                         Logger.log.info("New address books found, triggering cleanup of old accounts")
                         AccountAuthenticatorService.cleanupAccounts(context);
                     }
