@@ -17,6 +17,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook.Companion.USER_DATA_MAIN_ACCOUNT_TYPE
 import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,12 +44,24 @@ class AccountAuthenticatorService: Service(), OnAccountsUpdateListener {
             val accountNames = accountManager.getAccountsByType(context.getString(R.string.account_type))
                     .map { it.name }
 
+            // Determine if we only have old style addressbook accounts.
+            // If so, this most likely means that we weren't able to contact the PeopleSync
+            // server yet and sync the addressbooks after an upgrade. In this case, don't delete
+            // the old addressbooks yet.
+            var newAccountAvailable = false
+            accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))
+                    .forEach {
+                        if (accountManager.getUserData(it, USER_DATA_MAIN_ACCOUNT_TYPE) == context.getString(R.string.account_type)) {
+                            newAccountAvailable = true;
+                        }
+                    }
+
             // delete orphaned address book accounts
             accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))
                     .map { LocalAddressBook(context, it, null) }
                     .forEach {
                         try {
-                            if (!accountNames.contains(it.mainAccount.name))
+                            if (!accountNames.contains(it.mainAccount.name) && newAccountAvailable)
                                 it.delete()
                         } catch(e: Exception) {
                             Logger.log.log(Level.SEVERE, "Couldn't delete address book account", e)
