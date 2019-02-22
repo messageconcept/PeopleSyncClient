@@ -126,6 +126,12 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
                     Logger.log.log(Level.INFO, "Adding local address book", info)
                     LocalAddressBook.create(context, contactsProvider, account, info)
                 }
+                // trigger cleanup of old accounts now that we discovered new address books
+                // TODO: only trigger if there are actually still old address book accounts?
+                if (remoteAddressBooks.isNotEmpty()) {
+                    Logger.log.info("New address books found, triggering cleanup of old accounts")
+                    AccountAuthenticatorService.cleanupAccounts(context);
+                }
             } finally {
                 contactsProvider?.closeCompat()
             }
