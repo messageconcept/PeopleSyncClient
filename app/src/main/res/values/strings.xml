@@ -304,4 +304,7 @@
     <string name="certificate_notification_connection_security">PeopleSync: Connection security</string>
     <string name="trust_certificate_unknown_certificate_found">PeopleSync has encountered an unknown certificate. Do you want to trust it?</string>
 
+    <!-- UpdateReceiver -->
+    <string name="update_receiver_notify">PeopleSync account settings have been migrated</string>
+    <string name="update_receiver_notify_action">Tap to finish update.</string>
 </resources>
