@@ -97,16 +97,6 @@ class UpdateReceiver : BroadcastReceiver() {
                 }
             }
         }
-        for (account in accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))) {
-            val addressbook_url = accountManager.getUserData(account, "addressbook_url")
-            val parent = accountManager.getUserData(account, "parent_account_name")
-
-            // Clean up old accounts
-            if (parent != null && addressbook_url != null) {
-                delete(context, account);
-                Logger.log.info("Removing old account ${account.name}")
-            }
-        }
 
         if (showNotification) {
             val appIntent = Intent(context, AccountsActivity::class.java)
