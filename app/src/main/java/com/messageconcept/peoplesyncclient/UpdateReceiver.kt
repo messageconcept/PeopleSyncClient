@@ -23,6 +23,9 @@ import com.messageconcept.peoplesyncclient.model.ServiceDB
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.setup.LoginInfo
+import java.net.URI
+import java.net.URLDecoder
 import java.util.logging.Level
 
 class UpdateReceiver : BroadcastReceiver() {
@@ -31,6 +34,30 @@ class UpdateReceiver : BroadcastReceiver() {
         const val KEY_PROVIDED_URL = "provided_url"
         const val KEY_PARENT_ACCOUNT_NAME = "parent_account_name"
         const val KEY_ADDRESSBOOK_URL = "addressbook_url"
+    }
+
+    // Extract principal from old address book accounts
+    private fun getPrincipalUrl(context: Context, parent: Account, loginInfo: LoginInfo): String? {
+        val accountManager = AccountManager.get(context)
+
+        Logger.log.info("Querying old addressbooks for principal name")
+        for (account in accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))) {
+            val parentAccount = accountManager.getUserData(account, KEY_PARENT_ACCOUNT_NAME)
+            if (parentAccount != null && parentAccount == parent.name) {
+                val addressbookUrl = accountManager.getUserData(account, KEY_ADDRESSBOOK_URL)
+                val tokens = addressbookUrl.trim('/').split('/')
+                val principal = URLDecoder.decode(tokens[tokens.size - 2], "UTF-8")
+                if (principal != null)
+                    return "${loginInfo.uri.toASCIIString()}/principals/${principal}/"
+            }
+        }
+
+        // fallback to userName if it looks like a principal name
+        if(loginInfo.credentials.userName != null && loginInfo.credentials.userName.contains('@')) {
+            return "${loginInfo.uri.toASCIIString()}/principals/${loginInfo.credentials.userName}/"
+        }
+
+        return null
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
@@ -52,15 +79,27 @@ class UpdateReceiver : BroadcastReceiver() {
                 val password = accountManager.getPassword(account)
 
                 val credentials = Credentials(userName, password)
+                val loginInfo = LoginInfo(URI.create(providedURL), credentials)
+
+                var principalUrl = getPrincipalUrl(context, account, loginInfo)
+
+                delete(context, account)
+
+                // If we couldn't determine a principal from looking at old addressbooks, we simply
+                // delete the old account and continue. The alternative would be to start a service
+                // discovery with the given user account information but this requires network access
+                if (principalUrl == null) {
+                    Logger.log.info("Could not determine principal for ${account.name}")
+                    continue
+                }
 
                 val userData = AccountSettings.initialUserData(credentials)
-                Logger.log.log(Level.INFO, "Convert Android account with existing config", arrayOf(account, userData))
+                Logger.log.log(Level.INFO, "Convert Android account with existing config", arrayOf(account, userData, principalUrl))
 
                 if (!accountManager.addAccountExplicitly(newAccount, credentials.password, userData)) {
                     Logger.log.info("Couldn't create account ${account.name}")
                     // TODO: Exit at this point or continue?
                 }
-                delete(context, account)
 
                 showNotification = true
 
@@ -76,8 +115,7 @@ class UpdateReceiver : BroadcastReceiver() {
                         val serviceValues = ContentValues(3)
                         serviceValues.put(ServiceDB.Services.ACCOUNT_NAME, newName)
                         serviceValues.put(ServiceDB.Services.SERVICE, ServiceDB.Services.SERVICE_CARDDAV)
-                        val principalURL = "${providedURL}/principals/${userName}/"
-                        serviceValues.put(ServiceDB.Services.PRINCIPAL, principalURL)
+                        serviceValues.put(ServiceDB.Services.PRINCIPAL, principalUrl)
 
                         val serviceID = db.insertWithOnConflict(ServiceDB.Services._TABLE, null, serviceValues, SQLiteDatabase.CONFLICT_REPLACE)
 
