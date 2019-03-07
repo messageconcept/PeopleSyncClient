@@ -12,9 +12,12 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.app.PendingIntent
 import android.content.*
+import android.os.AsyncTask
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import at.bitfire.dav4jvm.DavResource
+import at.bitfire.dav4jvm.property.CurrentUserPrincipal
 import at.bitfire.vcard4android.GroupMethod
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
@@ -23,7 +26,10 @@ import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import java.net.URI
+import java.net.URLDecoder
 import java.util.logging.Level
 import kotlin.concurrent.thread
 
@@ -33,6 +39,66 @@ class UpdateReceiver : BroadcastReceiver() {
         const val KEY_PROVIDED_URL = "provided_url"
         const val KEY_PARENT_ACCOUNT_NAME = "parent_account_name"
         const val KEY_ADDRESSBOOK_URL = "addressbook_url"
+    }
+
+    class LoginInfo (val uri: URI, val credentials: Credentials)
+
+    class PrincipalLookupTask(private val context: Context) : AsyncTask<LoginInfo, Void, String>() {
+
+        override fun doInBackground(vararg params: LoginInfo?): String? {
+            val loginInfo = params[0]!!
+
+            val log = java.util.logging.Logger.getLogger("peoplesync.PrincipalFinder")
+
+            val httpClient: HttpClient = HttpClient.Builder(context, logger = log, useCustomCertManager = false)
+                    .addAuthentication(null, loginInfo.credentials)
+                    .setForeground(true)
+                    .build()
+            var principal: HttpUrl? = null
+            try {
+                DavResource(httpClient.okHttpClient, loginInfo.uri.toHttpUrlOrNull()!!, log).propfind(0, CurrentUserPrincipal.NAME) { response, _ ->
+                    response[CurrentUserPrincipal::class.java]?.href?.let { href ->
+                        response.requestedUrl.resolve(href)?.let {
+                            log.info("Found current-user-principal: $it")
+                            principal = it
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                log.log(Level.WARNING, "Couldn't query current-user-principal", e)
+            }
+
+            return principal?.toString()
+        }
+    }
+
+    // determine principal URL
+    private fun getPrincipalUrl(context: Context, parent: Account, loginInfo: LoginInfo): String? {
+        val accountManager = AccountManager.get(context)
+
+        Logger.log.info("Querying server for principal name")
+        val principalUrl = PrincipalLookupTask(context).execute(loginInfo).get()
+        if (principalUrl != null)
+            return principalUrl
+
+        Logger.log.info("Querying old addressbooks for principal name")
+        for (account in accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))) {
+            val parentAccount = accountManager.getUserData(account, KEY_PARENT_ACCOUNT_NAME)
+            if (parentAccount != null && parentAccount == parent.name) {
+                val addressbookUrl = accountManager.getUserData(account, KEY_ADDRESSBOOK_URL)
+                val tokens = addressbookUrl.trim('/').split('/')
+                val principal = URLDecoder.decode(tokens[tokens.size - 2], "UTF-8")
+                if (principal != null)
+                    return "${loginInfo.uri.toASCIIString()}/principals/${principal}/"
+            }
+        }
+
+        // fallback to userName if it looks like a principal name
+        if(loginInfo.credentials.userName != null && loginInfo.credentials.userName.contains('@')) {
+            return "${loginInfo.uri.toASCIIString()}/principals/${loginInfo.credentials.userName}/"
+        }
+
+        return null
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
@@ -53,15 +119,26 @@ class UpdateReceiver : BroadcastReceiver() {
                 val password = accountManager.getPassword(account)
 
                 val credentials = Credentials(userName, password)
+                val loginInfo = LoginInfo(URI.create(providedURL), credentials)
+
+                val principalUrl = getPrincipalUrl(context, account, loginInfo)
+
+                delete(context, account)
+
+                // If we couldn't determine a principal, we can't create a new main account.
+                // Continue processing the next account after deleting the old main account.
+                if (principalUrl == null) {
+                    Logger.log.info("Could not determine principal for ${account.name}")
+                    continue
+                }
 
                 val userData = AccountSettings.initialUserData(credentials)
-                Logger.log.log(Level.INFO, "Convert Android account with existing config", arrayOf(account, userData))
+                Logger.log.log(Level.INFO, "Convert Android account with existing config", arrayOf(account, userData, principalUrl))
 
                 if (!accountManager.addAccountExplicitly(newAccount, credentials.password, userData)) {
                     Logger.log.info("Couldn't create account ${account.name}")
                     // TODO: Exit at this point or continue?
                 }
-                delete(context, account)
 
                 showNotification = true
 
@@ -74,8 +151,7 @@ class UpdateReceiver : BroadcastReceiver() {
                         val refreshIntent = Intent(context, DavService::class.java)
                         refreshIntent.action = DavService.ACTION_REFRESH_COLLECTIONS
 
-                        val principalURL = "${providedURL}/principals/${userName}/"
-                        val service = Service(0, newName, Service.TYPE_CARDDAV, principalURL.toHttpUrlOrNull())
+                        val service = Service(0, newName, Service.TYPE_CARDDAV, principalUrl.toHttpUrlOrNull())
 
                         val serviceID = db.serviceDao().insertOrReplace(service)
 
