@@ -13,9 +13,12 @@ import android.accounts.AccountManager
 import android.app.PendingIntent
 import android.content.*
 import android.database.sqlite.SQLiteDatabase
+import android.os.AsyncTask
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import at.bitfire.dav4jvm.DavResource
+import at.bitfire.dav4jvm.property.CurrentUserPrincipal
 import at.bitfire.vcard4android.GroupMethod
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.Credentials
@@ -24,6 +27,7 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.setup.LoginInfo
+import okhttp3.HttpUrl
 import java.net.URI
 import java.net.URLDecoder
 import java.util.logging.Level
@@ -36,9 +40,44 @@ class UpdateReceiver : BroadcastReceiver() {
         const val KEY_ADDRESSBOOK_URL = "addressbook_url"
     }
 
-    // Extract principal from old address book accounts
+    class PrincipalLookupTask(context: Context) : AsyncTask<LoginInfo, Void, String>() {
+        val mContext = context
+
+        override fun doInBackground(vararg params: LoginInfo?): String? {
+            val loginInfo = params[0]!!
+
+            val log = java.util.logging.Logger.getLogger("peoplesync.PrincipalFinder")!!
+
+            val httpClient: HttpClient = HttpClient.Builder(mContext, logger = log, useCustomCertManager = false)
+                    .addAuthentication(null, loginInfo.credentials)
+                    .setForeground(true)
+                    .build()
+            var principal: HttpUrl? = null
+            try {
+                DavResource(httpClient.okHttpClient, HttpUrl.get(loginInfo.uri)!!, log).propfind(0, CurrentUserPrincipal.NAME) { response, _ ->
+                    response[CurrentUserPrincipal::class.java]?.href?.let { href ->
+                        response.requestedUrl.resolve(href)?.let {
+                            log.info("Found current-user-principal: $it")
+                            principal = it
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                log.log(Level.WARNING, "Couldn't query current-user-principal", e)
+            }
+
+            return principal?.toString()
+        }
+    }
+
+    // determine principal URL
     private fun getPrincipalUrl(context: Context, parent: Account, loginInfo: LoginInfo): String? {
         val accountManager = AccountManager.get(context)
+
+        Logger.log.info("Querying server for principal name")
+        val principalUrl = PrincipalLookupTask(context).execute(loginInfo).get()
+        if (principalUrl != null)
+            return principalUrl
 
         Logger.log.info("Querying old addressbooks for principal name")
         for (account in accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))) {
