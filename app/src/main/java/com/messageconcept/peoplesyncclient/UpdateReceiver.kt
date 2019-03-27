@@ -178,12 +178,14 @@ class UpdateReceiver : BroadcastReceiver() {
 
         if (showNotification) {
             val appIntent = Intent(context, AccountsActivity::class.java)
+            val pendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val notify = NotificationUtils.newBuilder(context, NotificationUtils.CHANNEL_DEBUG)
                     .setSmallIcon(R.drawable.ic_account_update_notification)
-                    .setContentTitle(context.getString(R.string.update_receiver_notify))
-                    .setContentText(context.getString(R.string.update_receiver_notify_action))
-                    .setContentIntent(PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setContentTitle(context.getString(R.string.update_receiver_notification_title))
+                    .setContentText(context.getString(R.string.update_receiver_notification_text))
+                    .setContentIntent(pendingIntent)
+                    .addAction(0, context.getString(R.string.update_receiver_notification_action), pendingIntent)
                     .setOnlyAlertOnce(false)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
