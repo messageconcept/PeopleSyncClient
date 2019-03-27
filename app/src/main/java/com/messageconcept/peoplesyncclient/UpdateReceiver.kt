@@ -184,7 +184,6 @@ class UpdateReceiver : BroadcastReceiver() {
                     .setContentTitle(context.getString(R.string.update_receiver_notify))
                     .setContentText(context.getString(R.string.update_receiver_notify_action))
                     .setContentIntent(PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT))
-                    .setSubText("app update")
                     .setOnlyAlertOnce(false)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
