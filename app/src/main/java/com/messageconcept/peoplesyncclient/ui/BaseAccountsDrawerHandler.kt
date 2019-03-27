@@ -21,7 +21,7 @@ import com.messageconcept.peoplesyncclient.R
 abstract class BaseAccountsDrawerHandler: AccountsDrawerHandler {
 
     companion object {
-        private const val BETA_FEEDBACK_URI = "mailto:play@bitfire.at?subject=${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} feedback (${BuildConfig.VERSION_CODE})"
+        private const val BETA_FEEDBACK_URI = "mailto:peoplesync.app@messageconcept.com?subject=${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} feedback (${BuildConfig.VERSION_CODE})"
     }
 
 
