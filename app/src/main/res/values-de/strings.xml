@@ -304,4 +304,8 @@
   <!--cert4android-->
   <string name="certificate_notification_connection_security">PeopleSync: Verbindungssicherheit</string>
   <string name="trust_certificate_unknown_certificate_found">PeopleSync ist auf ein unbekanntes Zertifikat gestoßen. Ist dieses vertrauenswürdig?</string>
+  <!-- UpdateReceiver -->
+  <string name="update_receiver_notification_title">PeopleSync App Update</string>
+  <string name="update_receiver_notification_text">Konto-Einstellungen wurden migriert</string>
+  <string name="update_receiver_notification_action">Update abschliessen</string>
 </resources>
