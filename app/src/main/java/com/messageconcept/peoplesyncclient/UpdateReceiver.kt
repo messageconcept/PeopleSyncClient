@@ -10,6 +10,7 @@ package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
 import android.accounts.AccountManager
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.*
 import android.database.sqlite.SQLiteDatabase
@@ -188,6 +189,7 @@ class UpdateReceiver : BroadcastReceiver() {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
                     .setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_SOUND)
                     .build()
             NotificationManagerCompat.from(context)
                     .notify(null, NotificationUtils.NOTIFY_UPDATE, notify)
