@@ -39,7 +39,7 @@
   <string name="about_build_date">Erstellt am %s</string>
   <string name="about_flavor_info">Diese Version ist nur zur Verteilung über Google Play bestimmt.</string>
   <string name="about_license_info_no_warranty">Dieses Programm wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt. Es ist freie Software – Sie können es also unter bestimmten Bedingungen weiterverbreiten.</string>
-  <string name="about_contact_info">messageconcept GmbH\nGesellschaft für IT-Marketing\nGroße Witschgasse 17\n50676 Köln, Deutschland\nTelefon +49 221 677855 88\n(kein App Support)</string>
+  <string name="about_contact_info">messageconcept sofware GmbH\nGroße Witschgasse 17\n50676 Köln, Deutschland\nTelefon +49 221 677855 88\n(kein App Support)</string>
   <!--global settings-->
   <string name="logging_couldnt_create_file">Protokolldatei konnte nicht angelegt werden</string>
   <string name="logging_notification_title">PeopleSync-Protokollierung</string>
