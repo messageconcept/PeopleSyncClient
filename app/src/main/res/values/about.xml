@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="define_davx5" translatable="false" />
+    <string name="library_davx5_author" translatable="false">Ricki Hirner, Bernhard Stockmann</string>
+    <string name="library_davx5_authorWebsite">https://www.davx5.com/</string>
+    <string name="library_davx5_libraryName" translatable="false">davx5</string>
+    <string name="library_davx5_libraryDescription">DAVx⁵ is a CalDAV/CardDAV management and sync app for Android.</string>
+    <string name="library_davx5_libraryWebsite" translatable="false">https://gitlab.com/bitfireAT/davx5-ose</string>
+    <string name="library_davx5_isOpenSource" translatable="false">true</string>
+    <string name="library_davx5_licenseId">gpl_3_0</string>
+
     <string name="define_cert4android" translatable="false" />
     <string name="library_cert4android_author" translatable="false">Ricki Hirner, Bernhard Stockmann</string>
     <string name="library_cert4android_authorWebsite">https://www.davx5.com/</string>
