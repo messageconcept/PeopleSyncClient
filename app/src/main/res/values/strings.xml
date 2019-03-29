@@ -11,7 +11,7 @@
     <!-- common strings -->
     <string name="app_name">PeopleSync</string>
     <string name="homepage_url" translatable="false">https://www.messageconcept.com/peoplesync/</string>
-    <string name="twitter_handle" translatable="false">davx5app</string>
+    <string name="twitter_handle" translatable="false">messageconcept</string>
 
     <string name="account_invalid">Account does not exist (anymore)</string>
     <string name="account_type" translatable="false">com.messageconcept.peoplesync</string>
