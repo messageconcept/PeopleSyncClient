@@ -28,6 +28,7 @@ import com.messageconcept.peoplesyncclient.resource.LocalAddressBook.Companion.U
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountActivity
 import okhttp3.HttpUrl
+import java.lang.IllegalStateException
 import java.util.logging.Level
 
 class AddressBooksSyncAdapterService : SyncAdapterService() {
@@ -104,7 +105,15 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
                 intent.action = DavService.ACTION_REFRESH_COLLECTIONS
                 intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, service)
                 intent.putExtra(DavService.AUTO_SYNC, true)
-                context.startService(intent)
+                try {
+                    context.startService(intent)
+                } catch (e: IllegalStateException) {
+                    // If battery optimization has not been deactivated for PeopleSync, trying to run
+                    // DavService when the app is in background, will trigger an exception since Android O.
+                    // Ignore this error and continue so at least contact updates are synced.
+                    Logger.log.log(Level.WARNING, "Couldn't start DavService to refresh collections", e)
+                }
+
 
                 val remote = remoteAddressBooks(service)
 
