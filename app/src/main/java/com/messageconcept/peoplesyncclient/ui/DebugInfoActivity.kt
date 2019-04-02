@@ -100,7 +100,7 @@ class DebugInfoActivity: AppCompatActivity() {
                 if (!(debugInfoDir.exists() && debugInfoDir.isDirectory) && !debugInfoDir.mkdir())
                     throw IOException("Couldn't create debug directory")
 
-                val reportFile = File(debugInfoDir, "davx5-info.txt")
+                val reportFile = File(debugInfoDir, "peoplesync-info.txt")
                 Logger.log.fine("Writing debug info to ${reportFile.absolutePath}")
                 val writer = FileWriter(reportFile)
                 writer.write(report)
