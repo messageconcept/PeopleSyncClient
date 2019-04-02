@@ -491,7 +491,7 @@ class DebugInfoActivity : AppCompatActivity() {
                 try {
                     zipProgress.postValue(true)
 
-                    val zipFile = File(debugInfoDir, "davx5-debug.zip")
+                    val zipFile = File(debugInfoDir, "peoplesync-debug.zip")
                     Logger.log.fine("Writing debug info to ${zipFile.absolutePath}")
                     ZipOutputStream(zipFile.outputStream().buffered()).use { zip ->
                         zip.setLevel(9)
