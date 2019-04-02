@@ -125,9 +125,8 @@ class UpdateReceiver : BroadcastReceiver() {
 
                 delete(context, account)
 
-                // If we couldn't determine a principal from looking at old addressbooks, we simply
-                // delete the old account and continue. The alternative would be to start a service
-                // discovery with the given user account information but this requires network access
+                // If we couldn't determine a principal, we can't create a new main account.
+                // Continue processing the next account after deleting the old main account.
                 if (principalUrl == null) {
                     Logger.log.info("Could not determine principal for ${account.name}")
                     continue
