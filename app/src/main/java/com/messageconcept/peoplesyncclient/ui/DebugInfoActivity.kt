@@ -451,7 +451,7 @@ class DebugInfoActivity: AppCompatActivity() {
 
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-                    val zipFile = File(debugInfoDir, "davx5-debug.zip")
+                    val zipFile = File(debugInfoDir, "peoplesync-debug.zip")
                     Logger.log.fine("Writing debug info to ${zipFile.absolutePath}")
                     ZipOutputStream(zipFile.outputStream().buffered()).use { zip ->
                         debugInfo.value?.let { debugInfo ->
