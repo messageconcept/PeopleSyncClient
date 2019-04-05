@@ -18,6 +18,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
 import com.messageconcept.peoplesyncclient.DavService
+import com.messageconcept.peoplesyncclient.DavServiceUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.CollectionInfo
@@ -100,20 +101,10 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
                 // enumerate remote and local address books
                 val service = getService()
 
-                Logger.log.info("Refreshing CardDAV collections")
-                val intent = Intent(context, DavService::class.java)
-                intent.action = DavService.ACTION_REFRESH_COLLECTIONS
-                intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, service)
-                intent.putExtra(DavService.AUTO_SYNC, true)
-                try {
-                    context.startService(intent)
-                } catch (e: IllegalStateException) {
-                    // If battery optimization has not been deactivated for PeopleSync, trying to run
-                    // DavService when the app is in background, will trigger an exception since Android O.
-                    // Ignore this error and continue so at least contact updates are synced.
-                    Logger.log.log(Level.WARNING, "Couldn't start DavService to refresh collections", e)
+                if (service != null) {
+                    Logger.log.info("Refreshing collections")
+                    DavServiceUtils.refreshCollections(context, service, true, false)
                 }
-
 
                 val remote = remoteAddressBooks(service)
 
