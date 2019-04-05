@@ -8,13 +8,12 @@ import android.accounts.Account
 import android.content.ContentProviderClient
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
 import android.content.SyncResult
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
-import com.messageconcept.peoplesyncclient.DavService
+import com.messageconcept.peoplesyncclient.DavServiceUtils
 import com.messageconcept.peoplesyncclient.closeCompat
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
@@ -24,7 +23,6 @@ import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import java.lang.IllegalStateException
 import java.util.logging.Level
 
 class AddressBooksSyncAdapterService : SyncAdapterService() {
@@ -65,19 +63,8 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
             val service = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CARDDAV)
 
             if (service != null) {
-                Logger.log.info("Refreshing CardDAV collections")
-                val intent = Intent(context, DavService::class.java)
-                intent.action = DavService.ACTION_REFRESH_COLLECTIONS
-                intent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, service.id)
-                intent.putExtra(DavService.AUTO_SYNC, true)
-                try {
-                    context.startService(intent)
-                } catch (e: IllegalStateException) {
-                    // If battery optimization has not been deactivated for PeopleSync, trying to run
-                    // DavService when the app is in background, will trigger an exception since Android O.
-                    // Ignore this error and continue so at least contact updates are synced.
-                    Logger.log.log(Level.WARNING, "Couldn't start DavService to refresh collections", e)
-                }
+                Logger.log.info("Refreshing collections")
+                DavServiceUtils.refreshCollections(context, db, service.id, true)
             }
 
             val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()
