@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId "com.messageconcept.peoplesyncclient"
 
-        versionCode 2723
+        versionCode 2724
         buildConfigField "long", "buildTime", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "customCerts", "true"
 
@@ -34,7 +34,7 @@ android {
     flavorDimensions "distribution"
     productFlavors {
         standard {
-            versionName "2.3-0-beta4-ps"
+            versionName "2.3-0-beta5-ps"
         }
     }
 
