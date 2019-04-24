@@ -16,6 +16,7 @@ import android.content.*
 import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
 import android.os.Build
+import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import at.bitfire.dav4jvm.DavResource
@@ -179,18 +180,24 @@ class UpdateReceiver : BroadcastReceiver() {
             val appIntent = Intent(context, AccountsActivity::class.java)
             val pendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            val notify = NotificationUtils.newBuilder(context, NotificationUtils.CHANNEL_DEBUG)
+            val builder = NotificationUtils.newBuilder(context, NotificationUtils.CHANNEL_DEBUG)
                     .setSmallIcon(R.drawable.ic_account_update_notification)
                     .setContentTitle(context.getString(R.string.update_receiver_notification_title))
                     .setContentText(context.getString(R.string.update_receiver_notification_text))
                     .setContentIntent(pendingIntent)
-                    .addAction(0, context.getString(R.string.update_receiver_notification_action), pendingIntent)
                     .setOnlyAlertOnce(false)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
                     .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_SOUND)
-                    .build()
+
+            // use less intrusive notification if battery optimization does not need to be disabled
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                if (!powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID))
+                    builder.addAction(0, context.getString(R.string.update_receiver_notification_action), pendingIntent)
+                            .setDefaults(Notification.DEFAULT_SOUND)
+            }
+            val notify = builder.build()
             NotificationManagerCompat.from(context)
                     .notify(null, NotificationUtils.NOTIFY_UPDATE, notify)
         }
