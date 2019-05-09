@@ -181,7 +181,7 @@ class UpdateReceiver : BroadcastReceiver() {
             val pendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val builder = NotificationUtils.newBuilder(context, NotificationUtils.CHANNEL_DEBUG)
-                    .setSmallIcon(R.drawable.ic_account_update_notification)
+                    .setSmallIcon(R.drawable.ic_account_update_notify)
                     .setContentTitle(context.getString(R.string.update_receiver_notification_title))
                     .setContentText(context.getString(R.string.update_receiver_notification_text))
                     .setContentIntent(pendingIntent)
