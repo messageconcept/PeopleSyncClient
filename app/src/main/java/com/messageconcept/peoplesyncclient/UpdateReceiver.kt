@@ -23,8 +23,9 @@ import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.property.CurrentUserPrincipal
 import at.bitfire.vcard4android.GroupMethod
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Credentials
-import com.messageconcept.peoplesyncclient.model.ServiceDB
+import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
@@ -32,6 +33,7 @@ import okhttp3.HttpUrl
 import java.net.URI
 import java.net.URLDecoder
 import java.util.logging.Level
+import kotlin.concurrent.thread
 
 class UpdateReceiver : BroadcastReceiver() {
     companion object {
@@ -144,21 +146,18 @@ class UpdateReceiver : BroadcastReceiver() {
 
                 showNotification = true
 
-                // add entries for account to service DB
-                ServiceDB.OpenHelper(context).use { dbHelper ->
-                    val db = dbHelper.writableDatabase
+                thread {
+                    // add entries for account to service DB
+                    val db = AppDatabase.getInstance(context)
                     try {
                         val accountSettings = AccountSettings(context, newAccount)
 
                         val refreshIntent = Intent(context, DavService::class.java)
                         refreshIntent.action = DavService.ACTION_REFRESH_COLLECTIONS
 
-                        val serviceValues = ContentValues(3)
-                        serviceValues.put(ServiceDB.Services.ACCOUNT_NAME, newName)
-                        serviceValues.put(ServiceDB.Services.SERVICE, ServiceDB.Services.SERVICE_CARDDAV)
-                        serviceValues.put(ServiceDB.Services.PRINCIPAL, principalUrl)
+                        val service = Service(0, newName, Service.TYPE_CARDDAV, HttpUrl.parse(principalUrl))
 
-                        val serviceID = db.insertWithOnConflict(ServiceDB.Services._TABLE, null, serviceValues, SQLiteDatabase.CONFLICT_REPLACE)
+                        val serviceID = db.serviceDao().insertOrReplace(service)
 
                         // initial CardDAV account settings
                         accountSettings.setGroupMethod(GroupMethod.CATEGORIES)
