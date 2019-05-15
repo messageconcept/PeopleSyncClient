@@ -44,7 +44,9 @@ open class LocalAddressBook(
         const val USER_DATA_MAIN_ACCOUNT_NAME = "real_account_name"
         const val USER_DATA_URL = "url"
         const val USER_DATA_READ_ONLY = "read_only"
+        /* PeopleSync 0.5 */
         const val USER_DATA_MAIN_ACCOUNT_NAME_OLD = "parent_account_name"
+        const val USER_DATA_URL_OLD = "addressbook_url"
 
         fun create(context: Context, provider: ContentProviderClient, mainAccount: Account, info: Collection): LocalAddressBook {
             val account = Account(accountName(mainAccount, info), context.getString(R.string.account_type_address_book))
@@ -164,6 +166,7 @@ open class LocalAddressBook(
 
     var url: String
         get() = AccountManager.get(context).getUserData(account, USER_DATA_URL)
+                ?: AccountManager.get(context).getUserData(account, USER_DATA_URL_OLD)
                 ?: throw IllegalStateException("Address book has no URL")
         set(url) = AccountManager.get(context).setUserData(account, USER_DATA_URL, url)
 
