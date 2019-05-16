@@ -41,6 +41,7 @@
 
         <item name="alertDialogTheme">@style/AppTheme.Dialog.Alert</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
 
     <color name="actionBarButton">#FFFFFF</color>
