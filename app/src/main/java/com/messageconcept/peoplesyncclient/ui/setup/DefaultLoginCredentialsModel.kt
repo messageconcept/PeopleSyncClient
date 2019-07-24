@@ -21,6 +21,8 @@ class DefaultLoginCredentialsModel: ViewModel() {
     val loginWithEmailAddress = MutableLiveData<Boolean>()
     val loginWithUrlAndUsername = MutableLiveData<Boolean>()
     val loginWithUrlAndCertificate = MutableLiveData<Boolean>()
+    val loginUrlManaged = MutableLiveData<Boolean>()
+    val loginUsernameManaged = MutableLiveData<Boolean>()
 
     val baseUrl = MutableLiveData<String>()
     val baseUrlError = MutableLiveData<String>()
@@ -37,6 +39,8 @@ class DefaultLoginCredentialsModel: ViewModel() {
 
     init {
         loginWithEmailAddress.value = true
+        loginUrlManaged.value = false
+        loginUsernameManaged.value = false
     }
 
     fun clearPasswordError(s: CharSequence, start: Int, before: Int, count: Int) {
