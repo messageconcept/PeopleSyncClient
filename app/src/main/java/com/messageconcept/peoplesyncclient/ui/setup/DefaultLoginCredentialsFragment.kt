@@ -49,14 +49,16 @@ class DefaultLoginCredentialsFragment : Fragment() {
         val appRestrictions = restrictionsManager.applicationRestrictions
         var entries = restrictionsManager.getManifestRestrictions(activity?.applicationContext?.packageName)
 
-        if (appRestrictions.containsKey(KEY_LOGIN_BASE_URL)) {
+        if (appRestrictions.containsKey(KEY_LOGIN_BASE_URL) && !appRestrictions.getString(KEY_LOGIN_BASE_URL).isNullOrEmpty()) {
             model.baseUrl.value = appRestrictions.getString(KEY_LOGIN_BASE_URL)
             model.loginAdvanced.value = false
             model.loginWithEmailAddress.value = false
             model.loginWithUrlAndUsername.value = true
+            model.loginUrlManaged.value = true
         }
-        if (appRestrictions.containsKey(KEY_LOGIN_USER_NAME)) {
+        if (appRestrictions.containsKey(KEY_LOGIN_USER_NAME) && !appRestrictions.getString(KEY_LOGIN_USER_NAME).isNullOrEmpty()) {
             model.username.value = appRestrictions.getString(KEY_LOGIN_USER_NAME)
+            model.loginUsernameManaged.value = true
         }
 
         v.loginUrlBaseUrlEdittext.setAdapter(DefaultLoginCredentialsModel.LoginUrlAdapter(requireActivity()))
