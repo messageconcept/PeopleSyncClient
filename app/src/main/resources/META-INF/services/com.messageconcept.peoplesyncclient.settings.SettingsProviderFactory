@@ -1,2 +1,3 @@
+com.messageconcept.peoplesyncclient.settings.RestrictionsProvider$Factory
 com.messageconcept.peoplesyncclient.settings.SharedPreferencesProvider$Factory
 com.messageconcept.peoplesyncclient.settings.DefaultsProvider$Factory
