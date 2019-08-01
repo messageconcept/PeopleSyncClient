@@ -415,4 +415,16 @@
     <string name="update_receiver_notification_title">PeopleSync App Update</string>
     <string name="update_receiver_notification_text">Account settings have been migrated</string>
     <string name="update_receiver_notification_action">Finish update</string>
+
+    <!-- Restrictions -->
+    <string name="login_base_url_description">Base URL</string>
+    <string name="login_base_url_title">Base URL</string>
+    <string name="login_user_name_description">Username</string>
+    <string name="login_user_name_title">Username</string>
+    <string name="override_proxy_title">Override proxy</string>
+    <string name="override_proxy_host_title">Proxy host</string>
+    <string name="override_proxy_port_title">Proxy port</string>
+    <string name="distrust_system_certs_title">Distrust system certificates</string>
+    <string name="wifi_only_title">Sync over WiFi only</string>
+    <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
 </resources>
