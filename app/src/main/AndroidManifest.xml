@@ -40,6 +40,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
 
+        <meta-data
+            android:name="android.content.APP_RESTRICTIONS"
+            android:resource="@xml/app_restrictions" />
+
         <service android:name=".DavService"/>
 
         <activity android:name=".ui.intro.IntroActivity" android:theme="@style/AppTheme.NoActionBar" />
