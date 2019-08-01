@@ -45,6 +45,10 @@
         tools:ignore="UnusedAttribute"
         android:supportsRtl="true">
 
+        <meta-data
+            android:name="android.content.APP_RESTRICTIONS"
+            android:resource="@xml/app_restrictions" />
+
         <service android:name=".DavService"/>
         <service android:name=".ForegroundService"/>
 
