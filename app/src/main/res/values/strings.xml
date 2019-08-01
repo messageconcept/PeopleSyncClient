@@ -507,4 +507,17 @@
     <string name="update_notification_title">PeopleSync App Update</string>
     <string name="update_notification_text">Account settings have been migrated</string>
     <string name="update_notification_action">Finish update</string>
+
+    <!-- Restrictions -->
+    <string name="login_base_url_description">Base URL</string>
+    <string name="login_base_url_title">Base URL</string>
+    <string name="login_user_name_description">Username</string>
+    <string name="login_user_name_title">Username</string>
+    <string name="proxy_type_title">Proxy type (System: -1, None: 0, HTTP: 1, Socks: 2)</string>
+    <string name="proxy_host_title">Proxy host</string>
+    <string name="proxy_port_title">Proxy port</string>
+    <string name="distrust_system_certs_title">Distrust system certificates</string>
+    <string name="default_sync_interval">Default sync interval</string>
+    <string name="wifi_only_title">Sync over WiFi only</string>
+    <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
 </resources>

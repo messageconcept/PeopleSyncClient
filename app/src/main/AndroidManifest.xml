@@ -46,6 +46,10 @@
         android:supportsRtl="true"
         android:localeConfig="@xml/locales_config">
 
+        <meta-data
+            android:name="android.content.APP_RESTRICTIONS"
+            android:resource="@xml/app_restrictions" />
+
         <!-- required for Hilt/WorkManager integration -->
         <provider
             android:name="androidx.startup.InitializationProvider"
