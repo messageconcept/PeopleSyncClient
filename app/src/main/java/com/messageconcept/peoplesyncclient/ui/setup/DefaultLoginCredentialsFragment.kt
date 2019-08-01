@@ -4,7 +4,9 @@
 
 package com.messageconcept.peoplesyncclient.ui.setup
 
+import android.content.Context
 import android.content.Intent
+import android.content.RestrictionsManager
 import android.net.MailTo
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +27,11 @@ import java.net.URISyntaxException
 
 class DefaultLoginCredentialsFragment : Fragment() {
 
+    companion object {
+        private const val KEY_LOGIN_BASE_URL = "login_base_url"
+        private const val KEY_LOGIN_USER_NAME = "login_user_name"
+    }
+
     val loginModel by activityViewModels<LoginModel>()
     val model by viewModels<DefaultLoginCredentialsModel>()
 
@@ -37,6 +44,20 @@ class DefaultLoginCredentialsFragment : Fragment() {
         // initialize model on first call
         if (savedInstanceState == null)
             activity?.intent?.let { model.initialize(it) }
+
+        val restrictionsManager = activity?.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
+        val appRestrictions = restrictionsManager.applicationRestrictions
+        var entries = restrictionsManager.getManifestRestrictions(activity?.applicationContext?.packageName)
+
+        if (appRestrictions.containsKey(KEY_LOGIN_BASE_URL)) {
+            model.baseUrl.value = appRestrictions.getString(KEY_LOGIN_BASE_URL)
+            model.loginAdvanced.value = false
+            model.loginWithEmailAddress.value = false
+            model.loginWithUrlAndUsername.value = true
+        }
+        if (appRestrictions.containsKey(KEY_LOGIN_USER_NAME)) {
+            model.username.value = appRestrictions.getString(KEY_LOGIN_USER_NAME)
+        }
 
         v.loginUrlBaseUrlEdittext.setAdapter(DefaultLoginCredentialsModel.LoginUrlAdapter(requireActivity()))
 
