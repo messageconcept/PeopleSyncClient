@@ -2,5 +2,6 @@
 # Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
 ####################################################################################################
 
+com.messageconcept.peoplesyncclient.settings.RestrictionsProvider$Factory
 com.messageconcept.peoplesyncclient.settings.SharedPreferencesProvider$Factory
 com.messageconcept.peoplesyncclient.settings.DefaultsProvider$Factory
