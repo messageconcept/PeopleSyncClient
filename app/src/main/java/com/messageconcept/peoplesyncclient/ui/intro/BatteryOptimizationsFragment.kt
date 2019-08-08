@@ -118,8 +118,7 @@ class BatteryOptimizationsFragment: Fragment() {
              *
              * @see evilManufacturers
              */
-            val manufacturerWarning =
-                    (evilManufacturers.contains(Build.MANUFACTURER.lowercase(Locale.ROOT)) || BuildConfig.DEBUG)
+            val manufacturerWarning = false
 
             fun isWhitelisted(context: Context) =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
