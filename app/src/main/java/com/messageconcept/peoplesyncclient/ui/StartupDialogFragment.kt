@@ -85,10 +85,6 @@ class StartupDialogFragment: DialogFragment() {
                         .setIcon(R.drawable.ic_error_dark)
                         .setTitle(R.string.startup_autostart_permission)
                         .setMessage(getString(R.string.startup_autostart_permission_message, Build.MANUFACTURER))
-                        .setPositiveButton(R.string.startup_more_info) { _, _ ->
-                            UiUtils.launchUri(requireActivity(), App.homepageUrl(requireActivity()).buildUpon()
-                                    .appendPath("faq").appendPath("synchronization-is-not-run-as-expected").build())
-                        }
                         .setNeutralButton(R.string.startup_not_now) { _, _ -> }
                         .setNegativeButton(R.string.startup_dont_show_again) { _, _ ->
                             settings.putBoolean(HINT_AUTOSTART_PERMISSIONS, false)
