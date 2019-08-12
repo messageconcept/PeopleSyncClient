@@ -8,21 +8,33 @@
 
 package com.messageconcept.peoplesyncclient.settings
 
-import android.content.Context
-import android.content.RestrictionsManager
+import android.content.*
+import android.content.Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED
 import android.os.Bundle
 
 class RestrictionsProvider(
-        context: Context
+        private val context: Context
 ): SettingsProvider {
 
     private val restrictionsManager = context.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
 
+    val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            when (intent?.action) {
+                ACTION_APPLICATION_RESTRICTIONS_CHANGED -> Settings.getInstance(context).onSettingsChanged()
+            }
+        }
+    }
+
+    init {
+        context.registerReceiver(broadCastReceiver, IntentFilter(ACTION_APPLICATION_RESTRICTIONS_CHANGED))
+    }
 
     override fun forceReload() {
     }
 
     override fun close() {
+        context.unregisterReceiver(broadCastReceiver)
     }
 
     private fun hasKey(key: String): Boolean {
