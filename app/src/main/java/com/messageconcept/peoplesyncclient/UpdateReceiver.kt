@@ -45,15 +45,14 @@ class UpdateReceiver : BroadcastReceiver() {
 
     class LoginInfo (val uri: URI, val credentials: Credentials)
 
-    class PrincipalLookupTask(context: Context) : AsyncTask<LoginInfo, Void, String>() {
-        val mContext = context
+    class PrincipalLookupTask(private val context: Context) : AsyncTask<LoginInfo, Void, String>() {
 
         override fun doInBackground(vararg params: LoginInfo?): String? {
             val loginInfo = params[0]!!
 
             val log = java.util.logging.Logger.getLogger("peoplesync.PrincipalFinder")!!
 
-            val httpClient: HttpClient = HttpClient.Builder(mContext, logger = log, useCustomCertManager = false)
+            val httpClient: HttpClient = HttpClient.Builder(context, logger = log, useCustomCertManager = false)
                     .addAuthentication(null, loginInfo.credentials)
                     .setForeground(true)
                     .build()
