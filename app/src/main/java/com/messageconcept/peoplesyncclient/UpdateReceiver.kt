@@ -129,7 +129,7 @@ class UpdateReceiver : BroadcastReceiver() {
                 val credentials = Credentials(userName, password)
                 val loginInfo = LoginInfo(URI.create(providedURL), credentials)
 
-                var principalUrl = getPrincipalUrl(context, account, loginInfo)
+                val principalUrl = getPrincipalUrl(context, account, loginInfo)
 
                 delete(context, account)
 
