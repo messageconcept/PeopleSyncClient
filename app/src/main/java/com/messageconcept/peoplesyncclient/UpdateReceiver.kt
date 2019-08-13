@@ -104,6 +104,12 @@ class UpdateReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
+        when (intent?.action) {
+            Intent.ACTION_MY_PACKAGE_REPLACED -> upgradeAccounts(context)
+        }
+    }
+
+    private fun upgradeAccounts(context: Context) {
         Logger.log.fine("App got updated")
         val accountManager = AccountManager.get(context)
         var showNotification = false
