@@ -13,7 +13,6 @@ import android.accounts.AccountManager
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.*
-import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
 import android.os.Build
 import android.os.PowerManager
