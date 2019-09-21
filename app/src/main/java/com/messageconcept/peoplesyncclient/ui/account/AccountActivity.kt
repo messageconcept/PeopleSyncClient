@@ -279,10 +279,10 @@ class AccountActivity: AppCompatActivity() {
         private var usesContacts: Boolean? = null
 
         init {
-            addSource(needContactPermissions, Observer {
+            addSource(needContactPermissions) {
                 usesContacts = it
                 calculate()
-            })
+            }
         }
 
         fun calculate() {

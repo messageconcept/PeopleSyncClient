@@ -24,6 +24,7 @@ import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import java.util.logging.Level
 import kotlin.concurrent.thread
+import kotlin.system.exitProcess
 
 @Suppress("unused")
 class App: MultiDexApplication(), Thread.UncaughtExceptionHandler {
@@ -79,7 +80,7 @@ class App: MultiDexApplication(), Thread.UncaughtExceptionHandler {
         intent.putExtra(DebugInfoActivity.KEY_THROWABLE, e)
         startActivity(intent)
 
-        System.exit(1)
+        exitProcess(1)
     }
 
 }

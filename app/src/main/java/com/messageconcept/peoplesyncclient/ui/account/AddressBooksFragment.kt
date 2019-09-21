@@ -1,7 +1,6 @@
 package com.messageconcept.peoplesyncclient.ui.account
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.*
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.model.Collection

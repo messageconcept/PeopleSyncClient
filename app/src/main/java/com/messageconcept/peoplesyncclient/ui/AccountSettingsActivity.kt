@@ -111,13 +111,13 @@ class AccountSettingsActivity: AppCompatActivity() {
 
         override fun onSettingsChanged()  = reload()
 
-        fun reload() {
+        private fun reload() {
             val accountSettings = AccountSettings(requireActivity(), account)
 
             // preference group: authentication
-            val prefUserName = findPreference("username") as EditTextPreference
-            val prefPassword = findPreference("password") as EditTextPreference
-            val prefCertAlias = findPreference("certificate_alias") as Preference
+            val prefUserName = findPreference<EditTextPreference>("username")!!
+            val prefPassword = findPreference<EditTextPreference>("password")!!
+            val prefCertAlias = findPreference<Preference>("certificate_alias")!!
 
             val credentials = accountSettings.credentials()
             when (credentials.type) {
@@ -162,7 +162,7 @@ class AccountSettingsActivity: AppCompatActivity() {
             // those are null if the respective sync type is not available for this account:
             val syncIntervalContacts = accountSettings.getSyncInterval(getString(R.string.address_books_authority))
 
-            (findPreference("sync_interval_contacts") as ListPreference).let {
+            findPreference<ListPreference>("sync_interval_contacts")!!.let {
                 if (syncIntervalContacts != null) {
                     it.isEnabled = true
                     it.isVisible = true
@@ -183,7 +183,7 @@ class AccountSettingsActivity: AppCompatActivity() {
                     it.isVisible = false
             }
 
-            val prefWifiOnly = findPreference("sync_wifi_only") as SwitchPreferenceCompat
+            val prefWifiOnly = findPreference<SwitchPreferenceCompat>("sync_wifi_only")!!
             prefWifiOnly.isEnabled = !settings.has(AccountSettings.KEY_WIFI_ONLY)
             prefWifiOnly.isChecked = accountSettings.getSyncWifiOnly()
             prefWifiOnly.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, wifiOnly ->
@@ -192,7 +192,7 @@ class AccountSettingsActivity: AppCompatActivity() {
                 false
             }
 
-            val prefWifiOnlySSIDs = findPreference("sync_wifi_only_ssids") as EditTextPreference
+            val prefWifiOnlySSIDs = findPreference<EditTextPreference>("sync_wifi_only_ssids")!!
             val onlySSIDs = accountSettings.getSyncWifiOnlySSIDs()?.joinToString(", ")
             prefWifiOnlySSIDs.text = onlySSIDs
             if (onlySSIDs != null)
@@ -214,7 +214,7 @@ class AccountSettingsActivity: AppCompatActivity() {
                     requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 0)
 
             // preference group: CardDAV
-            (findPreference("contact_group_method") as ListPreference).let {
+            findPreference<ListPreference>("contact_group_method")!!.let {
                 if (syncIntervalContacts != null) {
                     it.isVisible = true
                     it.value = accountSettings.getGroupMethod().name
