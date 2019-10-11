@@ -27,6 +27,11 @@
         android:title="@string/login_user_name_title"/>
 
     <restriction
+        android:key="login_password"
+        android:restrictionType="string"
+        android:title="@string/login_password_title"/>
+
+    <restriction
         android:defaultValue="-1"
         android:key="proxy_type"
         android:restrictionType="integer"

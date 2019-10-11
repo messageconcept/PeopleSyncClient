@@ -513,6 +513,7 @@
     <string name="login_base_url_title">Base URL</string>
     <string name="login_user_name_description">Username</string>
     <string name="login_user_name_title">Username</string>
+    <string name="login_password_title">Password</string>
     <string name="proxy_type_title">Proxy type (System: -1, None: 0, HTTP: 1, Socks: 2)</string>
     <string name="proxy_host_title">Proxy host</string>
     <string name="proxy_port_title">Proxy port</string>
