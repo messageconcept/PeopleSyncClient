@@ -33,6 +33,7 @@ class DefaultLoginCredentialsFragment: Fragment() {
     companion object {
         private const val KEY_LOGIN_BASE_URL = "login_base_url"
         private const val KEY_LOGIN_USER_NAME = "login_user_name"
+        private const val KEY_LOGIN_PASSWORD = "login_password"
     }
 
     val loginModel by activityViewModels<LoginModel>()
@@ -64,6 +65,16 @@ class DefaultLoginCredentialsFragment: Fragment() {
             model.username.value = appRestrictions.getString(KEY_LOGIN_USER_NAME)
             model.loginUsernameManaged.value = true
         }
+        if (appRestrictions.containsKey(KEY_LOGIN_PASSWORD) && !appRestrictions.getString(KEY_LOGIN_PASSWORD).isNullOrEmpty()) {
+            model.password.value = appRestrictions.getString(KEY_LOGIN_PASSWORD)
+            model.loginPasswordManaged.value = true
+        }
+
+        if (model.loginUrlManaged.value == true && model.loginUsernameManaged.value == true && model.loginPasswordManaged.value == true)
+            if (validate())
+                requireFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, DetectConfigurationFragment(), null)
+                        .commit()
 
         v.selectCertificate.setOnClickListener {
             KeyChain.choosePrivateKeyAlias(requireActivity(), { alias ->
