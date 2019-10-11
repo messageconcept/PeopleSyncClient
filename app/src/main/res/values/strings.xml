@@ -376,6 +376,7 @@
     <string name="login_base_url_title">Base URL</string>
     <string name="login_user_name_description">Username</string>
     <string name="login_user_name_title">Username</string>
+    <string name="login_password_title">Password</string>
     <string name="override_proxy_title">Override proxy</string>
     <string name="override_proxy_host_title">Proxy host</string>
     <string name="override_proxy_port_title">Proxy port</string>
