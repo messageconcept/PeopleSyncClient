@@ -182,6 +182,7 @@ class SettingsActivity: AppCompatActivity() {
             val prefPassword = findPreference<EditTextPreference>("password")!!
             val prefCertAlias = findPreference<Preference>("certificate_alias")!!
             model.credentials.observe(viewLifecycleOwner, { credentials ->
+                prefUserName.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_USER_NAME)
                 prefUserName.summary = credentials.userName
                 prefUserName.text = credentials.userName
                 prefUserName.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newUserName ->
@@ -190,6 +191,7 @@ class SettingsActivity: AppCompatActivity() {
                 }
 
                 if (credentials.userName != null) {
+                    prefPassword.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_PASSWORD)
                     prefPassword.isVisible = true
                     prefPassword.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newPassword ->
                         model.updateCredentials(Credentials(credentials.userName, newPassword as String, credentials.certificateAlias))
