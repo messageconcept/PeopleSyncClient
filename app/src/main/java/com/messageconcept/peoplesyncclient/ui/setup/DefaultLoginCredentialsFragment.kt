@@ -25,16 +25,13 @@ import androidx.fragment.app.viewModels
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.LoginCredentialsFragmentBinding
 import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_BASE_URL
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
 import java.net.URI
 import java.net.URISyntaxException
 
 class DefaultLoginCredentialsFragment: Fragment() {
-
-    companion object {
-        private const val KEY_LOGIN_BASE_URL = "login_base_url"
-        private const val KEY_LOGIN_USER_NAME = "login_user_name"
-        private const val KEY_LOGIN_PASSWORD = "login_password"
-    }
 
     val loginModel by activityViewModels<LoginModel>()
     val model by viewModels<DefaultLoginCredentialsModel>()
