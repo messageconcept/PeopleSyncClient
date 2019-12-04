@@ -54,6 +54,7 @@ class AccountSettings(
 
         const val KEY_USERNAME = "user_name"
         const val KEY_CERTIFICATE_ALIAS = "certificate_alias"
+        const val KEY_BASE_URL = "base_url"
 
         const val KEY_WIFI_ONLY = "wifi_only"               // sync on WiFi only (default: false)
         const val KEY_WIFI_ONLY_SSIDS = "wifi_only_ssids"   // restrict sync to specific WiFi SSIDs
@@ -76,6 +77,9 @@ class AccountSettings(
                 Credentials.Type.ClientCertificate ->
                     bundle.putString(KEY_CERTIFICATE_ALIAS, credentials.certificateAlias)
             }
+
+            if (credentials.baseUrl != null)
+                bundle.putString(KEY_BASE_URL, credentials.baseUrl)
 
             return bundle
         }
