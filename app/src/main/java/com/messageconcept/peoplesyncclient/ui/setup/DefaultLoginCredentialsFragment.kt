@@ -25,6 +25,7 @@ import androidx.fragment.app.viewModels
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.LoginCredentialsFragmentBinding
 import com.messageconcept.peoplesyncclient.model.Credentials
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
@@ -160,9 +161,10 @@ class DefaultLoginCredentialsFragment: Fragment() {
                 }
 
                 val password = validatePassword()
+                val baseUrl = if (model.loginUrlManaged.value == true) model.baseUrl.value else null
 
                 if (valid)
-                    loginModel.credentials = Credentials(username, password, null)
+                    loginModel.credentials = Credentials(username, password, null, baseUrl)
             }
 
             model.loginWithUrlAndCertificate.value == true -> {
