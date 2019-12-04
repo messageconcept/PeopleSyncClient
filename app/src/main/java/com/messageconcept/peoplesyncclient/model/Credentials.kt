@@ -11,7 +11,8 @@ package com.messageconcept.peoplesyncclient.model
 class Credentials(
         val userName: String? = null,
         val password: String? = null,
-        val certificateAlias: String? = null
+        val certificateAlias: String? = null,
+        val baseUrl: String? = null
 ) {
 
     enum class Type {
