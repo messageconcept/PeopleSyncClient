@@ -7,7 +7,8 @@ package com.messageconcept.peoplesyncclient.db
 data class Credentials(
         val userName: String? = null,
         val password: String? = null,
-        val certificateAlias: String? = null
+        val certificateAlias: String? = null,
+        val baseUrl: String? = null
 ) {
 
     override fun toString(): String {
