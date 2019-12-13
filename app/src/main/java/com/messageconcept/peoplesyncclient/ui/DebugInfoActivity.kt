@@ -41,6 +41,8 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_BASE_URL
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_USERNAME
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.util.closeCompat
 import at.bitfire.vcard4android.Utils.asSyncAdapter as asContactsSyncAdapter
@@ -451,7 +453,7 @@ class DebugInfoActivity : AppCompatActivity() {
                 val mainAccounts = accountManager.getAccountsByType(context.getString(R.string.account_type))
                 val addressBookAccounts = accountManager.getAccountsByType(context.getString(R.string.account_type_address_book)).toMutableList()
                 for (account in mainAccounts) {
-                    dumpMainAccount(account, writer)
+                    dumpMainAccount(account, accountManager, writer)
 
                     val iter = addressBookAccounts.iterator()
                     while (iter.hasNext()) {
@@ -537,7 +539,7 @@ class DebugInfoActivity : AppCompatActivity() {
         }
 
 
-        private fun dumpMainAccount(account: Account, writer: Writer) {
+        private fun dumpMainAccount(account: Account, accountManager: AccountManager, writer: Writer) {
             writer.append(" - Account: ${account.name}\n")
             writer.append(dumpAccount(account, AccountDumpInfo.mainAccount(context, account)))
             try {
@@ -549,6 +551,12 @@ class DebugInfoActivity : AppCompatActivity() {
                 writer.append(
                     "\n  Contact group method: ${accountSettings.getGroupMethod()}\n"
                 )
+                accountManager.getUserData(account, KEY_USERNAME)?.let { userName ->
+                    writer.append("  Username: ${userName}\n")
+                }
+                accountManager.getUserData(account, KEY_BASE_URL)?.let { baseUrl ->
+                    writer.append("  Base URL: ${baseUrl}\n")
+                }
             } catch (e: InvalidAccountException) {
                 writer.append("$e\n")
             }
