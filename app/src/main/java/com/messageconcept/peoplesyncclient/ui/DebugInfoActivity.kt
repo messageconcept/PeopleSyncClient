@@ -46,6 +46,8 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_BASE_URL
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_USERNAME
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import kotlinx.coroutines.Dispatchers
@@ -308,6 +310,12 @@ class DebugInfoActivity: AppCompatActivity() {
                         }
                         text.append("\n  [CardDAV] Contact group method: ${accountSettings.getGroupMethod()}")
                                 .append("\n")
+                        accountManager.getUserData(acct, KEY_USERNAME)?.let { userName ->
+                            text.append("  Username: ${userName}\n")
+                        }
+                        accountManager.getUserData(acct, KEY_BASE_URL)?.let { baseUrl ->
+                            text.append("  Base URL: ${baseUrl}\n")
+                        }
                     } catch (e: InvalidAccountException) {
                         text.append("$acct is invalid (unsupported settings version) or does not exist\n")
                     }
