@@ -27,7 +27,6 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.model.Service
-import com.messageconcept.peoplesyncclient.ui.AccountSettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
@@ -108,8 +107,8 @@ class AccountActivity: AppCompatActivity() {
     // menu actions
 
     fun openAccountSettings(menuItem: MenuItem) {
-        val intent = Intent(this, AccountSettingsActivity::class.java)
-        intent.putExtra(AccountSettingsActivity.EXTRA_ACCOUNT, model.account)
+        val intent = Intent(this, SettingsActivity::class.java)
+        intent.putExtra(SettingsActivity.EXTRA_ACCOUNT, model.account)
         startActivity(intent, null)
     }
 

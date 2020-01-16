@@ -10,7 +10,10 @@ package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.app.PendingIntent
-import android.content.*
+import android.content.ContentUris
+import android.content.Context
+import android.content.Intent
+import android.content.SyncResult
 import android.net.Uri
 import android.os.Bundle
 import android.os.RemoteException
@@ -28,9 +31,9 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.SyncState
 import com.messageconcept.peoplesyncclient.resource.*
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
-import com.messageconcept.peoplesyncclient.ui.AccountSettingsActivity
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import at.bitfire.vcard4android.ContactsStorageException
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
@@ -123,6 +126,17 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                     uploadDirty()
             abortIfCancelled()
 
+            if (extras.containsKey(SyncAdapterService.SYNC_EXTRAS_FULL_RESYNC)) {
+                Logger.log.info("Forcing re-synchronization of all entries")
+
+                // forget sync state of collection (→ initial sync in case of SyncAlgorithm.COLLECTION_SYNC)
+                localCollection.lastSyncState = null
+                remoteSyncState = null
+
+                // forget sync state of members (→ download all members again and update them locally)
+                localCollection.forgetETags()
+            }
+
             if (modificationsSent || syncRequired(remoteSyncState))
                 when (syncAlgorithm()) {
                     SyncAlgorithm.PROPFIND_REPORT -> {
@@ -149,9 +163,9 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                         localCollection.lastSyncState = remoteSyncState
                     }
                     SyncAlgorithm.COLLECTION_SYNC -> {
-                        var initialSync = false
-
                         var syncState = localCollection.lastSyncState?.takeIf { it.type == SyncState.Type.SYNC_TOKEN }
+
+                        var initialSync = false
                         if (syncState == null) {
                             Logger.log.info("Starting initial sync")
                             initialSync = true
@@ -368,16 +382,18 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
      * [uploadDirty] were true), a sync is always required and this method
      * should *not* be evaluated.
      *
+     * Will return _true_ if [SyncAdapterService.SYNC_EXTRAS_RESYNC] and/or
+     * [SyncAdapterService.SYNC_EXTRAS_FULL_RESYNC] is set in [extras].
+     *
      * @param state remote sync state to compare local sync state with
      *
      * @return whether data has been changed on the server, i.e. whether running the
      * sync algorithm is required
      */
     protected open fun syncRequired(state: SyncState?): Boolean {
-        if (syncAlgorithm() == SyncAlgorithm.PROPFIND_REPORT && extras.containsKey(ContentResolver.SYNC_EXTRAS_MANUAL)) {
-            Logger.log.info("Manual sync in PROPFIND/REPORT mode, forcing sync")
+        if (extras.containsKey(SyncAdapterService.SYNC_EXTRAS_RESYNC) ||
+            extras.containsKey(SyncAdapterService.SYNC_EXTRAS_FULL_RESYNC))
             return true
-        }
 
         val localState = localCollection.lastSyncState
         Logger.log.info("Local sync state = $localState, remote sync state = $state")
@@ -650,8 +666,8 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         val contentIntent: Intent
         var viewItemAction: NotificationCompat.Action? = null
         if (e is UnauthorizedException) {
-            contentIntent = Intent(context, AccountSettingsActivity::class.java)
-            contentIntent.putExtra(AccountSettingsActivity.EXTRA_ACCOUNT,
+            contentIntent = Intent(context, SettingsActivity::class.java)
+            contentIntent.putExtra(SettingsActivity.EXTRA_ACCOUNT,
                     if (authority == ContactsContract.AUTHORITY)
                         mainAccount
                     else

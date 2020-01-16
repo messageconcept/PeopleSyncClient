@@ -14,6 +14,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
@@ -37,9 +38,11 @@ class DefaultAccountsDrawerHandler: IAccountsDrawerHandler {
             R.id.nav_app_settings ->
                 activity.startActivity(Intent(activity, AppSettingsActivity::class.java))
             R.id.nav_beta_feedback ->
-                UiUtils.launchUri(activity, Uri.parse(BETA_FEEDBACK_URI), Intent.ACTION_SENDTO)
+                if (!UiUtils.launchUri(activity, Uri.parse(BETA_FEEDBACK_URI), Intent.ACTION_SENDTO, false))
+                    Toast.makeText(activity, R.string.install_email_client, Toast.LENGTH_LONG).show()
             R.id.nav_website ->
-                UiUtils.launchUri(activity, App.homepageUrl(activity))
+                UiUtils.launchUri(activity,
+                        App.homepageUrl(activity))
             else ->
                 return false
         }
