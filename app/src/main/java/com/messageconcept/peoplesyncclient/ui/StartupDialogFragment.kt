@@ -17,13 +17,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.Settings
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 class StartupDialogFragment: DialogFragment() {
@@ -81,7 +81,7 @@ class StartupDialogFragment: DialogFragment() {
         val activity = requireActivity()
         return when (Mode.valueOf(arguments!!.getString(ARGS_MODE)!!)) {
             Mode.AUTOSTART_PERMISSIONS ->
-                AlertDialog.Builder(activity)
+                MaterialAlertDialogBuilder(activity)
                         .setIcon(R.drawable.ic_error_dark)
                         .setTitle(R.string.startup_autostart_permission)
                         .setMessage(getString(R.string.startup_autostart_permission_message, Build.MANUFACTURER))
@@ -92,7 +92,7 @@ class StartupDialogFragment: DialogFragment() {
                         .create()
 
             Mode.BATTERY_OPTIMIZATIONS ->
-                AlertDialog.Builder(activity)
+                MaterialAlertDialogBuilder(activity)
                         .setIcon(R.drawable.ic_info_dark)
                         .setTitle(R.string.startup_battery_optimization)
                         .setMessage(R.string.startup_battery_optimization_message)

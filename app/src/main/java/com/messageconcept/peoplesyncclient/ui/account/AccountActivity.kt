@@ -3,7 +3,6 @@ package com.messageconcept.peoplesyncclient.ui.account
 import android.Manifest
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -29,6 +28,7 @@ import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.ui.AccountSettingsActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_account.*
 import java.util.concurrent.Executors
@@ -119,7 +119,7 @@ class AccountActivity: AppCompatActivity() {
     }
 
     fun deleteAccount(menuItem: MenuItem) {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
                 .setIcon(R.drawable.ic_error_dark)
                 .setTitle(R.string.account_delete_confirmation_title)
                 .setMessage(R.string.account_delete_confirmation_text)
@@ -162,7 +162,7 @@ class AccountActivity: AppCompatActivity() {
 
     class TabsAdapter(
             val activity: AppCompatActivity
-    ): FragmentStatePagerAdapter(activity.supportFragmentManager) {
+    ): FragmentStatePagerAdapter(activity.supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         
         var cardDavSvcId: Long? = null
             set(value) {

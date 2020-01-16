@@ -20,7 +20,6 @@ import android.os.Handler
 import android.os.Looper
 import android.security.KeyChain
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
@@ -34,6 +33,7 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import at.bitfire.vcard4android.GroupMethod
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.apache.commons.lang3.StringUtils
 
 class AccountSettingsActivity: AppCompatActivity() {
@@ -231,7 +231,7 @@ class AccountSettingsActivity: AppCompatActivity() {
                     else {
                         it.isEnabled = true
                         it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, groupMethod ->
-                            AlertDialog.Builder(requireActivity())
+                            MaterialAlertDialogBuilder(requireActivity())
                                     .setIcon(R.drawable.ic_error_dark)
                                     .setTitle(R.string.settings_contact_group_method_change)
                                     .setMessage(R.string.settings_contact_group_method_change_reload_contacts)
@@ -263,7 +263,7 @@ class AccountSettingsActivity: AppCompatActivity() {
                 AccountSettings(requireActivity(), account).setSyncWifiOnlySSIDs(null)
                 reload()
 
-                AlertDialog.Builder(requireActivity())
+                MaterialAlertDialogBuilder(requireActivity())
                         .setIcon(R.drawable.ic_network_wifi_dark)
                         .setTitle(R.string.settings_sync_wifi_only_ssids)
                         .setMessage(R.string.settings_sync_wifi_only_ssids_location_permission)

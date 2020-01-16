@@ -18,13 +18,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.messageconcept.peoplesyncclient.Constants
 import com.messageconcept.peoplesyncclient.DavService
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.ui.DeleteCollectionFragment
-import kotlinx.android.synthetic.main.account_collections.view.*
+import kotlinx.android.synthetic.main.account_collections.*
 import java.util.concurrent.Executors
 
 abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -60,13 +61,19 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         super.onViewCreated(view, savedInstanceState)
 
         model.isRefreshing.observe(viewLifecycleOwner, Observer { nowRefreshing ->
-            view.swipe_refresh.isRefreshing = nowRefreshing
+            swipe_refresh.isRefreshing = nowRefreshing
         })
-        view.swipe_refresh.setColorSchemeResources(R.color.secondaryColor)
-        view.swipe_refresh.setOnRefreshListener(this)
+        model.collections.observe(viewLifecycleOwner, Observer { collections ->
+            val colors = collections.orEmpty()
+                    .filterNotNull()
+                    .mapNotNull { it.color }
+                    .distinct()
+                    .ifEmpty { listOf(Constants.DAVDROID_GREEN_RGBA) }
+            swipe_refresh.setColorSchemeColors(*colors.toIntArray())
+        })
+        swipe_refresh.setOnRefreshListener(this)
 
         val updateProgress = Observer<Boolean> {
-            val progress = view.progress
             if (model.isSyncActive.value == true) {
                 progress.isIndeterminate = true
                 progress.alpha = 1.0f
@@ -85,21 +92,21 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         model.isSyncActive.observe(viewLifecycleOwner, updateProgress)
 
         val adapter = createAdapter()
-        view.list.layoutManager = LinearLayoutManager(requireActivity())
-        view.list.adapter = adapter
+        list.layoutManager = LinearLayoutManager(requireActivity())
+        list.adapter = adapter
         model.collections.observe(viewLifecycleOwner, Observer { data ->
             adapter.submitList(data)
 
             if (data.isEmpty()) {
-                view.list.visibility = View.GONE
-                view.empty.visibility = View.VISIBLE
+                list.visibility = View.GONE
+                empty.visibility = View.VISIBLE
             } else {
-                view.list.visibility = View.VISIBLE
-                view.empty.visibility = View.GONE
+                list.visibility = View.VISIBLE
+                empty.visibility = View.GONE
             }
         })
 
-        view.no_collections.setText(noCollectionsStringId)
+        no_collections.setText(noCollectionsStringId)
     }
 
     protected abstract fun createAdapter(): CollectionAdapter

@@ -47,5 +47,11 @@
 -dontwarn sun.net.spi.nameservice.**   # not available on Android
 
 # PeopleSync + libs
--keep class at.bitfire.** { *; }         # all DAVdroid code is required
+-keep class at.bitfire.** { *; }         # all DAVx⁵ code is required
 -keep class com.messageconcept.** { *; } # all PeopleSync code is required
+
+# we use enum classes (https://www.guardsquare.com/en/products/proguard/manual/examples#enumerations)
+-keepclassmembers,allowoptimization enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
