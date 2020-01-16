@@ -14,10 +14,12 @@ import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcel
 import android.os.RemoteException
 import android.provider.ContactsContract
+import androidx.core.content.ContextCompat
 import com.messageconcept.peoplesyncclient.*
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
@@ -46,7 +48,7 @@ class AccountSettings(
         const val KEY_LOGIN_USER_NAME = "login_user_name"
         const val KEY_LOGIN_PASSWORD = "login_password"
 
-        const val CURRENT_VERSION = 9
+        const val CURRENT_VERSION = 10
         const val KEY_SETTINGS_VERSION = "version"
 
         const val KEY_USERNAME = "user_name"
@@ -192,6 +194,17 @@ class AccountSettings(
         }
     }
 
+
+    @Suppress("unused","FunctionName")
+    /**
+     * Task synchronization now handles alarms, categories, relations and unknown properties.
+     * Setting task ETags to null will cause them to be downloaded (and parsed) again.
+     *
+     * Also update the allowed reminder types for calendars.
+     **/
+    private fun update_9_10() {
+        // nothing to do
+    }
 
     @Suppress("unused","FunctionName")
     /**

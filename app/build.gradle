@@ -10,11 +10,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'org.jetbrains.dokka'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.1'
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "com.messageconcept.peoplesyncclient"
@@ -73,6 +73,31 @@ android {
     defaultConfig {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    dokka.configuration {
+        sourceLink {
+            url = "https://gitlab.com/bitfireAT/davx5-ose/tree/master-ose/"
+            lineSuffix = "#L"
+        }
+        jdkVersion = 7
+
+        externalDocumentationLink {
+            url = new URL("https://bitfireat.gitlab.io/cert4android/dokka/cert4android/")
+            packageListUrl = new URL("https://bitfireat.gitlab.io/cert4android/dokka/cert4android/package-list")
+        }
+        externalDocumentationLink {
+            url = new URL("https://bitfireat.gitlab.io/dav4jvm/dokka/dav4jvm/")
+            packageListUrl = new URL("https://bitfireat.gitlab.io/dav4jvm/dokka/dav4jvm/package-list")
+        }
+        externalDocumentationLink {
+            url = new URL("https://bitfireat.gitlab.io/ical4android/dokka/ical4android/")
+            packageListUrl = new URL("https://bitfireat.gitlab.io/ical4android/dokka/ical4android/package-list")
+        }
+        externalDocumentationLink {
+            url = new URL("https://bitfireat.gitlab.io/vcard4android/dokka/vcard4android/")
+            packageListUrl = new URL("https://bitfireat.gitlab.io/vcard4android/dokka/vcard4android/package-list")
+        }
+    }
 }
 
 dependencies {
@@ -90,16 +115,16 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
     implementation 'androidx.preference:preference:1.1.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     implementation 'com.google.android:flexbox:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.1.0-beta02'
 
-    def room_version = '2.1.0'
+    def room_version = '2.2.1'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    implementation 'com.gitlab.bitfireAT:dav4jvm:ee66e8e50b'
+    implementation 'com.gitlab.bitfireAT:dav4jvm:214d9178'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation 'com.mikepenz:aboutlibraries:6.2.3'
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
