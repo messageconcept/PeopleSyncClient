@@ -262,7 +262,7 @@ object DavServiceUtils {
                     collections[url]?.let { it.sync = false }
 
                 val numCollectionsNew = collections.size;
-                if (numCollectionsOld != numCollectionsNew) {
+                if (numCollectionsOld != numCollectionsNew && forceSyncOnChanges) {
                     Logger.log.info("Number of collections changed for ${account.name} from ${numCollectionsOld} -> ${numCollectionsNew}, triggering sync")
                     val args = Bundle(1)
                     args.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
