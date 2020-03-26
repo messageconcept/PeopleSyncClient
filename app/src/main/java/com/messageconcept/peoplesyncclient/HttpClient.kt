@@ -13,7 +13,6 @@ import android.os.Build
 import android.security.KeyChain
 import at.bitfire.cert4android.CustomCertManager
 import at.bitfire.dav4jvm.BasicDigestAuthHandler
-import at.bitfire.dav4jvm.Constants
 import at.bitfire.dav4jvm.UrlUtils
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.Credentials

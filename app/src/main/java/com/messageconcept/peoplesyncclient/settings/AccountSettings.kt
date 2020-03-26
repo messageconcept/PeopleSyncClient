@@ -38,6 +38,7 @@ import java.util.logging.Level
  *
  * @throws InvalidAccountException on construction when the account doesn't exist (anymore)
  */
+@Suppress("FunctionName")
 class AccountSettings(
         val context: Context,
         val account: Account

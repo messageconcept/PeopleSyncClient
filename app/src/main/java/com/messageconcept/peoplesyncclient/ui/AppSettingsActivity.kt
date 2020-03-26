@@ -107,7 +107,7 @@ class AppSettingsActivity: AppCompatActivity() {
                         summary = host
                         true
                     } catch(e: URISyntaxException) {
-                        Snackbar.make(view!!, e.localizedMessage, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), e.localizedMessage, Snackbar.LENGTH_LONG).show()
                         false
                     }
                 }
@@ -148,12 +148,12 @@ class AppSettingsActivity: AppCompatActivity() {
             val settings = Settings.getInstance(requireActivity())
             settings.remove(StartupDialogFragment.HINT_AUTOSTART_PERMISSIONS)
             settings.remove(StartupDialogFragment.HINT_BATTERY_OPTIMIZATIONS)
-            Snackbar.make(view!!, R.string.app_settings_reset_hints_success, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(requireView(), R.string.app_settings_reset_hints_success, Snackbar.LENGTH_LONG).show()
         }
 
         private fun resetCertificates() {
-            if (CustomCertManager.resetCertificates(activity!!))
-                Snackbar.make(view!!, getString(R.string.app_settings_reset_certificates_success), Snackbar.LENGTH_LONG).show()
+            if (CustomCertManager.resetCertificates(requireActivity()))
+                Snackbar.make(requireView(), getString(R.string.app_settings_reset_certificates_success), Snackbar.LENGTH_LONG).show()
         }
 
     }

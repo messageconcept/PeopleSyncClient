@@ -43,7 +43,7 @@ class DavResourceFinder(
         override fun toString() = wellKnownName
     }
 
-    val log = Logger.getLogger("peoplesync.DavResourceFinder")
+    val log: Logger = Logger.getLogger("peoplesync.DavResourceFinder")
     private val logBuffer = StringHandler()
     init {
         log.level = Level.FINEST

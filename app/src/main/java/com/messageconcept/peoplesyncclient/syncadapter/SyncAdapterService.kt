@@ -25,9 +25,9 @@ import androidx.core.content.ContextCompat
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
-import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.logging.Level
