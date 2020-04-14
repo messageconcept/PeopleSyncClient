@@ -45,11 +45,14 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/login_account_name"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:errorEnabled="true"
                     app:error="@{details.nameError}">
+                    <!--suppress AndroidUnknownAttribute -->
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@={details.name}"
+                        android:afterTextChanged="@{details::clearNameError}"
                         android:inputType="textEmailAddress"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
