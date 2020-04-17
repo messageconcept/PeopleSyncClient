@@ -28,7 +28,6 @@ import com.messageconcept.peoplesyncclient.resource.LocalAddressBook.Companion.U
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import okhttp3.HttpUrl
-import java.lang.IllegalStateException
 import java.util.logging.Level
 
 class AddressBooksSyncAdapterService : SyncAdapterService() {
