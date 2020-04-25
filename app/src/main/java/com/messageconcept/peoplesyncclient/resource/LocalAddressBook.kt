@@ -134,6 +134,9 @@ class LocalAddressBook(
 
     }
 
+    override val tag: String
+        get() = "contacts-${account.name}"
+
     override val title = account.name!!
 
     /**
