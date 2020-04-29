@@ -2,6 +2,7 @@ package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Intent
 import android.text.Editable
+import android.widget.RadioGroup
 import androidx.annotation.MainThread
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,12 @@ class DefaultLoginCredentialsModel: ViewModel() {
 
     fun clearPasswordError(s: Editable) {
         passwordError.value = null
+    }
+
+    fun clearErrors(group: RadioGroup, checkedId: Int) {
+        usernameError.value = null
+        passwordError.value = null
+        baseUrlError.value = null
     }
 
     @MainThread
