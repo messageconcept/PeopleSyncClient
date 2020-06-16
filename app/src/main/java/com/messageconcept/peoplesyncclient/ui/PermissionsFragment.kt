@@ -44,12 +44,6 @@ class PermissionsFragment: Fragment() {
             if (needContacts && model.haveContactsPermissions.value == false)
                 requestPermissions(CONTACT_PERMISSIONS, 0)
         })
-        model.needAllPermissions.observe(viewLifecycleOwner, { needAll ->
-            if (needAll && model.haveAllPermissions.value == false) {
-                val all = mutableSetOf(*CONTACT_PERMISSIONS)
-                requestPermissions(all.toTypedArray(), 0)
-            }
-        })
 
         binding.appSettings.setOnClickListener {
             PermissionUtils.showAppSettings(requireActivity())
@@ -77,9 +71,6 @@ class PermissionsFragment: Fragment() {
         val haveContactsPermissions = MutableLiveData<Boolean>()
         val needContactsPermissions = MutableLiveData<Boolean>()
 
-        val haveAllPermissions = MutableLiveData<Boolean>()
-        val needAllPermissions = MutableLiveData<Boolean>()
-
         init {
             checkPermissions()
         }
@@ -99,10 +90,6 @@ class PermissionsFragment: Fragment() {
             val contactPermissions = havePermissions(getApplication(), CONTACT_PERMISSIONS)
             haveContactsPermissions.value = contactPermissions
             needContactsPermissions.value = contactPermissions
-
-            val allPermissions = contactPermissions
-            haveAllPermissions.value = allPermissions
-            needAllPermissions.value = allPermissions
         }
 
     }
