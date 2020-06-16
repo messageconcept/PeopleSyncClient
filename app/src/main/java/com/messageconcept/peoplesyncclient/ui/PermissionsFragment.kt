@@ -60,12 +60,6 @@ class PermissionsFragment: Fragment() {
             if (needNotifications == true && model.haveNotificationPermissions.value == false)
                 requestPermission.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
         })
-        model.needAllPermissions.observe(viewLifecycleOwner, { needAll ->
-            if (needAll && model.haveAllPermissions.value == false) {
-                val all = mutableSetOf(*CONTACT_PERMISSIONS, Manifest.permission.POST_NOTIFICATIONS)
-                requestPermission.launch(all.toTypedArray())
-            }
-        })
 
         binding.appSettings.setOnClickListener {
             PermissionUtils.showAppSettings(requireActivity())
@@ -89,9 +83,6 @@ class PermissionsFragment: Fragment() {
         val needContactsPermissions = MutableLiveData<Boolean>()
         val haveNotificationPermissions = MutableLiveData<Boolean>()
         val needNotificationPermissions = MutableLiveData<Boolean>()
-
-        val haveAllPermissions = MutableLiveData<Boolean>()
-        val needAllPermissions = MutableLiveData<Boolean>()
 
         init {
             checkPermissions()
@@ -126,12 +117,6 @@ class PermissionsFragment: Fragment() {
                 haveNotificationPermissions.value = null
                 needNotificationPermissions.value = null
             }
-
-            // "all permissions" switch
-            val allPermissions = contactPermissions &&
-                    notificationPermissions
-            haveAllPermissions.value = allPermissions
-            needAllPermissions.value = allPermissions
         }
 
     }
