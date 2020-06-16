@@ -116,40 +116,6 @@
                         android:checked="@={model.needAutoResetPermission}" />
 
                     <TextView
-                        android:id="@+id/allHeading"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/permissions_all_title"
-                        android:textAlignment="viewStart"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/allStatus"
-                        app:layout_constraintEnd_toStartOf="@id/allSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/autoResetStatus" />
-
-                    <TextView
-                        android:id="@+id/allStatus"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.haveAllPermissions ? @string/permissions_all_status_on : @string/permissions_all_status_off}"
-                        android:textAlignment="viewStart"
-                        app:layout_constraintEnd_toStartOf="@id/allSwitch"
-                        app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/allHeading" />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/allSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/allHeading"
-                        app:layout_constraintBottom_toBottomOf="@id/allStatus"
-                        app:layout_constraintEnd_toStartOf="@id/end"
-                        android:clickable="@{!model.haveAllPermissions}"
-                        android:checked="@={model.needAllPermissions}" />
-
-                    <TextView
                         android:id="@+id/contactsHeading"
                         style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="0dp"
@@ -160,7 +126,7 @@
                         app:layout_constraintBottom_toTopOf="@id/contactsStatus"
                         app:layout_constraintEnd_toStartOf="@id/contactsSwitch"
                         app:layout_constraintStart_toEndOf="@id/start"
-                        app:layout_constraintTop_toBottomOf="@id/allStatus" />
+                        app:layout_constraintTop_toBottomOf="@id/autoResetSwitch" />
 
                     <TextView
                         android:id="@+id/contactsStatus"
