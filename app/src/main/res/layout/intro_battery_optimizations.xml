@@ -26,23 +26,50 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="@dimen/card_padding">
+                    app:cardUseCompatPadding="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
+                        <com.messageconcept.peoplesyncclient.ui.widget.CropImageView
+                            android:id="@+id/image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            app:layout_constraintBottom_toTopOf="@id/batteryHeading"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0"
+                            app:layout_constraintVertical_chainStyle="packed"
+                            android:maxHeight="@dimen/card_theme_max_height"
+                            app:srcCompat="@drawable/intro_regular_sync"
+                            app:verticalOffsetPercent=".55" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="@dimen/card_padding" />
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_end="@dimen/card_padding" />
 
                         <TextView
                             android:id="@+id/batteryHeading"
                             style="@style/TextAppearance.MaterialComponents.Headline6"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_margin_title_text"
                             android:text="@string/intro_battery_title"
-                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toTopOf="@id/batteryStatus"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/batterySwitch" />
+                            app:layout_constraintEnd_toStartOf="@id/batterySwitch"
+                            app:layout_constraintStart_toStartOf="@id/start"
+                            app:layout_constraintTop_toBottomOf="@id/image" />
+
 
                         <TextView
                             android:id="@+id/batteryStatus"
@@ -50,7 +77,7 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@id/batteryHeading"
                             app:layout_constraintBottom_toTopOf="@id/batteryText"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/start"
                             app:layout_constraintEnd_toStartOf="@id/batterySwitch"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textColor="?android:attr/textColorSecondary"
@@ -64,24 +91,28 @@
                             android:clickable="@{!model.whitelisted}"
                             android:enabled="@{!model.dontShowBattery}"
                             app:layout_constraintBottom_toBottomOf="@id/batteryStatus"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/end"
                             app:layout_constraintStart_toEndOf="@id/batteryHeading"
                             app:layout_constraintTop_toTopOf="@id/batteryHeading" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/batteryText"
                             style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/card_margin_title_text"
                             android:text="@string/intro_battery_text"
+                            app:layout_constraintStart_toEndOf="@id/start"
+                            app:layout_constraintEnd_toStartOf="@id/end"
                             app:layout_constraintTop_toBottomOf="@id/batteryStatus" />
 
                         <CheckBox
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             app:layout_constraintTop_toBottomOf="@id/batteryText"
+                            app:layout_constraintStart_toEndOf="@id/start"
+                            app:layout_constraintEnd_toStartOf="@id/end"
                             android:enabled="@{!model.isWhitelisted()}"
                             android:checked="@={model.dontShowBattery}"
                             android:visibility="@{model.isWhitelisted() ? View.GONE : View.VISIBLE}"
@@ -94,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:visibility="@{model.Companion.manufacturerWarning ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:cardUseCompatPadding="true"
                     app:contentPadding="@dimen/card_padding">
 
