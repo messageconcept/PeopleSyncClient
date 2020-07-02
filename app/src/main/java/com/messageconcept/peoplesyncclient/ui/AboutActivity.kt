@@ -69,7 +69,7 @@ class AboutActivity: AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.about_davdroid, menu)
+        menuInflater.inflate(R.menu.about_peoplesync, menu)
         return true
     }
 
