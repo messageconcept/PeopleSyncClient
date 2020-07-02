@@ -131,6 +131,8 @@ class UpdateReceiver : BroadcastReceiver() {
 
                 val principalUrl = getPrincipalUrl(context, account, loginInfo)
 
+                // Delete the old main account. Otherwise the PeopleSync app will crash as it
+                // doesn't know how to handle it because there are no corresponding ServiceDB entries.
                 delete(context, account)
 
                 // If we couldn't determine a principal, we can't create a new main account.
