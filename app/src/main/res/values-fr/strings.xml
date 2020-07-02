@@ -17,8 +17,6 @@
   <string name="notification_channel_sync_io_errors">Erreurs de réseau et d\'entrée / sortie</string>
   <string name="notification_channel_sync_io_errors_desc">Délais d\'attente, problèmes de connexion, etc. (souvent temporaires)</string>
   <!--IntroActivity-->
-  <string name="intro_slogan1">Vos données, votre choix.</string>
-  <string name="intro_slogan2">Prenez le contrôle.</string>
   <string name="intro_battery_title">Intervalles de synchronisation régulières</string>
   <string name="intro_battery_not_whitelisted">Désactiver (non recommandé)</string>
   <string name="intro_battery_whitelisted">Activé (recommandé)</string>
