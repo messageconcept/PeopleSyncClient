@@ -31,8 +31,8 @@
     <string name="notification_channel_sync_io_errors_desc">Timeouts, connection problems, etc. (often temporary)</string>
 
     <!-- IntroActivity -->
-    <string name="intro_slogan1">Your data. Your choice.</string>
-    <string name="intro_slogan2">Take control.</string>
+    <string name="intro_slogan1">PeopleSync</string>
+    <string name="intro_slogan2">All contacts. Everywhere.</string>
     <string name="intro_battery_title">Regular sync intervals</string>
     <string name="intro_battery_not_whitelisted">Disabled (not recommended)</string>
     <string name="intro_battery_whitelisted">Enabled (recommended)</string>

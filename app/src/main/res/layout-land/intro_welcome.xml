@@ -30,8 +30,8 @@
             app:layout_constraintBottom_toBottomOf="@id/logoBackground"
             app:layout_constraintStart_toStartOf="@id/logoBackground"
             app:layout_constraintEnd_toEndOf="@id/logoBackground"
-            android:scaleX="1.8"
-            android:scaleY="1.8"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
         <TextView
@@ -45,10 +45,11 @@
             android:layout_marginVertical="12dp"
             android:gravity="center"
             android:paddingEnd="24dp"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:fontFamily="@font/open_sans"
             app:autoSizeTextType="uniform"
-            app:autoSizeMaxTextSize="34sp"
+            app:autoSizeMaxTextSize="48sp"
             android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:text="@string/intro_slogan1"/>
 
         <TextView
@@ -61,7 +62,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center"
             android:paddingEnd="24dp"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:fontFamily="@font/open_sans"
             app:autoSizeTextType="uniform"
             app:autoSizeMaxTextSize="48sp"
             android:textColor="@android:color/white"

@@ -22,8 +22,6 @@
   <string name="notification_channel_sync_io_errors">Netzwerk- und E/A-Fehler</string>
   <string name="notification_channel_sync_io_errors_desc">Zeitüberschreitungen, Verbindungsprobleme, usw. (oft vorübergehend)</string>
   <!--IntroActivity-->
-  <string name="intro_slogan1">Dein Leben. Deine Daten.</string>
-  <string name="intro_slogan2">Deine Entscheidung.</string>
   <string name="intro_battery_title">Regelmäßige Sync-Intervalle</string>
   <string name="intro_battery_not_whitelisted">Deaktiviert (nicht empfohlen)</string>
   <string name="intro_battery_whitelisted">Aktiviert (empfohlen)</string>

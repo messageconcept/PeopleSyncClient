@@ -22,8 +22,6 @@
   <string name="notification_channel_sync_io_errors">Errores de Red y E/S</string>
   <string name="notification_channel_sync_io_errors_desc">Timeouts, problemas de conección, etc. (muchas veces temporal)</string>
   <!--IntroActivity-->
-  <string name="intro_slogan1">Sus datos. Su elección.</string>
-  <string name="intro_slogan2">Tome el control.</string>
   <string name="intro_battery_title">Sincronización a intervalos regulares</string>
   <string name="intro_battery_not_whitelisted">Deshabilitado (no se recomienda)</string>
   <string name="intro_battery_whitelisted">Habilitado (se recomienda)</string>
