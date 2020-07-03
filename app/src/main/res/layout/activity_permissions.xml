@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
         <variable name="model" type="com.messageconcept.peoplesyncclient.ui.PermissionsFragment.Model"/>
     </data>
 
@@ -28,6 +29,7 @@
 
                     <com.messageconcept.peoplesyncclient.ui.widget.CropImageView
                         android:id="@+id/image"
+                        android:visibility="@{model.dontShowGraphics ? View.GONE : View.VISIBLE}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintVertical_chainStyle="packed"

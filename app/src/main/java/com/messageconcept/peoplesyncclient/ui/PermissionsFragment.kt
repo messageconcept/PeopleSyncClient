@@ -3,6 +3,7 @@ package com.messageconcept.peoplesyncclient.ui
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -47,6 +48,8 @@ class PermissionsFragment: Fragment() {
                 startActivity(intent)
         }
 
+        model.dontShowGraphics.value = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
         return binding.root
     }
 
@@ -65,6 +68,7 @@ class PermissionsFragment: Fragment() {
 
         val haveContactsPermissions = MutableLiveData<Boolean>()
         val needContactsPermissions = MutableLiveData<Boolean>()
+        val dontShowGraphics = MutableLiveData<Boolean>()
 
         init {
             checkPermissions()

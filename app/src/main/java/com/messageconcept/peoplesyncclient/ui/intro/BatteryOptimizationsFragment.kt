@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -65,6 +66,8 @@ class BatteryOptimizationsFragment: Fragment() {
         }
 
         binding.infoLeaveUnchecked.text = getString(R.string.intro_leave_unchecked, getString(R.string.app_settings_reset_hints))
+
+        model.dontShowGraphics.value = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
         return binding.root
     }
@@ -130,6 +133,7 @@ class BatteryOptimizationsFragment: Fragment() {
 
         val settings = Settings(app)
 
+        val dontShowGraphics = MutableLiveData<Boolean>()
         val shouldBeWhitelisted = MutableLiveData<Boolean>()
         val isWhitelisted = MutableLiveData<Boolean>()
         val dontShowBattery = object: ObservableBoolean() {
