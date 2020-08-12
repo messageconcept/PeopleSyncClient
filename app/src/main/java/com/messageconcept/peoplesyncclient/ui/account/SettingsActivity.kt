@@ -34,12 +34,16 @@ import androidx.preference.*
 import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.apache.commons.lang3.StringUtils
 
 class SettingsActivity: AppCompatActivity() {
@@ -76,15 +80,13 @@ class SettingsActivity: AppCompatActivity() {
 
 
     class AccountSettingsFragment: PreferenceFragmentCompat() {
-        private lateinit var settings: SettingsManager
-        lateinit var account: Account
+        private val account by lazy { requireArguments().getParcelable<Account>(EXTRA_ACCOUNT)!! }
+        private val settings by lazy { SettingsManager.getInstance(requireActivity()) }
 
         val model by viewModels<Model>()
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            settings = SettingsManager.getInstance(requireActivity())
-            account = requireArguments().getParcelable(EXTRA_ACCOUNT)!!
 
             try {
                 model.initialize(account)
@@ -112,7 +114,7 @@ class SettingsActivity: AppCompatActivity() {
                         else
                             it.summary = getString(R.string.settings_sync_summary_periodically, interval / 60)
                         it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-                            pref.isEnabled = false
+                            pref.isEnabled = false      // disable until updated setting is read from system again
                             model.updateSyncInterval(getString(R.string.address_books_authority), (newValue as String).toLong())
                             false
                         }
@@ -133,6 +135,9 @@ class SettingsActivity: AppCompatActivity() {
             }
 
             findPreference<EditTextPreference>("sync_wifi_only_ssids")!!.let {
+                model.syncWifiOnly.observe(this, Observer { wifiOnly ->
+                    it.isEnabled = wifiOnly
+                })
                 model.syncWifiOnlySSIDs.observe(this, Observer { onlySSIDs ->
                     if (onlySSIDs != null) {
                         it.text = onlySSIDs.joinToString(", ")
@@ -340,15 +345,18 @@ class SettingsActivity: AppCompatActivity() {
 
             statusChangeListener?.let {
                 ContentResolver.removeStatusChangeListener(it)
+                statusChangeListener = null
             }
             settings.removeOnChangeListener(this)
         }
 
         override fun onStatusChanged(which: Int) {
+            Logger.log.info("Sync settings changed")
             reload()
         }
 
         override fun onSettingsChanged() {
+            Logger.log.info("Settings changed")
             reload()
         }
 
@@ -367,8 +375,10 @@ class SettingsActivity: AppCompatActivity() {
 
 
         fun updateSyncInterval(authority: String, syncInterval: Long) {
-            accountSettings?.setSyncInterval(authority, syncInterval)
-            reload()
+            CoroutineScope(Dispatchers.Default).launch {
+                accountSettings?.setSyncInterval(authority, syncInterval)
+                reload()
+            }
         }
 
         fun updateSyncWifiOnly(wifiOnly: Boolean) {

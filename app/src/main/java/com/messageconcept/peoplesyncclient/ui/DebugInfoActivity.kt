@@ -308,7 +308,8 @@ class DebugInfoActivity: AppCompatActivity() {
                         accountSettings.getSyncWifiOnlySSIDs()?.let {
                             text.append(", SSIDs: ${accountSettings.getSyncWifiOnlySSIDs()}")
                         }
-                        text.append("\n  [CardDAV] Contact group method: ${accountSettings.getGroupMethod()}")
+                        text    .append("\n  getIsSyncable(AddressBooks): ${ContentResolver.getIsSyncable(acct, context.getString(R.string.address_books_authority))}")
+                                .append("\n  [CardDAV] Contact group method: ${accountSettings.getGroupMethod()}")
                                 .append("\n")
                         accountManager.getUserData(acct, KEY_USERNAME)?.let { userName ->
                             text.append("  Username: ${userName}\n")

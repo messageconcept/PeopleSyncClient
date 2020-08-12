@@ -159,6 +159,7 @@ class AccountDetailsFragment: Fragment() {
                     val refreshIntent = Intent(context, DavService::class.java)
                     refreshIntent.action = DavService.ACTION_REFRESH_COLLECTIONS
 
+                    val addrBookAuthority = context.getString(R.string.address_books_authority)
                     if (config.cardDAV != null) {
                         // insert CardDAV service
 
@@ -172,10 +173,10 @@ class AccountDetailsFragment: Fragment() {
                         context.startService(refreshIntent)
 
                         // set default sync interval and enable sync regardless of permissions
-                        val addrBookAuthority = context.getString(R.string.address_books_authority)
                         ContentResolver.setIsSyncable(account, addrBookAuthority, 1)
                         accountSettings.setSyncInterval(addrBookAuthority, Constants.DEFAULT_SYNC_INTERVAL)
-                    }
+                    } else
+                        ContentResolver.setIsSyncable(account, addrBookAuthority, 0)
 
                     if (config.calDAV != null) {
                         // insert CalDAV service
