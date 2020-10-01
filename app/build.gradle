@@ -20,7 +20,8 @@ android {
     defaultConfig {
         applicationId "com.messageconcept.peoplesyncclient"
 
-        versionCode 303030005
+        //noinspection HighAppVersionCode
+        versionCode 2070030300
         buildConfigField "long", "buildTime", System.currentTimeMillis() + "L"
 
         minSdkVersion 21        // Android 5
@@ -47,7 +48,7 @@ android {
     flavorDimensions "distribution"
     productFlavors {
         standard {
-            versionName "3.3.3-ose"
+            versionName "3.3-0-ps"
         }
     }
 
