@@ -18,6 +18,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.security.KeyChain
+import android.text.InputType
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -83,6 +84,10 @@ class SettingsActivity: AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings_account)
+
+            findPreference<EditTextPreference>(getString(R.string.settings_password_key))!!.setOnBindEditTextListener { password ->
+                password.inputType = InputType.TYPE_CLASS_TEXT.or(InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            }
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -166,40 +171,38 @@ class SettingsActivity: AppCompatActivity() {
             val prefPassword = findPreference<EditTextPreference>("password")!!
             val prefCertAlias = findPreference<Preference>("certificate_alias")!!
             model.credentials.observe(viewLifecycleOwner, { credentials ->
-                when (credentials.type) {
-                    Credentials.Type.UsernamePassword -> {
-                        prefUserName.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_USER_NAME)
-                        prefUserName.isVisible = true
-                        prefUserName.summary = credentials.userName
-                        prefUserName.text = credentials.userName
-                        prefUserName.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                            model.updateCredentials(Credentials(newValue as String, credentials.password))
-                            false
-                        }
-
-                        prefPassword.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_PASSWORD)
-                        prefPassword.isVisible = true
-                        prefPassword.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                            model.updateCredentials(Credentials(credentials.userName, newValue as String))
-                            false
-                        }
-
-                        prefCertAlias.isVisible = false
+                if (credentials.userName != null && credentials.password != null) {
+                    prefUserName.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_USER_NAME)
+                    prefUserName.isVisible = true
+                    prefUserName.summary = credentials.userName
+                    prefUserName.text = credentials.userName
+                    prefUserName.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newUserName ->
+                        model.updateCredentials(Credentials(newUserName as String, credentials.password, credentials.certificateAlias))
+                        false
                     }
-                    Credentials.Type.ClientCertificate -> {
-                        prefUserName.isVisible = false
-                        prefPassword.isVisible = false
 
-                        prefCertAlias.isVisible = true
-                        prefCertAlias.summary = credentials.certificateAlias
-                        prefCertAlias.setOnPreferenceClickListener {
-                            KeyChain.choosePrivateKeyAlias(requireActivity(), { alias ->
-                                model.updateCredentials(Credentials(certificateAlias = alias))
-                            }, null, null, null, -1, credentials.certificateAlias)
-                            true
-                        }
+                    prefPassword.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_PASSWORD)
+                    prefPassword.isVisible = true
+                    prefPassword.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newPassword ->
+                        model.updateCredentials(Credentials(credentials.userName, newPassword as String, credentials.certificateAlias))
+                        false
                     }
+                } else {
+                    prefUserName.isVisible = false
+                    prefPassword.isVisible = false
                 }
+
+                if (credentials.certificateAlias != null) {
+                    prefCertAlias.isVisible = true
+                    prefCertAlias.summary = credentials.certificateAlias
+                    prefCertAlias.setOnPreferenceClickListener {
+                        KeyChain.choosePrivateKeyAlias(requireActivity(), { newAlias ->
+                            model.updateCredentials(Credentials(credentials.userName, credentials.password, newAlias))
+                        }, null, null, null, -1, credentials.certificateAlias)
+                        true
+                    }
+                } else
+                    prefCertAlias.isVisible = false
             })
 
             // preference group: CardDAV

@@ -36,6 +36,8 @@ import com.messageconcept.peoplesyncclient.model.HomeSet
 import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +45,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import java.util.logging.Level
 
-class AccountDetailsFragment: Fragment() {
+class AccountDetailsFragment : Fragment() {
 
     val loginModel by activityViewModels<LoginModel>()
     val model by viewModels<AccountDetailsModel>()
@@ -58,9 +60,10 @@ class AccountDetailsFragment: Fragment() {
 
         // default account name
         model.name.value =
-                config.calDAV?.emails?.firstOrNull() ?:
-                        loginModel.credentials?.userName ?:
-                        loginModel.credentials?.certificateAlias
+                config.calDAV?.emails?.firstOrNull()
+                        ?: loginModel.credentials?.userName
+                        ?: loginModel.credentials?.certificateAlias
+                        ?: loginModel.baseURI?.host
 
         // CardDAV-specific
         val settings = SettingsManager.getInstance(requireActivity())
@@ -91,13 +94,19 @@ class AccountDetailsFragment: Fragment() {
 
                 model.createAccount(
                         name,
-                        loginModel.credentials!!,
+                        loginModel.credentials,
                         config,
                         GroupMethod.CATEGORIES
                 ).observe(viewLifecycleOwner, Observer<Boolean> { success ->
-                    if (success)
+                    if (success) {
+                        // close Create account activity
                         requireActivity().finish()
-                    else {
+                        // open Account activity for created account
+                        val intent = Intent(requireActivity(), AccountActivity::class.java)
+                        val account = Account(name, getString(R.string.account_type))
+                        intent.putExtra(AccountActivity.EXTRA_ACCOUNT, account)
+                        startActivity(intent)
+                    } else {
                         Snackbar.make(requireActivity().findViewById(android.R.id.content), R.string.login_account_not_created, Snackbar.LENGTH_LONG).show()
 
                         v.createAccountProgress.visibility = View.GONE
@@ -125,7 +134,7 @@ class AccountDetailsFragment: Fragment() {
 
     class AccountDetailsModel(
             application: Application
-    ): AndroidViewModel(application) {
+    ) : AndroidViewModel(application) {
 
         val name = MutableLiveData<String>()
         val nameError = MutableLiveData<String>()
@@ -134,7 +143,7 @@ class AccountDetailsFragment: Fragment() {
             nameError.value = null
         }
 
-        fun createAccount(name: String, credentials: Credentials, config: DavResourceFinder.Configuration, groupMethod: GroupMethod): LiveData<Boolean> {
+        fun createAccount(name: String, credentials: Credentials?, config: DavResourceFinder.Configuration, groupMethod: GroupMethod): LiveData<Boolean> {
             val result = MutableLiveData<Boolean>()
             val context = getApplication<Application>()
             viewModelScope.launch(Dispatchers.Default + NonCancellable) {
@@ -144,8 +153,7 @@ class AccountDetailsFragment: Fragment() {
                 val userData = AccountSettings.initialUserData(credentials)
                 Logger.log.log(Level.INFO, "Creating Android account with initial config", arrayOf(account, userData))
 
-                val accountManager = AccountManager.get(context)
-                if (!accountManager.addAccountExplicitly(account, credentials.password, userData)) {
+                if (!AccountUtils.createAccount(context, account, userData, credentials?.password)) {
                     result.postValue(false)
                     return@launch
                 }
@@ -162,7 +170,6 @@ class AccountDetailsFragment: Fragment() {
                     val addrBookAuthority = context.getString(R.string.address_books_authority)
                     if (config.cardDAV != null) {
                         // insert CardDAV service
-
                         val id = insertService(db, name, Service.TYPE_CARDDAV, config.cardDAV)
 
                         // initial CardDAV account settings

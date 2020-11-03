@@ -72,19 +72,19 @@ class AccountSettings(
         const val SYNC_INTERVAL_MANUALLY = -1L
 
 
-        fun initialUserData(credentials: Credentials): Bundle {
+        fun initialUserData(credentials: Credentials?): Bundle {
             val bundle = Bundle(2)
             bundle.putString(KEY_SETTINGS_VERSION, CURRENT_VERSION.toString())
 
-            when (credentials.type) {
-                Credentials.Type.UsernamePassword ->
+            if (credentials != null) {
+                if (credentials.userName != null)
                     bundle.putString(KEY_USERNAME, credentials.userName)
-                Credentials.Type.ClientCertificate ->
+                if (credentials.certificateAlias != null)
                     bundle.putString(KEY_CERTIFICATE_ALIAS, credentials.certificateAlias)
+                if (credentials.baseUrl != null)
+                    bundle.putString(KEY_BASE_URL, credentials.baseUrl)
             }
 
-            if (credentials.baseUrl != null)
-                bundle.putString(KEY_BASE_URL, credentials.baseUrl)
 
             return bundle
         }

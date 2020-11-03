@@ -15,25 +15,9 @@ class Credentials(
         val baseUrl: String? = null
 ) {
 
-    enum class Type {
-        UsernamePassword,
-        ClientCertificate
+    override fun toString(): String {
+        val maskedPassword = "*****".takeIf { password != null }
+        return "Credentials(userName=$userName, password=$maskedPassword, certificateAlias=$certificateAlias)"
     }
-
-    val type: Type
-
-    init {
-        type = when {
-            !certificateAlias.isNullOrEmpty() ->
-                Type.ClientCertificate
-            !userName.isNullOrEmpty() && !password.isNullOrEmpty() ->
-                Type.UsernamePassword
-            else ->
-                throw IllegalArgumentException("Either username/password or certificate alias must be set")
-        }
-    }
-
-    override fun toString() =
-            "Credentials(type=$type, userName=$userName, certificateAlias=$certificateAlias)"
 
 }

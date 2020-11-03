@@ -42,6 +42,7 @@ class LoginActivity: AppCompatActivity() {
          * When set, the password field will be set to this value.
          */
         const val EXTRA_PASSWORD = "password"
+
     }
 
     private val loginFragmentLoader = ServiceLoader.load(LoginCredentialsFragment::class.java)!!
