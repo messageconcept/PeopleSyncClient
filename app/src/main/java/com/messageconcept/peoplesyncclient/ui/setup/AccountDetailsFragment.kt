@@ -196,7 +196,8 @@ class AccountDetailsFragment : Fragment() {
                         // set default sync interval and enable sync regardless of permissions
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
                         accountSettings.setSyncInterval(CalendarContract.AUTHORITY, Constants.DEFAULT_SYNC_INTERVAL)
-                    }
+                    } else
+                        ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 0)
 
                 } catch(e: InvalidAccountException) {
                     Logger.log.log(Level.SEVERE, "Couldn't access account settings", e)

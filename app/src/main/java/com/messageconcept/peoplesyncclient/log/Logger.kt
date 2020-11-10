@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
+import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.ui.AppSettingsActivity
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
@@ -56,7 +57,7 @@ object Logger : SharedPreferences.OnSharedPreferenceChangeListener {
     @Synchronized
     private fun reinitialize() {
         val logToFile = preferences.getBoolean(LOG_TO_FILE, false)
-        val logVerbose = logToFile || Log.isLoggable(log.name, Log.DEBUG)
+        val logVerbose = logToFile || BuildConfig.DEBUG || Log.isLoggable(log.name, Log.DEBUG)
 
         log.info("Verbose logging: $logVerbose; to file: $logToFile")
 

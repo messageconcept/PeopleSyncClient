@@ -13,24 +13,32 @@
     <color name="grey200">#eeeeee</color>
     <color name="grey500">#9E9E9E</color>
     <color name="grey700">#616161</color>
+    <color name="backgroundColor">@color/grey200</color>
 
     <!-- https://material.io/design/color/#tools-for-picking-colors -->
     <!-- Blue 50 -->
     <color name="primaryColor">#1E88E5</color> <!-- 600 -->
     <color name="primaryLightColor">#42A5F5</color> <!-- 400 -->
     <color name="primaryDarkColor">#1565C0</color> <!-- 800 -->
+    <color name="colorOnPrimary">@android:color/black</color>
+
     <!-- Pink 50 -->
     <color name="secondaryColor">#D81B60</color> <!-- 600 -->
     <color name="secondaryLightColor">#EC407A</color> <!-- 400 -->
     <color name="secondaryDarkColor">#AD1457</color> <!-- 800 -->
+    <color name="colorOnSecondary">@android:color/white</color>
+
     <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
 
     <color name="errorColor">#d32f2f</color>
+    <color name="colorOnError">@android:color/white</color>
 
 
     <!-- app theme -->
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.DarkActionBar"/>
+    <style name="AppTheme" parent="AppTheme.Base">
         <!-- see https://github.com/material-components/material-components-android/blob/master/docs/theming/Color.md for component color names -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>       <!-- additionally required for AppCompatActivity -->
@@ -39,12 +47,12 @@
 
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
-        <item name="colorOnSecondary">@android:color/white</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
 
         <item name="colorError">@color/errorColor</item>
-        <item name="colorOnError">@android:color/white</item>
+        <item name="colorOnError">@color/colorOnError</item>
 
-        <item name="android:colorBackground">@color/grey200</item>
+        <item name="android:colorBackground">@color/backgroundColor</item>
         <item name="colorSurface">@android:color/white</item>
     </style>
 

@@ -41,6 +41,10 @@ class WifiPermissionsActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (!PermissionUtils.WIFI_SSID_PERMISSIONS.all { perm -> PermissionUtils.declaresPermission(packageManager, perm) })
+            throw IllegalArgumentException("WiFi SSID restriction requires location permissions")
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val binding = DataBindingUtil.setContentView<ActivityWifiPermissionsBinding>(this, R.layout.activity_wifi_permissions)
@@ -53,7 +57,10 @@ class WifiPermissionsActivity: AppCompatActivity() {
         }
 
         model.haveBackgroundLocation.observe(this) { status ->
-            val label = if (Build.VERSION.SDK_INT >= 30) packageManager.getBackgroundPermissionOptionLabel() else ""
+            val label = if (Build.VERSION.SDK_INT >= 30)
+                    packageManager.getBackgroundPermissionOptionLabel()
+                else
+                    getString(R.string.wifi_permissions_background_location_permission_label)
             binding.backgroundLocationStatus.text = HtmlCompat.fromHtml(getString(
                     if (status) R.string.wifi_permissions_background_location_permission_on else R.string.wifi_permissions_background_location_permission_off,
                     label
@@ -129,22 +136,27 @@ class WifiPermissionsActivity: AppCompatActivity() {
         }
 
         fun checkPermissions() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Android 8.1+: location permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
                 val location = ContextCompat.checkSelfPermission(getApplication(), PERMISSION_LOCATION) == PackageManager.PERMISSION_GRANTED
                 haveLocation.value = location
                 needLocation.value = location
             }
 
+            // Android 9+: location service
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                getSystemService(getApplication(), LocationManager::class.java)?.let { locationManager ->
+                    val locationEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
+                    isLocationEnabled.value = locationEnabled
+                    needLocationEnabled.value = locationEnabled
+                }
+            }
+
+            // Android 10+: background location permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val backgroundLocation = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
                 haveBackgroundLocation.value = backgroundLocation
                 needBackgroundLocation.value = backgroundLocation
-            }
-
-            getSystemService(getApplication(), LocationManager::class.java)?.let { locationManager ->
-                val locationEnabled = LocationManagerCompat.isLocationEnabled(locationManager)
-                isLocationEnabled.value = locationEnabled
-                needLocationEnabled.value = locationEnabled
             }
         }
 

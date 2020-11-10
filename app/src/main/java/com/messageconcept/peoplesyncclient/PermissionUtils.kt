@@ -26,7 +26,7 @@ object PermissionUtils {
     val WIFI_SSID_PERMISSIONS =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
                 arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
             else
                 arrayOf()
@@ -34,22 +34,38 @@ object PermissionUtils {
     /**
      * Checks whether all conditions to access the current WiFi's SSID are met:
      *
-     * 1. location permissions ([WIFI_SSID_PERMISSIONS]) granted
-     * 2. location enabled
+     * 1. location permissions ([WIFI_SSID_PERMISSIONS]) granted (Android 8.1+)
+     * 2. location enabled (Android 9+)
      *
      * @return *true* if SSID can be obtained; *false* if the SSID will be <unknown> or something like that
      */
     fun canAccessWifiSsid(context: Context): Boolean {
-        // before Android 8, SSIDs are always readable
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+        // before Android 8.1, SSIDs are always readable
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1)
             return true
 
-        val locationEnabled = ContextCompat.getSystemService(context, LocationManager::class.java)?.let { locationManager ->
-            LocationManagerCompat.isLocationEnabled(locationManager)
-        } ?: /* location feature not available on this device */ false
+        val locationAvailable =
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
+                    true    // Android <9 doesn't require active location services
+                else
+                    ContextCompat.getSystemService(context, LocationManager::class.java)?.let { locationManager ->
+                        LocationManagerCompat.isLocationEnabled(locationManager)
+                    } ?: /* location feature not available on this device */ false
 
         return  havePermissions(context, WIFI_SSID_PERMISSIONS) &&
-                locationEnabled
+                locationAvailable
+    }
+
+    /**
+     * Whether this app declares the given permission (regardless of whether it has been granted or not).
+     *
+     * @param permisssion  permission to check
+     *
+     * @return *true* if this app declares [permission] in the manifest; *false* otherwise
+     */
+    fun declaresPermission(packageManager: PackageManager, permission: String): Boolean {
+        val info = packageManager.getPackageInfo(BuildConfig.APPLICATION_ID, PackageManager.GET_PERMISSIONS)
+        return info.requestedPermissions.contains(permission)
     }
 
     /**
