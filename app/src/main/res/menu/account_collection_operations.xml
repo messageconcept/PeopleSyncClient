@@ -11,13 +11,14 @@
 
     <item android:id="@+id/force_read_only"
           android:checkable="true"
+          android:visible="false"
           android:title="@string/collection_force_read_only"/>
 
     <item android:id="@+id/properties"
         android:title="@string/collection_properties"/>
 
     <item android:id="@+id/delete_collection"
-        android:title="@string/delete_collection"
-        android:visible="false"/>
+        android:visible="false"
+        android:title="@string/delete_collection"/>
 
 </menu>
