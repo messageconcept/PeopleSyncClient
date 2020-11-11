@@ -3,6 +3,7 @@
 
     <item android:id="@+id/force_read_only"
           android:checkable="true"
+          android:visible="false"
           android:title="@string/collection_force_read_only"/>
 
     <item android:id="@+id/properties"
