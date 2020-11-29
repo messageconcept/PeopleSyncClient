@@ -53,7 +53,10 @@ class AccountSettings(
         const val CURRENT_VERSION = 11
         const val KEY_SETTINGS_VERSION = "version"
 
-        /** Stores the tasks sync interval (in minutes) so that it can be set again when the provider is switched */
+        const val KEY_SYNC_INTERVAL_ADDRESSBOOKS = "sync_interval_addressbooks"
+        const val KEY_SYNC_INTERVAL_CALENDARS = "sync_interval_calendars"
+
+        /** Stores the tasks sync interval (in seconds) so that it can be set again when the provider is switched */
         const val KEY_SYNC_INTERVAL_TASKS = "sync_interval_tasks"
 
         const val KEY_USERNAME = "user_name"
@@ -64,10 +67,15 @@ class AccountSettings(
         const val KEY_WIFI_ONLY_SSIDS = "wifi_only_ssids"   // restrict sync to specific WiFi SSIDs
 
         /** Contact group method:
-        value = null (not existing)     groups as separate VCards (default)
-        "CATEGORIES"            groups are per-contact CATEGORIES
+         *null (not existing)*     groups as separate vCards (default);
+         "CATEGORIES"              groups are per-contact CATEGORIES
          */
         const val KEY_CONTACT_GROUP_METHOD = "contact_group_method"
+
+        /** UI preference: Show only personal collections
+         value = *null* (not existing)   show all collections (default);
+         "1"                             show only personal collections */
+        const val KEY_SHOW_ONLY_PERSONAL = "show_only_personal"
 
         const val SYNC_INTERVAL_MANUALLY = -1L
 
@@ -87,6 +95,25 @@ class AccountSettings(
 
 
             return bundle
+        }
+
+        fun repairSyncIntervals(context: Context) {
+            val addressBooksAuthority = context.getString(R.string.address_books_authority)
+
+            val am = AccountManager.get(context)
+            for (account in am.getAccountsByType(context.getString(R.string.account_type))) {
+                val settings = AccountSettings(context, account)
+
+                // repair address book sync
+                settings.getSavedAddressbooksSyncInterval()?.let { shouldBe ->
+                    val current = settings.getSyncInterval(addressBooksAuthority)
+                    if (current != shouldBe) {
+                        Logger.log.warning("${account.name}: $addressBooksAuthority sync interval should be $shouldBe but is $current -> setting to $current")
+                        settings.setSyncInterval(addressBooksAuthority, shouldBe)
+                    }
+                }
+
+            }
         }
 
     }
@@ -186,9 +213,14 @@ class AccountSettings(
         if (!success)
             return false
 
+        // store sync interval in account settings (used when the provider is switched)
+        if (authority == context.getString(R.string.address_books_authority))
+            accountManager.setUserData(account, KEY_SYNC_INTERVAL_ADDRESSBOOKS, seconds.toString())
+
         return true
     }
 
+    fun getSavedAddressbooksSyncInterval() = accountManager.getUserData(account, KEY_SYNC_INTERVAL_ADDRESSBOOKS)?.toLong()
     fun getSyncWifiOnly() =
             if (settings.containsKey(KEY_WIFI_ONLY))
                 settings.getBoolean(KEY_WIFI_ONLY)
@@ -226,6 +258,28 @@ class AccountSettings(
 
     fun setGroupMethod(method: GroupMethod) {
         accountManager.setUserData(account, KEY_CONTACT_GROUP_METHOD, method.name)
+    }
+
+
+    // UI settings
+
+    /**
+     * Whether only personal collections should be shown.
+     *
+     * @return [Pair] of values:
+     *
+     *   1. (first) whether only personal collections should be shown
+     *   2. (second) whether the user shall be able to change the setting (= setting not locked)
+     */
+    fun getShowOnlyPersonal(): Pair<Boolean, Boolean> =
+            when (settings.getIntOrNull(KEY_SHOW_ONLY_PERSONAL)) {
+                0 -> Pair(false, false)
+                1 -> Pair(true, false)
+                else /* including -1 */ -> Pair(accountManager.getUserData(account, KEY_SHOW_ONLY_PERSONAL) != null, true)
+            }
+
+    fun setShowOnlyPersonal(showOnlyPersonal: Boolean) {
+        accountManager.setUserData(account, KEY_SHOW_ONLY_PERSONAL, if (showOnlyPersonal) "1" else null)
     }
 
 

@@ -7,13 +7,16 @@ import at.bitfire.dav4jvm.property.*
 import com.messageconcept.peoplesyncclient.DavUtils
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import org.apache.commons.lang3.StringUtils
 
 @Entity(tableName = "collection",
         foreignKeys = [
-            ForeignKey(entity = Service::class, parentColumns = arrayOf("id"), childColumns = arrayOf("serviceId"), onDelete = ForeignKey.CASCADE)
+            ForeignKey(entity = Service::class, parentColumns = arrayOf("id"), childColumns = arrayOf("serviceId"), onDelete = ForeignKey.CASCADE),
+            ForeignKey(entity = HomeSet::class, parentColumns = arrayOf("id"), childColumns = arrayOf("homeSetId"), onDelete = ForeignKey.SET_NULL)
         ],
         indices = [
-            Index("serviceId","type")
+            Index("serviceId","type"),
+            Index("homeSetId","type")
         ]
 )
 data class Collection(
@@ -21,6 +24,7 @@ data class Collection(
     override var id: Long = 0,
 
     var serviceId: Long = 0,
+    var homeSetId: Long? = null,
 
     var type: String,
     var url: HttpUrl,
@@ -31,6 +35,7 @@ data class Collection(
 
     var displayName: String? = null,
     var description: String? = null,
+    var owner: HttpUrl? = null,
 
     // CalDAV only
     var color: Int? = null,
@@ -84,10 +89,9 @@ data class Collection(
                 privUnbind = privilegeSet.mayUnbind
             }
 
-            var displayName: String? = null
-            dav[DisplayName::class.java]?.let {
-                if (!it.displayName.isNullOrEmpty())
-                    displayName = it.displayName
+            val displayName = StringUtils.trimToNull(dav[DisplayName::class.java]?.displayName)
+            val owner = dav[Owner::class.java]?.href?.let { ownerHref ->
+                dav.href.resolve(ownerHref)
             }
 
             var description: String? = null
@@ -135,6 +139,7 @@ data class Collection(
                     privWriteContent = privWriteContent,
                     privUnbind = privUnbind,
                     displayName = displayName,
+                    owner = owner,
                     description = description,
                     color = color,
                     timezone = timezone,

@@ -29,6 +29,7 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KE
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
+import com.google.android.material.snackbar.Snackbar
 import java.net.URI
 import java.net.URISyntaxException
 
@@ -77,11 +78,21 @@ class DefaultLoginCredentialsFragment : Fragment() {
         v.selectCertificate.setOnClickListener {
             KeyChain.choosePrivateKeyAlias(requireActivity(), { alias ->
                 Handler(Looper.getMainLooper()).post {
-                    model.certificateAlias.value = alias
+
+                    // Show a Snackbar to add a certificate if no certificate was found
+                    // API Versions < 29 still handle this automatically
+                    if (alias == null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q)  {
+                        Snackbar.make(v.root, R.string.login_no_certificate_found, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.login_install_certificate) {
+                                    startActivity(KeyChain.createInstallIntent())
+                                }
+                                .show()
+                        }
+                    else
+                       model.certificateAlias.value = alias
                 }
             }, null, null, null, -1, model.certificateAlias.value)
         }
-
 
         v.login.setOnClickListener {
             if (validate())

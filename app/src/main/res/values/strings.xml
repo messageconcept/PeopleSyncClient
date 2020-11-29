@@ -79,6 +79,7 @@
     <string name="permissions_autoreset_title">Keep permissions</string>
     <string name="permissions_autoreset_status_off">Permissions may be reset automatically (not recommended)</string>
     <string name="permissions_autoreset_status_on">Permissions won\'t be reset automatically</string>
+    <string name="permissions_autoreset_instruction">Click Permissions > uncheck \"Remove permissions if app isn\'t used\"</string>
     <string name="permissions_app_settings_hint">If a switch doesn\'t work, use app settings / Permissions.</string>
     <string name="permissions_app_settings">App settings</string>
 
@@ -204,6 +205,7 @@
     <string name="account_read_only">read-only</string>
     <string name="account_calendar">calendar</string>
     <string name="account_task_list">task list</string>
+    <string name="account_only_personal">Show only personal</string>
     <string name="account_refresh_address_book_list">Refresh address book list</string>
     <string name="account_create_new_address_book">Create new address book</string>
     <string name="account_refresh_calendar_list">Refresh calendar list</string>
@@ -236,6 +238,8 @@
     <string name="login_type_advanced">Advanced login (special use cases)</string>
     <string name="login_use_username_password">Use username/password</string>
     <string name="login_use_client_certificate">Use client certificate</string>
+    <string name="login_no_certificate_found">No certificate found</string>
+    <string name="login_install_certificate">Install certificate</string>
 
     <string name="login_configuration_detection">Configuration detection</string>
     <string name="login_querying_server">Please wait, querying server…</string>
@@ -295,6 +299,7 @@
     <string name="settings_enter_password">Enter your password:</string>
     <string name="settings_certificate_alias_key" translatable="false">certificate_alias</string>
     <string name="settings_certificate_alias">Client certificate alias</string>
+    <string name="settings_certificate_alias_empty">No certificate selected</string>
     <string name="settings_caldav_key" translatable="false">caldav</string>
     <string name="settings_caldav">CalDAV</string>
     <string name="settings_sync_time_range_past_key" translatable="false">time_range_past_days</string>
@@ -363,6 +368,7 @@
     <string name="collection_properties">Properties</string>
     <string name="collection_properties_url">Address (URL):</string>
     <string name="collection_properties_copy_url">Copy URL</string>
+    <string name="collection_properties_owner">Owner:</string>
 
     <!-- debugging and DebugInfoActivity -->
     <string name="authority_debug_provider" translatable="false">com.messageconcept.peoplesyncclient.debug</string>

@@ -16,6 +16,7 @@ import android.os.StrictMode
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.UiUtils
@@ -67,6 +68,9 @@ class App: Application(), Thread.UncaughtExceptionHandler {
         CoroutineScope(Dispatchers.Default).launch {
             // create/update app shortcuts
             UiUtils.updateShortcuts(this@App)
+
+            // check/repair sync intervals
+            AccountSettings.repairSyncIntervals(this@App)
         }
     }
 

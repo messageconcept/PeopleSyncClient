@@ -55,6 +55,7 @@ class DavService: android.app.Service() {
                 ResourceType.NAME,
                 CurrentUserPrivilegeSet.NAME,
                 DisplayName.NAME,
+                Owner.NAME,
                 AddressbookDescription.NAME, SupportedAddressData.NAME,
                 CalendarDescription.NAME, CalendarColor.NAME, SupportedCalendarComponentSet.NAME,
                 Source.NAME

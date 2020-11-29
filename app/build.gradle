@@ -30,6 +30,12 @@ android {
         buildConfigField "String", "userAgent", "\"PeopleSync\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     compileOptions {
@@ -50,6 +56,10 @@ android {
         standard {
             versionName "3.3-2-ps"
         }
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
     buildTypes {
@@ -98,13 +108,13 @@ dependencies {
     implementation project(':vcard4android')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.browser:browser:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
@@ -119,6 +129,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
 
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation "com.github.AppIntro:AppIntro:${versions.appIntro}"

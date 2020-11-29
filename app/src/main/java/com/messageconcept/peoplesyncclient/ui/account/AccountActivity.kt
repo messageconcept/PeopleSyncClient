@@ -23,6 +23,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.model.Service
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -212,25 +213,43 @@ class AccountActivity: AppCompatActivity() {
         }
 
         private val db = AppDatabase.getInstance(application)
+        val accountSettings by lazy { AccountSettings(getApplication(), account) }
 
         val cardDavService = MutableLiveData<Long>()
+
+        val showOnlyPersonal = MutableLiveData<Boolean>()
+        val showOnlyPersonal_writable = MutableLiveData<Boolean>()
+
 
         init {
             viewModelScope.launch(Dispatchers.IO) {
                 cardDavService.postValue(db.serviceDao().getIdByAccountAndType(account.name, Service.TYPE_CARDDAV))
-            }
-        }
 
-        fun toggleSync(item: Collection) {
-            viewModelScope.launch(Dispatchers.IO + NonCancellable) {
-                val newItem = item.copy(sync = !item.sync)
-                db.collectionDao().update(newItem)
+                accountSettings.getShowOnlyPersonal().let { (value, locked) ->
+                    showOnlyPersonal.postValue(value)
+                    showOnlyPersonal_writable.postValue(locked)
+                }
             }
         }
 
         fun toggleReadOnly(item: Collection) {
             viewModelScope.launch(Dispatchers.IO + NonCancellable) {
                 val newItem = item.copy(forceReadOnly = !item.forceReadOnly)
+                db.collectionDao().update(newItem)
+            }
+        }
+
+        fun toggleShowOnlyPersonal() {
+            showOnlyPersonal.value?.let { oldValue ->
+                val newValue = !oldValue
+                accountSettings.setShowOnlyPersonal(newValue)
+                showOnlyPersonal.postValue(newValue)
+            }
+        }
+
+        fun toggleSync(item: Collection) {
+            viewModelScope.launch(Dispatchers.IO + NonCancellable) {
+                val newItem = item.copy(sync = !item.sync)
                 db.collectionDao().update(newItem)
             }
         }

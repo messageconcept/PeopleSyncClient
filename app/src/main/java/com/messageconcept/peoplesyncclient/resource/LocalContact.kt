@@ -14,6 +14,7 @@ import android.os.RemoteException
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.RawContacts.Data
+import androidx.annotation.RequiresApi
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.UnknownProperties
@@ -212,7 +213,7 @@ class LocalContact: AndroidContact, LocalAddress {
         batch.enqueue(BatchOperation.CpoBuilder
                 .newDelete(dataSyncURI())
                 .withSelection(
-                        Data.RAW_CONTACT_ID + "=? AND " + Data.MIMETYPE + " IN (?,?)",
+                        "${Data.RAW_CONTACT_ID}=? AND ${Data.MIMETYPE} IN (?,?)",
                         arrayOf(id.toString(), GroupMembership.CONTENT_ITEM_TYPE, CachedGroupMembership.CONTENT_ITEM_TYPE)
                 ))
         groupMemberships.clear()
