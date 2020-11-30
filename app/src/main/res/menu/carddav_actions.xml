@@ -12,6 +12,7 @@
 
     <item android:id="@+id/showOnlyPersonal"
         android:title="@string/account_only_personal"
+        android:visible="false"
         android:checkable="true" />
 
     <item android:id="@+id/refresh"
