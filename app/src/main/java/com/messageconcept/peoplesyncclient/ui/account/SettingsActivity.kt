@@ -188,6 +188,7 @@ class SettingsActivity: AppCompatActivity() {
                 } else
                     prefPassword.isVisible = false
 
+                prefCertAlias.isVisible = false
                 prefCertAlias.summary = credentials.certificateAlias ?: getString(R.string.settings_certificate_alias_empty)
                 prefCertAlias.setOnPreferenceClickListener {
                     KeyChain.choosePrivateKeyAlias(requireActivity(), { newAlias ->
