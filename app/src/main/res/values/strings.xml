@@ -436,6 +436,7 @@
     <string name="override_proxy_host_title">Proxy host</string>
     <string name="override_proxy_port_title">Proxy port</string>
     <string name="distrust_system_certs_title">Distrust system certificates</string>
+    <string name="default_sync_interval">Default sync interval</string>
     <string name="wifi_only_title">Sync over WiFi only</string>
     <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
 </resources>

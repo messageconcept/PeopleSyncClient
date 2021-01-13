@@ -51,6 +51,11 @@
         android:restrictionType="bool"
         android:title="@string/distrust_system_certs_title"/>
 
+    <restriction
+        android:key="default_sync_interval"
+        android:restrictionType="integer"
+        android:title="@string/default_sync_interval"/>
+
     <!-- per account restrictions -->
     <restriction
         android:key="wifi_only"
