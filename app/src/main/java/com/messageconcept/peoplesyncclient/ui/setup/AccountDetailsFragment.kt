@@ -35,6 +35,7 @@ import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.model.HomeSet
 import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
@@ -163,6 +164,8 @@ class AccountDetailsFragment : Fragment() {
                 val db = AppDatabase.getInstance(context)
                 try {
                     val accountSettings = AccountSettings(context, account)
+                    val settings = SettingsManager.getInstance(context)
+                    val defaultSyncInterval = settings.getLong(Settings.DEFAULT_SYNC_INTERVAL)
 
                     val refreshIntent = Intent(context, DavService::class.java)
                     refreshIntent.action = DavService.ACTION_REFRESH_COLLECTIONS
@@ -181,7 +184,7 @@ class AccountDetailsFragment : Fragment() {
 
                         // set default sync interval and enable sync regardless of permissions
                         ContentResolver.setIsSyncable(account, addrBookAuthority, 1)
-                        accountSettings.setSyncInterval(addrBookAuthority, Constants.DEFAULT_SYNC_INTERVAL)
+                        accountSettings.setSyncInterval(addrBookAuthority, defaultSyncInterval)
                     } else
                         ContentResolver.setIsSyncable(account, addrBookAuthority, 0)
 
@@ -195,7 +198,7 @@ class AccountDetailsFragment : Fragment() {
 
                         // set default sync interval and enable sync regardless of permissions
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
-                        accountSettings.setSyncInterval(CalendarContract.AUTHORITY, Constants.DEFAULT_SYNC_INTERVAL)
+                        accountSettings.setSyncInterval(CalendarContract.AUTHORITY, defaultSyncInterval)
                     } else
                         ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 0)
 

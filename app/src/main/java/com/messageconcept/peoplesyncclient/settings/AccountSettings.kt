@@ -101,19 +101,21 @@ class AccountSettings(
             val addressBooksAuthority = context.getString(R.string.address_books_authority)
 
             val am = AccountManager.get(context)
-            for (account in am.getAccountsByType(context.getString(R.string.account_type))) {
-                val settings = AccountSettings(context, account)
+            for (account in am.getAccountsByType(context.getString(R.string.account_type)))
+                try {
+                    val settings = AccountSettings(context, account)
 
-                // repair address book sync
-                settings.getSavedAddressbooksSyncInterval()?.let { shouldBe ->
-                    val current = settings.getSyncInterval(addressBooksAuthority)
-                    if (current != shouldBe) {
-                        Logger.log.warning("${account.name}: $addressBooksAuthority sync interval should be $shouldBe but is $current -> setting to $current")
-                        settings.setSyncInterval(addressBooksAuthority, shouldBe)
+                    // repair address book sync
+                    settings.getSavedAddressbooksSyncInterval()?.let { shouldBe ->
+                        val current = settings.getSyncInterval(addressBooksAuthority)
+                        if (current != shouldBe) {
+                            Logger.log.warning("${account.name}: $addressBooksAuthority sync interval should be $shouldBe but is $current -> setting to $current")
+                            settings.setSyncInterval(addressBooksAuthority, shouldBe)
+                        }
                     }
+                } catch (ignored: InvalidAccountException) {
+                    // account doesn't exist (anymore)
                 }
-
-            }
         }
 
     }
@@ -413,7 +415,7 @@ class AccountSettings(
 
         // request sync of new address book account
         ContentResolver.setIsSyncable(account, context.getString(R.string.address_books_authority), 1)
-        setSyncInterval(context.getString(R.string.address_books_authority), Constants.DEFAULT_SYNC_INTERVAL)
+        setSyncInterval(context.getString(R.string.address_books_authority), 4*3600)
     }
 
     /* Android 7.1.1 OpenTasks fix */

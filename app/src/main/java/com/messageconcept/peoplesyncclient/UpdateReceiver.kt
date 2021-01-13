@@ -26,6 +26,8 @@ import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Credentials
 import com.messageconcept.peoplesyncclient.model.Service
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import okhttp3.HttpUrl
@@ -157,6 +159,8 @@ class UpdateReceiver : BroadcastReceiver() {
                     val db = AppDatabase.getInstance(context)
                     try {
                         val accountSettings = AccountSettings(context, newAccount)
+                        val settings = SettingsManager.getInstance(context)
+                        val defaultSyncInterval = settings.getLong(Settings.DEFAULT_SYNC_INTERVAL)
 
                         val refreshIntent = Intent(context, DavService::class.java)
                         refreshIntent.action = DavService.ACTION_REFRESH_COLLECTIONS
@@ -175,7 +179,7 @@ class UpdateReceiver : BroadcastReceiver() {
                         // set default sync interval and enable sync regardless of permissions
                         val addrBookAuthority = context.getString(R.string.address_books_authority)
                         ContentResolver.setIsSyncable(newAccount, addrBookAuthority, 1)
-                        accountSettings.setSyncInterval(context.getString(R.string.address_books_authority), Constants.DEFAULT_SYNC_INTERVAL)
+                        accountSettings.setSyncInterval(context.getString(R.string.address_books_authority), defaultSyncInterval)
 
                     } catch (e: InvalidAccountException) {
                         Logger.log.log(Level.SEVERE, "Couldn't access account settings", e)
