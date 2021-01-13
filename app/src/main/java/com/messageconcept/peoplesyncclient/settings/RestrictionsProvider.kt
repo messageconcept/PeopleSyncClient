@@ -67,7 +67,7 @@ class RestrictionsProvider(
             getValue(key) { restrictions -> restrictions.getInt(key) }
 
     override fun getLong(key: String) =
-            getValue(key) { restrictions -> restrictions.getLong(key) }
+            getValue(key) { restrictions -> restrictions.getInt(key).toLong() }
 
     override fun getString(key: String) =
             getValue(key) { restrictions -> restrictions.getString(key) }
