@@ -14,6 +14,4 @@ object Settings {
      */
     const val DEFAULT_SYNC_INTERVAL = "default_sync_interval"
 
-    const val PREFERRED_TASKS_PROVIDER = "preferred_tasks_provider"
-
 }

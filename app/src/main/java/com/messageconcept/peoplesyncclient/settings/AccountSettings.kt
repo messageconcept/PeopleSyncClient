@@ -54,10 +54,6 @@ class AccountSettings(
         const val KEY_SETTINGS_VERSION = "version"
 
         const val KEY_SYNC_INTERVAL_ADDRESSBOOKS = "sync_interval_addressbooks"
-        const val KEY_SYNC_INTERVAL_CALENDARS = "sync_interval_calendars"
-
-        /** Stores the tasks sync interval (in seconds) so that it can be set again when the provider is switched */
-        const val KEY_SYNC_INTERVAL_TASKS = "sync_interval_tasks"
 
         const val KEY_USERNAME = "user_name"
         const val KEY_CERTIFICATE_ALIAS = "certificate_alias"
