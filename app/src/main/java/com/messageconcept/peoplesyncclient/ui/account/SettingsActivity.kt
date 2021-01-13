@@ -180,6 +180,7 @@ class SettingsActivity: AppCompatActivity() {
                 }
 
                 if (credentials.userName != null) {
+                    prefPassword.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_PASSWORD)
                     prefPassword.isVisible = true
                     prefPassword.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newPassword ->
                         model.updateCredentials(Credentials(credentials.userName, newPassword as String, credentials.certificateAlias))
