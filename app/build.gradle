@@ -103,6 +103,14 @@ android {
     }
 }
 
+aboutLibraries {
+    // DAVx5 is GPL 3.0 and not detected automatically.
+    // Since no other library uses GPL 3.0 we need to include it manually.
+    additionalLicenses {
+        gpl_3_0
+    }
+}
+
 dependencies {
     implementation project(':cert4android')
     implementation project(':vcard4android')
