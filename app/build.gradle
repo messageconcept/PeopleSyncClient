@@ -106,8 +106,10 @@ android {
 aboutLibraries {
     // DAVx5 is GPL 3.0 and not detected automatically.
     // Since no other library uses GPL 3.0 we need to include it manually.
+    // Same goes for dav4jvm, which is MPL 2.0.
     additionalLicenses {
         gpl_3_0
+        mpl_2_0
     }
 }
 

@@ -105,8 +105,7 @@ class AboutActivity: AppCompatActivity() {
                                 .withLibraryModification("org_brotli__dec", Libs.LibraryFields.LIBRARY_NAME, "Brotli")
                                 .withLibraryModification("org_brotli__dec", Libs.LibraryFields.AUTHOR_NAME, "Google")
 
-                                .withLibraryModification("com_gitlab_bitfireAT__dav4jvm", Libs.LibraryFields.LIBRARY_NAME, "dav4jvm")
-                                .withLibraryModification("com_gitlab_bitfireAT__dav4jvm", Libs.LibraryFields.AUTHOR_NAME, "Ricki Hirner, Bernhard Stockmann")
+                                .withExcludedLibraries("com_gitlab_bitfireAT__dav4jvm")
 
                                 .supportFragment()
                     }
