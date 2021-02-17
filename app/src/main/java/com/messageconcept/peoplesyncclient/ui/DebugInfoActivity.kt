@@ -235,6 +235,14 @@ class DebugInfoActivity: AppCompatActivity() {
             }
         }
 
+        fun ContentProviderClient.closeCompat() {
+            @Suppress("DEPRECATION")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                close()
+            else
+                release()
+        }
+
         fun generateDebugInfo(syncAccount: Account?, syncAuthority: String?, cause: Throwable?, localResource: String?, remoteResource: String?) {
             val debugInfoFile = File(debugInfoDir, FILE_DEBUG_INFO)
             debugInfoFile.writer().buffered().use { writer ->
