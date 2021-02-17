@@ -9,14 +9,15 @@
 package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
+import android.app.IntentService
 import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
+import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.room.Transaction
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.UrlUtils
@@ -28,18 +29,18 @@ import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.logging.Level
+import kotlin.collections.*
 
-class DavService: android.app.Service() {
+@Suppress("DEPRECATION")
+class DavService: IntentService("DavService") {
 
     companion object {
+
         const val ACTION_REFRESH_COLLECTIONS = "refreshCollections"
         const val EXTRA_DAV_SERVICE_ID = "davServiceID"
 
@@ -63,39 +64,47 @@ class DavService: android.app.Service() {
 
     }
 
-    private val runningRefresh = HashSet<Long>()
-    private val refreshingStatusListeners = LinkedList<WeakReference<RefreshingStatusListener>>()
+    /**
+     * List of [Service] IDs for which the collections are currently refreshed
+     */
+    private val runningRefresh = Collections.synchronizedSet(HashSet<Long>())
 
+    /**
+     * Currently registered [RefreshingStatusListener]s, which will be notified
+     * when a collection refresh status changes
+     */
+    private val refreshingStatusListeners = Collections.synchronizedList(LinkedList<WeakReference<RefreshingStatusListener>>())
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        intent?.let {
-            val id = intent.getLongExtra(EXTRA_DAV_SERVICE_ID, -1)
-            val auto = intent.getBooleanExtra(AUTO_SYNC, false)
+    @WorkerThread
+    override fun onHandleIntent(intent: Intent?) {
+        if (intent == null)
+            return
 
-            when (intent.action) {
-                ACTION_REFRESH_COLLECTIONS ->
-                    if (runningRefresh.add(id)) {
-                        refreshingStatusListeners.forEach { listener ->
-                            listener.get()?.onDavRefreshStatusChanged(id, true)
-                        }
-                        CoroutineScope(Dispatchers.IO).launch {
-                            refreshCollections(id, auto)
-                        }
+        val id = intent.getLongExtra(EXTRA_DAV_SERVICE_ID, -1)
+        val auto = intent.getBooleanExtra(AUTO_SYNC, false)
+
+        when (intent.action) {
+            ACTION_REFRESH_COLLECTIONS ->
+                if (runningRefresh.add(id)) {
+                    refreshingStatusListeners.forEach { listener ->
+                        listener.get()?.onDavRefreshStatusChanged(id, true)
                     }
 
-                ACTION_FORCE_SYNC -> {
-                    val uri = intent.data!!
-                    val authority = uri.authority!!
-                    val account = Account(
-                            uri.pathSegments[1],
-                            uri.pathSegments[0]
-                    )
-                    forceSync(authority, account)
+                    val db = AppDatabase.getInstance(this@DavService)
+                    refreshCollections(db, id, auto)
                 }
-            }
-        }
 
-        return START_NOT_STICKY
+            ACTION_FORCE_SYNC -> {
+                val uri = intent.data!!
+                val authority = uri.authority!!
+                val account = Account(
+                        uri.pathSegments[1],
+                        uri.pathSegments[0]
+                )
+                forceSync(authority, account)
+            }
+
+        }
     }
 
 
@@ -115,14 +124,17 @@ class DavService: android.app.Service() {
         fun addRefreshingStatusListener(listener: RefreshingStatusListener, callImmediateIfRunning: Boolean) {
             refreshingStatusListeners += WeakReference<RefreshingStatusListener>(listener)
             if (callImmediateIfRunning)
-                runningRefresh.forEach { id -> listener.onDavRefreshStatusChanged(id, true) }
+                synchronized(runningRefresh) {
+                    for (id in runningRefresh)
+                        listener.onDavRefreshStatusChanged(id, true)
+                }
         }
 
         fun removeRefreshingStatusListener(listener: RefreshingStatusListener) {
             val iter = refreshingStatusListeners.iterator()
             while (iter.hasNext()) {
                 val item = iter.next().get()
-                if (listener == item)
+                if (item == listener || item == null)
                     iter.remove()
             }
         }
@@ -144,9 +156,9 @@ class DavService: android.app.Service() {
         ContentResolver.requestSync(account, authority, extras)
     }
 
-    private fun refreshCollections(serviceId: Long, autoSync: Boolean) {
+    private fun refreshCollections(db: AppDatabase, serviceId: Long, autoSync: Boolean) {
         try {
-            DavServiceUtils.refreshCollections(this, serviceId, autoSync)
+            DavServiceUtils.refreshCollections(this, db, serviceId, autoSync)
         } finally {
             runningRefresh.remove(serviceId)
             refreshingStatusListeners.mapNotNull { it.get() }.forEach {

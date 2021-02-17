@@ -11,12 +11,11 @@ package com.messageconcept.peoplesyncclient.ui
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.app.Application
-import android.content.ContentResolver
-import android.content.ContentUris
-import android.content.Intent
+import android.content.*
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
@@ -389,7 +388,7 @@ class DebugInfoActivity: AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= 26) {
                     val channelsWithoutGroup = nm.notificationChannels.toMutableSet()
                     for (group in nm.notificationChannelGroups) {
-                        writer.append(" - ${group.id} ")
+                        writer.append(" - ${group.id}")
                         if (Build.VERSION.SDK_INT >= 28)
                             writer.append(" isBlocked=${group.isBlocked}")
                         writer.append('\n')
@@ -499,22 +498,7 @@ class DebugInfoActivity: AppCompatActivity() {
             val context = getApplication<Application>()
 
             writer.append(" - Account: ${account.name}\n")
-            val table = TextTable("Authority", "isSyncable", "getSyncAutomatically", "Sync interval")
-
-            for (authority in arrayOf(
-                    context.getString(R.string.address_books_authority),
-                    ContactsContract.AUTHORITY      // Should never be set! Main accounts shall not contain contacts.
-            ))
-                table.addLine(
-                        authority,
-                        ContentResolver.getIsSyncable(account, authority),
-                        ContentResolver.getSyncAutomatically(account, authority),
-                        ContentResolver.getPeriodicSyncs(account, authority).firstOrNull()?.let { periodicSync ->
-                            "${periodicSync.period/60} min"
-                        }
-                )
-            writer.append(table.toString())
-
+            writer.append(dumpAccount(account, AccountDumpInfo.mainAccount(context)))
             try {
                 val accountSettings = AccountSettings(context, account)
                 writer.append("  WiFi only: ${accountSettings.getSyncWifiOnly()}")
@@ -536,17 +520,61 @@ class DebugInfoActivity: AppCompatActivity() {
 
         private fun dumpAddressBookAccount(account: Account, accountManager: AccountManager, writer: Writer) {
             writer.append("  * Address book: ${account.name}\n")
-            val table = TextTable("isSyncable", "getSyncAutomatically", "Sync interval")
-            table.addLine(
-                    ContentResolver.getIsSyncable(account, ContactsContract.AUTHORITY),
-                    ContentResolver.getSyncAutomatically(account, ContactsContract.AUTHORITY),
-                    ContentResolver.getPeriodicSyncs(account, ContactsContract.AUTHORITY).firstOrNull()?.let { periodicSync ->
-                        "${periodicSync.period/60} min"
-                    }
-            )
-            writer  .append(TextTable.indent(table.toString(), 3))
-                    .append("    URL: ${accountManager.getUserData(account, LocalAddressBook.USER_DATA_URL)}\n")
+            val table = dumpAccount(account, AccountDumpInfo.addressBookAccount())
+            writer  .append(TextTable.indent(table, 4))
+                    .append("URL: ${accountManager.getUserData(account, LocalAddressBook.USER_DATA_URL)}\n")
                     .append("    Read-only: ${accountManager.getUserData(account, LocalAddressBook.USER_DATA_READ_ONLY) ?: 0}\n\n")
+        }
+
+        private fun dumpAccount(account: Account, infos: Iterable<AccountDumpInfo>): String {
+            val table = TextTable("Authority", "Syncable", "Auto-sync", "Interval", "Entries")
+            for (info in infos) {
+                var nrEntries = "—"
+                var client: ContentProviderClient? = null
+                if (info.countUri != null)
+                    try {
+                        client = context.contentResolver.acquireContentProviderClient(info.authority)
+                        if (client != null) {
+                            client.query(info.countUri, null, "account_name=? AND account_type=?", arrayOf(account.name, account.type), null)?.use { cursor ->
+                                nrEntries = "${cursor.count} ${info.countStr}"
+                            }
+                        }
+                    } catch(ignored: Exception) {
+                    } finally {
+                        client?.closeCompat()
+                    }
+                table.addLine(
+                        info.authority,
+                        ContentResolver.getIsSyncable(account, info.authority),
+                        ContentResolver.getSyncAutomatically(account, info.authority),
+                        ContentResolver.getPeriodicSyncs(account, info.authority).firstOrNull()?.let { periodicSync ->
+                            "${periodicSync.period / 60} min"
+                        },
+                        nrEntries
+                )
+            }
+            return table.toString()
+        }
+
+    }
+
+
+    data class AccountDumpInfo(
+            val authority: String,
+            val countUri: Uri?,
+            val countStr: String?) {
+
+        companion object {
+
+            fun mainAccount(context: Context) = listOf(
+                    AccountDumpInfo(context.getString(R.string.address_books_authority), null, null),
+                    AccountDumpInfo(ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI, "wrongly assigned contact(s)")
+            )
+
+            fun addressBookAccount() = listOf(
+                    AccountDumpInfo(ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI, "contact(s)")
+            )
+
         }
 
     }

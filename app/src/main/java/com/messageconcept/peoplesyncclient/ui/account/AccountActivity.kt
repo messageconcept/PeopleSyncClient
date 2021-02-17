@@ -2,6 +2,7 @@ package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
 import android.accounts.AccountManager
+import android.accounts.OnAccountsUpdateListener
 import android.app.Application
 import android.content.Intent
 import android.os.Build
@@ -54,6 +55,11 @@ class AccountActivity: AppCompatActivity() {
         setContentView(R.layout.activity_account)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        model.accountExists.observe(this, Observer { accountExists ->
+            if (!accountExists)
+                finish()
+        })
 
         tab_layout.setupWithViewPager(view_pager)
         val tabsAdapter = TabsAdapter(this)
@@ -150,7 +156,7 @@ class AccountActivity: AppCompatActivity() {
     class TabsAdapter(
             val activity: AppCompatActivity
     ): FragmentStatePagerAdapter(activity.supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        
+
         var cardDavSvcId: Long? = null
             set(value) {
                 field = value
@@ -167,6 +173,7 @@ class AccountActivity: AppCompatActivity() {
             else
                 null
 
+            // reflect changes in UI
             notifyDataSetChanged()
         }
 
@@ -187,6 +194,9 @@ class AccountActivity: AppCompatActivity() {
             throw IllegalArgumentException()
         }
 
+        // required to reload all fragments
+        override fun getItemPosition(obj: Any) = POSITION_NONE
+
         override fun getPageTitle(position: Int): String =
                 when (position) {
                     idxCardDav -> activity.getString(R.string.account_carddav)
@@ -201,7 +211,7 @@ class AccountActivity: AppCompatActivity() {
     class Model(
             application: Application,
             val account: Account
-    ): AndroidViewModel(application) {
+    ): AndroidViewModel(application), OnAccountsUpdateListener {
 
         class Factory(
                 val application: Application,
@@ -213,23 +223,32 @@ class AccountActivity: AppCompatActivity() {
         }
 
         private val db = AppDatabase.getInstance(application)
+        val accountManager = AccountManager.get(application)
         val accountSettings by lazy { AccountSettings(getApplication(), account) }
 
-        val cardDavService = MutableLiveData<Long>()
+        val accountExists = MutableLiveData<Boolean>()
+        val cardDavService = db.serviceDao().getIdByAccountAndType(account.name, Service.TYPE_CARDDAV)
 
         val showOnlyPersonal = MutableLiveData<Boolean>()
         val showOnlyPersonal_writable = MutableLiveData<Boolean>()
 
 
         init {
+            accountManager.addOnAccountsUpdatedListener(this, null, true)
             viewModelScope.launch(Dispatchers.IO) {
-                cardDavService.postValue(db.serviceDao().getIdByAccountAndType(account.name, Service.TYPE_CARDDAV))
-
                 accountSettings.getShowOnlyPersonal().let { (value, locked) ->
                     showOnlyPersonal.postValue(value)
                     showOnlyPersonal_writable.postValue(locked)
                 }
             }
+        }
+
+        override fun onCleared() {
+            accountManager.removeOnAccountsUpdatedListener(this)
+        }
+
+        override fun onAccountsUpdated(accounts: Array<out Account>) {
+            accountExists.postValue(accounts.contains(account))
         }
 
         fun toggleReadOnly(item: Collection) {

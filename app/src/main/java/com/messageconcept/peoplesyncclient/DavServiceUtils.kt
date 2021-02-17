@@ -9,14 +9,15 @@
 package com.messageconcept.peoplesyncclient
 
 import android.accounts.Account
+import android.app.IntentService
 import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.room.Transaction
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.UrlUtils
@@ -35,11 +36,11 @@ import okhttp3.OkHttpClient
 import java.io.IOException
 import java.util.HashSet
 import java.util.logging.Level
+import kotlin.collections.*
 
 object DavServiceUtils {
 
-    fun refreshCollections(context: Context, serviceId: Long, autoSync: Boolean, forceSyncOnChanges: Boolean = true) {
-        val db = AppDatabase.getInstance(context)
+    fun refreshCollections(context: Context, db: AppDatabase, serviceId: Long, autoSync: Boolean, forceSyncOnChanges: Boolean = true) {
         val homeSetDao = db.homeSetDao()
         val collectionDao = db.collectionDao()
 
@@ -146,7 +147,6 @@ object DavServiceUtils {
                 queryHomeSets(client, resource, false)
         }
 
-        @Transaction
         fun saveHomesets() {
             DaoTools(homeSetDao).syncAll(
                     homeSetDao.getByService(serviceId),
@@ -154,7 +154,6 @@ object DavServiceUtils {
                     { it.url })
         }
 
-        @Transaction
         fun saveCollections() {
             DaoTools(collectionDao).syncAll(
                     collectionDao.getByService(serviceId),
@@ -182,7 +181,6 @@ object DavServiceUtils {
                     Logger.log.fine("Querying principal $principalUrl for home sets")
                     queryHomeSets(httpClient, principalUrl)
                 }
-                saveHomesets()
 
                 // remember selected collections
                 val selectedCollections = HashSet<HttpUrl>()
@@ -216,7 +214,7 @@ object DavServiceUtils {
                             // in any case, check whether the response is about a useable collection
                             val info = Collection.fromDavResponse(response) ?: return@propfind
                             info.serviceId = serviceId
-                            info.homeSetId = homeSet.id
+                            info.refHomeSet = homeSet
                             info.confirmed = true
                             info.owner = response[Owner::class.java]?.href?.let { response.href.resolve(it) }
                             Logger.log.log(Level.FINE, "Found collection", info)
@@ -257,7 +255,7 @@ object DavServiceUtils {
                             }
                         } catch(e: HttpException) {
                             if (e.code in arrayOf(403, 404, 410))
-                            // delete collection only if it was not accessible (40x)
+                                // delete collection only if it was not accessible (40x)
                                 itCollections.remove()
                             else
                                 throw e
@@ -278,7 +276,17 @@ object DavServiceUtils {
                     ContentResolver.requestSync(account, context.getString(R.string.address_books_authority), args)
                 }
             }
-            saveCollections()
+
+            db.runInTransaction {
+                saveHomesets()
+
+                // use refHomeSet (if available) to determine homeset ID
+                for (collection in collections.values)
+                    collection.refHomeSet?.let { homeSet ->
+                        collection.homeSetId = homeSet.id
+                    }
+                saveCollections()
+            }
 
         } catch(e: InvalidAccountException) {
             Logger.log.log(Level.SEVERE, "Invalid account", e)

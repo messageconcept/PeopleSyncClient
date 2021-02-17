@@ -12,8 +12,8 @@ buildscript {
         appIntro: '6.0.0',
         dav4jvm: '2.1.2',
         dokka: '0.10.1',
-        kotlin: '1.4.21',
-        okhttp: '4.9.0',
+        kotlin: '1.4.30',
+        okhttp: '4.9.1',
         // latest Apache Commons versions that don't require Java 8 (Android 7)
         commonsCollections: '4.2',
         commonsLang: '3.8.1',
@@ -31,7 +31,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:${versions.aboutLibraries}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"

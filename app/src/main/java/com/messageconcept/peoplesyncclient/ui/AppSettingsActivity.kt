@@ -20,6 +20,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import at.bitfire.cert4android.CustomCertManager
 import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.ForegroundService
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
@@ -100,6 +101,16 @@ class AppSettingsActivity: AppCompatActivity() {
 
         @UiThread
         private fun loadSettings() {
+            // debug settings
+            findPreference<SwitchPreferenceCompat>(Settings.FOREGROUND_SERVICE)!!.apply {
+                isChecked = settings.getBooleanOrNull(Settings.FOREGROUND_SERVICE) == true
+                onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                    settings.putBoolean(Settings.FOREGROUND_SERVICE, newValue as Boolean)
+                    context.startService(Intent(ForegroundService.ACTION_FOREGROUND, null, context, ForegroundService::class.java))
+                    false
+                }
+            }
+
             // connection settings
             findPreference<SwitchPreferenceCompat>(Settings.OVERRIDE_PROXY)!!.apply {
                 isChecked = settings.getBoolean(Settings.OVERRIDE_PROXY)

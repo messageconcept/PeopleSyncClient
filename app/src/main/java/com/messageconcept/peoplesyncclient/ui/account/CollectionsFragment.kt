@@ -7,7 +7,7 @@ import android.os.IBinder
 import android.provider.ContactsContract
 import android.view.*
 import android.widget.PopupMenu
-import androidx.annotation.WorkerThread
+import androidx.annotation.AnyThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,7 +26,6 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import kotlinx.android.synthetic.main.account_collections.*
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +68,9 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
         model.isRefreshing.observe(viewLifecycleOwner, Observer { nowRefreshing ->
             swipe_refresh.isRefreshing = nowRefreshing
+        })
+        model.hasWriteableCollections.observe(viewLifecycleOwner, Observer {
+            requireActivity().invalidateOptionsMenu()
         })
         model.collections.observe(viewLifecycleOwner, Observer { collections ->
             val colors = collections.orEmpty()
@@ -240,6 +242,9 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         val serviceId = MutableLiveData<Long>()
         private lateinit var collectionType: String
 
+        val hasWriteableCollections: LiveData<Boolean> = Transformations.switchMap(serviceId) { service ->
+            db.homeSetDao().hasBindableByService(service)
+        }
         val collections: LiveData<PagedList<Collection>> =
                 Transformations.switchMap(accountModel.showOnlyPersonal) { onlyPersonal ->
                     if (onlyPersonal)
@@ -308,18 +313,19 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
             context.startService(intent)
         }
 
-        @WorkerThread
+        @AnyThread
         override fun onDavRefreshStatusChanged(id: Long, refreshing: Boolean) {
             if (id == serviceId.value)
                 isRefreshing.postValue(refreshing)
         }
 
+        @AnyThread
         override fun onStatusChanged(which: Int) {
-            viewModelScope.launch(Dispatchers.Default) {
-                checkSyncStatus()
-            }
+            checkSyncStatus()
         }
 
+        @AnyThread
+        @Synchronized
         private fun checkSyncStatus() {
             if (collectionType == Collection.TYPE_ADDRESSBOOK) {
                 val mainAuthority = context.getString(R.string.address_books_authority)

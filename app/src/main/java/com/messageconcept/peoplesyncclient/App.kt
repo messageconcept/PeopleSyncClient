@@ -20,10 +20,8 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.UiUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.logging.Level
+import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 @Suppress("unused")
@@ -65,12 +63,15 @@ class App: Application(), Thread.UncaughtExceptionHandler {
         NotificationUtils.createChannels(this)
 
         // don't block UI for some background checks
-        CoroutineScope(Dispatchers.Default).launch {
+        thread {
             // create/update app shortcuts
             UiUtils.updateShortcuts(this@App)
 
             // check/repair sync intervals
             AccountSettings.repairSyncIntervals(this@App)
+
+            // foreground service (possible workaround for devices which prevent DAVx5 from being started)
+            ForegroundService.startIfEnabled(this)
         }
     }
 

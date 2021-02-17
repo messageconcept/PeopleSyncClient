@@ -2,6 +2,8 @@ package com.messageconcept.peoplesyncclient.settings
 
 object Settings {
 
+    const val FOREGROUND_SERVICE = "foreground_service"
+
     const val DISTRUST_SYSTEM_CERTIFICATES = "distrust_system_certs"
 
     const val OVERRIDE_PROXY = "override_proxy"
