@@ -70,7 +70,7 @@ class App: Application(), Thread.UncaughtExceptionHandler {
             // check/repair sync intervals
             AccountSettings.repairSyncIntervals(this@App)
 
-            // foreground service (possible workaround for devices which prevent DAVx5 from being started)
+            // foreground service (possible workaround for devices which prevent PeopleSync from being started)
             ForegroundService.startIfEnabled(this)
         }
     }
