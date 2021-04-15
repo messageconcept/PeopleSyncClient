@@ -103,10 +103,6 @@ class DebugInfoActivity: AppCompatActivity() {
         binding.model = model
         binding.lifecycleOwner = this
 
-        binding.fab.setOnClickListener {
-            shareArchive()
-        }
-
         model.cause.observe(this, Observer { cause ->
             if (cause == null)
                 return@Observer
@@ -141,6 +137,11 @@ class DebugInfoActivity: AppCompatActivity() {
             }
             binding.causeView.setOnClickListener(showDebugInfo)
             binding.debugInfoView.setOnClickListener(showDebugInfo)
+
+            binding.fab.apply {
+                setOnClickListener { shareArchive() }
+                isEnabled = true
+            }
         })
 
         model.logFile.observe(this, { logs ->
@@ -576,11 +577,11 @@ class DebugInfoActivity: AppCompatActivity() {
 
             fun mainAccount(context: Context) = listOf(
                     AccountDumpInfo(context.getString(R.string.address_books_authority), null, null),
-                    AccountDumpInfo(ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI, "wrongly assigned contact(s)")
+                    AccountDumpInfo(ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI, "wrongly assigned raw contact(s)")
             )
 
             fun addressBookAccount() = listOf(
-                    AccountDumpInfo(ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI, "contact(s)")
+                    AccountDumpInfo(ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI, "raw contact(s)")
             )
 
         }

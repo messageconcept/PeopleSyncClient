@@ -21,7 +21,9 @@ import android.os.RemoteException
 import android.provider.ContactsContract
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
-import com.messageconcept.peoplesyncclient.*
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.closeCompat
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.model.AppDatabase
 import com.messageconcept.peoplesyncclient.model.Collection
@@ -50,7 +52,7 @@ class AccountSettings(
         const val KEY_LOGIN_USER_NAME = "login_user_name"
         const val KEY_LOGIN_PASSWORD = "login_password"
 
-        const val CURRENT_VERSION = 11
+        const val CURRENT_VERSION = 12
         const val KEY_SETTINGS_VERSION = "version"
 
         const val KEY_SYNC_INTERVAL_ADDRESSBOOKS = "sync_interval_addressbooks"
@@ -299,6 +301,15 @@ class AccountSettings(
         }
     }
 
+
+    @Suppress("unused","FunctionName")
+    /**
+     * Store event URLs as URL (extended property) instead of unknown property. At the same time,
+     * convert legacy unknown properties to the current format.
+     */
+    private fun update_11_12() {
+        // nothing to do
+    }
 
     @Suppress("unused","FunctionName")
     /**
