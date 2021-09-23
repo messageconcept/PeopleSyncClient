@@ -88,7 +88,7 @@ class RestrictionsProvider(
         val keys = appRestrictions.keySet()
         val table = TextTable("Setting", "Value")
         keys.forEach { key ->
-            val value = appRestrictions.get(key)
+            val value = SettingsUtils.filterPassword(key, appRestrictions.get(key))
             table.addLine(key, value)
         }
         writer.write(table.toString())
