@@ -90,9 +90,10 @@ class SettingsManager private constructor(
         for (provider in providers)
             try {
                 val value = reader(provider)
-                Logger.log.finer("${provider::class.java.simpleName}: $key = $value")
+                val maskedValue = SettingsUtils.filterPassword(key, value)
+                Logger.log.finer("${provider::class.java.simpleName}: $key = $maskedValue")
                 if (value != null) {
-                    Logger.log.fine("Looked up setting $key -> $value")
+                    Logger.log.fine("Looked up setting $key -> $maskedValue")
                     return value
                 }
             } catch(e: Exception) {
