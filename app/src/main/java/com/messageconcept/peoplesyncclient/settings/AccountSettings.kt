@@ -115,6 +115,37 @@ class AccountSettings(
                 }
         }
 
+        fun updateAccounts(context: Context) {
+            val am = AccountManager.get(context)
+            for (account in am.getAccountsByType(context.getString(R.string.account_type)))
+                try {
+                    val baseUrl = am.getUserData(account, KEY_BASE_URL)
+
+                    // we are only interested in managed accounts and only those have the baseUrl
+                    // attached to their userData
+                    if (baseUrl != null) {
+                        val accountSettings = AccountSettings(context, account)
+                        val creds = accountSettings.credentials()
+
+                        val settings = SettingsManager.getInstance(context)
+                        val managedBaseUrl = settings.getString(KEY_LOGIN_BASE_URL)
+                        val managedUserName = settings.getString(KEY_LOGIN_USER_NAME)
+                        val managedPassword = settings.getString(KEY_LOGIN_PASSWORD)
+                        // check if baseUrl and userName match
+                        if (managedBaseUrl == baseUrl && managedUserName == creds.userName) {
+                            if (managedPassword != creds.password) {
+                                Logger.log.info("Managed login password changed for ${creds.userName}. Updating account settings.")
+                                am.setPassword(account, managedPassword)
+                            } else {
+                                // Password is up-to-date
+                            }
+                        }
+                    }
+                } catch (ignored: InvalidAccountException) {
+                    // account doesn't exist (anymore)
+                }
+        }
+
     }
     
     

@@ -22,9 +22,12 @@ class RestrictionsProvider(
     private val restrictionsManager = context.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
 
     val broadCastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(contxt: Context?, intent: Intent?) {
+        override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
-                ACTION_APPLICATION_RESTRICTIONS_CHANGED -> settingsManager.onSettingsChanged()
+                ACTION_APPLICATION_RESTRICTIONS_CHANGED -> {
+                    settingsManager.onSettingsChanged()
+                    context?.let {AccountSettings.updateAccounts(context)}
+                }
             }
         }
     }
