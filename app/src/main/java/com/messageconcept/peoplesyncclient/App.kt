@@ -87,6 +87,8 @@ class App: Application(), Thread.UncaughtExceptionHandler, Configuration.Provide
 
             // check/repair sync intervals
             AccountSettings.repairSyncIntervals(this)
+
+            AccountSettings.updateAccounts(this)
         }
     }
 
