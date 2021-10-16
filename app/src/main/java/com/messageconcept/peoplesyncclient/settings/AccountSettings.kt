@@ -29,6 +29,7 @@ import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
 import dagger.hilt.EntryPoint
@@ -161,6 +162,9 @@ class AccountSettings(
                             if (managedPassword != creds.password) {
                                 Logger.log.info("${account.name}: Managed login password changed. Updating account settings and requesting sync.")
                                 am.setPassword(account, managedPassword)
+                                // Request an explicit sync after we changed the account password.
+                                // This should also clear any error notifications.
+                                SyncWorker.requestSync(context, account)
                             } else {
                                 // Password is up-to-date
                             }
