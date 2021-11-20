@@ -21,8 +21,8 @@ class SyncAdapterTest {
     val context = InstrumentationRegistry.getInstrumentation().context
     val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-    /** use our WebDAV provider as a mock provider because it's our own and we don't need any permissions for it */
-    val mockAuthority = targetContext.getString(R.string.webdav_authority)
+    /** use our address books provider as a mock provider because it's our own and we don't need any permissions for it */
+    val mockAuthority = targetContext.getString(R.string.address_books_authority)
     val mockProvider = context.contentResolver.acquireContentProviderClient(mockAuthority)!!
 
     val account = Account("test", "com.example.test")

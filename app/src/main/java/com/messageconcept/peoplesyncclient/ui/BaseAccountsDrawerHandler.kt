@@ -17,7 +17,6 @@ import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
-import com.messageconcept.peoplesyncclient.ui.webdav.WebdavMountsActivity
 
 /**
  * Default menu items control

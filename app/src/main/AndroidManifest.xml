@@ -127,16 +127,6 @@
             android:label="@string/wifi_permissions_label"
             android:parentActivityName=".ui.account.SettingsActivity" />
 
-        <activity
-            android:name=".ui.webdav.WebdavMountsActivity"
-            android:label="@string/webdav_mounts_title"
-            android:parentActivityName=".ui.AccountsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.webdav.AddWebdavMountActivity"
-            android:label="@string/webdav_add_mount_title"
-            android:parentActivityName=".ui.webdav.WebdavMountsActivity" />
-
         <!-- account type "PeopleSync" -->
         <service
             android:name=".syncadapter.AccountAuthenticatorService"
@@ -148,16 +138,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/account_authenticator"/>
         </service>
-        <provider
-            android:authorities="@string/webdav_authority"
-            android:name=".webdav.DavDocumentsProvider"
-            android:exported="true"
-            android:grantUriPermissions="true"
-            android:permission="android.permission.MANAGE_DOCUMENTS">
-            <intent-filter>
-                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
-            </intent-filter>
-        </provider>
 
         <!-- account type "PeopleSync Address book" -->
         <service
