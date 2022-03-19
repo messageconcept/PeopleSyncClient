@@ -19,7 +19,7 @@ class DefaultsProvider(
 
     override val booleanDefaults = mutableMapOf(
         Pair(Settings.DISTRUST_SYSTEM_CERTIFICATES, false),
-        Pair(Settings.SYNC_ALL_COLLECTIONS, false)
+        Pair(Settings.SYNC_ALL_COLLECTIONS, true)
     )
 
     override val intDefaults = mapOf(
