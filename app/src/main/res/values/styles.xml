@@ -38,6 +38,7 @@
     <color name="backgroundColor">@color/grey200</color>
     <color name="errorColor">@color/red700</color>
 
+    <color name="introGraphicsColor">@color/secondaryColor</color>
     <!-- app theme -->
 
     <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
