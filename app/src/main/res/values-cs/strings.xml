@@ -110,7 +110,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Otevřít panel navigace</string>
   <string name="navigation_drawer_close">Zavřít panel navigace</string>
-  <string name="navigation_drawer_subtitle">Adaptér synchronizace CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptér synchronizace CardDAV</string>
   <string name="navigation_drawer_about">O aplikaci / Licence</string>
   <string name="navigation_drawer_beta_feedback">Zpětná vazba k vývojové verzi</string>
   <string name="install_email_client">Nainstalujte si e-mailového klienta</string>
@@ -130,7 +130,7 @@
   <string name="account_list_manage_connections">Spravovat spojení</string>
   <string name="account_list_low_storage">Zbývá málo místa na úložišti. Systém Android nespustí synchronizaci.</string>
   <string name="account_list_manage_storage">Spravovat úložiště</string>
-  <string name="account_list_empty">Vítejte v aplikaci PeopleSync!\n\nNyní můžete přidat CalDAV/CardDAV účet.</string>
+  <string name="account_list_empty">Vítejte v aplikaci PeopleSync!\n\nNyní můžete přidat CardDAV účet.</string>
   <string name="accounts_global_sync_disabled">Automatická synchronizace v rámci celého systému je vypnutá</string>
   <string name="accounts_global_sync_enable">Zapnout</string>
   <string name="accounts_sync_all">Synchronizovat všechny účty</string>

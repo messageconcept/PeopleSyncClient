@@ -106,7 +106,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Abrir panel de navegación</string>
   <string name="navigation_drawer_close">Cerrar panel de navegación</string>
-  <string name="navigation_drawer_subtitle">Adaptador de sincronización CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptador de sincronización CardDAV</string>
   <string name="navigation_drawer_about">Acerca de / Licencia</string>
   <string name="navigation_drawer_beta_feedback">Retroalimentación Beta</string>
   <string name="install_email_client">Por favor, instale un cliente de email</string>
@@ -123,7 +123,7 @@
   <string name="navigation_drawer_privacy_policy">Reglamento de privacidad</string>
   <string name="account_list_no_internet">No hay conexión a Internet. Android no se sincronizará.</string>
   <string name="account_list_low_storage">Espacio de almacenamiento bajo. Android no ejecutará la sincronización.</string>
-  <string name="account_list_empty">Bienvenido a PeopleSync!\n\nAhora puedes añadir una cuenta CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Bienvenido a PeopleSync!\n\nAhora puedes añadir una cuenta CardDAV.</string>
   <string name="accounts_global_sync_disabled">Sincronización automática del sistema completo está deshabilitada</string>
   <string name="accounts_global_sync_enable">Activar</string>
   <string name="accounts_sync_all">Sincronizar todas las cuentas</string>

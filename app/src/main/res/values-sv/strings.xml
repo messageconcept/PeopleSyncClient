@@ -109,7 +109,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Öppna navigeringslådan</string>
   <string name="navigation_drawer_close">Stäng navigeringslådan</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Synk Adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV Synk Adapter</string>
   <string name="navigation_drawer_about">Om / Licens</string>
   <string name="navigation_drawer_beta_feedback">Betafeedback</string>
   <string name="install_email_client">Installera en e-postklient</string>
@@ -129,7 +129,7 @@
   <string name="account_list_manage_connections">Hantera anslutningar</string>
   <string name="account_list_low_storage">Lagringsutrymme lågt. Android kommer inte att köra synkronisering.</string>
   <string name="account_list_manage_storage">Hantera lagring</string>
-  <string name="account_list_empty">Välkommen till PeopleSync!\n\nDu kan lägga till ett CalDAV/CardDAV-konto nu.</string>
+  <string name="account_list_empty">Välkommen till PeopleSync!\n\nDu kan lägga till ett CardDAV-konto nu.</string>
   <string name="accounts_global_sync_disabled">Systemomfattande automatisk synkronisering är inaktiverad</string>
   <string name="accounts_global_sync_enable">Aktivera</string>
   <string name="accounts_sync_all">Synkronisera alla konton</string>

@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">打开导航抽屉</string>
   <string name="navigation_drawer_close">关闭导航抽屉</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV 同步器</string>
+  <string name="navigation_drawer_subtitle">CardDAV 同步器</string>
   <string name="navigation_drawer_about">关于 / 许可</string>
   <string name="navigation_drawer_beta_feedback">测试版反馈</string>
   <string name="install_email_client">请安装邮件客户端</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">管理存储</string>
   <string name="account_list_datasaver_enabled">启用了流量节省程序。后台同步受限</string>
   <string name="account_list_manage_datasaver">管理流量节省程序</string>
-  <string name="account_list_empty">欢迎使用 PeopleSync！\n\n请开始增加 CalDAV/CardDAV 账户。</string>
+  <string name="account_list_empty">欢迎使用 PeopleSync！\n\n请开始增加 CardDAV 账户。</string>
   <string name="accounts_global_sync_disabled">系统全局自动同步已禁用</string>
   <string name="accounts_global_sync_enable">启用</string>
   <string name="accounts_sync_all">同步所有账户</string>

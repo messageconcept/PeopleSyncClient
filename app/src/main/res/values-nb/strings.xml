@@ -31,7 +31,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Åpne navigasjonsskuff</string>
   <string name="navigation_drawer_close">Lukk navigasjonsskuff</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV -synkroniseringsadapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV -synkroniseringsadapter</string>
   <string name="navigation_drawer_about">Om / Lisens</string>
   <string name="navigation_drawer_beta_feedback">Tilbakemelding om beta-en</string>
   <string name="navigation_drawer_settings">Innstillinger</string>
@@ -41,7 +41,7 @@
   <string name="navigation_drawer_manual">Manuell</string>
   <string name="navigation_drawer_faq">O-S-S</string>
   <string name="navigation_drawer_donate">Doner</string>
-  <string name="account_list_empty">Velkommen til PeopleSync.\n\nDu kan legge til en CalDAV/CardDAV-konto nå.</string>
+  <string name="account_list_empty">Velkommen til PeopleSync.\n\nDu kan legge til en CardDAV-konto nå.</string>
   <string name="accounts_global_sync_disabled">Systemomspennende automatisk synkronisering avskrudd</string>
   <string name="accounts_global_sync_enable">Skru på</string>
   <!--RefreshCollectionsWorker-->

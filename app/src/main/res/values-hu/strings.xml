@@ -104,7 +104,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Navigációs fiók megnyitása</string>
   <string name="navigation_drawer_close">Navigációs fiók lezárása</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV szinkronizációs adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV szinkronizációs adapter</string>
   <string name="navigation_drawer_about">Névjegy / Licenc</string>
   <string name="navigation_drawer_beta_feedback">Tesztelői visszajelzés</string>
   <string name="install_email_client">Kérjük, telepítsen egy levelező-klienst</string>
@@ -121,7 +121,7 @@
   <string name="navigation_drawer_privacy_policy">Adatvédelmi politika</string>
   <string name="account_list_no_internet">Nincs Internet-elérés.  Az Android rendszer nem fogja elvégezni a szinkronizálst</string>
   <string name="account_list_low_storage">Kevés a rendelkezésre álló tárhely.  A rendszer nem fog szinkronizálást végezni.</string>
-  <string name="account_list_empty">Üdvözöljük a PeopleSync felhasználók között!\n\nMost már felvehet CalDAV/CardDav fiókokat.</string>
+  <string name="account_list_empty">Üdvözöljük a PeopleSync felhasználók között!\n\nMost már felvehet CardDav fiókokat.</string>
   <string name="accounts_global_sync_disabled">A rendszerszintű automatikus szinkronizálás ki van kapcsolva</string>
   <string name="accounts_global_sync_enable">Bekapcsolás</string>
   <string name="accounts_sync_all">Az összes fiók szinkronizálása</string>

@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Abrir cadro de navegación</string>
   <string name="navigation_drawer_close">Pechar cadro de navegación</string>
-  <string name="navigation_drawer_subtitle">Adaptador de sincr. CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptador de sincr. CardDAV</string>
   <string name="navigation_drawer_about">Acerca de / Licenza</string>
   <string name="navigation_drawer_beta_feedback">Comenta sobre a Beta</string>
   <string name="install_email_client">Instala un cliente de email</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Xestionar almacenaxe</string>
   <string name="account_list_datasaver_enabled">O aforro de datos está activado. A sincronización en segundo plano está restrinxida.</string>
   <string name="account_list_manage_datasaver">Xestionar aforro de datos</string>
-  <string name="account_list_empty">Benvida a PeopleSync!\n\nXa podes engadir unha conta CalDAV/CardDAV</string>
+  <string name="account_list_empty">Benvida a PeopleSync!\n\nXa podes engadir unha conta CardDAV</string>
   <string name="accounts_global_sync_disabled">A sincronización global automática do sistema está desactivada</string>
   <string name="accounts_global_sync_enable">Activar</string>
   <string name="accounts_sync_all">Sincroniza todas as contas</string>

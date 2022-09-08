@@ -30,7 +30,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Otvoriť navigačnú zásuvku</string>
   <string name="navigation_drawer_close">Zatvoriť navigačnú zásuvku</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync Adaptér</string>
+  <string name="navigation_drawer_subtitle">CardDAV Sync Adaptér</string>
   <string name="navigation_drawer_about">O programe / Licencia</string>
   <string name="navigation_drawer_beta_feedback">Odozva na beta-verziu</string>
   <string name="install_email_client">Prosím, nainštalujte e-mailového klienta</string>
@@ -44,7 +44,7 @@
   <string name="navigation_drawer_donate">Darovať</string>
   <string name="navigation_drawer_privacy_policy">Zásady bezpečnosti</string>
   <string name="account_list_no_internet">Žiadne pripojenie do internetu. Android nestpustí synchronizáciu.</string>
-  <string name="account_list_empty">Vitajte v programe PeopleSync!\n\nTeraz môžete pridať používateľský účet pre CalDAV/CardDAV .</string>
+  <string name="account_list_empty">Vitajte v programe PeopleSync!\n\nTeraz môžete pridať používateľský účet pre CardDAV .</string>
   <string name="accounts_global_sync_disabled">Automatická synchronizácia platná pre celý systém je zakázaná</string>
   <string name="accounts_global_sync_enable">Povoliť</string>
   <!--RefreshCollectionsWorker-->

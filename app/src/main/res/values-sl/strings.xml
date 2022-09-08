@@ -30,7 +30,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Odpri navigacijski predal</string>
   <string name="navigation_drawer_close">Zapri navigacijski predal</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV sinhronizacijski adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV sinhronizacijski adapter</string>
   <string name="navigation_drawer_about">O aplikaciji / licenca</string>
   <string name="navigation_drawer_beta_feedback">Beta povratne aplikacije</string>
   <string name="navigation_drawer_settings">Nastavitve</string>
@@ -40,7 +40,7 @@
   <string name="navigation_drawer_manual">Priročnik</string>
   <string name="navigation_drawer_faq">Pogosta vprašanja</string>
   <string name="navigation_drawer_donate">Prispevaj</string>
-  <string name="account_list_empty">Dobrodošli v PeopleSync!\n\nZdaj lahko dodate CalDAV/CardDAV račun.</string>
+  <string name="account_list_empty">Dobrodošli v PeopleSync!\n\nZdaj lahko dodate CardDAV račun.</string>
   <string name="accounts_global_sync_disabled">Sistemska avtomatska sinhronizacija je izklopljena</string>
   <string name="accounts_global_sync_enable">Omogoči</string>
   <!--RefreshCollectionsWorker-->

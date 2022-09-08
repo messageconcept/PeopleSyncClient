@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Otwórz menu nawigacji</string>
   <string name="navigation_drawer_close">Zamknij menu nawigacji</string>
-  <string name="navigation_drawer_subtitle">Adapter synchronizacji CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adapter synchronizacji CardDAV</string>
   <string name="navigation_drawer_about">Informacje/Licencja</string>
   <string name="navigation_drawer_beta_feedback">Przekaż opinię</string>
   <string name="install_email_client">Proszę zainstalować klienta poczty elektronicznej</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Zarządzaj pamięcią</string>
   <string name="account_list_datasaver_enabled">Włączono oszczędzanie danych. Synchronizacja w tle jest ograniczona.</string>
   <string name="account_list_manage_datasaver">Zarządzaj oszczędzaniem danych</string>
-  <string name="account_list_empty">Witamy w PeopleSync!\n\nMożesz teraz dodać konto CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Witamy w PeopleSync!\n\nMożesz teraz dodać konto CardDAV.</string>
   <string name="accounts_global_sync_disabled">Automatyczna synchronizacja dla całego systemu jest wyłączona</string>
   <string name="accounts_global_sync_enable">Włącz</string>
   <string name="accounts_sync_all">Synchronizuj wszystkie konta</string>

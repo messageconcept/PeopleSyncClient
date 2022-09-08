@@ -49,7 +49,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Ôtwōrz myni nawigacyje</string>
   <string name="navigation_drawer_close">Zawrzij myni nawigacyje</string>
-  <string name="navigation_drawer_subtitle">Adapter synchrōnizacyje CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adapter synchrōnizacyje CardDAV</string>
   <string name="navigation_drawer_about">Ô PeopleSync / Licyncyjo</string>
   <string name="navigation_drawer_beta_feedback">Przekoż ôpinijo</string>
   <string name="install_email_client">Zainstaluj klijynt emaila</string>
@@ -63,7 +63,7 @@
   <string name="navigation_drawer_donate">Dowka</string>
   <string name="navigation_drawer_privacy_policy">Polityka prywatności</string>
   <string name="account_list_no_internet">Brak połōnczynio z internetym. Android niy bydzie synchrōnizować.</string>
-  <string name="account_list_empty">Witōmy w PeopleSync!\n\nMożesz teroz przidać kōnto CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Witōmy w PeopleSync!\n\nMożesz teroz przidać kōnto CardDAV.</string>
   <string name="accounts_global_sync_disabled">Autōmatyczno synchrōnizacyjo dlo cołkigo systymu je zastawiōno</string>
   <string name="accounts_global_sync_enable">Włōncz</string>
   <!--RefreshCollectionsWorker-->

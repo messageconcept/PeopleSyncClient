@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
   <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV 同期アダプター</string>
+  <string name="navigation_drawer_subtitle">CardDAV 同期アダプター</string>
   <string name="navigation_drawer_about">アプリについて / ライセンス</string>
   <string name="navigation_drawer_beta_feedback">ベータフィードバック</string>
   <string name="install_email_client">メールクライアントをインストールしてください</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">ストレージを管理</string>
   <string name="account_list_datasaver_enabled">データサーバーが有効です。バックグラウンド同期が制限されています</string>
   <string name="account_list_manage_datasaver">データサーバーを管理</string>
-  <string name="account_list_empty">PeopleSync にようこそ！\n\nCalDAV/CardDAV アカウントを追加できるようになりました。</string>
+  <string name="account_list_empty">PeopleSync にようこそ！\n\nCardDAV アカウントを追加できるようになりました。</string>
   <string name="accounts_global_sync_disabled">システム全体の自動同期が無効です</string>
   <string name="accounts_global_sync_enable">有効</string>
   <string name="accounts_sync_all">すべてのアカウントを同期</string>

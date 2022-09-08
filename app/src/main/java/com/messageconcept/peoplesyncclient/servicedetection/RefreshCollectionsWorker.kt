@@ -80,7 +80,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
         /**
          * Uniquely identifies a refresh worker. Useful for stopping work, or querying its state.
          * 
-         * @param serviceId     what service (CalDAV/CardDAV) the worker is running for
+         * @param serviceId     what service (CardDAV) the worker is running for
          */
         fun workerName(serviceId: Long): String = "$REFRESH_COLLECTIONS_WORKER_TAG-$serviceId"
 
@@ -414,7 +414,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
 
         /**
          * Finds out whether given collection is usable, by checking that either
-         *  - CalDAV/CardDAV: service and collection type match, or
+         *  - CardDAV: service and collection type match, or
          *  - WebCal: subscription source URL is not empty
          */
         private fun isUsableCollection(collection: Collection) =

@@ -125,7 +125,7 @@
     <!-- AccountsActivity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync Adapter</string>
+    <string name="navigation_drawer_subtitle">CardDAV Sync Adapter</string>
     <string name="navigation_drawer_about">About / License</string>
     <string name="navigation_drawer_beta_feedback">Beta feedback</string>
     <string name="install_email_client">Please install an email client</string>
@@ -147,7 +147,7 @@
     <string name="account_list_manage_storage">Manage storage</string>
     <string name="account_list_datasaver_enabled">Data saver enabled. Background synchronization is restricted.</string>
     <string name="account_list_manage_datasaver">Manage data saver</string>
-    <string name="account_list_empty">Welcome to PeopleSync!\n\nYou can add a CalDAV/CardDAV account now.</string>
+    <string name="account_list_empty">Welcome to PeopleSync!\n\nYou can add a CardDAV account now.</string>
     <string name="accounts_global_sync_disabled">System-wide automatic synchronization is disabled</string>
     <string name="accounts_global_sync_enable">Enable</string>
     <string name="accounts_sync_all">Sync all accounts</string>

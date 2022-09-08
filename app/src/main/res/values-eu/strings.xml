@@ -106,7 +106,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Ireki nabigatzeko menu lerrakorra </string>
   <string name="navigation_drawer_close">Itxi nabigatzeko menu lerrakorra</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV sinkronizazio moldagailua</string>
+  <string name="navigation_drawer_subtitle">CardDAV sinkronizazio moldagailua</string>
   <string name="navigation_drawer_about">Honi buruz / Lizentzia</string>
   <string name="navigation_drawer_beta_feedback">Beta iritzia</string>
   <string name="install_email_client">Instalatu e-mail bezero bat</string>
@@ -123,7 +123,7 @@
   <string name="navigation_drawer_privacy_policy">Pribatutasun gidalerroak</string>
   <string name="account_list_no_internet">Ez dago internetik. Androidek ez du sinkronizaziorik egingo.</string>
   <string name="account_list_low_storage">Biltegiratze-lekua baxua da. Androidek ez du sinkronizatuko.</string>
-  <string name="account_list_empty">Ongi etorri PeopleSync aplikaziora!\n\nCalDAV/CardDAV kontu bat gehitu dezakezu orain.</string>
+  <string name="account_list_empty">Ongi etorri PeopleSync aplikaziora!\n\nCardDAV kontu bat gehitu dezakezu orain.</string>
   <string name="accounts_global_sync_disabled">Sistema osoko sinkronizazio automatikoa desgaituta dago</string>
   <string name="accounts_global_sync_enable">Gaitu</string>
   <string name="accounts_sync_all">Sinkronizatu kontu guztiak</string>

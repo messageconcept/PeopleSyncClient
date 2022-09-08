@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Navigatiemenu openen</string>
   <string name="navigation_drawer_close">Navigatielmenu sluiten</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV Sync adapter</string>
   <string name="navigation_drawer_about">Over / Licentie</string>
   <string name="navigation_drawer_beta_feedback">Beta terugkoppeling</string>
   <string name="install_email_client">E-mailprogramma is vereist</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Opslag beheren</string>
   <string name="account_list_datasaver_enabled">Gegevensbesparing ingeschakeld. Synchronisatie op de achtergrond is beperkt.</string>
   <string name="account_list_manage_datasaver">Beheer van gegevensbesparing</string>
-  <string name="account_list_empty">Welkom bij PeopleSync!\n\nJe kunt nu een CalDAV/CardDAV account toevoegen.</string>
+  <string name="account_list_empty">Welkom bij PeopleSync!\n\nJe kunt nu een CardDAV account toevoegen.</string>
   <string name="accounts_global_sync_disabled">Automatisch synchroniseren is voor alle accounts uitgeschakeld</string>
   <string name="accounts_global_sync_enable">Inschakelen</string>
   <string name="accounts_sync_all">Alle accounts synchroniseren</string>

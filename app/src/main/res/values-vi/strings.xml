@@ -106,7 +106,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Mở ngăn điều hướng</string>
   <string name="navigation_drawer_close">Đóng ngăn điều hướng</string>
-  <string name="navigation_drawer_subtitle">Đồng bộ CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Đồng bộ CardDAV</string>
   <string name="navigation_drawer_about">Giới thiệu / Giấy phép</string>
   <string name="navigation_drawer_beta_feedback">Phản hồi về bản beta</string>
   <string name="install_email_client">Vui lòng cài đặt một ứng dụng email khách</string>
@@ -123,7 +123,7 @@
   <string name="navigation_drawer_privacy_policy">Chính sách riêng tư</string>
   <string name="account_list_no_internet">Không có kết nối internet. Android sẽ không chạy đồng bộ hoá.</string>
   <string name="account_list_low_storage">Dung lượng bộ nhớ thấp. Android sẽ không thực hiện đồng bộ.</string>
-  <string name="account_list_empty">Chào mừng đến PeopleSync!\n\nBạn có thể thêm một tài khoản CalDAV/CardDAV ngay.</string>
+  <string name="account_list_empty">Chào mừng đến PeopleSync!\n\nBạn có thể thêm một tài khoản CardDAV ngay.</string>
   <string name="accounts_global_sync_disabled">Đồng bộ hoá tự động trên toàn hệ thống bị tắt</string>
   <string name="accounts_global_sync_enable">Bật</string>
   <string name="accounts_sync_all">Đồng bộ tất cả tài khoản</string>

@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Открыть панель навигации</string>
   <string name="navigation_drawer_close">Закрыть панель навигации</string>
-  <string name="navigation_drawer_subtitle">Адаптер синхронизации CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Адаптер синхронизации CardDAV</string>
   <string name="navigation_drawer_about">О программе / Лицензия</string>
   <string name="navigation_drawer_beta_feedback">Отзыв о бета-тестировании</string>
   <string name="install_email_client">Пожалуйста, установите почтовый клиент</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Управление хранилищем</string>
   <string name="account_list_datasaver_enabled">Экономия трафика включена. Фоновая синхронизация ограничена.</string>
   <string name="account_list_manage_datasaver">Экономия трафика</string>
-  <string name="account_list_empty">Добро пожаловать в PeopleSync!\n\nТеперь вы можете добавить аккаунт CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Добро пожаловать в PeopleSync!\n\nТеперь вы можете добавить аккаунт CardDAV.</string>
   <string name="accounts_global_sync_disabled">Синхронизация отключена на уровне устройства</string>
   <string name="accounts_global_sync_enable">Включить</string>
   <string name="accounts_sync_all">Синхронизировать все аккаунты</string>

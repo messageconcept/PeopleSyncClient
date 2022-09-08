@@ -62,7 +62,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Відкрити панель навігації</string>
   <string name="navigation_drawer_close">Закрити панель навігації</string>
-  <string name="navigation_drawer_subtitle">Адаптер синхронізації CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Адаптер синхронізації CardDAV</string>
   <string name="navigation_drawer_about">Про / Ліцензія</string>
   <string name="navigation_drawer_beta_feedback">Beta відгук</string>
   <string name="install_email_client">Будь ласка, встановіть клієнт електронної пошти</string>
@@ -76,7 +76,7 @@
   <string name="navigation_drawer_donate">Підтримка</string>
   <string name="navigation_drawer_privacy_policy">Політика конфіденційності</string>
   <string name="account_list_no_internet">Відсутнє підключення до інтернету. Android не може розпочати синхронізацію.</string>
-  <string name="account_list_empty">Вітаємо у PeopleSync!\n\nТепер можете додавати облікові записи CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Вітаємо у PeopleSync!\n\nТепер можете додавати облікові записи CardDAV.</string>
   <string name="accounts_global_sync_disabled">Автоматичну синхронізацію вимкнено зі сторони системи</string>
   <string name="accounts_global_sync_enable">Увімкнути</string>
   <string name="accounts_sync_all">Синхронізувати всі обліківки</string>

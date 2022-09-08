@@ -20,7 +20,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Navigasyon çekmecesini aç</string>
   <string name="navigation_drawer_close">Navigasyon çekmecesini kapat</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Senkronizasyon Adaptörü</string>
+  <string name="navigation_drawer_subtitle">CardDAV Senkronizasyon Adaptörü</string>
   <string name="navigation_drawer_about">Hakkında / Lisans</string>
   <string name="navigation_drawer_settings">Ayarlar</string>
   <string name="navigation_drawer_news_updates">Haberler  &amp; güncellemeler </string>
@@ -28,7 +28,7 @@
   <string name="navigation_drawer_website">Web sitesi</string>
   <string name="navigation_drawer_faq">SSS</string>
   <string name="navigation_drawer_donate">Bağış yap</string>
-  <string name="account_list_empty">PeopleSync\'e hoşgeldin!\n\nŞimdi bir CalDAV/CardDAV hesabı ekleyebilirsin.</string>
+  <string name="account_list_empty">PeopleSync\'e hoşgeldin!\n\nŞimdi bir CardDAV hesabı ekleyebilirsin.</string>
   <!--RefreshCollectionsWorker-->
   <string name="refresh_collections_worker_refresh_failed">Servis keşfi başarısız</string>
   <string name="refresh_collections_worker_refresh_couldnt_refresh">Kolleksiyon listesi yenilenemedi</string>

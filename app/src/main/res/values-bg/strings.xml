@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Отваря менюто</string>
   <string name="navigation_drawer_close">Затваря менюто</string>
-  <string name="navigation_drawer_subtitle">Адаптор за синхронизиране на CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Адаптор за синхронизиране на CardDAV</string>
   <string name="navigation_drawer_about">Относно / лиценз</string>
   <string name="navigation_drawer_beta_feedback">Обратна връзка към бета</string>
   <string name="install_email_client">Инсталиране приложение за електронна поща</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Управление на хранилището</string>
   <string name="account_list_datasaver_enabled">Включена е икономия на данни. Синхронизацията във фонов режим е ограничена.</string>
   <string name="account_list_manage_datasaver">Икономия на трафик</string>
-  <string name="account_list_empty">Добре дошли при PeopleSync!\n\nМожете да добавите регистрация за CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Добре дошли при PeopleSync!\n\nМожете да добавите регистрация за CardDAV.</string>
   <string name="accounts_global_sync_disabled">Автоматичното синхронизиране е изключено на ниво система</string>
   <string name="accounts_global_sync_enable">Включване</string>
   <string name="accounts_sync_all">Синхронизиране на всички профили</string>

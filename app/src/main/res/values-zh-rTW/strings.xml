@@ -55,7 +55,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">開啟瀏覽窗格</string>
   <string name="navigation_drawer_close">關閉瀏覽窗格</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV 同步器</string>
+  <string name="navigation_drawer_subtitle">CardDAV 同步器</string>
   <string name="navigation_drawer_about">關於我們 / 授權條款</string>
   <string name="navigation_drawer_beta_feedback">為測試版本給回饋意見</string>
   <string name="install_email_client">請安裝一個email程式</string>
@@ -69,7 +69,7 @@
   <string name="navigation_drawer_donate">贊助我們</string>
   <string name="navigation_drawer_privacy_policy">隱私權政策</string>
   <string name="account_list_no_internet">網際網絡沒有連接。Android不會進行同步。</string>
-  <string name="account_list_empty">歡迎使用 PeopleSync!\n\n您現在可以新增 CalDAV/CardDAV 帳號</string>
+  <string name="account_list_empty">歡迎使用 PeopleSync!\n\n您現在可以新增 CardDAV 帳號</string>
   <string name="accounts_global_sync_disabled">操作系統的自動同步被關閉了</string>
   <string name="accounts_global_sync_enable">啟用</string>
   <!--RefreshCollectionsWorker-->

@@ -91,7 +91,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Άνοιγμα συρταριού πλοήγησης</string>
   <string name="navigation_drawer_close">Κλείσιμο συρταριού πλοήγησης</string>
-  <string name="navigation_drawer_subtitle">Προσαρμογέας συγχρονισμού CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Προσαρμογέας συγχρονισμού CardDAV</string>
   <string name="navigation_drawer_about">Περί / άδεια χρήσης</string>
   <string name="navigation_drawer_beta_feedback">Ανατροφοδότηση beta</string>
   <string name="install_email_client">Παρακαλούμε εγκαταστήστε ένα πελάτη ηλεκτρονικού ταχυδρομείου</string>
@@ -108,7 +108,7 @@
   <string name="navigation_drawer_privacy_policy">Πολιτική απορρήτου</string>
   <string name="account_list_no_internet">Δεν υπάρχει σύνδεση στο Διαδίκτυο. Το Android δεν θα πραγματοποιήσει συγχρονισμό.</string>
   <string name="account_list_low_storage">Χαμηλός αποθηκευτικός χώρος. Το Android δεν θα εκτελέσει συγχρονισμό.</string>
-  <string name="account_list_empty">Καλώς ήρθατε στο PeopleSync!\n\nΜπορείτε να προσθέσετε τώρα έναν λογαριασμό CalDAV/CardDAV.</string>
+  <string name="account_list_empty">Καλώς ήρθατε στο PeopleSync!\n\nΜπορείτε να προσθέσετε τώρα έναν λογαριασμό CardDAV.</string>
   <string name="accounts_global_sync_disabled">Ο αυτόματος συγχρονισμός σε όλο το σύστημα είναι απενεργοποιημένος</string>
   <string name="accounts_global_sync_enable">Ενεργοποίηση</string>
   <string name="accounts_sync_all">Συγχρονισμός όλων των λογαριασμών</string>

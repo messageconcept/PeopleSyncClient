@@ -111,7 +111,7 @@
   <!--AccountsActivity-->
   <string name="navigation_drawer_open">Åbne navigationsvindue</string>
   <string name="navigation_drawer_close">Luk navigationsvindue</string>
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV synkroniseringsadapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV synkroniseringsadapter</string>
   <string name="navigation_drawer_about">Om / licens</string>
   <string name="navigation_drawer_beta_feedback">Beta tilbagemelding</string>
   <string name="install_email_client">Installér e-mail klient</string>
@@ -133,7 +133,7 @@
   <string name="account_list_manage_storage">Administrer lagerplads</string>
   <string name="account_list_datasaver_enabled">Gemning af data slået til. Synkronisering i baggrunden er begrænset.</string>
   <string name="account_list_manage_datasaver">Administrer gemning af data</string>
-  <string name="account_list_empty">Velkommen til PeopleSync!\n\nDu kan nu tilføje en CalDAV/CardDAV konto.</string>
+  <string name="account_list_empty">Velkommen til PeopleSync!\n\nDu kan nu tilføje en CardDAV konto.</string>
   <string name="accounts_global_sync_disabled">Automatisk synkronisering på tværs af systemet er deaktiveret</string>
   <string name="accounts_global_sync_enable">Aktivere</string>
   <string name="accounts_sync_all">Synkroniser alle konti</string>
