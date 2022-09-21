@@ -149,10 +149,18 @@ class AccountSettings(
                         val managedBaseUrl = settings.getString(KEY_LOGIN_BASE_URL)
                         val managedUserName = settings.getString(KEY_LOGIN_USER_NAME)
                         val managedPassword = settings.getString(KEY_LOGIN_PASSWORD)
+                        // If the password has been deleted/unset, do not update existing accounts
+                        // and set an empty password as this is guaranteed to lead to synchronization
+                        // failures. The alternative would be to delete the account, but this might
+                        // be unexpected, so do nothing instead.
+                        if (managedPassword.isNullOrEmpty()) {
+                            Logger.log.info("${account.name}: Managed login password has been deleted. Doing nothing.")
+                            return
+                        }
                         // check if baseUrl and userName match
                         if (managedBaseUrl == baseUrl && managedUserName == creds.userName) {
                             if (managedPassword != creds.password) {
-                                Logger.log.info("Managed login password changed for ${creds.userName}. Updating account settings.")
+                                Logger.log.info("${account.name}: Managed login password changed. Updating account settings and requesting sync.")
                                 am.setPassword(account, managedPassword)
                                 // Request an explicit sync after we changed the account password.
                                 // This should also clear any error notifications.
