@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package com.messageconcept.peoplesyncclient
+package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -10,16 +10,30 @@ import android.content.Context
 import android.content.SyncResult
 import android.os.Bundle
 import androidx.test.platform.app.InstrumentationRegistry
-import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService
+import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
+@HiltAndroidTest
 class SyncAdapterTest {
 
-    val context = InstrumentationRegistry.getInstrumentation().context
-    val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var settingsManager: SettingsManager
+
+    val context by lazy { InstrumentationRegistry.getInstrumentation().context }
+    val targetContext by lazy { InstrumentationRegistry.getInstrumentation().targetContext }
 
     /** use our address books provider as a mock provider because it's our own and we don't need any permissions for it */
     val mockAuthority = targetContext.getString(R.string.address_books_authority)
@@ -27,12 +41,15 @@ class SyncAdapterTest {
 
     val account = Account("test", "com.example.test")
 
+    @Inject lateinit var db: AppDatabase
     lateinit var syncAdapter: TestSyncAdapter
 
 
     @Before
-    fun createSyncAdapter() {
-        syncAdapter = TestSyncAdapter(context)
+    fun setUp() {
+        hiltRule.inject()
+
+        syncAdapter = TestSyncAdapter(context, db)
     }
 
 
@@ -104,7 +121,7 @@ class SyncAdapterTest {
     }
 
 
-    class TestSyncAdapter(context: Context): SyncAdapterService.SyncAdapter(context) {
+    class TestSyncAdapter(context: Context, db: AppDatabase): SyncAdapterService.SyncAdapter(context, db) {
 
         companion object {
             /**
@@ -119,6 +136,7 @@ class SyncAdapterTest {
             account: Account,
             extras: Bundle,
             authority: String,
+            httpClient: Lazy<HttpClient>,
             provider: ContentProviderClient,
             syncResult: SyncResult
         ) {

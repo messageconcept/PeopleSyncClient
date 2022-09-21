@@ -10,11 +10,12 @@ import android.net.Uri
 import android.view.MenuItem
 import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.R
+import javax.inject.Inject
 
 /**
  * Default menu items control
  */
-class OseAccountsDrawerHandler: BaseAccountsDrawerHandler() {
+class OseAccountsDrawerHandler @Inject constructor(): BaseAccountsDrawerHandler() {
 
     override fun onNavigationItemSelected(activity: Activity, item: MenuItem) {
         when (item.itemId) {

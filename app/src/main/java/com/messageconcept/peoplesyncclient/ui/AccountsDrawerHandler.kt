@@ -9,7 +9,7 @@ import android.content.Context
 import android.view.Menu
 import android.view.MenuItem
 
-interface IAccountsDrawerHandler {
+interface AccountsDrawerHandler {
 
     fun initMenu(context: Context, menu: Menu)
 

@@ -13,6 +13,7 @@ import at.bitfire.dav4jvm.DavResponseCallback
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.property.GetCTag
 import com.messageconcept.peoplesyncclient.DavUtils
+import com.messageconcept.peoplesyncclient.HttpClient
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.resource.LocalResource
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
@@ -27,10 +28,11 @@ class TestSyncManager(
         account: Account,
         extras: Bundle,
         authority: String,
+        httpClient: HttpClient,
         syncResult: SyncResult,
         localCollection: LocalTestCollection,
         val mockWebServer: MockWebServer
-): SyncManager<LocalTestResource, LocalTestCollection, DavCollection>(context, account, AccountSettings(context, account), extras, authority, syncResult, localCollection) {
+): SyncManager<LocalTestResource, LocalTestCollection, DavCollection>(context, account, AccountSettings(context, account), httpClient, extras, authority, syncResult, localCollection) {
 
     override fun prepare(): Boolean {
         collectionURL = mockWebServer.url("/")

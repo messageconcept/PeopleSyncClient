@@ -7,7 +7,7 @@ package com.messageconcept.peoplesyncclient.ui.setup
 import android.content.Intent
 import androidx.fragment.app.Fragment
 
-interface LoginCredentialsFragment {
+interface LoginCredentialsFragmentFactory {
 
     fun getFragment(intent: Intent): Fragment?
 

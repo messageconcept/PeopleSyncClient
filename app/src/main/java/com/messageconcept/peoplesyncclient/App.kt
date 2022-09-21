@@ -12,15 +12,18 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
-import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
+import com.messageconcept.peoplesyncclient.syncadapter.AccountsUpdatedListener
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.UiUtils
+import dagger.hilt.android.HiltAndroidApp
 import java.util.logging.Level
+import javax.inject.Inject
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
-@Suppress("unused")
+@HiltAndroidApp
 class App: Application(), Thread.UncaughtExceptionHandler {
 
     companion object {
@@ -36,6 +39,9 @@ class App: Application(), Thread.UncaughtExceptionHandler {
                         .build()!!
 
     }
+
+    @Inject lateinit var accountsUpdatedListener: AccountsUpdatedListener
+    @Inject lateinit var storageLowReceiver: StorageLowReceiver
 
 
     override fun onCreate() {
@@ -59,19 +65,19 @@ class App: Application(), Thread.UncaughtExceptionHandler {
         NotificationUtils.createChannels(this)
 
         // set light/dark mode
-        UiUtils.setTheme(this)      // when this is called in the asynchronous thread below, it recreates
-                                    // some current activity and causes an IllegalStateException in rare cases
+        UiUtils.setTheme(this)   // when this is called in the asynchronous thread below, it recreates
+                                 // some current activity and causes an IllegalStateException in rare cases
 
         // don't block UI for some background checks
         thread {
             // watch for account changes/deletions
-            AccountUtils.registerAccountsUpdateListener(this)
+            accountsUpdatedListener.listen()
 
             // foreground service (possible workaround for devices which prevent PeopleSync from being started)
             ForegroundService.startIfActive(this)
 
             // watch storage because low storage means synchronization is stopped
-            StorageLowReceiver.getInstance(this)
+            storageLowReceiver.listen()
 
             // create/update app shortcuts
             UiUtils.updateShortcuts(this)

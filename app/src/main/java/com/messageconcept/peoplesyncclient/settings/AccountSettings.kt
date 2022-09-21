@@ -23,14 +23,19 @@ import com.messageconcept.peoplesyncclient.DavUtils
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.closeCompat
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.StringUtils
 import java.io.ByteArrayInputStream
@@ -40,13 +45,25 @@ import java.util.logging.Level
 /**
  * Manages settings of an account.
  *
+ * @param context       Required to access account settings
+ * @param argAccount    Account to take settings from. If this account is an address book account,
+ * settings will be taken from the corresponding main account instead.
+ *
  * @throws InvalidAccountException on construction when the account doesn't exist (anymore)
+ * @throws IllegalArgumentException when the account type is not _PeopleSync_ or _PeopleSync address book_
  */
 @Suppress("FunctionName")
 class AccountSettings(
-        val context: Context,
-        val account: Account
+    val context: Context,
+    argAccount: Account
 ) {
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface AccountSettingsEntryPoint {
+        fun appDatabase(): AppDatabase
+        fun settingsManager(): SettingsManager
+    }
 
     companion object {
         const val KEY_LOGIN_BASE_URL = "login_base_url"
@@ -128,7 +145,7 @@ class AccountSettings(
                         val accountSettings = AccountSettings(context, account)
                         val creds = accountSettings.credentials()
 
-                        val settings = SettingsManager.getInstance(context)
+                        val settings = accountSettings.settings
                         val managedBaseUrl = settings.getString(KEY_LOGIN_BASE_URL)
                         val managedUserName = settings.getString(KEY_LOGIN_USER_NAME)
                         val managedPassword = settings.getString(KEY_LOGIN_PASSWORD)
@@ -151,12 +168,28 @@ class AccountSettings(
         }
 
     }
-    
-    
+
+
+    val db = EntryPointAccessors.fromApplication(context, AccountSettingsEntryPoint::class.java).appDatabase()
+    val settings = EntryPointAccessors.fromApplication(context, AccountSettingsEntryPoint::class.java).settingsManager()
+
     val accountManager: AccountManager = AccountManager.get(context)
-    val settings = SettingsManager.getInstance(context)
+    val account: Account
 
     init {
+        when (argAccount.type) {
+            context.getString(R.string.account_type_address_book) -> {
+                /* argAccount is an address book account, which is not a main account. However settings are
+                   stored in the main account, so resolve and use the main account instead. */
+                account = LocalAddressBook.mainAccount(context, argAccount)
+            }
+            context.getString(R.string.account_type) ->
+                account = argAccount
+            else ->
+                throw IllegalArgumentException("Account type not supported")
+        }
+
+        // synchronize because account migration must only be run one time
         synchronized(AccountSettings::class.java) {
             val versionStr = accountManager.getUserData(account, KEY_SETTINGS_VERSION) ?: throw InvalidAccountException(account)
             var version = 0

@@ -8,20 +8,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.CallSuper
-import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.log.Logger
 
 /**
  * Default menu items control
  */
-abstract class BaseAccountsDrawerHandler: IAccountsDrawerHandler {
+abstract class BaseAccountsDrawerHandler: AccountsDrawerHandler {
 
     companion object {
         private const val BETA_FEEDBACK_URI = "mailto:peoplesync.app@messageconcept.com?subject=${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} feedback (${BuildConfig.VERSION_CODE})"

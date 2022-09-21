@@ -6,8 +6,8 @@ package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.app.Application
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -24,11 +24,11 @@ import com.messageconcept.peoplesyncclient.DavService
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.LoginAccountDetailsBinding
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
@@ -36,12 +36,19 @@ import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import java.util.logging.Level
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AccountDetailsFragment : Fragment() {
+
+    @Inject lateinit var settings: SettingsManager
 
     val loginModel by activityViewModels<LoginModel>()
     val model by viewModels<AccountDetailsModel>()
@@ -62,7 +69,6 @@ class AccountDetailsFragment : Fragment() {
                         ?: loginModel.baseURI?.host
 
         // CardDAV-specific
-        val settings = SettingsManager.getInstance(requireActivity())
         v.carddav.visibility = if (config.cardDAV != null) View.VISIBLE else View.GONE
         if (settings.containsKey(AccountSettings.KEY_CONTACT_GROUP_METHOD))
             v.contactGroupMethod.isEnabled = false
@@ -128,9 +134,12 @@ class AccountDetailsFragment : Fragment() {
     }
 
 
-    class AccountDetailsModel(
-            application: Application
-    ) : AndroidViewModel(application) {
+    @HiltViewModel
+    class AccountDetailsModel @Inject constructor(
+        @ApplicationContext val context: Context,
+        val db: AppDatabase,
+        val settingsManager: SettingsManager
+    ) : ViewModel() {
 
         val name = MutableLiveData<String>()
         val nameError = MutableLiveData<String>()
@@ -143,7 +152,6 @@ class AccountDetailsFragment : Fragment() {
 
         fun createAccount(name: String, credentials: Credentials?, config: DavResourceFinder.Configuration, groupMethod: GroupMethod): LiveData<Boolean> {
             val result = MutableLiveData<Boolean>()
-            val context = getApplication<Application>()
             viewModelScope.launch(Dispatchers.Default + NonCancellable) {
                 val account = Account(name, context.getString(R.string.account_type))
 
@@ -158,11 +166,9 @@ class AccountDetailsFragment : Fragment() {
 
                 // add entries for account to service DB
                 Logger.log.log(Level.INFO, "Writing account configuration to database", config)
-                val db = AppDatabase.getInstance(context)
                 try {
                     val accountSettings = AccountSettings(context, account)
-                    val settings = SettingsManager.getInstance(context)
-                    val defaultSyncInterval = settings.getLong(Settings.DEFAULT_SYNC_INTERVAL)
+                    val defaultSyncInterval = settingsManager.getLong(Settings.DEFAULT_SYNC_INTERVAL)
 
                     val refreshIntent = Intent(context, DavService::class.java)
                     refreshIntent.action = DavService.ACTION_REFRESH_COLLECTIONS
@@ -170,7 +176,7 @@ class AccountDetailsFragment : Fragment() {
                     val addrBookAuthority = context.getString(R.string.address_books_authority)
                     if (config.cardDAV != null) {
                         // insert CardDAV service
-                        val id = insertService(db, name, Service.TYPE_CARDDAV, config.cardDAV)
+                        val id = insertService(name, Service.TYPE_CARDDAV, config.cardDAV)
 
                         // initial CardDAV account settings
                         accountSettings.setGroupMethod(groupMethod)
@@ -187,7 +193,7 @@ class AccountDetailsFragment : Fragment() {
 
                     if (config.calDAV != null) {
                         // insert CalDAV service
-                        val id = insertService(db, name, Service.TYPE_CALDAV, config.calDAV)
+                        val id = insertService(name, Service.TYPE_CALDAV, config.calDAV)
 
                         // start CalDAV service detection (refresh collections)
                         refreshIntent.putExtra(DavService.EXTRA_DAV_SERVICE_ID, id)
@@ -209,7 +215,7 @@ class AccountDetailsFragment : Fragment() {
             return result
         }
 
-        private fun insertService(db: AppDatabase, accountName: String, type: String, info: DavResourceFinder.Configuration.ServiceInfo): Long {
+        private fun insertService(accountName: String, type: String, info: DavResourceFinder.Configuration.ServiceInfo): Long {
             // insert service
             val service = Service(0, accountName, type, info.principal)
             val serviceId = db.serviceDao().insertOrReplace(service)

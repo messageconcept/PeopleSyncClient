@@ -29,6 +29,10 @@ import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.net.URI
@@ -37,6 +41,14 @@ import java.util.logging.Level
 import kotlin.concurrent.thread
 
 object UpdateUtils {
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface UpdateUtilsEntryPoint {
+        fun settingsManager(): SettingsManager
+        fun appDatabase(): AppDatabase
+    }
+
     private const val KEY_USERNAME = "user_name"
     private const val KEY_PROVIDED_URL = "provided_url"
     private const val KEY_PARENT_ACCOUNT_NAME = "parent_account_name"
@@ -90,7 +102,7 @@ object UpdateUtils {
         }
 
         // fallback to userName if it looks like a principal name
-        if(loginInfo.credentials.userName != null && loginInfo.credentials.userName.contains('@')) {
+        if (loginInfo.credentials.userName != null && loginInfo.credentials.userName.contains('@')) {
             return "${loginInfo.uri.toASCIIString()}/principals/${loginInfo.credentials.userName}/"
         }
 
@@ -143,10 +155,11 @@ object UpdateUtils {
 
                 thread {
                     // add entries for account to service DB
-                    val db = AppDatabase.getInstance(context)
+                    val db = EntryPointAccessors.fromApplication(context, UpdateUtilsEntryPoint::class.java).appDatabase()
+                    val settings = EntryPointAccessors.fromApplication(context, UpdateUtilsEntryPoint::class.java).settingsManager()
+
                     try {
                         val accountSettings = AccountSettings(context, newAccount)
-                        val settings = SettingsManager.getInstance(context)
                         val defaultSyncInterval = settings.getLong(Settings.DEFAULT_SYNC_INTERVAL)
 
                         val refreshIntent = Intent(context, DavService::class.java)

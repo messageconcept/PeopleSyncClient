@@ -3,8 +3,6 @@
  **************************************************************************************************/
 package com.messageconcept.peoplesyncclient
 
-import java.io.File
-
 object Constants {
 
     const val DAVDROID_GREEN_RGBA = 0xFF8bc34a.toInt()

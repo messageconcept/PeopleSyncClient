@@ -14,11 +14,12 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.core.content.ContextCompat
 import com.messageconcept.peoplesyncclient.DavServiceUtils
+import com.messageconcept.peoplesyncclient.HttpClient
 import com.messageconcept.peoplesyncclient.closeCompat
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import okhttp3.HttpUrl
@@ -27,12 +28,15 @@ import java.util.logging.Level
 
 class AddressBooksSyncAdapterService : SyncAdapterService() {
 
-    override fun syncAdapter() = AddressBooksSyncAdapter(this)
+    override fun syncAdapter() = AddressBooksSyncAdapter(this, appDatabase)
 
 
-    class AddressBooksSyncAdapter(context: Context): SyncAdapter(context) {
+    class AddressBooksSyncAdapter(
+        context: Context,
+        appDatabase: AppDatabase
+    ) : SyncAdapter(context, appDatabase) {
 
-        override fun sync(account: Account, extras: Bundle, authority: String, provider: ContentProviderClient, syncResult: SyncResult) {
+        override fun sync(account: Account, extras: Bundle, authority: String, httpClient: Lazy<HttpClient>, provider: ContentProviderClient, syncResult: SyncResult) {
             try {
                 val accountSettings = AccountSettings(context, account)
 
@@ -59,12 +63,11 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
         }
 
         private fun updateLocalAddressBooks(account: Account, syncResult: SyncResult): Boolean {
-            val db = AppDatabase.getInstance(context)
             val service = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CARDDAV)
 
             if (service != null) {
                 Logger.log.info("Refreshing collections")
-                DavServiceUtils.refreshCollections(context, db, service.id, true)
+                DavServiceUtils.refreshCollections(context, service.id, true)
             }
 
             val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()

@@ -24,7 +24,7 @@
     <color name="primaryColor">#1E88E5</color> <!-- 600 -->
     <color name="primaryLightColor">#42A5F5</color> <!-- 400 -->
     <color name="primaryDarkColor">#1565C0</color> <!-- 800 -->
-    <color name="colorOnPrimary">@android:color/black</color>
+    <color name="colorOnPrimary">@android:color/white</color>
 
     <!-- Pink 50 -->
     <color name="secondaryColor">#D81B60</color> <!-- 600 -->
@@ -38,11 +38,6 @@
     <color name="backgroundColor">@color/grey200</color>
     <color name="errorColor">@color/red700</color>
 
-    <color name="badge_coffee">#352B1B</color>
-    <color name="badge_life_buoy">#FF6A00</color>
-    <color name="badge_medal">#FFC200</color>
-    <color name="badge_sailboat">#083d77</color>
-
     <!-- app theme -->
 
     <style name="AppTheme.Base" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
@@ -51,7 +46,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>       <!-- additionally required for AppCompatActivity -->
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
-        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
 
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryLightColor</item>

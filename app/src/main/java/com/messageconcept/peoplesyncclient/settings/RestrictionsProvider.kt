@@ -12,7 +12,14 @@ import android.content.*
 import android.content.Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED
 import android.os.Bundle
 import com.messageconcept.peoplesyncclient.TextTable
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntKey
+import dagger.multibindings.IntoMap
 import java.io.Writer
+import javax.inject.Inject
 
 class RestrictionsProvider(
         val context: Context,
@@ -95,7 +102,17 @@ class RestrictionsProvider(
     }
 
 
-    class Factory : SettingsProviderFactory {
+    class Factory @Inject constructor() : SettingsProviderFactory {
         override fun getProviders(context: Context, settingsManager: SettingsManager) = listOf(RestrictionsProvider(context, settingsManager))
     }
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    abstract class RestrictionsProviderFactoryModule {
+        @Binds
+        @IntoMap
+        @IntKey(/* priority */ 20)
+        abstract fun factory(impl: Factory): SettingsProviderFactory
+    }
+
 }

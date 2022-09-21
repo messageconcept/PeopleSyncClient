@@ -1,7 +1,0 @@
-####################################################################################################
-# Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
-####################################################################################################
-
-com.messageconcept.peoplesyncclient.ui.intro.WelcomeFragment$Factory
-com.messageconcept.peoplesyncclient.ui.intro.PermissionsFragmentFactory
-com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment$Factory

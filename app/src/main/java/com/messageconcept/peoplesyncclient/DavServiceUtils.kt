@@ -27,6 +27,10 @@ import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.util.logging.Level
@@ -34,8 +38,17 @@ import kotlin.collections.*
 
 object DavServiceUtils {
 
-    fun refreshCollections(context: Context, db: AppDatabase, serviceId: Long, autoSync: Boolean) {
-        val settings = SettingsManager.getInstance(context)
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface DavServiceUtilsEntryPoint {
+        fun settingsManager(): SettingsManager
+        fun appDatabase(): AppDatabase
+    }
+
+    fun refreshCollections(context: Context, serviceId: Long, autoSync: Boolean) {
+        val db = EntryPointAccessors.fromApplication(context, DavServiceUtilsEntryPoint::class.java).appDatabase()
+        val settings = EntryPointAccessors.fromApplication(context, DavServiceUtilsEntryPoint::class.java).settingsManager()
+
         val syncAllCollections = settings.getBoolean(Settings.SYNC_ALL_COLLECTIONS)
 
         val homeSetDao = db.homeSetDao()

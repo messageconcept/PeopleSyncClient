@@ -24,13 +24,16 @@ import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsFragment
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.URI
 import java.net.URISyntaxException
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
+@AndroidEntryPoint
 class AppSettingsActivity: AppCompatActivity() {
 
     companion object {
@@ -51,9 +54,10 @@ class AppSettingsActivity: AppCompatActivity() {
     }
 
 
+    @AndroidEntryPoint
     class SettingsFragment: PreferenceFragmentCompat(), SettingsManager.OnChangeListener {
 
-        val settings by lazy { SettingsManager.getInstance(requireActivity()) }
+        @Inject lateinit var settings: SettingsManager
 
         val onBatteryOptimizationResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             loadSettings()
@@ -232,7 +236,6 @@ class AppSettingsActivity: AppCompatActivity() {
         }
 
         private fun resetHints() {
-            val settings = SettingsManager.getInstance(requireActivity())
             settings.remove(BatteryOptimizationsFragment.Model.HINT_BATTERY_OPTIMIZATIONS)
             settings.remove(BatteryOptimizationsFragment.Model.HINT_AUTOSTART_PERMISSION)
             Snackbar.make(requireView(), R.string.app_settings_reset_hints_success, Snackbar.LENGTH_LONG).show()

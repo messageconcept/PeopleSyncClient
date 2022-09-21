@@ -13,8 +13,8 @@ import at.bitfire.dav4jvm.exception.UnauthorizedException
 import at.bitfire.dav4jvm.property.*
 import com.messageconcept.peoplesyncclient.DavUtils
 import com.messageconcept.peoplesyncclient.HttpClient
-import com.messageconcept.peoplesyncclient.log.StringHandler
 import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.StringHandler
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder

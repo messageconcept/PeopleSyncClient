@@ -6,7 +6,6 @@ package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.app.Application
 import android.app.usage.UsageStatsManager
 import android.content.*
 import android.content.pm.ApplicationInfo
@@ -27,9 +26,9 @@ import androidx.core.content.FileProvider
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
@@ -39,13 +38,16 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.TextTable
 import com.messageconcept.peoplesyncclient.closeCompat
 import com.messageconcept.peoplesyncclient.databinding.ActivityDebugInfoBinding
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_USERNAME
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,7 +62,9 @@ import java.util.*
 import java.util.logging.Level
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class DebugInfoActivity: AppCompatActivity() {
 
     companion object {
@@ -125,7 +129,7 @@ class DebugInfoActivity: AppCompatActivity() {
             )
         })
 
-        model.debugInfo.observe(this, { debugInfo ->
+        model.debugInfo.observe(this, Observer { debugInfo ->
             val showDebugInfo = View.OnClickListener {
                 val uri = FileProvider.getUriForFile(this, getString(R.string.authority_debug_provider), debugInfo)
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -143,7 +147,7 @@ class DebugInfoActivity: AppCompatActivity() {
             binding.zipShare.setOnClickListener { shareArchive() }
         })
 
-        model.logFile.observe(this, { logs ->
+        model.logFile.observe(this, Observer { logs ->
             binding.logsView.setOnClickListener {
                 val uri = FileProvider.getUriForFile(this, getString(R.string.authority_debug_provider), logs)
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -167,9 +171,13 @@ class DebugInfoActivity: AppCompatActivity() {
     }
 
 
-    class ReportModel(
-            val context: Application
-    ): AndroidViewModel(context) {
+    @HiltViewModel
+    class ReportModel @Inject constructor(
+        @ApplicationContext val context: Context
+    ): ViewModel() {
+
+        @Inject lateinit var db: AppDatabase
+        @Inject lateinit var settings: SettingsManager
 
         private var initialized = false
 
@@ -461,11 +469,11 @@ class DebugInfoActivity: AppCompatActivity() {
 
                 // database dump
                 writer.append("\nDATABASE DUMP\n\n")
-                AppDatabase.getInstance(context).dump(writer, arrayOf("webdav_document"))
+                db.dump(writer, arrayOf("webdav_document"))
 
                 // app settings
                 writer.append("\nAPP SETTINGS\n\n")
-                SettingsManager.getInstance(context).dump(writer)
+                settings.dump(writer)
 
                 writer.append("--- END DEBUG INFO ---\n")
                 writer.toString()
@@ -474,8 +482,6 @@ class DebugInfoActivity: AppCompatActivity() {
         }
 
         fun generateZip(onSuccess: (File) -> Unit) {
-            val context = getApplication<Application>()
-
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     zipProgress.postValue(true)
@@ -527,8 +533,6 @@ class DebugInfoActivity: AppCompatActivity() {
 
 
         private fun dumpMainAccount(account: Account, accountManager: AccountManager, writer: Writer) {
-            val context = getApplication<Application>()
-
             writer.append(" - Account: ${account.name}\n")
             writer.append(dumpAccount(account, AccountDumpInfo.mainAccount(context)))
             try {

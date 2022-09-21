@@ -23,26 +23,28 @@ import at.bitfire.dav4jvm.property.GetETag
 import at.bitfire.dav4jvm.property.ScheduleTag
 import at.bitfire.dav4jvm.property.SyncToken
 import com.messageconcept.peoplesyncclient.*
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.db.SyncStats
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.*
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import at.bitfire.vcard4android.ContactsStorageException
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.*
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.exception.ContextedException
 import java.io.IOException
 import java.io.InterruptedIOException
+import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
 import java.security.cert.CertificateException
 import java.util.*
@@ -57,11 +59,18 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     val context: Context,
     val account: Account,
     val accountSettings: AccountSettings,
+    val httpClient: HttpClient,
     val extras: Bundle,
     val authority: String,
     val syncResult: SyncResult,
     val localCollection: CollectionType
-): AutoCloseable {
+) {
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface SyncManagerEntryPoint {
+        fun appDatabase(): AppDatabase
+    }
 
     enum class SyncAlgorithm {
         PROPFIND_REPORT,
@@ -71,6 +80,27 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     companion object {
         const val DEBUG_INFO_MAX_RESOURCE_DUMP_SIZE = 100*FileUtils.ONE_KB.toInt()
         const val MAX_MULTIGET_RESOURCES = 10
+
+        var _workDispatcher: WeakReference<CoroutineDispatcher>? = null
+        /**
+         * We use our own dispatcher to
+         *
+         *   - make sure that all threads have [Thread.getContextClassLoader] set, which is required for dav4jvm and ical4j (because they rely on [ServiceLoader]),
+         *   - control the global number of sync worker threads.
+         *
+         * Threads created by a service automatically have a contextClassLoader.
+         */
+        fun getWorkDispatcher(): CoroutineDispatcher {
+            val cached = _workDispatcher?.get()
+            if (cached != null)
+                return cached
+
+            val newDispatcher = ThreadPoolExecutor(
+                0, Integer.min(Runtime.getRuntime().availableProcessors(), 4),
+                10, TimeUnit.SECONDS, LinkedBlockingQueue()
+            ).asCoroutineDispatcher()
+            return newDispatcher
+        }
     }
 
     protected val mainAccount = if (localCollection is LocalAddressBook)
@@ -81,32 +111,12 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     protected val notificationManager = NotificationManagerCompat.from(context)
     protected val notificationTag = localCollection.tag
 
-    protected val httpClient = HttpClient.Builder(context, accountSettings).build()
-
     protected lateinit var collectionURL: HttpUrl
     protected lateinit var davCollection: RemoteType
 
     protected var hasCollectionSync = false
 
-    /**
-     * We use our own dispatcher to
-     *
-     *   - make sure that all threads have [Thread.getContextClassLoader] set, which is required for dav4jvm and ical4j (because they rely on [ServiceLoader]),
-     *   - control the global number of sync worker threads.
-     *
-     * Threads created by a service automatically have a contextClassLoader.
-     */
-    val workDispatcher = Singleton.getInstanceByKey("SyncManager.workDispatcher") {
-        ThreadPoolExecutor(
-            0, Integer.min(Runtime.getRuntime().availableProcessors(), 4),
-            10, TimeUnit.SECONDS, LinkedBlockingQueue()
-        ).asCoroutineDispatcher()
-    }
-
-
-    override fun close() {
-        httpClient.close()
-    }
+    val workDispatcher = getWorkDispatcher()
 
 
     fun performSync() {
@@ -121,7 +131,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
             }
 
             // log sync time
-            val db = AppDatabase.getInstance(context)
+            val db = EntryPointAccessors.fromApplication(context, SyncManagerEntryPoint::class.java).appDatabase()
             db.runInTransaction {
                 db.collectionDao().getByUrl(collectionURL.toString())?.let { collection ->
                     db.syncStatsDao().insertOrReplace(

@@ -8,9 +8,9 @@ import android.Manifest
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
-import android.app.Application
 import android.app.Dialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -22,23 +22,29 @@ import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.messageconcept.peoplesyncclient.DavUtils
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.closeCompat
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import java.util.logging.Level
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class RenameAccountFragment: DialogFragment() {
 
     companion object {
@@ -71,7 +77,7 @@ class RenameAccountFragment: DialogFragment() {
         layout.setPadding(8*density, 8*density, 8*density, 8*density)
         layout.addView(editText)
 
-        model.finished.observe(this, {
+        model.finished.observe(this, Observer {
             this@RenameAccountFragment.requireActivity().finish()
         })
 
@@ -93,15 +99,15 @@ class RenameAccountFragment: DialogFragment() {
     }
 
 
-    class Model(
-            application: Application
-    ): AndroidViewModel(application) {
+    @HiltViewModel
+    class Model @Inject constructor(
+        @ApplicationContext val context: Context,
+        val db: AppDatabase
+    ): ViewModel() {
 
         val finished = MutableLiveData<Boolean>()
 
         fun renameAccount(oldAccount: Account, newName: String) {
-            val context = getApplication<Application>()
-
             // remember sync intervals
             val oldSettings = try {
                 AccountSettings(context, oldAccount)
@@ -135,7 +141,6 @@ class RenameAccountFragment: DialogFragment() {
         fun onAccountRenamed(accountManager: AccountManager, oldAccount: Account, newName: String, syncIntervals: List<Pair<String, Long?>>) {
             // account has now been renamed
             Logger.log.info("Updating account name references")
-            val context = getApplication<Application>()
 
             // cancel maybe running synchronization
             ContentResolver.cancelSync(oldAccount, null)
@@ -143,7 +148,6 @@ class RenameAccountFragment: DialogFragment() {
                 ContentResolver.cancelSync(addrBookAccount, null)
 
             // update account name references in database
-            val db = AppDatabase.getInstance(context)
             try {
                 db.serviceDao().renameAccount(oldAccount.name, newName)
             } catch (e: Exception) {
@@ -156,14 +160,15 @@ class RenameAccountFragment: DialogFragment() {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED)
                 try {
                     context.contentResolver.acquireContentProviderClient(ContactsContract.AUTHORITY)?.let { provider ->
-                        for (addrBookAccount in accountManager.getAccountsByType(context.getString(R.string.account_type_address_book)))
-                            try {
+                        try {
+                            for (addrBookAccount in accountManager.getAccountsByType(context.getString(R.string.account_type_address_book))) {
                                 val addressBook = LocalAddressBook(context, addrBookAccount, provider)
                                 if (oldAccount == addressBook.mainAccount)
                                     addressBook.mainAccount = Account(newName, oldAccount.type)
-                            } finally {
-                                provider.closeCompat()
                             }
+                        } finally {
+                            provider.closeCompat()
+                        }
                     }
                 } catch (e: Exception) {
                     Logger.log.log(Level.SEVERE, "Couldn't update address book accounts", e)

@@ -7,7 +7,7 @@ package com.messageconcept.peoplesyncclient.ui.account
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
-import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -24,31 +24,44 @@ import com.messageconcept.peoplesyncclient.DavService
 import com.messageconcept.peoplesyncclient.DavUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.ActivityAccountBinding
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import java.util.logging.Level
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AccountActivity: AppCompatActivity() {
 
     companion object {
         const val EXTRA_ACCOUNT = "account"
     }
 
-    private lateinit var binding: ActivityAccountBinding
+    @Inject lateinit var modelFactory: Model.Factory
     val model by viewModels<Model> {
         val account = intent.getParcelableExtra(EXTRA_ACCOUNT) as? Account
                 ?: throw IllegalArgumentException("AccountActivity requires EXTRA_ACCOUNT")
-        Model.Factory(application, account)
+        object: ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T: ViewModel> create(modelClass: Class<T>) =
+                modelFactory.create(account) as T
+        }
     }
     private var refreshed = false
+
+    private lateinit var binding: ActivityAccountBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +103,7 @@ class AccountActivity: AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_account, menu)
         return true
     }
@@ -205,23 +218,19 @@ class AccountActivity: AppCompatActivity() {
 
     // model
 
-    class Model(
-            application: Application,
-            val account: Account
-    ): AndroidViewModel(application), OnAccountsUpdateListener {
+    class Model @AssistedInject constructor(
+        @ApplicationContext val context: Context,
+        val db: AppDatabase,
+        @Assisted val account: Account
+    ): ViewModel(), OnAccountsUpdateListener {
 
-        class Factory(
-                val application: Application,
-                val account: Account
-        ): ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T: ViewModel> create(modelClass: Class<T>) =
-                    Model(application, account) as T
+        @AssistedFactory
+        interface Factory {
+            fun create(account: Account): Model
         }
 
-        private val db = AppDatabase.getInstance(application)
-        val accountManager = AccountManager.get(application)!!
-        val accountSettings by lazy { AccountSettings(getApplication(), account) }
+        val accountManager = AccountManager.get(context)!!
+        val accountSettings by lazy { AccountSettings(context, account) }
 
         val accountExists = MutableLiveData<Boolean>()
         val cardDavService = db.serviceDao().getIdByAccountAndType(account.name, Service.TYPE_CARDDAV)

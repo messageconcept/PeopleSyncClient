@@ -4,7 +4,6 @@
 
 package com.messageconcept.peoplesyncclient
 
-import com.messageconcept.peoplesyncclient.log.Logger
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl

@@ -20,22 +20,25 @@ import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.UrlUtils
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.property.*
-import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.*
 import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.logging.Level
+import javax.inject.Inject
 import kotlin.collections.*
 
 @Suppress("DEPRECATION")
+@AndroidEntryPoint
 class DavService: IntentService("DavService") {
 
     companion object {
@@ -70,6 +73,9 @@ class DavService: IntentService("DavService") {
 
     }
 
+    @Inject lateinit var db: AppDatabase
+    @Inject lateinit var settings: SettingsManager
+
     /**
      * List of [Service] IDs for which the collections are currently refreshed
      */
@@ -96,8 +102,7 @@ class DavService: IntentService("DavService") {
                         listener.get()?.onDavRefreshStatusChanged(id, true)
                     }
 
-                    val db = AppDatabase.getInstance(this@DavService)
-                    refreshCollections(db, id, auto)
+                    refreshCollections(id, auto)
                 }
 
             ACTION_FORCE_SYNC -> {
@@ -162,9 +167,9 @@ class DavService: IntentService("DavService") {
         ContentResolver.requestSync(account, authority, extras)
     }
 
-    private fun refreshCollections(db: AppDatabase, serviceId: Long, autoSync: Boolean) {
+    private fun refreshCollections(serviceId: Long, autoSync: Boolean) {
         try {
-            DavServiceUtils.refreshCollections(this, db, serviceId, autoSync)
+            DavServiceUtils.refreshCollections(this, serviceId, autoSync)
         } finally {
             runningRefresh.remove(serviceId)
             refreshingStatusListeners.mapNotNull { it.get() }.forEach {

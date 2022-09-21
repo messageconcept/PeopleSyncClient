@@ -5,35 +5,36 @@
 package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
-import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.ui.intro.IIntroFragmentFactory.ShowMode
 import com.github.appintro.AppIntro2
-import java.util.*
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ActivityComponent
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class IntroActivity: AppIntro2() {
+
+    @EntryPoint
+    @InstallIn(ActivityComponent::class)
+    interface IntroActivityEntryPoint {
+        fun introFragmentFactories(): Set<@JvmSuppressWildcards IntroFragmentFactory>
+    }
 
     companion object {
 
-        private val serviceLoader = ServiceLoader.load(IIntroFragmentFactory::class.java)!!
-        private val introFragmentFactories = serviceLoader.toList()
-        init {
-            introFragmentFactories.forEach {
-                Logger.log.fine("Registered intro fragment ${it::class.java}")
-            }
-        }
-
-        fun shouldShowIntroActivity(context: Context): Boolean {
-            val settings = SettingsManager.getInstance(context)
-            return introFragmentFactories.any {
-                val show = it.shouldBeShown(context, settings)
-                Logger.log.fine("Intro fragment $it: showMode=$show")
-                show == ShowMode.SHOW
+        fun shouldShowIntroActivity(activity: Activity): Boolean {
+            val factories = EntryPointAccessors.fromActivity(activity, IntroActivityEntryPoint::class.java).introFragmentFactories()
+            return factories.any {
+                val order = it.getOrder(activity)
+                Logger.log.fine("Found intro fragment factory ${it::class.java} with order $order")
+                order > 0
             }
         }
 
@@ -41,16 +42,21 @@ class IntroActivity: AppIntro2() {
 
     private var currentSlide = 0
 
+    @Inject lateinit var introFragmentFactories: Set<@JvmSuppressWildcards IntroFragmentFactory>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val settings = SettingsManager.getInstance(this)
 
-        val factoriesWithMode = introFragmentFactories.associateWith { it.shouldBeShown(this, settings) }
-        val showAll = factoriesWithMode.values.any { it == ShowMode.SHOW }
-        for ((factory, mode) in factoriesWithMode)
-            if (mode == ShowMode.SHOW || (mode == ShowMode.SHOW_NOT_ALONE && showAll))
+        val factoriesWithOrder = introFragmentFactories
+            .associateBy { it.getOrder(this) }
+            .filterKeys { it != IntroFragmentFactory.DONT_SHOW }
+
+        val anyPositiveOrder = factoriesWithOrder.keys.any { it > 0 }
+        if (anyPositiveOrder) {
+            for ((_, factory) in factoriesWithOrder.toSortedMap())
                 addSlide(factory.create())
+        }
 
         setBarColor(ResourcesCompat.getColor(resources, R.color.primaryDarkColor, null))
         isSkipButtonEnabled = false

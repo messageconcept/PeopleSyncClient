@@ -16,12 +16,17 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.Singleton
 import com.messageconcept.peoplesyncclient.TextTable
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import java.io.Writer
+import javax.inject.Singleton
 
 @Suppress("ClassName")
 @Database(entities = [
@@ -33,14 +38,12 @@ import java.io.Writer
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
-    abstract fun serviceDao(): ServiceDao
-    abstract fun homeSetDao(): HomeSetDao
-    abstract fun collectionDao(): CollectionDao
-    abstract fun syncStatsDao(): SyncStatsDao
-
-    companion object {
-
-        fun getInstance(context: Context) = Singleton.getInstance<AppDatabase>(context) {
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object AppDatabaseModule {
+        @Provides
+        @Singleton
+        fun appDatabase(@ApplicationContext context: Context): AppDatabase =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "services.db")
                 .addMigrations(*migrations)
                 .fallbackToDestructiveMigration()   // as a last fallback, recreate database instead of crashing
@@ -65,8 +68,9 @@ abstract class AppDatabase: RoomDatabase() {
                     }
                 })
                 .build()
-        }
+    }
 
+    companion object {
 
         // migrations
 
@@ -217,6 +221,16 @@ abstract class AppDatabase: RoomDatabase() {
 
     }
 
+
+    // DAOs
+
+    abstract fun serviceDao(): ServiceDao
+    abstract fun homeSetDao(): HomeSetDao
+    abstract fun collectionDao(): CollectionDao
+    abstract fun syncStatsDao(): SyncStatsDao
+
+
+    // helpers
 
     fun dump(writer: Writer, ignoreTables: Array<String>) {
         val db = openHelper.readableDatabase

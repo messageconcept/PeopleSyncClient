@@ -12,14 +12,30 @@ import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import at.bitfire.vcard4android.BatchOperation
 import at.bitfire.vcard4android.CachedGroupMembership
 import at.bitfire.vcard4android.Contact
 import at.bitfire.vcard4android.GroupMethod
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.*
 import org.junit.Assert.*
+import javax.inject.Inject
 
+@HiltAndroidTest
 class LocalGroupTest {
+
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var settingsManager: SettingsManager
+
+    @Before
+    fun inject() {
+        hiltRule.inject()
+    }
 
     companion object {
         @JvmField
@@ -92,7 +108,7 @@ class LocalGroupTest {
         LocalGroup.applyPendingMemberships(ab)
 
         // check group membership
-        ab.provider.query(
+        ab.provider!!.query(
             ab.syncAdapterURI(ContactsContract.Data.CONTENT_URI), arrayOf(GroupMembership.GROUP_ROW_ID, GroupMembership.RAW_CONTACT_ID),
             "${GroupMembership.MIMETYPE}=?", arrayOf(GroupMembership.CONTENT_ITEM_TYPE),
             null
@@ -104,7 +120,7 @@ class LocalGroupTest {
             assertFalse(cursor.moveToNext())
         }
         // check cached group membership
-        ab.provider.query(
+        ab.provider!!.query(
             ab.syncAdapterURI(ContactsContract.Data.CONTENT_URI), arrayOf(CachedGroupMembership.GROUP_ID, CachedGroupMembership.RAW_CONTACT_ID),
             "${CachedGroupMembership.MIMETYPE}=?", arrayOf(CachedGroupMembership.CONTENT_ITEM_TYPE),
             null
@@ -138,7 +154,7 @@ class LocalGroupTest {
         LocalGroup.applyPendingMemberships(ab)
 
         // check group membership
-        ab.provider.query(
+        ab.provider!!.query(
             ab.syncAdapterURI(ContactsContract.Data.CONTENT_URI), arrayOf(GroupMembership.GROUP_ROW_ID, GroupMembership.RAW_CONTACT_ID),
             "${GroupMembership.MIMETYPE}=?", arrayOf(GroupMembership.CONTENT_ITEM_TYPE),
             null
@@ -146,7 +162,7 @@ class LocalGroupTest {
             assertFalse(cursor.moveToNext())
         }
         // check cached group membership
-        ab.provider.query(
+        ab.provider!!.query(
             ab.syncAdapterURI(ContactsContract.Data.CONTENT_URI), arrayOf(CachedGroupMembership.GROUP_ID, CachedGroupMembership.RAW_CONTACT_ID),
             "${CachedGroupMembership.MIMETYPE}=?", arrayOf(CachedGroupMembership.CONTENT_ITEM_TYPE),
             null
@@ -176,7 +192,7 @@ class LocalGroupTest {
         group.clearDirty(null, null)
 
         // check cached group membership
-        ab.provider.query(
+        ab.provider!!.query(
             ab.syncAdapterURI(ContactsContract.Data.CONTENT_URI), arrayOf(CachedGroupMembership.GROUP_ID, CachedGroupMembership.RAW_CONTACT_ID),
             "${CachedGroupMembership.MIMETYPE}=?", arrayOf(CachedGroupMembership.CONTENT_ITEM_TYPE),
             null
@@ -209,7 +225,7 @@ class LocalGroupTest {
         group.clearDirty(null, null)
 
         // cached group membership should be gone
-        ab.provider.query(
+        ab.provider!!.query(
             ab.syncAdapterURI(ContactsContract.Data.CONTENT_URI), arrayOf(CachedGroupMembership.GROUP_ID, CachedGroupMembership.RAW_CONTACT_ID),
             "${CachedGroupMembership.MIMETYPE}=?", arrayOf(CachedGroupMembership.CONTENT_ITEM_TYPE),
             null

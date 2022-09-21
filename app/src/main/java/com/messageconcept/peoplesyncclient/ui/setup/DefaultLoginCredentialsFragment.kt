@@ -26,8 +26,15 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KE
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
 import com.google.android.material.snackbar.Snackbar
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntKey
+import dagger.multibindings.IntoMap
 import java.net.URI
 import java.net.URISyntaxException
+import javax.inject.Inject
 
 class DefaultLoginCredentialsFragment : Fragment() {
 
@@ -66,7 +73,7 @@ class DefaultLoginCredentialsFragment : Fragment() {
 
         if (model.loginUrlManaged.value == true && model.loginUsernameManaged.value == true && model.loginPasswordManaged.value == true)
             if (validate())
-                requireFragmentManager().beginTransaction()
+                parentFragmentManager.beginTransaction()
                         .replace(android.R.id.content, DetectConfigurationFragment(), null)
                         .commit()
 
@@ -226,10 +233,19 @@ class DefaultLoginCredentialsFragment : Fragment() {
     }
 
 
-    class Factory : LoginCredentialsFragment {
+    class Factory @Inject constructor() : LoginCredentialsFragmentFactory {
 
         override fun getFragment(intent: Intent) = DefaultLoginCredentialsFragment()
 
+    }
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    abstract class DefaultLoginCredentialsFragmentModule {
+        @Binds
+        @IntoMap
+        @IntKey(/* priority */ 10)
+        abstract fun factory(impl: Factory): LoginCredentialsFragmentFactory
     }
 
 }
