@@ -17,11 +17,12 @@ android {
     defaultConfig {
         applicationId "com.messageconcept.peoplesyncclient"
 
-        versionCode 403000005
-        versionName '4.3'
+        //noinspection HighAppVersionCode
+        versionCode 2070040300
+        versionName "4.3-0"
         buildConfigField "long", "buildTime", System.currentTimeMillis() + "L"
 
-        setProperty "archivesBaseName", "davx5-ose-" + getVersionName()
+        setProperty "archivesBaseName", "PeopleSyncClient-" + getVersionName()
 
         minSdkVersion 21        // Android 5
         targetSdkVersion 33     // Android 13
@@ -69,7 +70,7 @@ android {
     flavorDimensions "distribution"
     productFlavors {
         ose {
-            versionNameSuffix "-ose"
+            versionNameSuffix "-ps"
         }
     }
 
