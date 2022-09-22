@@ -91,8 +91,8 @@ class DefaultLoginCredentialsModel(app: Application): AndroidViewModel(app) {
             // We've got initial login data from the Intent.
             // We can't use uri.buildUpon() because this keeps the user info (it's readable, but not writable).
             val realScheme = when (uri.scheme) {
-                "caldav", "carddav" -> "http"
-                "caldavs", "carddavs", "davx5" -> "https"
+                "carddav" -> "http"
+                "carddavs" -> "https"
                 "http", "https" -> uri.scheme
                 else -> null
             }
