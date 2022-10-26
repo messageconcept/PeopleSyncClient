@@ -26,7 +26,8 @@ class DefaultsProvider(
 
     override val booleanDefaults = mutableMapOf(
         Pair(Settings.DISTRUST_SYSTEM_CERTIFICATES, false),
-        Pair(Settings.SYNC_ALL_COLLECTIONS, true)
+        Pair(Settings.SYNC_ALL_COLLECTIONS, true),
+        Pair(Settings.FORCE_READ_ONLY_ADDRESSBOOKS, false)
     )
 
     override val intDefaults = mapOf(

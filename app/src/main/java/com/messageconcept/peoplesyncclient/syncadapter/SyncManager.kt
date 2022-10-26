@@ -143,8 +143,8 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
             Logger.log.info("Querying server capabilities")
             var remoteSyncState = queryCapabilities()
 
-            Logger.log.info("Sending local deletes/updates to server")
-            val modificationsSent = processLocallyDeleted() || uploadDirty()
+            Logger.log.info("Processing local deletes/updates")
+            val modificationsPresent = processLocallyDeleted() || uploadDirty()
 
             if (extras.containsKey(SyncAdapterService.SYNC_EXTRAS_FULL_RESYNC)) {
                 Logger.log.info("Forcing re-synchronization of all entries")
@@ -157,14 +157,14 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                 localCollection.forgetETags()
             }
 
-            if (modificationsSent || syncRequired(remoteSyncState))
+            if (modificationsPresent || syncRequired(remoteSyncState))
                 when (syncAlgorithm()) {
                     SyncAlgorithm.PROPFIND_REPORT -> {
                         Logger.log.info("Sync algorithm: full listing as one result (PROPFIND/REPORT)")
                         resetPresentRemotely()
 
                         // get current sync state
-                        if (modificationsSent)
+                        if (modificationsPresent)
                             remoteSyncState = querySyncState()
 
                         // list and process all entries at current sync state (which may be the same as or newer than remoteSyncState)
@@ -293,9 +293,12 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     protected abstract fun queryCapabilities(): SyncState?
 
     /**
-     * Processes locally deleted entries and forwards them to the server (HTTP `DELETE`).
+     * Processes locally deleted entries. This can mean:
      *
-     * @return whether resources have been deleted from the server
+     * - forwarding them to the server (HTTP `DELETE`)
+     * - resetting their local state so that they will be downloaded again because they're read-only
+     *
+     * @return whether local resources have been processed so that a synchronization is always necessary
      */
     protected open fun processLocallyDeleted(): Boolean {
         var numDeleted = 0
@@ -330,9 +333,12 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     }
 
     /**
-     * Uploads locally modified resources to the server.
+     * Processes locally modified resources to the server. This can mean:
      *
-     * @return whether resources have been uploaded
+     * - uploading them to the server (HTTP `PUT`)
+     * - resetting their local state so that they will be downloaded again because they're read-only
+     *
+     * @return whether local resources have been processed so that a synchronization is always necessary
      */
     protected open fun uploadDirty(): Boolean {
         var numUploaded = 0
