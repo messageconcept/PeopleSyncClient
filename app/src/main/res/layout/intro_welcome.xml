@@ -18,12 +18,14 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="48dp"
+            android:scaleX="0.75"
+            android:scaleY="0.75"
             app:layout_constraintBottom_toTopOf="@id/yourDataYourChoice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="1.8"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:srcCompat="@drawable/ic_logo_white" />
 
         <TextView
             android:id="@+id/yourDataYourChoice"

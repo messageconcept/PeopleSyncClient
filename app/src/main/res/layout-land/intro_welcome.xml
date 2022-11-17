@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="@id/logoBackground"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:srcCompat="@drawable/ic_logo_white" />
 
         <TextView
             android:id="@+id/yourDataYourChoice"
