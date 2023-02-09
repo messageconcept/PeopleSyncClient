@@ -19,7 +19,7 @@ import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker.Refresher
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
@@ -74,7 +74,24 @@ class AddressBooksSyncAdapterService : SyncAdapterService() {
 
             if (service != null) {
                 Logger.log.info("Refreshing collections")
-                RefreshCollectionsWorker.refreshCollections(context, service.id, true)
+                HttpClient.Builder(context, AccountSettings(context, account))
+                    .setForeground(true)
+                    .build().use { client ->
+                        val httpClient = client.okHttpClient
+                        val refresher = Refresher(db, service, settingsManager, httpClient)
+
+                        // refresh home set list (from principal url) and save them
+                        service.principal?.let { principalUrl ->
+                            Logger.log.fine("Querying principal $principalUrl for home sets")
+                            refresher.queryHomeSets(principalUrl)
+                        }
+
+                        // now refresh home sets and their member collections
+                        refresher.refreshHomesetsAndTheirCollections()
+
+                        // also check/refresh collections without a homeset
+                        refresher.refreshHomelessCollections()
+                    }
             }
 
             val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()
