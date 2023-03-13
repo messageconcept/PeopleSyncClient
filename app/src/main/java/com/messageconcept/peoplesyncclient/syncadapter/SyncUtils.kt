@@ -18,7 +18,6 @@ import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.messageconcept.peoplesyncclient.InvalidAccountException
-import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Service
@@ -28,11 +27,15 @@ import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Utility methods related to synchronization management (authorities, workers etc.)
+ */
 object SyncUtils {
 
     @EntryPoint
@@ -45,6 +48,25 @@ object SyncUtils {
     fun removePeriodicSyncs(account: Account, authority: String) {
         for (sync in ContentResolver.getPeriodicSyncs(account, authority))
             ContentResolver.removePeriodicSync(sync.account, sync.authority, sync.extras)
+    }
+
+    /**
+     * Returns a list of all available sync authorities for main accounts (!= address book accounts):
+     *
+     *   1. address books authority (not [ContactsContract.AUTHORITY], but the one which manages address book accounts)
+     *   1. calendar authority
+     *   1. tasks authority (if available)
+     *
+     * Checking the availability of authorities may be relatively expensive, so the
+     * result should be cached for the current operation.
+     *
+     * @return list of available sync authorities for main accounts
+     */
+    fun syncAuthorities(context: Context): List<String> {
+        val result = mutableListOf(
+            context.getString(R.string.address_books_authority)
+        )
+        return result
     }
 
 }

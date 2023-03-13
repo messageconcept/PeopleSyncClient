@@ -14,14 +14,14 @@ import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.Groups
 import android.provider.ContactsContract.RawContacts
 import android.util.Base64
-import com.messageconcept.peoplesyncclient.util.DavUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
-import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
+import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils.removePeriodicSyncs
+import com.messageconcept.peoplesyncclient.util.DavUtils
 import at.bitfire.vcard4android.*
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -293,7 +293,7 @@ open class LocalAddressBook(
             ContentResolver.setIsSyncable(account, ContactsContract.AUTHORITY, 1)
         if (!ContentResolver.getSyncAutomatically(account, ContactsContract.AUTHORITY))
             ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true)
-        SyncUtils.removePeriodicSyncs(account, ContactsContract.AUTHORITY)
+        removePeriodicSyncs(account, ContactsContract.AUTHORITY)
     }
 
 

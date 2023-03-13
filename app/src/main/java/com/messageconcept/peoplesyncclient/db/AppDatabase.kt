@@ -13,11 +13,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.getStringOrNull
 import androidx.room.*
+import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.TextTable
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
@@ -34,8 +36,11 @@ import javax.inject.Singleton
     Service::class,
     HomeSet::class,
     Collection::class,
-    SyncStats::class
-], exportSchema = true, version = 9)
+    Principal::class,
+    SyncStats::class,
+], exportSchema = true, version = 12, autoMigrations = [
+    AutoMigration(from = 9, to = 12, spec = AppDatabase.AutoMigration11_12::class)
+])
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -47,6 +52,7 @@ abstract class AppDatabase: RoomDatabase() {
         fun appDatabase(@ApplicationContext context: Context): AppDatabase =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "services.db")
                 .addMigrations(*migrations)
+                .addAutoMigrationSpec(AutoMigration11_12(context))
                 .fallbackToDestructiveMigration()   // as a last fallback, recreate database instead of crashing
                 .addCallback(object: Callback() {
                     override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
@@ -71,9 +77,26 @@ abstract class AppDatabase: RoomDatabase() {
                 .build()
     }
 
+    // auto migrations
+
+    @ProvidedAutoMigrationSpec
+    @DeleteColumn(tableName = "collection", columnName = "owner")
+    class AutoMigration11_12(val context: Context): AutoMigrationSpec {
+        override fun onPostMigrate(db: SupportSQLiteDatabase) {
+            Logger.log.info("Database update to v12, refreshing services to get display names of owners")
+            db.query("SELECT id FROM service", arrayOf()).use { cursor ->
+                while (cursor.moveToNext()) {
+                    val serviceId = cursor.getLong(0)
+                    RefreshCollectionsWorker.refreshCollections(context, serviceId)
+                }
+            }
+        }
+    }
+
+
     companion object {
 
-        // migrations
+        // manual migrations
 
         val migrations: Array<Migration> = arrayOf(
             object : Migration(8, 9) {
@@ -228,6 +251,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun serviceDao(): ServiceDao
     abstract fun homeSetDao(): HomeSetDao
     abstract fun collectionDao(): CollectionDao
+    abstract fun principalDao(): PrincipalDao
     abstract fun syncStatsDao(): SyncStatsDao
 
 

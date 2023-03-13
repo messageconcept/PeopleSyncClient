@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.util.closeCompat
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Credentials
@@ -30,6 +29,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
+import com.messageconcept.peoplesyncclient.util.closeCompat
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
 import dagger.hilt.EntryPoint

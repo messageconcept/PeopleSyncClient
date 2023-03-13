@@ -12,11 +12,11 @@ import at.bitfire.dav4jvm.DavCollection
 import at.bitfire.dav4jvm.MultiResponseCallback
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.property.GetCTag
-import com.messageconcept.peoplesyncclient.util.DavUtils
 import com.messageconcept.peoplesyncclient.HttpClient
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.resource.LocalResource
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.util.DavUtils
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
