@@ -88,13 +88,6 @@ class DavResourceFinder(
                 log.log(Level.INFO, "CardDAV service detection failed", e)
                 processException(e)
             }
-
-            try {
-                calDavConfig = findInitialConfiguration(Service.CALDAV)
-            } catch (e: Exception) {
-                log.log(Level.INFO, "CalDAV service detection failed", e)
-                processException(e)
-            }
         } catch(e: Exception) {
             // we have been interrupted; reset results so that an error message will be shown
             cardDavConfig = null
