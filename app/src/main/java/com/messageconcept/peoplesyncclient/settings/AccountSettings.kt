@@ -122,10 +122,12 @@ class AccountSettings(
 
                     // repair address book sync
                     settings.getSavedAddressbooksSyncInterval()?.let { shouldBe ->
-                        val current = settings.getSyncInterval(addressBooksAuthority)
+                        val authority = addressBooksAuthority
+                        val current = settings.getSyncInterval(authority)
                         if (current != shouldBe) {
-                            Logger.log.warning("${account.name}: $addressBooksAuthority sync interval should be $shouldBe but is $current -> setting to $current")
-                            settings.setSyncInterval(addressBooksAuthority, shouldBe)
+                            Logger.log.warning("${account.name}: $authority sync interval should be $shouldBe but is $current -> setting to $shouldBe")
+                            if (!settings.setSyncInterval(authority, shouldBe))
+                                Logger.log.warning("${account.name}: repairing/setting the sync interval for $authority failed")
                         }
                     }
                 } catch (ignored: InvalidAccountException) {

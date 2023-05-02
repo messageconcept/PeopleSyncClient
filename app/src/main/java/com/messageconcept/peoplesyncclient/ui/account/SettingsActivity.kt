@@ -27,14 +27,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.*
 import com.messageconcept.peoplesyncclient.InvalidAccountException
-import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncAdapterService
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.UiUtils
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
 import dagger.assisted.Assisted
@@ -353,13 +354,12 @@ class SettingsActivity: AppCompatActivity() {
         }
 
         private fun resync(authority: String, fullResync: Boolean) {
-            val args = Bundle(1)
-            args.putBoolean(if (fullResync)
-                    SyncAdapterService.SYNC_EXTRAS_FULL_RESYNC
+            val resync =
+                if (fullResync)
+                    SyncWorker.FULL_RESYNC
                 else
-                    SyncAdapterService.SYNC_EXTRAS_RESYNC, true)
-
-            ContentResolver.requestSync(account, authority, args)
+                    SyncWorker.RESYNC
+            SyncWorker.requestSync(context, account, authority, resync)
         }
 
     }
