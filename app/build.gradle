@@ -18,8 +18,8 @@ android {
         applicationId "com.messageconcept.peoplesyncclient"
 
         //noinspection HighAppVersionCode
-        versionCode 2070040301
-        versionName "4.3-1"
+        versionCode 2070040302
+        versionName "4.3-2"
 
         buildConfigField "long", "buildTime", System.currentTimeMillis() + "L"
 
