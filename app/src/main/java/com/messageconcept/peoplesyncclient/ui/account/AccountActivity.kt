@@ -7,7 +7,7 @@ package com.messageconcept.peoplesyncclient.ui.account
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
-import android.content.Context
+import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.*
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.databinding.ActivityAccountBinding
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
@@ -29,13 +28,14 @@ import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
+import com.messageconcept.peoplesyncclient.ui.AppWarningsManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
@@ -93,10 +93,14 @@ class AccountActivity: AppCompatActivity() {
 
         })
 
-        binding.sync.setOnClickListener {
-            SyncWorker.requestSync(this, model.account)
-            Snackbar.make(binding.viewPager, R.string.account_synchronizing_now, Snackbar.LENGTH_LONG).show()
-        }
+        // "Sync now" button
+        model.networkAvailable.observe(this, Observer { networkAvailable ->
+            binding.sync.setOnClickListener {
+                if (!networkAvailable)
+                    Snackbar.make(binding.sync, R.string.no_internet_sync_scheduled, Snackbar.LENGTH_LONG).show()
+                SyncWorker.enqueueAllAuthorities(this, model.account)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -204,10 +208,10 @@ class AccountActivity: AppCompatActivity() {
         override fun getItemPosition(obj: Any) = POSITION_NONE
 
         override fun getPageTitle(position: Int): String =
-                when (position) {
-                    idxCardDav -> activity.getString(R.string.account_carddav)
-                    else -> throw IllegalArgumentException()
-                }
+            when (position) {
+                idxCardDav -> activity.getString(R.string.account_carddav)
+                else -> throw IllegalArgumentException()
+            }
 
     }
 
@@ -215,31 +219,34 @@ class AccountActivity: AppCompatActivity() {
     // model
 
     class Model @AssistedInject constructor(
-        @ApplicationContext val context: Context,
+        application: Application,
         val db: AppDatabase,
-        @Assisted val account: Account
-    ): ViewModel(), OnAccountsUpdateListener {
+        @Assisted val account: Account,
+        warnings: AppWarningsManager
+    ): AndroidViewModel(application), OnAccountsUpdateListener {
 
         @AssistedFactory
         interface Factory {
             fun create(account: Account): Model
         }
 
-        val accountManager = AccountManager.get(context)!!
-        val accountSettings by lazy { AccountSettings(context, account) }
+        val accountManager: AccountManager = AccountManager.get(application)
+        val accountSettings by lazy { AccountSettings(application, account) }
 
         val accountExists = MutableLiveData<Boolean>()
         val cardDavService = db.serviceDao().getIdByAccountAndType(account.name, Service.TYPE_CARDDAV)
 
         val showOnlyPersonal = MutableLiveData<Boolean>()
-        val showOnlyPersonal_writable = MutableLiveData<Boolean>()
+        val showOnlyPersonalWritable = MutableLiveData<Boolean>()
+
+        val networkAvailable = warnings.networkAvailable
 
         init {
             accountManager.addOnAccountsUpdatedListener(this, null, true)
             viewModelScope.launch(Dispatchers.IO) {
                 accountSettings.getShowOnlyPersonal().let { (value, locked) ->
                     showOnlyPersonal.postValue(value)
-                    showOnlyPersonal_writable.postValue(locked)
+                    showOnlyPersonalWritable.postValue(locked)
                 }
             }
         }

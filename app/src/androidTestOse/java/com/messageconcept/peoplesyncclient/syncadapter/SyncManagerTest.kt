@@ -6,10 +6,14 @@ package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
+import android.content.Context
 import android.content.SyncResult
-import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationManagerCompat
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.work.Configuration
+import androidx.work.testing.WorkManagerTestInitHelper
 import at.bitfire.dav4jvm.PropStat
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.Response.HrefRelation
@@ -20,6 +24,7 @@ import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.Protocol
@@ -33,17 +38,6 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 class SyncManagerTest {
-
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
-
-    @Inject
-    lateinit var settingsManager: SettingsManager
-
-    @Before
-    fun inject() {
-        hiltRule.inject()
-    }
 
     companion object {
 
@@ -67,13 +61,42 @@ class SyncManagerTest {
 
     }
 
+
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @Inject
+    lateinit var settingsManager: SettingsManager
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
     val server = MockWebServer()
+
+    @Before
+    fun inject() {
+        hiltRule.inject()
+
+        // The test application is an instance of HiltTestApplication, which doesn't initialize notification channels.
+        // However, we need notification channels for the ongoing work notifications.
+        NotificationUtils.createChannels(context)
+
+        // Initialize WorkManager for instrumentation tests.
+        val config = Configuration.Builder()
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .setWorkerFactory(workerFactory)
+            .build()
+        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
+    }
+
 
     private fun syncManager(collection: LocalTestCollection) =
             TestSyncManager(
                     context,
                     account,
-                    Bundle(),
+                    arrayOf(),
                     "TestAuthority",
                     HttpClient.Builder().build(),
                     SyncResult(),

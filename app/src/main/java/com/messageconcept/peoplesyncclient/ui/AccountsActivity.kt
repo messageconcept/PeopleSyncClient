@@ -6,23 +6,29 @@ package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.AccountManager
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.AndroidViewModel
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.ActivityAccountsBinding
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
 import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +44,7 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
     @Inject lateinit var accountsDrawerHandler: AccountsDrawerHandler
 
     private lateinit var binding: ActivityAccountsBinding
+    val model by viewModels<Model>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,9 +119,28 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
         if (Build.VERSION.SDK_INT >= 25)
             getSystemService<ShortcutManager>()?.reportShortcutUsed(UiUtils.SHORTCUT_SYNC_ALL)
 
+        // Notify user that sync will get enqueued if we're not connected to the internet
+        model.networkAvailable.value?.let { networkAvailable ->
+            if (!networkAvailable)
+                Snackbar.make(binding.drawerLayout, R.string.no_internet_sync_scheduled, Snackbar.LENGTH_LONG).show()
+        }
+
+        // Enqueue sync worker for all accounts and authorities. Will sync once internet is available
         val accounts = allAccounts()
         for (account in accounts)
-            SyncWorker.requestSync(this, account)
+            SyncWorker.enqueueAllAuthorities(this, account)
+    }
+
+
+    @HiltViewModel
+    class Model @Inject constructor(
+        application: Application,
+        val settings: SettingsManager,
+        warnings: AppWarningsManager
+    ): AndroidViewModel(application) {
+
+        val networkAvailable = warnings.networkAvailable
+
     }
 
 }

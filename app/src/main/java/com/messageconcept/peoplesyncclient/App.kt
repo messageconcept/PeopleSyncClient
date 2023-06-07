@@ -85,9 +85,7 @@ class App: Application(), Thread.UncaughtExceptionHandler, Configuration.Provide
             // create/update app shortcuts
             UiUtils.updateShortcuts(this)
 
-            // check/repair sync intervals
-            AccountSettings.repairSyncIntervals(this)
-
+            // trigger account updates when managed settings have changed
             AccountSettings.updateAccounts(this)
         }
     }
