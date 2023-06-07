@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.ui.account
 import android.app.Application
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.text.format.DateUtils
 import android.view.LayoutInflater

@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.syncadapter
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.ContentResolver
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
@@ -57,8 +56,7 @@ class SyncWorkerTest {
     @Before
     fun setUp() {
         assertTrue(AccountUtils.createAccount(context, account, AccountSettings.initialUserData(fakeCredentials)))
-        ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
-        ContentResolver.setIsSyncable(account, ContactsContract.AUTHORITY, 0)
+        ContentResolver.setIsSyncable(account, ContactsContract.AUTHORITY, 1)
 
         // The test application is an instance of HiltTestApplication, which doesn't initialize notification channels.
         // However, we need notification channels for the ongoing work notifications.
@@ -79,8 +77,8 @@ class SyncWorkerTest {
 
     @Test
     fun testEnqueue_enqueuesWorker() {
-        SyncWorker.enqueue(context, account, CalendarContract.AUTHORITY)
-        val workerName = SyncWorker.workerName(account, CalendarContract.AUTHORITY)
+        SyncWorker.enqueue(context, account, ContactsContract.AUTHORITY)
+        val workerName = SyncWorker.workerName(account, ContactsContract.AUTHORITY)
         assertTrue(workScheduledOrRunningOrSuccessful(context, workerName))
     }
 
@@ -129,7 +127,7 @@ class SyncWorkerTest {
 
     @Test
     fun testOnStopped_interruptsSyncThread() {
-        val authority = CalendarContract.AUTHORITY
+        val authority = ContactsContract.AUTHORITY
         val inputData = workDataOf(
             SyncWorker.ARG_AUTHORITY to authority,
             SyncWorker.ARG_ACCOUNT_NAME to account.name,

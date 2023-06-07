@@ -10,7 +10,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Parcel
 import android.os.RemoteException
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Base64
 import androidx.core.content.ContextCompat

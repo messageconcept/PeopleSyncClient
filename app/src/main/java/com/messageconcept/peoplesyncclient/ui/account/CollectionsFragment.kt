@@ -6,7 +6,6 @@ package com.messageconcept.peoplesyncclient.ui.account
 
 import android.content.*
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.*
 import android.widget.PopupMenu
@@ -302,7 +301,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
             if (collectionType == Collection.TYPE_ADDRESSBOOK)
                 listOf(context.getString(R.string.address_books_authority), ContactsContract.AUTHORITY)
             else
-                listOf(CalendarContract.AUTHORITY).filterNotNull()
+                listOf()
         val isSyncActive = SyncWorker.exists(context,
             listOf(WorkInfo.State.RUNNING),
             accountModel.account,

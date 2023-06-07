@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.syncadapter
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.ContentResolver
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
@@ -58,7 +57,6 @@ class PeriodicSyncWorkerTest {
             WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
 
             assertTrue(AccountUtils.createAccount(context, account, AccountSettings.initialUserData(fakeCredentials)))
-            ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
             ContentResolver.setIsSyncable(account, ContactsContract.AUTHORITY, 1)
         }
 
@@ -83,16 +81,16 @@ class PeriodicSyncWorkerTest {
 
     @Test
     fun enable_enqueuesPeriodicWorker() {
-        PeriodicSyncWorker.enable(context, account, CalendarContract.AUTHORITY, 60, false)
-        val workerName = PeriodicSyncWorker.workerName(account, CalendarContract.AUTHORITY)
+        PeriodicSyncWorker.enable(context, account, ContactsContract.AUTHORITY, 60, false)
+        val workerName = PeriodicSyncWorker.workerName(account, ContactsContract.AUTHORITY)
         assertTrue(workScheduledOrRunning(context, workerName))
     }
 
     @Test
     fun disable_removesPeriodicWorker() {
-        PeriodicSyncWorker.enable(context, account, CalendarContract.AUTHORITY, 60, false)
-        PeriodicSyncWorker.disable(context, account, CalendarContract.AUTHORITY)
-        val workerName = PeriodicSyncWorker.workerName(account, CalendarContract.AUTHORITY)
+        PeriodicSyncWorker.enable(context, account, ContactsContract.AUTHORITY, 60, false)
+        PeriodicSyncWorker.disable(context, account, ContactsContract.AUTHORITY)
+        val workerName = PeriodicSyncWorker.workerName(account, ContactsContract.AUTHORITY)
         assertFalse(workScheduledOrRunning(context, workerName))
     }
 

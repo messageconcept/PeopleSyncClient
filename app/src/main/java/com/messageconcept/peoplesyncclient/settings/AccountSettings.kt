@@ -7,6 +7,7 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.*
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
@@ -209,7 +210,7 @@ class AccountSettings(
     /**
      * Gets the currently set sync interval for this account in seconds.
      *
-     * @param authority authority to check (for instance: [CalendarContract.AUTHORITY]])
+     * @param authority authority to check (for instance: [ContactsContract.AUTHORITY]])
      * @return sync interval in seconds; *[SYNC_INTERVAL_MANUALLY]* if manual sync; *null* if not set
      */
     fun getSyncInterval(authority: String): Long? {
@@ -231,7 +232,7 @@ class AccountSettings(
      * This method blocks until a worker as been created and enqueued (sync active) or removed
      * (sync disabled), so it should not be called from the UI thread.
      *
-     * @param authority sync authority (like [CalendarContract.AUTHORITY])
+     * @param authority sync authority (like [ContactsContract.AUTHORITY])
      * @param seconds if [SYNC_INTERVAL_MANUALLY]: automatic sync will be disabled;
      * otherwise (≥ 15 min): automatic sync will be enabled and set to the given number of seconds
      *
@@ -273,7 +274,7 @@ class AccountSettings(
      * should not be called from the UI thread.
      *
      * @param enable    *true* enables automatic sync; *false* disables it
-     * @param authority sync authority (like [CalendarContract.AUTHORITY])
+     * @param authority sync authority (like [ContactsContract.AUTHORITY])
      * @return whether the content triggered sync was enabled successfully
      */
     @WorkerThread

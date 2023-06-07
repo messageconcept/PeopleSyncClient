@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.ui.setup
 import android.accounts.AccountManager
 import android.content.ContentResolver
 import android.content.Context
-import android.provider.CalendarContract
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -92,8 +91,7 @@ class AccountDetailsFragmentTest {
             .first { account -> account.name == accountName }
 
         for (authority in listOf(
-            targetContext.getString(R.string.address_books_authority),
-            CalendarContract.AUTHORITY,
+            targetContext.getString(R.string.address_books_authority)
         )) {
             // Check isSyncable was set
             assertEquals(1, ContentResolver.getIsSyncable(account, authority))

@@ -6,7 +6,7 @@ package com.messageconcept.peoplesyncclient.syncadapter
 
 import android.accounts.Account
 import android.content.Context
-import android.provider.CalendarContract
+import android.provider.ContactsContract
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.messageconcept.peoplesyncclient.log.Logger
@@ -51,7 +51,7 @@ class PeriodicSyncWorker @AssistedInject constructor(
          * Activate scheduled synchronization of an account with a specific authority.
          *
          * @param account    account to sync
-         * @param authority  authority to sync (for instance: [CalendarContract.AUTHORITY]])
+         * @param authority  authority to sync (for instance: [ContactsContract.AUTHORITY]])
          * @param interval   interval between recurring syncs in seconds
          * @return operation object to check when and whether activation was successful
          */
@@ -86,7 +86,7 @@ class PeriodicSyncWorker @AssistedInject constructor(
          * Disables scheduled synchronization of an account for a specific authority.
          *
          * @param account     account to sync
-         * @param authority   authority to sync (for instance: [CalendarContract.AUTHORITY]])
+         * @param authority   authority to sync (for instance: [ContactsContract.AUTHORITY]])
          * @return operation object to check process state of work cancellation
          */
         fun disable(context: Context, account: Account, authority: String): Operation =
@@ -97,7 +97,7 @@ class PeriodicSyncWorker @AssistedInject constructor(
          * Finds out whether the [PeriodicSyncWorker] is currently enqueued or running
          *
          * @param account       account to check
-         * @param authority     authority to check (for instance: [CalendarContract.AUTHORITY]])
+         * @param authority     authority to check (for instance: [ContactsContract.AUTHORITY]])
          * @return boolean      whether the [PeriodicSyncWorker] is running or enqueued
          */
         fun isEnabled(context: Context, account: Account, authority: String): Boolean =

@@ -23,7 +23,6 @@ import android.os.Environment
 import android.os.LocaleList
 import android.os.PowerManager
 import android.os.StatFs
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.view.View
 import androidx.activity.viewModels

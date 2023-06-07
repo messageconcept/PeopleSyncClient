@@ -10,7 +10,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -198,20 +197,6 @@ class AccountDetailsFragment : Fragment() {
                         accountSettings.setSyncInterval(addrBookAuthority, defaultSyncInterval)
                     } else
                         ContentResolver.setIsSyncable(account, addrBookAuthority, 0)
-
-                    // Configure CalDAV service
-                    if (config.calDAV != null) {
-                        // insert CalDAV service
-                        val id = insertService(name, Service.TYPE_CALDAV, config.calDAV)
-
-                        // start CalDAV service detection (refresh collections)
-                        RefreshCollectionsWorker.refreshCollections(context, id)
-
-                        // set default sync interval and enable sync regardless of permissions
-                        ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
-                        accountSettings.setSyncInterval(CalendarContract.AUTHORITY, defaultSyncInterval)
-                    } else
-                        ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 0)
 
                 } catch(e: InvalidAccountException) {
                     Logger.log.log(Level.SEVERE, "Couldn't access account settings", e)

@@ -13,7 +13,6 @@ import android.content.SyncResult
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.annotation.IntDef
 import androidx.concurrent.futures.CallbackToFutureAdapter
@@ -113,7 +112,7 @@ class SyncWorker @AssistedInject constructor(
          * Requests immediate synchronization of an account with a specific authority.
          *
          * @param account       account to sync
-         * @param authority     authority to sync (for instance: [CalendarContract.AUTHORITY])
+         * @param authority     authority to sync (for instance: [ContactsContract.AUTHORITY])
          * @param resync        whether to request (full) re-synchronization or not
          * @param upload        see [ContentResolver.SYNC_EXTRAS_UPLOAD] used only for contacts sync
          *                      and android 7 workaround
@@ -175,7 +174,7 @@ class SyncWorker @AssistedInject constructor(
          *
          * @param workStates   list of states of workers to match
          * @param account      the account which the workers belong to
-         * @param authorities  type of sync work, ie [CalendarContract.AUTHORITY]
+         * @param authorities  type of sync work, ie [ContactsContract.AUTHORITY]
          * @return *true* if at least one worker with matching query was found; *false* otherwise
          */
         fun exists(
