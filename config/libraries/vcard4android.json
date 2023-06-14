@@ -1,0 +1,16 @@
+{
+  "uniqueId": "com.github.bitfireAT:vcard4android",
+  "developers": [
+  {
+      "name": "bitfire web engineering",
+      "organisationUrl": "https://www.davx5.com/"
+    }
+  ],
+  "artifactVersion": "3851e70",
+  "description": "vCard processing and Contacts Provider access.",
+  "name": "bitfireAT/vcard4android",
+  "website": "https://github.com/bitfireAT/",
+  "licenses": [
+    "GPL-3.0-or-later"
+  ]
+}

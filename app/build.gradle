@@ -106,15 +106,10 @@ android {
     }
 }
 
-/* See c3cd970581a4c9f01a09d83969adb53943600618
 aboutLibraries {
-    // DAVx5 is GPL 3.0 and not detected automatically.
-    // Since no other library uses GPL 3.0 we need to include it manually.
-    additionalLicenses {
-        GPL_3_0_or_later
-    }
+    // path to our custom library definitions
+    configPath = "config"
 }
-*/
 
 dependencies {
     implementation "com.github.bitfireAT:cert4android:${versions.cert4android}"
