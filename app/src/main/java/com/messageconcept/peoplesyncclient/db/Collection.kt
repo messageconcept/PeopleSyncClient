@@ -82,7 +82,7 @@ data class Collection(
     var source: HttpUrl? = null,
 
     /** whether this collection has been selected for synchronization */
-    var sync: Boolean = false
+    var sync: Boolean = true
 
 ) {
 
