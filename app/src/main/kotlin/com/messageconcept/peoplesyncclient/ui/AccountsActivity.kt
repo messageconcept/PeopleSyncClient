@@ -79,12 +79,15 @@ import androidx.work.WorkQuery
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
 import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 import com.messageconcept.peoplesyncclient.ui.widget.ActionCard
+import com.messageconcept.peoplesyncclient.ui.widget.NotificationCard
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -100,9 +103,10 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class AccountsActivity: AppCompatActivity() {
+class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
 
     @Inject lateinit var accountsDrawerHandler: AccountsDrawerHandler
+    @Inject lateinit var settings: SettingsManager
 
     private val model by viewModels<Model>()
 
@@ -111,6 +115,28 @@ class AccountsActivity: AppCompatActivity() {
             finish()
     }
 
+
+    override fun onSettingsChanged() {
+        applyRestrictions()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        settings.addOnChangeListener(this)
+        applyRestrictions()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        settings.removeOnChangeListener(this)
+    }
+
+    private fun applyRestrictions() {
+        val isManaged = AccountSettings.isManaged(this)
+        val isEmptyOrNull = model.accounts.value?.isEmpty() != false
+        model.showAddAccount.value = !(isManaged && !isEmptyOrNull)
+        model.isManaged.value = isManaged
+    }
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,6 +203,7 @@ class AccountsActivity: AppCompatActivity() {
 
                             // Warnings show as action cards
                             SyncWarnings(
+                                managedWarning = model.isManaged.observeAsState().value == true,
                                 notificationsWarning = notificationsPermissionState?.status?.isGranted == false,
                                 onClickPermissions = {
                                     startActivity(Intent(this@AccountsActivity, PermissionsActivity::class.java))
@@ -348,6 +375,8 @@ class AccountsActivity: AppCompatActivity() {
     ): AndroidViewModel(application), OnAccountsUpdateListener {
 
         val feedback = MutableLiveData<String>()
+
+        val isManaged = MutableLiveData<Boolean>(false)
 
         val accountManager = AccountManager.get(application)
         private val accountType = application.getString(R.string.account_type)
@@ -535,6 +564,7 @@ fun AccountList_Preview_Empty() {
 
 @Composable
 fun SyncWarnings(
+    managedWarning: Boolean,
     notificationsWarning: Boolean,
     onClickPermissions: () -> Unit = {},
     internetWarning: Boolean,
@@ -545,6 +575,13 @@ fun SyncWarnings(
     onManageDataSaver: () -> Unit = {}
 ) {
     Column(Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+        if (managedWarning)
+            NotificationCard(
+                icon = painterResource(R.drawable.ic_settings),
+            ) {
+                Text(stringResource(R.string.account_list_managed_configuration))
+            }
+
         if (notificationsWarning)
             ActionCard(
                 icon = painterResource(R.drawable.ic_notifications_off),
@@ -587,6 +624,7 @@ fun SyncWarnings(
 @Preview
 fun SyncWarnings_Preview() {
     SyncWarnings(
+        managedWarning = true,
         notificationsWarning = true,
         internetWarning = true,
         lowStorageWarning = true,
