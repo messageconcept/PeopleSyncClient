@@ -154,6 +154,13 @@ class AccountSettings(
                 }
         }
 
+        fun isManaged(context: Context): Boolean {
+            val restrictionsManager = context.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
+            val appRestrictions = restrictionsManager.applicationRestrictions
+
+            return !appRestrictions.getString(KEY_LOGIN_BASE_URL).isNullOrEmpty()
+        }
+
     }
 
 

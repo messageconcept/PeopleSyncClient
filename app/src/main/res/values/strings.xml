@@ -529,4 +529,6 @@
     <string name="default_sync_interval">Default sync interval</string>
     <string name="wifi_only_title">Sync over WiFi only</string>
     <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
+
+    <string name="account_list_managed_configuration">Account settings are managed by your organisation.</string>
 </resources>

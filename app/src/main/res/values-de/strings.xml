@@ -437,4 +437,5 @@
   <string name="update_notification_title">PeopleSync App Update</string>
   <string name="update_notification_text">Konto-Einstellungen wurden migriert</string>
   <string name="update_notification_action">Update abschliessen</string>
+  <string name="account_list_managed_configuration">Die Kontoeinstellungen werden von ihrer Organisation verwaltet.</string>
 </resources>

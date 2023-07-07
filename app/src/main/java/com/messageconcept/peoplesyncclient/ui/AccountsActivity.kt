@@ -22,6 +22,7 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.AndroidViewModel
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.ActivityAccountsBinding
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
@@ -36,13 +37,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SettingsManager.OnChangeListener {
 
     companion object {
         const val REQUEST_INTRO = 0
     }
 
     @Inject lateinit var accountsDrawerHandler: AccountsDrawerHandler
+    @Inject lateinit var settings: SettingsManager
 
     private lateinit var binding: ActivityAccountsBinding
     val model by viewModels<Model>()
@@ -69,6 +71,7 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
             startActivity(Intent(this, LoginActivity::class.java))
         }
         binding.content.fab.show()
+        checkRestrictions()
 
         setSupportActionBar(binding.content.toolbar)
 
@@ -113,6 +116,20 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
         return true
     }
 
+    override fun onSettingsChanged() {
+        checkRestrictions()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        settings.addOnChangeListener(this)
+        checkRestrictions()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        settings.removeOnChangeListener(this)
+    }
 
     private fun allAccounts() =
             AccountManager.get(this).getAccountsByType(getString(R.string.account_type))
@@ -143,6 +160,14 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         val networkAvailable = warnings.networkAvailable
 
+    }
+
+    private fun checkRestrictions() {
+
+        if (AccountSettings.isManaged(this) && allAccounts().isNotEmpty())
+            binding.content.fab.hide()
+        else
+            binding.content.fab.show()
     }
 
 }

@@ -434,4 +434,5 @@
   <!--cert4android-->
   <string name="certificate_notification_connection_security">PeopleSync: Beveiliging van de verbinding</string>
   <string name="trust_certificate_unknown_certificate_found">PeopleSync is een onbekend certificaat tegengekomen. Moet het vertrouwd worden?</string>
+  <string name="account_list_managed_configuration">Accountinstellingen worden beheerd door uw organisatie.</string>
 </resources>

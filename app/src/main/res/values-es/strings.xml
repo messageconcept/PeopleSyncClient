@@ -412,4 +412,5 @@
   <string name="update_notification_title">Actualización de PeopleSync</string>
   <string name="update_notification_text">Las cuentas han sido migradas</string>
   <string name="update_notification_action">Termina la actualización aquí</string>
+  <string name="account_list_managed_configuration">La configuración de la cuenta es gestionada por su organización.</string>
 </resources>

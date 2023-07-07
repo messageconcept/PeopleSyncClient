@@ -40,6 +40,7 @@ import androidx.work.WorkQuery
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.AccountListBinding
 import com.messageconcept.peoplesyncclient.databinding.AccountListItemBinding
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils.syncAuthorities
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
@@ -151,11 +152,22 @@ class AccountListFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         checkPermissions()
+        checkManagedConfiguration()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun checkManagedConfiguration() {
+        val context = model.getApplication<Application>();
+
+        if (AccountSettings.isManaged(context)) {
+            binding.managedConfiguration.visibility = View.VISIBLE
+        } else {
+            binding.managedConfiguration.visibility = View.GONE
+        }
     }
 
     fun checkPermissions() {
