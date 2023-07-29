@@ -6,7 +6,7 @@ package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -24,22 +24,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.*
 import com.messageconcept.peoplesyncclient.InvalidAccountException
-import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.syncadapter.Syncer
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
+import com.messageconcept.peoplesyncclient.syncadapter.Syncer
 import com.messageconcept.peoplesyncclient.ui.UiUtils
+import com.messageconcept.peoplesyncclient.ui.setup.GoogleLoginFragment
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import at.bitfire.vcard4android.GroupMethod
 import com.google.android.material.snackbar.Snackbar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -118,7 +118,7 @@ class SettingsActivity: AppCompatActivity() {
         private fun initSettings() {
             // preference group: sync
             findPreference<ListPreference>(getString(R.string.settings_sync_interval_contacts_key))!!.let {
-                model.syncIntervalContacts.observe(viewLifecycleOwner, { interval: Long? ->
+                model.syncIntervalContacts.observe(viewLifecycleOwner) { interval: Long? ->
                     if (interval != null) {
                         it.isEnabled = true
                         it.isVisible = true
@@ -134,25 +134,25 @@ class SettingsActivity: AppCompatActivity() {
                         }
                     } else
                         it.isVisible = false
-                })
+                }
             }
 
             findPreference<SwitchPreferenceCompat>(getString(R.string.settings_sync_wifi_only_key))!!.let {
-                model.syncWifiOnly.observe(viewLifecycleOwner, { wifiOnly ->
+                model.syncWifiOnly.observe(viewLifecycleOwner) { wifiOnly ->
                     it.isEnabled = !settings.containsKey(AccountSettings.KEY_WIFI_ONLY)
                     it.isChecked = wifiOnly
                     it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, wifiOnly ->
                         model.updateSyncWifiOnly(wifiOnly as Boolean)
                         false
                     }
-                })
+                }
             }
 
             findPreference<EditTextPreference>(getString(R.string.settings_sync_wifi_only_ssids_key))!!.let {
-                model.syncWifiOnly.observe(viewLifecycleOwner, { wifiOnly ->
+                model.syncWifiOnly.observe(viewLifecycleOwner) { wifiOnly ->
                     it.isEnabled = wifiOnly && settings.isWritable(AccountSettings.KEY_WIFI_ONLY_SSIDS)
-                })
-                model.syncWifiOnlySSIDs.observe(viewLifecycleOwner, { onlySSIDs ->
+                }
+                model.syncWifiOnlySSIDs.observe(viewLifecycleOwner) { onlySSIDs ->
                     checkWifiPermissions()
 
                     if (onlySSIDs != null) {
@@ -172,51 +172,79 @@ class SettingsActivity: AppCompatActivity() {
                         model.updateSyncWifiOnlySSIDs(newOnlySSIDs)
                         false
                     }
-                })
+                }
             }
 
             // preference group: authentication
-            val prefUserName = findPreference<EditTextPreference>("username")!!
-            val prefPassword = findPreference<EditTextPreference>("password")!!
-            val prefCertAlias = findPreference<Preference>("certificate_alias")!!
-            model.credentials.observe(viewLifecycleOwner, { credentials ->
-                prefUserName.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_USER_NAME)
-                prefUserName.summary = credentials.userName
-                prefUserName.text = credentials.userName
-                prefUserName.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newUserName ->
-                    model.updateCredentials(Credentials(newUserName as String, credentials.password, credentials.certificateAlias))
-                    false
-                }
+            val prefUserName = findPreference<EditTextPreference>(getString(R.string.settings_username_key))!!
+            val prefPassword = findPreference<EditTextPreference>(getString(R.string.settings_password_key))!!
+            val prefCertAlias = findPreference<Preference>(getString(R.string.settings_certificate_alias_key))!!
+            val prefOAuth = findPreference<Preference>(getString(R.string.settings_oauth_key))!!
 
-                if (credentials.userName != null) {
-                    prefPassword.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_PASSWORD)
+            model.credentials.observe(viewLifecycleOwner) { credentials ->
+                if (credentials.authState != null) {
+                    // using OAuth, hide other settings
+                    prefOAuth.isVisible = true
+                    prefUserName.isVisible = false
+                    prefPassword.isVisible = false
+                    prefCertAlias.isVisible = false
+
+                    prefOAuth.setOnPreferenceClickListener {
+                        parentFragmentManager.beginTransaction()
+                            .replace(android.R.id.content, GoogleLoginFragment(account.name), null)
+                            .addToBackStack(null)
+                            .commit()
+                        true
+                    }
+                } else {
+                    // not using OAuth, hide OAuth setting, show the others
+                    prefOAuth.isVisible = false
+                    prefUserName.isVisible = true
                     prefPassword.isVisible = true
-                    prefPassword.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newPassword ->
-                        model.updateCredentials(Credentials(credentials.userName, newPassword as String, credentials.certificateAlias))
+                    prefCertAlias.isVisible = false
+
+                    prefUserName.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_USER_NAME)
+                    prefUserName.summary = credentials.userName
+                    prefUserName.text = credentials.userName
+                    prefUserName.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newUserName ->
+                        val newUserNameOrNull = StringUtils.trimToNull(newUserName as String)
+                        model.updateCredentials(Credentials(
+                            userName = newUserNameOrNull,
+                            password = credentials.password,
+                            certificateAlias = credentials.certificateAlias)
+                        )
                         false
                     }
-                } else
-                    prefPassword.isVisible = false
 
-                prefCertAlias.isVisible = false
-                prefCertAlias.summary = credentials.certificateAlias ?: getString(R.string.settings_certificate_alias_empty)
-                prefCertAlias.setOnPreferenceClickListener {
-                    KeyChain.choosePrivateKeyAlias(requireActivity(), { newAlias ->
-                        model.updateCredentials(Credentials(credentials.userName, credentials.password, newAlias))
-                    }, null, null, null, -1, credentials.certificateAlias)
-                    true
+                    if (credentials.userName != null) {
+                        prefPassword.isEnabled = !settings.containsKey(AccountSettings.KEY_LOGIN_PASSWORD)
+                        prefPassword.isVisible = true
+                        prefPassword.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newPassword ->
+                            model.updateCredentials(Credentials(credentials.userName, newPassword as String, credentials.certificateAlias))
+                            false
+                        }
+                    } else
+                        prefPassword.isVisible = false
+
+                    prefCertAlias.summary = credentials.certificateAlias ?: getString(R.string.settings_certificate_alias_empty)
+                    prefCertAlias.setOnPreferenceClickListener {
+                        KeyChain.choosePrivateKeyAlias(requireActivity(), { newAlias ->
+                            model.updateCredentials(Credentials(credentials.userName, credentials.password, newAlias))
+                        }, null, null, null, -1, credentials.certificateAlias)
+                        true
+                    }
                 }
-            })
+            }
 
             // preference group: CardDAV
-            model.syncIntervalContacts.observe(viewLifecycleOwner, { contactsSyncInterval ->
+            model.syncIntervalContacts.observe(viewLifecycleOwner) { contactsSyncInterval ->
                 val hasCardDav = contactsSyncInterval != null
                 if (!hasCardDav)
                     findPreference<PreferenceGroup>(getString(R.string.settings_carddav_key))!!.isVisible = false
                 else {
                     findPreference<PreferenceGroup>(getString(R.string.settings_carddav_key))!!.isVisible = true
                     findPreference<ListPreference>(getString(R.string.settings_contact_group_method_key))!!.let {
-                        model.contactGroupMethod.observe(viewLifecycleOwner, { groupMethod ->
+                        model.contactGroupMethod.observe(viewLifecycleOwner) { groupMethod ->
                             if (model.syncIntervalContacts.value != null) {
                                 it.isVisible = true
                                 it.value = groupMethod.name
@@ -232,10 +260,10 @@ class SettingsActivity: AppCompatActivity() {
                                 }
                             } else
                                 it.isVisible = false
-                        })
+                        }
                     }
                 }
-            })
+            }
         }
 
         @SuppressLint("WrongConstant")
@@ -254,7 +282,7 @@ class SettingsActivity: AppCompatActivity() {
 
 
     class Model @AssistedInject constructor(
-        @ApplicationContext val context: Context,
+        val application: Application,
         val settings: SettingsManager,
         @Assisted val account: Account
     ): ViewModel(), SettingsManager.OnChangeListener {
@@ -278,7 +306,7 @@ class SettingsActivity: AppCompatActivity() {
 
 
         init {
-            accountSettings = AccountSettings(context, account)
+            accountSettings = AccountSettings(application, account)
 
             settings.addOnChangeListener(this)
 
@@ -298,7 +326,8 @@ class SettingsActivity: AppCompatActivity() {
         fun reload() {
             val accountSettings = accountSettings ?: return
 
-            syncIntervalContacts.postValue(accountSettings.getSyncInterval(context.getString(R.string.address_books_authority)))
+            syncIntervalContacts.postValue(accountSettings.getSyncInterval(application.getString(R.string.address_books_authority)))
+
             syncWifiOnly.postValue(accountSettings.getSyncWifiOnly())
             syncWifiOnlySSIDs.postValue(accountSettings.getSyncWifiOnlySSIDs())
 
@@ -334,7 +363,7 @@ class SettingsActivity: AppCompatActivity() {
             accountSettings?.setGroupMethod(groupMethod)
             reload()
 
-            resync(context.getString(R.string.address_books_authority), fullResync = true)
+            resync(application.getString(R.string.address_books_authority), fullResync = true)
         }
 
         /**
@@ -347,7 +376,7 @@ class SettingsActivity: AppCompatActivity() {
          */
         private fun resync(authority: String, fullResync: Boolean) {
             val resync = if (fullResync) SyncWorker.FULL_RESYNC else SyncWorker.RESYNC
-            SyncWorker.enqueue(context, account, authority, resync)
+            SyncWorker.enqueue(application, account, authority, resync)
         }
 
     }

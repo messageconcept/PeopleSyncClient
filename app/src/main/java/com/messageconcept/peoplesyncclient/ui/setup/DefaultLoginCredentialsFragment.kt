@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.RestrictionsManager
 import android.net.MailTo
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,6 +26,7 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KE
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
+import com.messageconcept.peoplesyncclient.ui.UiUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
@@ -98,12 +100,19 @@ class DefaultLoginCredentialsFragment : Fragment() {
             }, null, null, null, -1, model.certificateAlias.value)
         }
 
-        v.login.setOnClickListener {
-            if (validate())
+        v.login.setOnClickListener { _ ->
+            if (validate()) {
+                val nextFragment =
+                    if (model.loginGoogle.value == true)
+                        GoogleLoginFragment()
+                    else
+                        DetectConfigurationFragment()
+
                 parentFragmentManager.beginTransaction()
-                        .replace(android.R.id.content, DetectConfigurationFragment(), null)
-                        .addToBackStack(null)
-                        .commit()
+                    .replace(android.R.id.content, nextFragment, null)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
         return v.root
@@ -180,7 +189,7 @@ class DefaultLoginCredentialsFragment : Fragment() {
                 val baseUrl = if (model.loginUrlManaged.value == true) model.baseUrl.value else null
 
                 if (valid)
-                    loginModel.credentials = Credentials(username, password, null, baseUrl)
+                    loginModel.credentials = Credentials(username, password, null, null, baseUrl)
             }
 
             model.loginAdvanced.value == true -> {
@@ -226,6 +235,10 @@ class DefaultLoginCredentialsFragment : Fragment() {
                         else ->
                             null
                     }
+            }
+
+            model.loginGoogle.value == true -> {
+                valid = true
             }
         }
 

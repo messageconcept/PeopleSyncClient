@@ -26,7 +26,6 @@ import android.os.StatFs
 import android.provider.ContactsContract
 import android.view.View
 import androidx.activity.viewModels
-import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ShareCompat
@@ -37,6 +36,8 @@ import androidx.core.content.pm.PackageInfoCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
@@ -58,8 +59,10 @@ import com.messageconcept.peoplesyncclient.syncadapter.PeriodicSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.util.closeCompat
 import com.google.android.material.snackbar.Snackbar
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
@@ -81,6 +84,16 @@ import java.util.zip.ZipOutputStream
 import javax.inject.Inject
 import at.bitfire.vcard4android.Utils.asSyncAdapter as asContactsSyncAdapter
 
+/**
+ * Debug info activity. Provides verbose information for debugging and support. Should enable users
+ * to debug problems themselves, but also to send it to the support.
+ *
+ * Important use cases to test:
+ *
+ * - debug info from App settings / Debug info (should provide debug info)
+ * - login with some broken login URL (should provide debug info + logs; check logs, too)
+ * - enable App settings / Verbose logs, then open debug info activity (should provide debug info + logs; check logs, too)
+ */
 @AndroidEntryPoint
 class DebugInfoActivity : AppCompatActivity() {
 
@@ -97,9 +110,6 @@ class DebugInfoActivity : AppCompatActivity() {
         /** dump of local resource related to the problem (plain-text [String]) */
         private const val EXTRA_LOCAL_RESOURCE = "localResource"
 
-        /** logs related to the problem (path to log file, plain-text [String]) */
-        private const val EXTRA_LOG_FILE = "logFile"
-
         /** logs related to the problem (plain-text [String]) */
         private const val EXTRA_LOGS = "logs"
 
@@ -110,13 +120,18 @@ class DebugInfoActivity : AppCompatActivity() {
         const val FILE_LOGS = "logs.txt"
     }
 
-    private val model by viewModels<ReportModel>()
+    @Inject lateinit var modelFactory: ReportModel.Factory
+    private val model by viewModels<ReportModel> {
+        object: ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T =
+                modelFactory.create(intent.extras) as T
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        model.generate(intent.extras)
 
         val binding = DataBindingUtil.setContentView<ActivityDebugInfoBinding>(this, R.layout.activity_debug_info)
         binding.model = model
@@ -216,16 +231,20 @@ class DebugInfoActivity : AppCompatActivity() {
     }
 
 
-    @HiltViewModel
-    class ReportModel @Inject constructor(
-        val context: Application
+    class ReportModel @AssistedInject constructor (
+        val context: Application,
+        @Assisted extras: Bundle?
     ) : AndroidViewModel(context) {
+
+        @AssistedFactory
+        interface Factory {
+            fun create(extras: Bundle?): ReportModel
+        }
+
         @Inject
         lateinit var db: AppDatabase
         @Inject
         lateinit var settings: SettingsManager
-
-        private var initialized = false
 
         val cause = MutableLiveData<Throwable>()
         var logFile = MutableLiveData<File>()
@@ -238,32 +257,15 @@ class DebugInfoActivity : AppCompatActivity() {
         val zipFile = MutableLiveData<File>()
         val error = MutableLiveData<String>()
 
-        // private storage, not readable by others
-        private val debugInfoDir = File(getApplication<Application>().filesDir, "debug")
-
         init {
             // create debug info directory
-            if (!debugInfoDir.isDirectory && !debugInfoDir.mkdir())
-                throw IOException("Couldn't create debug info directory")
-        }
-
-        @UiThread
-        fun generate(extras: Bundle?) {
-            if (initialized)
-                return
-            initialized = true
+            val debugDir = Logger.debugDir() ?: throw IOException("Couldn't create debug info directory")
 
             viewModelScope.launch(Dispatchers.Default) {
-                val logFileName = extras?.getString(EXTRA_LOG_FILE)
+                // create log file from EXTRA_LOGS or log file
                 val logsText = extras?.getString(EXTRA_LOGS)
-                if (logFileName != null) {
-                    val file = File(logFileName)
-                    if (file.isFile && file.canRead())
-                        logFile.postValue(file)
-                    else
-                        Logger.log.warning("Can't read logs from $logFileName")
-                } else if (logsText != null) {
-                    val file = File(debugInfoDir, FILE_LOGS)
+                if (logsText != null) {
+                    val file = File(debugDir, FILE_LOGS)
                     if (!file.exists() || file.canWrite()) {
                         file.writer().buffered().use { writer ->
                             IOUtils.copy(StringReader(logsText), writer)
@@ -271,6 +273,9 @@ class DebugInfoActivity : AppCompatActivity() {
                         logFile.postValue(file)
                     } else
                         Logger.log.warning("Can't write logs to $file")
+                } else Logger.getDebugLogFile()?.let { debugLogFile ->
+                    if (debugLogFile.isFile && debugLogFile.canRead())
+                        logFile.postValue(debugLogFile)
                 }
 
                 val throwable = extras?.getSerializable(EXTRA_CAUSE) as? Throwable
@@ -293,7 +298,7 @@ class DebugInfoActivity : AppCompatActivity() {
         }
 
         private fun generateDebugInfo(syncAccount: Account?, syncAuthority: String?, cause: Throwable?, localResource: String?, remoteResource: String?) {
-            val debugInfoFile = File(debugInfoDir, FILE_DEBUG_INFO)
+            val debugInfoFile = File(Logger.debugDir(), FILE_DEBUG_INFO)
             debugInfoFile.writer().buffered().use { writer ->
                 writer.append(ByteOrderMark.UTF_BOM)
                 writer.append("--- BEGIN DEBUG INFO ---\n\n")
@@ -537,7 +542,7 @@ class DebugInfoActivity : AppCompatActivity() {
             try {
                 zipProgress.postValue(true)
 
-                val file = File(debugInfoDir, "peoplesync-debug.zip")
+                val file = File(Logger.debugDir(), "peoplesync-debug.zip")
                 Logger.log.fine("Writing debug info to ${file.absolutePath}")
                 ZipOutputStream(file.outputStream().buffered()).use { zip ->
                     zip.setLevel(9)
@@ -582,11 +587,27 @@ class DebugInfoActivity : AppCompatActivity() {
 
 
         private fun dumpMainAccount(account: Account, accountManager: AccountManager, writer: Writer) {
-            writer.append(" - Account: ${account.name}\n")
+            writer.append("\n\n - Account: ${account.name}\n")
             writer.append(dumpAccount(account, AccountDumpInfo.mainAccount(context, account)))
-            writer.append(dumpSyncWorkersInfo(account))
             try {
                 val accountSettings = AccountSettings(context, account)
+
+                val credentials = accountSettings.credentials()
+                val authStr = mutableListOf<String>()
+                if (credentials.userName != null)
+                    authStr += "user name"
+                if (credentials.password != null)
+                    authStr += "password"
+                if (credentials.certificateAlias != null)
+                    authStr += "client certificate"
+                credentials.authState?.let { authState ->
+                    authStr += "OAuth [${authState.authorizationServiceConfiguration?.authorizationEndpoint}]"
+                }
+                if (authStr.isNotEmpty())
+                    writer  .append("  Authentication: ")
+                            .append(authStr.joinToString(", "))
+                            .append("\n")
+
                 writer.append("  WiFi only: ${accountSettings.getSyncWifiOnly()}")
                 accountSettings.getSyncWifiOnlySSIDs()?.let { ssids ->
                     writer.append(", SSIDs: ${ssids.joinToString(", ")}")
@@ -594,12 +615,17 @@ class DebugInfoActivity : AppCompatActivity() {
                 writer.append(
                     "\n  Contact group method: ${accountSettings.getGroupMethod()}\n"
                 )
+
                 accountManager.getUserData(account, KEY_USERNAME)?.let { userName ->
                     writer.append("  Username: ${userName}\n")
                 }
                 accountManager.getUserData(account, KEY_BASE_URL)?.let { baseUrl ->
                     writer.append("  Base URL: ${baseUrl}\n")
                 }
+
+                writer.append("\nSync workers:\n")
+                    .append(dumpSyncWorkersInfo(account))
+                    .append("\n")
             } catch (e: InvalidAccountException) {
                 writer.append("$e\n")
             }
@@ -611,7 +637,7 @@ class DebugInfoActivity : AppCompatActivity() {
             val table = dumpAccount(account, AccountDumpInfo.addressBookAccount(account))
             writer.append(TextTable.indent(table, 4))
                 .append("URL: ${accountManager.getUserData(account, LocalAddressBook.USER_DATA_URL)}\n")
-                .append("    Read-only: ${accountManager.getUserData(account, LocalAddressBook.USER_DATA_READ_ONLY) ?: 0}\n\n")
+                .append("    Read-only: ${accountManager.getUserData(account, LocalAddressBook.USER_DATA_READ_ONLY) ?: 0}\n")
         }
 
         private fun dumpAccount(account: Account, infos: Iterable<AccountDumpInfo>): String {
@@ -706,7 +732,7 @@ class DebugInfoActivity : AppCompatActivity() {
     class IntentBuilder(context: Context) {
 
         companion object {
-            val MAX_ELEMENT_SIZE = 800 * FileUtils.ONE_KB.toInt()
+            const val MAX_ELEMENT_SIZE = 800 * FileUtils.ONE_KB.toInt()
         }
 
         val intent = Intent(context, DebugInfoActivity::class.java)
@@ -737,12 +763,6 @@ class DebugInfoActivity : AppCompatActivity() {
         fun withLocalResource(dump: String?): IntentBuilder {
             if (dump != null)
                 intent.putExtra(EXTRA_LOCAL_RESOURCE, StringUtils.abbreviate(dump, MAX_ELEMENT_SIZE))
-            return this
-        }
-
-        fun withLogFile(logFile: File?): IntentBuilder {
-            if (logFile != null)
-                intent.putExtra(EXTRA_LOG_FILE, logFile.absolutePath)
             return this
         }
 

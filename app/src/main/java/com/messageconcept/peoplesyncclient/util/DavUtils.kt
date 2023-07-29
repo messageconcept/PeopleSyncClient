@@ -8,7 +8,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import androidx.core.content.getSystemService
-import com.messageconcept.peoplesyncclient.Android10Resolver
+import com.messageconcept.peoplesyncclient.network.Android10Resolver
 import com.messageconcept.peoplesyncclient.log.Logger
 import okhttp3.HttpUrl
 import okhttp3.MediaType

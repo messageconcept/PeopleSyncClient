@@ -11,7 +11,7 @@ import at.bitfire.dav4jvm.DavCollection
 import at.bitfire.dav4jvm.MultiResponseCallback
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.property.GetCTag
-import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.resource.LocalResource
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
@@ -23,14 +23,14 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertEquals
 
 class TestSyncManager(
-        context: Context,
-        account: Account,
-        extras: Array<String>,
-        authority: String,
-        httpClient: HttpClient,
-        syncResult: SyncResult,
-        localCollection: LocalTestCollection,
-        val mockWebServer: MockWebServer
+    context: Context,
+    account: Account,
+    extras: Array<String>,
+    authority: String,
+    httpClient: HttpClient,
+    syncResult: SyncResult,
+    localCollection: LocalTestCollection,
+    val mockWebServer: MockWebServer
 ): SyncManager<LocalTestResource, LocalTestCollection, DavCollection>(context, account, AccountSettings(context, account), httpClient, extras, authority, syncResult, localCollection) {
 
     override fun prepare(): Boolean {

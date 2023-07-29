@@ -5,6 +5,7 @@
 package com.messageconcept.peoplesyncclient
 
 import androidx.test.platform.app.InstrumentationRegistry
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

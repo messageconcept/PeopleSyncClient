@@ -4,6 +4,7 @@
 
 package com.messageconcept.peoplesyncclient.ui.account
 
+import android.app.Application
 import android.content.*
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -33,7 +34,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -50,7 +50,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
     val accountModel by activityViewModels<AccountActivity.Model>()
     @Inject lateinit var modelFactory: Model.Factory
-    val model by viewModels<Model> {
+    protected val model by viewModels<Model> {
         object: ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T: ViewModel> create(modelClass: Class<T>): T =
@@ -168,6 +168,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
     override fun onResume() {
         super.onResume()
         checkPermissions()
+        (activity as? AccountActivity)?.updateRefreshCollectionsListAction(this)
     }
 
     override fun onDestroyView() {
@@ -260,12 +261,12 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
 
     class Model @AssistedInject constructor(
-        @ApplicationContext val context: Context,
+        application: Application,
         val db: AppDatabase,
         @Assisted val accountModel: AccountActivity.Model,
         @Assisted val serviceId: Long,
         @Assisted val collectionType: String
-    ): ViewModel() {
+    ): AndroidViewModel(application) {
 
         @AssistedFactory
         interface Factory {
@@ -294,19 +295,19 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
             }
 
         // observe RefreshCollectionsWorker status
-        val isRefreshing = RefreshCollectionsWorker.isWorkerInState(context, RefreshCollectionsWorker.workerName(serviceId), WorkInfo.State.RUNNING)
+        val isRefreshing = RefreshCollectionsWorker.isWorkerInState(getApplication(), RefreshCollectionsWorker.workerName(serviceId), WorkInfo.State.RUNNING)
 
         // observe SyncWorker state
         private val authorities =
             if (collectionType == Collection.TYPE_ADDRESSBOOK)
-                listOf(context.getString(R.string.address_books_authority), ContactsContract.AUTHORITY)
+                listOf(getApplication<Application>().getString(R.string.address_books_authority), ContactsContract.AUTHORITY)
             else
                 listOf()
-        val isSyncActive = SyncWorker.exists(context,
+        val isSyncActive = SyncWorker.exists(getApplication(),
             listOf(WorkInfo.State.RUNNING),
             accountModel.account,
             authorities)
-        val isSyncPending = SyncWorker.exists(context,
+        val isSyncPending = SyncWorker.exists(getApplication(),
             listOf(WorkInfo.State.ENQUEUED),
             accountModel.account,
             authorities)
@@ -314,7 +315,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         // actions
 
         fun refresh() {
-            RefreshCollectionsWorker.refreshCollections(context, serviceId)
+            RefreshCollectionsWorker.refreshCollections(getApplication(), serviceId)
         }
 
     }

@@ -4,16 +4,34 @@
 
 package com.messageconcept.peoplesyncclient.db
 
+import net.openid.appauth.AuthState
+
 data class Credentials(
-        val userName: String? = null,
-        val password: String? = null,
-        val certificateAlias: String? = null,
-        val baseUrl: String? = null
+    val userName: String? = null,
+    val password: String? = null,
+
+    val certificateAlias: String? = null,
+
+    val authState: AuthState? = null,
+
+    val baseUrl: String? = null
 ) {
 
     override fun toString(): String {
-        val maskedPassword = "*****".takeIf { password != null }
-        return "Credentials(userName=$userName, password=$maskedPassword, certificateAlias=$certificateAlias)"
+        val s = mutableListOf<String>()
+
+        if (userName != null)
+            s += "userName=$userName"
+        if (password != null)
+            s += "password=*****"
+
+        if (certificateAlias != null)
+            s += "certificateAlias=$certificateAlias"
+
+        if (authState != null)
+            s += "authState=${authState.jsonSerializeString()}"
+
+        return "Credentials(" + s.joinToString(", ") + ")"
     }
 
 }

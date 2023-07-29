@@ -12,10 +12,10 @@ import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
 import at.bitfire.dav4jvm.exception.UnauthorizedException
 import at.bitfire.dav4jvm.property.*
-import com.messageconcept.peoplesyncclient.HttpClient
 import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.StringHandler
-import com.messageconcept.peoplesyncclient.ui.setup.LoginModel
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.util.DavUtils
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -37,10 +37,15 @@ import java.util.logging.Logger
  * - services (CalDAV and/or CardDAV),
  * - principal,
  * - homeset/collections (multistatus responses are handled through dav4jvm).
+ *
+ * @param context        to build the HTTP client
+ * @param baseURI        user-given base URI (either mailto: URI or http(s):// URL)
+ * @param credentials    optional login credentials (username/password, client certificate, OAuth state)
  */
 class DavResourceFinder(
     val context: Context,
-    private val loginModel: LoginModel
+    private val baseURI: URI,
+    credentials: Credentials? = null
 ): AutoCloseable {
 
     enum class Service(val wellKnownName: String) {
@@ -59,7 +64,7 @@ class DavResourceFinder(
     var encountered401 = false
 
     private val httpClient: HttpClient = HttpClient.Builder(context, logger = log).let {
-        loginModel.credentials?.let { credentials ->
+        credentials?.let { credentials ->
             it.addAuthentication(null, credentials)
         }
         it.setForeground(true)
@@ -100,9 +105,6 @@ class DavResourceFinder(
     }
 
     private fun findInitialConfiguration(service: Service): Configuration.ServiceInfo? {
-        // user-given base URI (either mailto: URI or http(s):// URL)
-        val baseURI = loginModel.baseURI!!
-
         // domain for service discovery
         var discoveryFQDN: String? = null
 
@@ -438,11 +440,11 @@ class DavResourceFinder(
     ) {
 
         data class ServiceInfo(
-                var principal: HttpUrl? = null,
-                val homeSets: MutableSet<HttpUrl> = HashSet(),
-                val collections: MutableMap<HttpUrl, Collection> = HashMap(),
+            var principal: HttpUrl? = null,
+            val homeSets: MutableSet<HttpUrl> = HashSet(),
+            val collections: MutableMap<HttpUrl, Collection> = HashMap(),
 
-                val emails: MutableList<String> = LinkedList()
+            val emails: MutableList<String> = LinkedList()
         )
 
         override fun toString(): String {

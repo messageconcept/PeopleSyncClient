@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package com.messageconcept.peoplesyncclient
+package com.messageconcept.peoplesyncclient.network
 
 import okhttp3.Cookie
 import okhttp3.CookieJar

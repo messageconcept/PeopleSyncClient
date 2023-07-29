@@ -17,7 +17,7 @@ import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.property.*
 import com.messageconcept.peoplesyncclient.util.DavUtils
 import com.messageconcept.peoplesyncclient.util.DavUtils.sameTypeAs
-import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.log.Logger

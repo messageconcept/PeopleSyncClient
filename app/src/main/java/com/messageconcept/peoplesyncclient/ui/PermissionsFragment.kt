@@ -46,20 +46,23 @@ class PermissionsFragment: Fragment() {
             model.checkPermissions()
         }
 
-        model.needAutoResetPermission.observe(viewLifecycleOwner, { keepPermissions ->
+        model.needAutoResetPermission.observe(viewLifecycleOwner) { keepPermissions ->
             if (keepPermissions == true && model.haveAutoResetPermission.value == false) {
                 Toast.makeText(requireActivity(), R.string.permissions_autoreset_instruction, Toast.LENGTH_LONG).show()
-                startActivity(Intent(Intent.ACTION_AUTO_REVOKE_PERMISSIONS, Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)))
+                startActivity(Intent(
+                    Intent.ACTION_AUTO_REVOKE_PERMISSIONS,
+                    Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                ))
             }
-        })
-        model.needContactsPermissions.observe(viewLifecycleOwner, { needContacts ->
+        }
+        model.needContactsPermissions.observe(viewLifecycleOwner) { needContacts ->
             if (needContacts && model.haveContactsPermissions.value == false)
                 requestPermission.launch(CONTACT_PERMISSIONS)
-        })
-        model.needNotificationPermissions.observe(viewLifecycleOwner, { needNotifications ->
+        }
+        model.needNotificationPermissions.observe(viewLifecycleOwner) { needNotifications ->
             if (needNotifications == true && model.haveNotificationPermissions.value == false)
                 requestPermission.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
-        })
+        }
 
         binding.appSettings.setOnClickListener {
             PermissionUtils.showAppSettings(requireActivity())

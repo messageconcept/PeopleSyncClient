@@ -13,13 +13,13 @@ object Settings {
 
     const val DISTRUST_SYSTEM_CERTIFICATES = "distrust_system_certs"
 
-    const val PROXY_TYPE = "proxy_type"
+    const val PROXY_TYPE = "proxy_type"         // Integer
     const val PROXY_TYPE_SYSTEM = -1
     const val PROXY_TYPE_NONE = 0
     const val PROXY_TYPE_HTTP = 1
     const val PROXY_TYPE_SOCKS = 2
-    const val PROXY_HOST = "proxy_host"
-    const val PROXY_PORT = "proxy_port"
+    const val PROXY_HOST = "proxy_host"         // String
+    const val PROXY_PORT = "proxy_port"         // Integer
 
     /**
      * Default sync interval (long), in seconds.
@@ -37,8 +37,18 @@ object Settings {
     const val LANGUAGE = "language"
     const val LANGUAGE_SYSTEM = "language_system"
 
-    /** whether detected collections are selected for synchronization for default */
-    const val SYNC_ALL_COLLECTIONS = "sync_all_collections"
+    /** whether collections are automatically selected for synchronization after their initial detection */
+    const val PRESELECT_COLLECTIONS = "preselect_collections"
+    /** collections are not automatically selected for synchronization */
+    const val PRESELECT_COLLECTIONS_NONE = 0
+    /** all collections (except those matching [PRESELECT_COLLECTIONS_EXCLUDED]) are automatically selected for synchronization */
+    const val PRESELECT_COLLECTIONS_ALL = 1
+    /** personal collections (except those matching [PRESELECT_COLLECTIONS_EXCLUDED]) are automatically selected for synchronization */
+    const val PRESELECT_COLLECTIONS_PERSONAL = 2
+
+    /** regular expression to match URLs of collections to be excluded from pre-selection */
+    const val PRESELECT_COLLECTIONS_EXCLUDED = "preselect_collections_excluded"
+
 
     /** whether all address books are forced to be read-only */
     const val FORCE_READ_ONLY_ADDRESSBOOKS = "force_read_only_addressbooks"

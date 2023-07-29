@@ -21,13 +21,13 @@ import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.property.CurrentUserPrincipal
 import at.bitfire.vcard4android.GroupMethod
 import com.messageconcept.peoplesyncclient.BuildConfig
-import com.messageconcept.peoplesyncclient.HttpClient
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings

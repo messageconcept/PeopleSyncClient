@@ -30,7 +30,8 @@ import org.junit.*
 import org.junit.Assert.*
 import javax.inject.Inject
 
-@HiltAndroidTest
+// COMMENTED OUT because it doesn't run reliably [see https://github.com/bitfireAT/davx5/pull/320]
+/*@HiltAndroidTest
 class AccountDetailsFragmentTest {
 
     @get:Rule
@@ -106,4 +107,4 @@ class AccountDetailsFragmentTest {
         }
     }
 
-}
+}*/

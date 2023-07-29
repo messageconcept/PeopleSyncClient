@@ -7,29 +7,61 @@ package com.messageconcept.peoplesyncclient.servicedetection
 import android.accounts.Account
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
 import androidx.lifecycle.map
-import androidx.work.*
-import at.bitfire.dav4jvm.*
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.ForegroundInfo
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+import at.bitfire.dav4jvm.DavResource
+import at.bitfire.dav4jvm.MultiResponseCallback
+import at.bitfire.dav4jvm.Property
+import at.bitfire.dav4jvm.Response
+import at.bitfire.dav4jvm.UrlUtils
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.dav4jvm.property.*
-import com.messageconcept.peoplesyncclient.HttpClient
+import at.bitfire.dav4jvm.exception.UnauthorizedException
+import at.bitfire.dav4jvm.property.AddressbookDescription
+import at.bitfire.dav4jvm.property.AddressbookHomeSet
+import at.bitfire.dav4jvm.property.CalendarColor
+import at.bitfire.dav4jvm.property.CalendarDescription
+import at.bitfire.dav4jvm.property.CalendarHomeSet
+import at.bitfire.dav4jvm.property.CalendarProxyReadFor
+import at.bitfire.dav4jvm.property.CalendarProxyWriteFor
+import at.bitfire.dav4jvm.property.CurrentUserPrivilegeSet
+import at.bitfire.dav4jvm.property.DisplayName
+import at.bitfire.dav4jvm.property.GroupMembership
+import at.bitfire.dav4jvm.property.HrefListProperty
+import at.bitfire.dav4jvm.property.Owner
+import at.bitfire.dav4jvm.property.ResourceType
+import at.bitfire.dav4jvm.property.Source
+import at.bitfire.dav4jvm.property.SupportedAddressData
+import at.bitfire.dav4jvm.property.SupportedCalendarComponentSet
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.db.*
+import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.db.Principal
+import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker.Companion.ARG_SERVICE_ID
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
+import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -86,7 +118,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
 
         /**
          * Uniquely identifies a refresh worker. Useful for stopping work, or querying its state.
-         * 
+         *
          * @param serviceId     what service (CardDAV) the worker is running for
          */
         fun workerName(serviceId: Long): String = "$REFRESH_COLLECTIONS_WORKER_TAG-$serviceId"
@@ -178,6 +210,16 @@ class RefreshCollectionsWorker @AssistedInject constructor(
         } catch(e: InvalidAccountException) {
             Logger.log.log(Level.SEVERE, "Invalid account", e)
             return Result.failure()
+        } catch (e: UnauthorizedException) {
+            Logger.log.log(Level.SEVERE, "Not authorized (anymore)", e)
+            // notify that we need to re-authenticate in the account settings
+            val settingsIntent = Intent(applicationContext, SettingsActivity::class.java)
+                .putExtra(SettingsActivity.EXTRA_ACCOUNT, account)
+            notifyRefreshError(
+                applicationContext.getString(R.string.sync_error_authentication_failed),
+                settingsIntent
+            )
+            return Result.failure()
         } catch(e: Exception) {
             Logger.log.log(Level.SEVERE, "Couldn't refresh collection list", e)
 
@@ -185,34 +227,14 @@ class RefreshCollectionsWorker @AssistedInject constructor(
                 .withCause(e)
                 .withAccount(account)
                 .build()
-
-            val priority: Int
-            val alertOnlyOnce: Boolean
-            val channel: String
-
-            if (autoSync) {
-                priority = NotificationCompat.PRIORITY_MIN
-                channel = NotificationUtils.CHANNEL_SYNC_IO_ERRORS
-                alertOnlyOnce = true
-            } else {
-                priority = NotificationCompat.PRIORITY_DEFAULT
-                channel = NotificationUtils.CHANNEL_GENERAL
-                alertOnlyOnce = false
-            }
-            val notify = NotificationUtils.newBuilder(applicationContext, channel)
-                .setSmallIcon(R.drawable.ic_sync_problem_notify)
-                .setContentTitle(applicationContext.getString(R.string.refresh_collections_worker_refresh_failed))
-                .setContentText(applicationContext.getString(R.string.refresh_collections_worker_refresh_couldnt_refresh))
-                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, debugIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
-                .setSubText(account.name)
-                .setOnlyAlertOnce(alertOnlyOnce)
-                .setPriority(priority)
-                .setCategory(NotificationCompat.CATEGORY_ERROR)
-                .build()
-            NotificationManagerCompat.from(applicationContext)
-                .notifyIfPossible(serviceId.toString(), NotificationUtils.NOTIFY_REFRESH_COLLECTIONS, notify)
+            notifyRefreshError(
+                applicationContext.getString(R.string.refresh_collections_worker_refresh_couldnt_refresh),
+                debugIntent
+            )
             return Result.failure()
         }
+
+
 
         // Success
         return Result.success()
@@ -237,6 +259,33 @@ class RefreshCollectionsWorker @AssistedInject constructor(
             completer.set(ForegroundInfo(NotificationUtils.NOTIFY_SYNC_EXPEDITED, notification))
         }
 
+    private fun notifyRefreshError(contentText: String, contentIntent: Intent) {
+        val priority: Int
+        val alertOnlyOnce: Boolean
+        val channel: String
+
+        if (autoSync) {
+            priority = NotificationCompat.PRIORITY_MIN
+            channel = NotificationUtils.CHANNEL_SYNC_IO_ERRORS
+            alertOnlyOnce = true
+        } else {
+            priority = NotificationCompat.PRIORITY_DEFAULT
+            channel = NotificationUtils.CHANNEL_GENERAL
+            alertOnlyOnce = false
+        }
+        val notify = NotificationUtils.newBuilder(applicationContext, channel)
+            .setSmallIcon(R.drawable.ic_sync_problem_notify)
+            .setContentTitle(applicationContext.getString(R.string.refresh_collections_worker_refresh_failed))
+            .setContentText(contentText)
+            .setContentIntent(PendingIntent.getActivity(applicationContext, 0, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
+            .setSubText(account.name)
+            .setOnlyAlertOnce(alertOnlyOnce)
+            .setPriority(priority)
+            .setCategory(NotificationCompat.CATEGORY_ERROR)
+            .build()
+        NotificationManagerCompat.from(applicationContext)
+            .notifyIfPossible(serviceId.toString(), NotificationUtils.NOTIFY_REFRESH_COLLECTIONS, notify)
+    }
 
     /**
      * Contains the methods, which do the actual refreshing work. Collected here for testability
@@ -296,8 +345,9 @@ class RefreshCollectionsWorker @AssistedInject constructor(
                         for (href in homeSet.hrefs)
                             dav.location.resolve(href)?.let {
                                 val foundUrl = UrlUtils.withTrailingSlash(it)
-                                // Save the homeset - personal if outer call of recursion
-                                db.homeSetDao().insertOrUpdateByUrl(HomeSet(0, service.id, forPersonalHomeset, foundUrl))
+                                db.homeSetDao().insertOrUpdateByUrl(
+                                    HomeSet(0, service.id, forPersonalHomeset, foundUrl)
+                                )
                             }
                     }
 
@@ -371,7 +421,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
 
                         collection.serviceId = service.id
                         collection.homeSetId = localHomeset.id
-                        collection.sync = settings.getBoolean(Settings.SYNC_ALL_COLLECTIONS)
+                        collection.sync = shouldPreselect(collection, homesets.values)
 
                         // .. and save the principal url (collection owner)
                         response[Owner::class.java]?.href
@@ -487,6 +537,49 @@ class RefreshCollectionsWorker @AssistedInject constructor(
             (service.type == Service.TYPE_CARDDAV && collection.type == Collection.TYPE_ADDRESSBOOK) ||
                     (service.type == Service.TYPE_CALDAV && arrayOf(Collection.TYPE_CALENDAR, Collection.TYPE_WEBCAL).contains(collection.type)) ||
                     (collection.type == Collection.TYPE_WEBCAL && collection.source != null)
+
+        /**
+         * Whether to preselect the given collection for synchronisation, according to the
+         * settings [Settings.PRESELECT_COLLECTIONS] (see there for allowed values) and
+         * [Settings.PRESELECT_COLLECTIONS_EXCLUDED].
+         *
+         * A collection is considered _personal_ if it is found in one of the current-user-principal's home-sets.
+         *
+         * Before a collection is pre-selected, we check whether its URL matches the regexp in
+         * [Settings.PRESELECT_COLLECTIONS_EXCLUDED], in which case *false* is returned.
+         *
+         * @param collection the collection to check
+         * @param homesets list of home-sets (to check whether collection is in a personal home-set)
+         * @return *true* if the collection should be preselected for synchronization; *false* otherwise
+         */
+        internal fun shouldPreselect(collection: Collection, homesets: Iterable<HomeSet>): Boolean {
+            val shouldPreselect = settings.getIntOrNull(Settings.PRESELECT_COLLECTIONS)
+
+            val excluded by lazy {
+                val excludedRegex = settings.getString(Settings.PRESELECT_COLLECTIONS_EXCLUDED)
+                if (!excludedRegex.isNullOrEmpty())
+                    Regex(excludedRegex).containsMatchIn(collection.url.toString())
+                else
+                    false
+            }
+
+            return when (shouldPreselect) {
+                Settings.PRESELECT_COLLECTIONS_ALL ->
+                    // preselect if collection url is not excluded
+                    !excluded
+
+                Settings.PRESELECT_COLLECTIONS_PERSONAL ->
+                    // preselect if is personal (in a personal home-set), but not excluded
+                    homesets
+                        .filter { homeset -> homeset.personal }
+                        .map { homeset -> homeset.id }
+                        .contains(collection.homeSetId)
+                        && !excluded
+
+                else -> // don't preselect
+                    false
+            }
+        }
     }
 
 }

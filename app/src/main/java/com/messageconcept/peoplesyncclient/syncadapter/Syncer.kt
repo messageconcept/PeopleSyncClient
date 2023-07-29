@@ -8,7 +8,7 @@ import android.accounts.Account
 import android.content.ContentProviderClient
 import android.content.Context
 import android.content.SyncResult
-import com.messageconcept.peoplesyncclient.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.log.Logger

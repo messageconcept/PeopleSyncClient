@@ -1,8 +1,8 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
-package com.messageconcept.peoplesyncclient
+package com.messageconcept.peoplesyncclient.network
 
 import android.net.DnsResolver
 import android.os.Build

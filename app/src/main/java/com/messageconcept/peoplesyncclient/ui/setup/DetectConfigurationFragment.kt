@@ -18,23 +18,28 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.lang.ref.WeakReference
+import java.net.URI
 import java.util.logging.Level
 import kotlin.concurrent.thread
 
 class DetectConfigurationFragment: Fragment() {
 
-    val loginModel by activityViewModels<LoginModel>()
-    val model by viewModels<DetectConfigurationModel>()
+    private val loginModel by activityViewModels<LoginModel>()
+    private val model by viewModels<DetectConfigurationModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        model.detectConfiguration(loginModel).observe(this, { result ->
+        val baseURI = loginModel.baseURI ?: return
+
+        model.detectConfiguration(baseURI, loginModel.credentials).observe(this) { result ->
             // save result for next step
             loginModel.configuration = result
 
@@ -50,21 +55,19 @@ class DetectConfigurationFragment: Fragment() {
                 parentFragmentManager.beginTransaction()
                         .add(NothingDetectedFragment(), null)
                         .commit()
-        })
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(R.layout.detect_configuration, container, false)!!
 
 
-    class DetectConfigurationModel(
-            application: Application
-    ): AndroidViewModel(application) {
+    class DetectConfigurationModel(application: Application): AndroidViewModel(application) {
 
         private var detectionThread: WeakReference<Thread>? = null
         private var result = MutableLiveData<DavResourceFinder.Configuration>()
 
-        fun detectConfiguration(loginModel: LoginModel): LiveData<DavResourceFinder.Configuration> {
+        fun detectConfiguration(baseURI: URI, credentials: Credentials?): LiveData<DavResourceFinder.Configuration> {
             synchronized(result) {
                 if (detectionThread != null)
                     // detection already running
@@ -77,7 +80,7 @@ class DetectConfigurationFragment: Fragment() {
                 }
 
                 try {
-                    DavResourceFinder(getApplication(), loginModel).use { finder ->
+                    DavResourceFinder(getApplication(), baseURI, credentials).use { finder ->
                         result.postValue(finder.findInitialConfiguration())
                     }
                 } catch(e: Exception) {
