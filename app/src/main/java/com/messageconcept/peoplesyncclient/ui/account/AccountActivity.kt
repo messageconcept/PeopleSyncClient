@@ -61,7 +61,6 @@ class AccountActivity: AppCompatActivity() {
                 modelFactory.create(account) as T
         }
     }
-    private var refreshed = false
 
     private lateinit var binding: ActivityAccountBinding
 
@@ -84,11 +83,9 @@ class AccountActivity: AppCompatActivity() {
         model.services.observe(this) { services ->
             val cardDavServiceId = services.firstOrNull { it.type == Service.TYPE_CARDDAV }?.id
 
-            if (!refreshed && cardDavServiceId != null) {
+            if (cardDavServiceId != null) {
                 Logger.log.info("Refreshing collections")
                 RefreshCollectionsWorker.refreshCollections(this, cardDavServiceId, true)
-
-                refreshed = true
             }
 
             val viewPager = binding.viewPager
