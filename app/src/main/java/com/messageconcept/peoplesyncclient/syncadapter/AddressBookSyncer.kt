@@ -68,26 +68,30 @@ class AddressBookSyncer(context: Context): Syncer(context) {
     private fun updateLocalAddressBooks(account: Account, syncResult: SyncResult): Boolean {
         val service = db.serviceDao().getByAccountAndType(account.name, Service.TYPE_CARDDAV)
 
-        if (service != null) {
-            Logger.log.info("Refreshing collections")
-            HttpClient.Builder(context, AccountSettings(context, account))
-                .setForeground(true)
-                .build().use { client ->
-                    val httpClient = client.okHttpClient
-                    val refresher = Refresher(db, service, settingsManager, httpClient)
+        try {
+            if (service != null) {
+                Logger.log.log(Level.INFO, "Refreshing collections for account", account)
+                HttpClient.Builder(context, AccountSettings(context, account))
+                    .setForeground(true)
+                    .build().use { client ->
+                        val httpClient = client.okHttpClient
+                        val refresher = Refresher(db, service, settingsManager, httpClient)
 
-                    // refresh home set list (from principal url) and save them
-                    service.principal?.let { principalUrl ->
-                        Logger.log.fine("Querying principal $principalUrl for home sets")
-                        refresher.queryHomeSets(principalUrl)
+                        // refresh home set list (from principal url) and save them
+                        service.principal?.let { principalUrl ->
+                            Logger.log.fine("Querying principal $principalUrl for home sets")
+                            refresher.queryHomeSets(principalUrl)
+                        }
+
+                        // now refresh home sets and their member collections
+                        refresher.refreshHomesetsAndTheirCollections()
+
+                        // also check/refresh collections without a homeset
+                        refresher.refreshHomelessCollections()
                     }
-
-                    // now refresh home sets and their member collections
-                    refresher.refreshHomesetsAndTheirCollections()
-
-                    // also check/refresh collections without a homeset
-                    refresher.refreshHomelessCollections()
-                }
+            }
+        } catch (e: Exception) {
+            Logger.log.log(Level.SEVERE, "Failed to refresh collections", e)
         }
 
         val remoteAddressBooks = mutableMapOf<HttpUrl, Collection>()
