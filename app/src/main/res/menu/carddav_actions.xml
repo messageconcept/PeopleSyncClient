@@ -7,10 +7,6 @@
         android:visible="false"
         android:checkable="true" />
 
-    <item android:id="@+id/refresh"
-        android:title="@string/account_refresh_address_book_list"
-        app:showAsAction="never"/>
-
     <item android:id="@+id/create_address_book"
         android:title="@string/account_create_new_address_book"
         android:visible="false"

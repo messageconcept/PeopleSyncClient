@@ -22,12 +22,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import androidx.work.WorkInfo
+import com.google.android.material.snackbar.Snackbar
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.AccountCollectionsBinding
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.log.Logger
-import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 import dagger.assisted.Assisted
@@ -82,7 +82,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        model.isRefreshing.observe(viewLifecycleOwner, Observer { nowRefreshing ->
+        model.isSyncActive.observe(viewLifecycleOwner, Observer { nowRefreshing ->
             binding.swipeRefresh.isRefreshing = nowRefreshing
         })
         model.hasWriteableCollections.observe(viewLifecycleOwner, Observer {
@@ -94,24 +94,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
                 binding.swipeRefresh.setColorSchemeColors(*realColors.toIntArray())
         })
         binding.swipeRefresh.setOnRefreshListener(this)
-
-        val updateProgress = Observer<Boolean> {
-            if (model.isSyncActive.value == true) {
-                binding.progress.isIndeterminate = true
-                binding.progress.alpha = 1.0f
-                binding.progress.visibility = View.VISIBLE
-            } else {
-                if (model.isSyncPending.value == true) {
-                    binding.progress.visibility = View.VISIBLE
-                    binding.progress.alpha = 0.2f
-                    binding.progress.isIndeterminate = false
-                    binding.progress.progress = 100
-                } else
-                    binding.progress.visibility = View.INVISIBLE
-            }
-        }
-        model.isSyncPending.observe(viewLifecycleOwner, updateProgress)
-        model.isSyncActive.observe(viewLifecycleOwner, updateProgress)
 
         val adapter = createAdapter()
         binding.list.layoutManager = LinearLayoutManager(requireActivity())
@@ -149,10 +131,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-                R.id.refresh -> {
-                    onRefresh()
-                    true
-                }
                 R.id.showOnlyPersonal -> {
                     accountModel.toggleShowOnlyPersonal()
                     true
@@ -162,13 +140,21 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
             }
 
     override fun onRefresh() {
+        val networkAvailable = accountModel.networkAvailable.value
+        if (networkAvailable != null && !networkAvailable) {
+            Snackbar.make(
+                binding.swipeRefresh,
+                R.string.no_internet_sync_scheduled,
+                Snackbar.LENGTH_LONG
+            ).show()
+            binding.swipeRefresh.isRefreshing = false
+        }
         model.refresh()
     }
 
     override fun onResume() {
         super.onResume()
         checkPermissions()
-        (activity as? AccountActivity)?.updateRefreshCollectionsListAction(this)
     }
 
     override fun onDestroyView() {
@@ -294,9 +280,6 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
                     .cachedIn(viewModelScope)
             }
 
-        // observe RefreshCollectionsWorker status
-        val isRefreshing = RefreshCollectionsWorker.isWorkerInState(getApplication(), RefreshCollectionsWorker.workerName(serviceId), WorkInfo.State.RUNNING)
-
         // observe SyncWorker state
         private val authorities =
             if (collectionType == Collection.TYPE_ADDRESSBOOK)
@@ -315,7 +298,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
         // actions
 
         fun refresh() {
-            RefreshCollectionsWorker.refreshCollections(getApplication(), serviceId)
+            SyncWorker.enqueueAllAuthorities(getApplication(), accountModel.account)
         }
 
     }

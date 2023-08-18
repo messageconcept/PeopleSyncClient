@@ -83,10 +83,8 @@ class AccountActivity: AppCompatActivity() {
         model.services.observe(this) { services ->
             val cardDavServiceId = services.firstOrNull { it.type == Service.TYPE_CARDDAV }?.id
 
-            if (cardDavServiceId != null) {
-                Logger.log.info("Refreshing collections")
-                RefreshCollectionsWorker.refreshCollections(this, cardDavServiceId, true)
-            }
+            Logger.log.info("Triggering sync")
+            SyncWorker.enqueueAllAuthorities(getApplication(), model.account)
 
             val viewPager = binding.viewPager
             val adapter = FragmentsAdapter(this, cardDavServiceId)
@@ -169,31 +167,6 @@ class AccountActivity: AppCompatActivity() {
                 }
             }, null)
     }
-
-
-    // public functions
-
-    /**
-     * Updates the click listener of the refresh collections list FAB, according to the given
-     * fragment. Should be called when the related fragment is resumed.
-     */
-    fun updateRefreshCollectionsListAction(fragment: CollectionsFragment) {
-        val label = when (fragment) {
-            is AddressBooksFragment ->
-                getString(R.string.account_refresh_address_book_list)
-
-            else -> null
-        }
-        if (label != null) {
-            binding.refresh.contentDescription = label
-            TooltipCompat.setTooltipText(binding.refresh, label)
-        }
-
-        binding.refresh.setOnClickListener {
-            fragment.onRefresh()
-        }
-    }
-
 
 
     // adapter

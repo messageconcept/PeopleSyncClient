@@ -11,15 +11,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/permissionsCard"
             android:layout_width="match_parent"
