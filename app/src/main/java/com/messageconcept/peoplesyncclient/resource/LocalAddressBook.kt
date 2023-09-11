@@ -21,6 +21,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.AccountUtils
 import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.setAndVerifyUserData
 import at.bitfire.vcard4android.*
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -175,8 +176,8 @@ open class LocalAddressBook(
         }
         set(newMainAccount) {
             AccountManager.get(context).let { accountManager ->
-                accountManager.setUserData(account, USER_DATA_MAIN_ACCOUNT_NAME, newMainAccount.name)
-                accountManager.setUserData(account, USER_DATA_MAIN_ACCOUNT_TYPE, newMainAccount.type)
+                accountManager.setAndVerifyUserData(account, USER_DATA_MAIN_ACCOUNT_NAME, newMainAccount.name)
+                accountManager.setAndVerifyUserData(account, USER_DATA_MAIN_ACCOUNT_TYPE, newMainAccount.type)
             }
 
             _mainAccount = newMainAccount
@@ -186,11 +187,11 @@ open class LocalAddressBook(
         get() = AccountManager.get(context).getUserData(account, USER_DATA_URL)
                 ?: AccountManager.get(context).getUserData(account, USER_DATA_URL_OLD)
                 ?: throw IllegalStateException("Address book has no URL")
-        set(url) = AccountManager.get(context).setUserData(account, USER_DATA_URL, url)
+        set(url) = AccountManager.get(context).setAndVerifyUserData(account, USER_DATA_URL, url)
 
     override var readOnly: Boolean
         get() = AccountManager.get(context).getUserData(account, USER_DATA_READ_ONLY) != null
-        set(readOnly) = AccountManager.get(context).setUserData(account, USER_DATA_READ_ONLY, if (readOnly) "1" else null)
+        set(readOnly) = AccountManager.get(context).setAndVerifyUserData(account, USER_DATA_READ_ONLY, if (readOnly) "1" else null)
 
     override var lastSyncState: SyncState?
         get() = syncState?.let { SyncState.fromString(String(it)) }

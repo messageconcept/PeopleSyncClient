@@ -13,6 +13,7 @@ import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.util.setAndVerifyUserData
 import java.util.logging.Level
 
 /**
@@ -50,7 +51,7 @@ class ContactSyncer(context: Context): Syncer(context) {
                     addressBook.syncState = null
                 }
             }
-            accountSettings.accountManager.setUserData(account, PREVIOUS_GROUP_METHOD, groupMethod)
+            accountSettings.accountManager.setAndVerifyUserData(account, PREVIOUS_GROUP_METHOD, groupMethod)
 
             Logger.log.info("Synchronizing address book: ${addressBook.url}")
             Logger.log.info("Taking settings from: ${addressBook.mainAccount}")

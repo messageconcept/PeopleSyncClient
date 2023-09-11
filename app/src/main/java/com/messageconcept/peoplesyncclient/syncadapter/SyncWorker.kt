@@ -10,13 +10,10 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.SyncResult
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.provider.ContactsContract
 import androidx.annotation.IntDef
-import androidx.annotation.RequiresApi
 import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -40,6 +37,8 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.network.ConnectionUtils.internetAvailable
+import com.messageconcept.peoplesyncclient.network.ConnectionUtils.wifiAvailable
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
@@ -146,7 +145,7 @@ class SyncWorker @AssistedInject constructor(
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .setBackoffCriteria(
                     BackoffPolicy.EXPONENTIAL,
-                    WorkRequest.MIN_BACKOFF_MILLIS,
+                    WorkRequest.DEFAULT_BACKOFF_DELAY_MILLIS,   // 30 sec
                     TimeUnit.MILLISECONDS
                 )
                 .setConstraints(constraints)
@@ -202,44 +201,7 @@ class SyncWorker @AssistedInject constructor(
         }
 
 
-        /**
-         * Checks whether user imposed sync conditions from settings are met:
-         * - Sync only on WiFi?
-         * - Sync only on specific WiFi (SSID)?
-         *
-         * @param accountSettings Account settings of the account to check (and is to be synced)
-         * @return *true* if conditions are met; *false* if not
-         */
-        internal fun wifiConditionsMet(context: Context, accountSettings: AccountSettings): Boolean {
-            // May we sync without WiFi?
-            if (!accountSettings.getSyncWifiOnly())
-                return true     // yes, continue
-
-            // WiFi required, is it available?
-            if (!wifiAvailable(context)) {
-                Logger.log.info("Not on connected WiFi, stopping")
-                return false
-            }
-            // If execution reaches this point, we're on a connected WiFi
-
-            // Check whether we are connected to the correct WiFi (in case SSID was provided)
-            return correctWifiSsid(context, accountSettings)
-        }
-
-        /**
-         * Checks whether we are connected to working WiFi
-         */
-        internal fun wifiAvailable(context: Context): Boolean {
-            val connectivityManager = context.getSystemService<ConnectivityManager>()!!
-            connectivityManager.allNetworks.forEach { network ->
-                connectivityManager.getNetworkCapabilities(network)?.let { capabilities ->
-                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) &&
-                        capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
-                        return true
-                }
-            }
-            return false
-        }
+        // connection checks
 
         /**
          * Checks whether we are connected to the correct wifi (SSID) defined by user in the
@@ -275,7 +237,33 @@ class SyncWorker @AssistedInject constructor(
             }
             return true
         }
+
+        /**
+         * Checks whether user imposed sync conditions from settings are met:
+         * - Sync only on WiFi?
+         * - Sync only on specific WiFi (SSID)?
+         *
+         * @param accountSettings Account settings of the account to check (and is to be synced)
+         * @return *true* if conditions are met; *false* if not
+         */
+        internal fun wifiConditionsMet(context: Context, accountSettings: AccountSettings): Boolean {
+            // May we sync without WiFi?
+            if (!accountSettings.getSyncWifiOnly())
+                return true     // yes, continue
+
+            // WiFi required, is it available?
+            if (!wifiAvailable(context)) {
+                Logger.log.info("Not on connected WiFi, stopping")
+                return false
+            }
+            // If execution reaches this point, we're on a connected WiFi
+
+            // Check whether we are connected to the correct WiFi (in case SSID was provided)
+            return correctWifiSsid(context, accountSettings)
+        }
+
     }
+
 
     private val notificationManager = NotificationManagerCompat.from(applicationContext)
 
@@ -283,20 +271,20 @@ class SyncWorker @AssistedInject constructor(
     var syncThread: Thread? = null
 
     override fun doWork(): Result {
-
-        // Check internet connection. This is especially important on API 26+ where when a VPN is used,
-        // WorkManager may start the SyncWorker without a working underlying Internet connection.
-        if (Build.VERSION.SDK_INT >= 23 && !internetAvailable(applicationContext)) {
-            Logger.log.info("WorkManager started SyncWorker without Internet connection. Aborting.")
-            return Result.failure()
-        }
-        
         // ensure we got the required arguments
         val account = Account(
             inputData.getString(ARG_ACCOUNT_NAME) ?: throw IllegalArgumentException("$ARG_ACCOUNT_NAME required"),
             inputData.getString(ARG_ACCOUNT_TYPE) ?: throw IllegalArgumentException("$ARG_ACCOUNT_TYPE required")
         )
         val authority = inputData.getString(ARG_AUTHORITY) ?: throw IllegalArgumentException("$ARG_AUTHORITY required")
+
+        // Check internet connection
+        val ignoreVpns = AccountSettings(applicationContext, account).getIgnoreVpns()
+        if (Build.VERSION.SDK_INT >= 23 && !internetAvailable(applicationContext, ignoreVpns)) {
+            Logger.log.info("WorkManager started SyncWorker without Internet connection. Aborting.")
+            return Result.failure()
+        }
+
         Logger.log.info("Running sync worker: account=$account, authority=$authority")
 
         // What are we going to sync? Select syncer based on authority
@@ -351,10 +339,20 @@ class SyncWorker @AssistedInject constructor(
                 .putString("syncResultStats", result.stats.toString())
                 .build()
 
+            val softErrorNotificationTag = account.type + "-" + account.name + "-" + authority
+
             // On soft errors the sync is retried a few times before considered failed
             if (result.hasSoftError()) {
                 Logger.log.warning("Soft error while syncing: result=$result, stats=${result.stats}")
                 if (runAttemptCount < MAX_RUN_ATTEMPTS) {
+                    val blockDuration = result.delayUntil - System.currentTimeMillis()/1000
+                    Logger.log.warning("Waiting for $blockDuration seconds, before retrying ...")
+
+                    // We block the SyncWorker here so that it won't be started by the sync framework immediately again.
+                    // This should be replaced by proper work scheduling as soon as we don't depend on the sync framework anymore.
+                    if (blockDuration > 0)
+                        Thread.sleep(blockDuration*1000)
+
                     Logger.log.warning("Retrying on soft error (attempt $runAttemptCount of $MAX_RUN_ATTEMPTS)")
                     return Result.retry()
                 }
@@ -362,6 +360,7 @@ class SyncWorker @AssistedInject constructor(
                 Logger.log.warning("Max retries on soft errors reached ($runAttemptCount of $MAX_RUN_ATTEMPTS). Treating as failed")
 
                 notificationManager.notifyIfPossible(
+                    softErrorNotificationTag,
                     NotificationUtils.NOTIFY_SYNC_ERROR,
                     NotificationUtils.newBuilder(applicationContext, NotificationUtils.CHANNEL_SYNC_IO_ERRORS)
                         .setSmallIcon(R.drawable.ic_sync_problem_notify)
@@ -369,13 +368,19 @@ class SyncWorker @AssistedInject constructor(
                         .setContentText(applicationContext.getString(R.string.sync_error_retry_limit_reached))
                         .setSubText(account.name)
                         .setOnlyAlertOnce(true)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(NotificationCompat.PRIORITY_MIN)
                         .setCategory(NotificationCompat.CATEGORY_ERROR)
                         .build()
                 )
 
                 return Result.failure(syncResult)
             }
+
+            // If no soft error found, dismiss sync error notification
+            notificationManager.cancel(
+                softErrorNotificationTag,
+                NotificationUtils.NOTIFY_SYNC_ERROR
+            )
 
             // On a hard error - fail with an error message
             // Note: SyncManager should have notified the user
@@ -386,31 +391,6 @@ class SyncWorker @AssistedInject constructor(
         }
 
         return Result.success()
-    }
-
-    /**
-     * Checks whether we are connected to the internet.
-     *
-     * On API 26+ devices, when a VPN is used, WorkManager might start the SyncWorker without an
-     * internet connection. To prevent this we do an extra check at the start of doWork() with this
-     * method.
-     *
-     * Every VPN connection also has an underlying non-vpn connection, which we find with
-     * [NetworkCapabilities.NET_CAPABILITY_NOT_VPN] and then check if that has validated internet
-     * access or not, using [NetworkCapabilities.NET_CAPABILITY_VALIDATED].
-     *
-     * @return whether we are connected to the internet
-     */
-    @RequiresApi(23)
-    private fun internetAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService<ConnectivityManager>()!!
-        return connectivityManager.allNetworks.any { network ->
-            connectivityManager.getNetworkCapabilities(network)?.let { capabilities ->
-                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)      // filter out VPNs
-                        && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-                        && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            } ?: false
-        }
     }
 
     override fun onStopped() {

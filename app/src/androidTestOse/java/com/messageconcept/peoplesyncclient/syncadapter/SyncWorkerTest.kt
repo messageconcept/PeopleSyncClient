@@ -17,6 +17,7 @@ import androidx.work.workDataOf
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunningOrSuccessful
 import com.messageconcept.peoplesyncclient.db.Credentials
+import com.messageconcept.peoplesyncclient.network.ConnectionUtils
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -94,8 +95,9 @@ class SyncWorkerTest {
         val accountSettings = AccountSettings(context, account)
         accountSettings.setSyncWiFiOnly(true)
 
+        mockkObject(ConnectionUtils)
+        every { ConnectionUtils.wifiAvailable(any()) } returns true
         mockkObject(SyncWorker.Companion)
-        every { SyncWorker.Companion.wifiAvailable(any()) } returns true
         every { SyncWorker.Companion.correctWifiSsid(any(), any()) } returns true
 
         assertTrue(SyncWorker.wifiConditionsMet(context, accountSettings))
@@ -106,8 +108,9 @@ class SyncWorkerTest {
         val accountSettings = AccountSettings(context, account)
         accountSettings.setSyncWiFiOnly(true)
 
+        mockkObject(ConnectionUtils)
+        every { ConnectionUtils.wifiAvailable(any()) } returns false
         mockkObject(SyncWorker.Companion)
-        every { SyncWorker.Companion.wifiAvailable(any()) } returns false
         every { SyncWorker.Companion.correctWifiSsid(any(), any()) } returns true
 
         assertFalse(SyncWorker.wifiConditionsMet(context, accountSettings))
