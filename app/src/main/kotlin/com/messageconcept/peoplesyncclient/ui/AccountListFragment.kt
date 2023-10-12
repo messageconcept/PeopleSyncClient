@@ -41,7 +41,6 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.databinding.AccountListBinding
 import com.messageconcept.peoplesyncclient.databinding.AccountListItemBinding
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
-import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils.syncAuthorities
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
@@ -273,7 +272,7 @@ class AccountListFragment: Fragment() {
                 val accountsWithInfo = sortedAccounts.map { account ->
                     AccountInfo(
                         account,
-                        SyncStatus.fromAccount(context, account, syncAuthorities)
+                        SyncStatus.fromAccount(context, account)
                     )
                 }
                 value = accountsWithInfo
@@ -281,7 +280,6 @@ class AccountListFragment: Fragment() {
         }
 
         private val accountManager = AccountManager.get(application)!!
-        private val syncAuthorities by lazy { SyncUtils.syncAuthorities(application) }
 
         init {
             // watch accounts
@@ -309,17 +307,16 @@ class AccountListFragment: Fragment() {
              * sub-accounts (address book accounts).
              *
              * @param account       account to check
-             * @param authorities   sync authorities to check (usually taken from [syncAuthorities])
              *
              * @return sync status of the given account
              */
-            fun fromAccount(context: Context, account: Account, authorities: List<String>): SyncStatus {
-                val workerNames = authorities.map { authority ->
+            fun fromAccount(context: Context, account: Account): SyncStatus {
+                // Add contacts authority, so sync status of address-book-accounts is also checked
+                val workerNames = syncAuthorities(context, true).map { authority ->
                     SyncWorker.workerName(account, authority)
                 }
                 val workQuery = WorkQuery.Builder
-                    .fromTags(listOf(SyncWorker.TAG_SYNC))
-                    .addUniqueWorkNames(workerNames)
+                    .fromTags(workerNames)
                     .addStates(listOf(WorkInfo.State.RUNNING, WorkInfo.State.ENQUEUED))
                     .build()
 

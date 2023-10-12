@@ -4,6 +4,8 @@
 
 package com.messageconcept.peoplesyncclient.ui.account
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.Application
 import android.content.*
 import android.os.Bundle
