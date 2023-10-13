@@ -13,8 +13,6 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalAddressBook.Companion.USER_DATA_MAIN_ACCOUNT_TYPE
-import com.messageconcept.peoplesyncclient.util.UpdateUtils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.util.concurrent.Semaphore
@@ -52,7 +50,6 @@ class AccountsCleanupWorker @AssistedInject constructor(
         lockAccountsCleanup()
         try {
             val accountManager = AccountManager.get(applicationContext)
-            UpdateUtils.upgradeAccounts(applicationContext)
             cleanupAccounts(applicationContext, accountManager.accounts)
         } finally {
             unlockAccountsCleanup()
@@ -69,31 +66,8 @@ class AccountsCleanupWorker @AssistedInject constructor(
             .map { it.name }
 
         val addressBookAccountType = context.getString(R.string.account_type_address_book)
-
-        // Determine if we only have old style address book accounts.
-        // If so, this most likely means that we weren't able to contact the PeopleSync
-        // server yet and sync the address books after an upgrade. In this case, don't delete
-        // the old address books yet.
-        val accountManager = AccountManager.get(context)
-        val newAddressBookAccounts = accounts
-                .filter { account -> account.type == addressBookAccountType }
-                .filter { account -> accountManager.getUserData(account, USER_DATA_MAIN_ACCOUNT_TYPE) == mainAccountType }
-        val oldAddressBookAccounts = accounts
-                .filter { account -> account.type == addressBookAccountType }
-                .filter { account -> newAddressBookAccounts.contains(account).not() }
-
-        if (newAddressBookAccounts.isEmpty() && oldAddressBookAccounts.isNotEmpty()) {
-            Logger.log.info("Found only old address book accounts. Skipping address book accounts and service db cleanup.")
-            return
-        }
-        if (newAddressBookAccounts.isNotEmpty() && oldAddressBookAccounts.isNotEmpty()) {
-            Logger.log.info("Found old and new address book accounts. Cleaning up old address book accounts.")
-            oldAddressBookAccounts.forEach() { account -> UpdateUtils.delete(context, account) }
-        }
-
         val addressBooks = accounts
             .filter { account -> account.type == addressBookAccountType }
-            .filter { account -> oldAddressBookAccounts.contains(account).not() }
             .map { addressBookAccount -> LocalAddressBook(context, addressBookAccount, null) }
         for (addressBook in addressBooks) {
             try {

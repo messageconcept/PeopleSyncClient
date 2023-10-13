@@ -45,7 +45,6 @@ open class LocalAddressBook(
         const val USER_DATA_MAIN_ACCOUNT_NAME = "real_account_name"
         const val USER_DATA_URL = "url"
         const val USER_DATA_READ_ONLY = "read_only"
-        const val USER_DATA_MAIN_ACCOUNT_NAME_OLD = "parent_account_name"
 
         /**
          * Creates a local address book.
@@ -128,9 +127,7 @@ open class LocalAddressBook(
             if (account.type == context.getString(R.string.account_type_address_book)) {
                 val manager = AccountManager.get(context)
                 val accountName = manager.getUserData(account, USER_DATA_MAIN_ACCOUNT_NAME)
-                        ?: manager.getUserData(account, USER_DATA_MAIN_ACCOUNT_NAME_OLD)
                 val accountType = manager.getUserData(account, USER_DATA_MAIN_ACCOUNT_TYPE)
-                        ?: context.getString(R.string.account_type)
                 if (accountName == null || accountType == null)
                     throw IllegalArgumentException("Address book account does not have a main account")
                 Account(accountName, accountType)
