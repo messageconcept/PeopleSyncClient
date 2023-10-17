@@ -403,5 +403,6 @@
   <!--cert4android-->
   <string name="certificate_notification_connection_security">PeopleSync: Seguridad de conexión</string>
   <string name="trust_certificate_unknown_certificate_found">PeopleSync ha encontrado un certificado desconocido. ¿Quieres que sea válido?</string>
+  <!--managed configurations-->
   <string name="account_list_managed_configuration">La configuración de la cuenta es gestionada por su organización.</string>
 </resources>

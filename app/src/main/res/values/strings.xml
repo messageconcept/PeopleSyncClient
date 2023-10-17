@@ -521,5 +521,6 @@
     <string name="wifi_only_title">Sync over WiFi only</string>
     <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
 
+    <!-- managed configurations -->
     <string name="account_list_managed_configuration">Account settings are managed by your organisation.</string>
 </resources>
