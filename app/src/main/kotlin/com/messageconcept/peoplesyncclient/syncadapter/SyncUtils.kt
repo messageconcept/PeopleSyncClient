@@ -13,7 +13,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.os.Build
 import android.provider.ContactsContract
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat

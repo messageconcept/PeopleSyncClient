@@ -21,7 +21,6 @@ import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWo
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.util.closeCompat
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -80,7 +79,7 @@ class AddressBookSyncer(context: Context): Syncer(context) {
                         // refresh home set list (from principal url) and save them
                         service.principal?.let { principalUrl ->
                             Logger.log.fine("Querying principal $principalUrl for home sets")
-                            refresher.queryHomeSets(principalUrl)
+                            refresher.discoverHomesets(principalUrl)
                         }
 
                         // now refresh home sets and their member collections
@@ -143,7 +142,7 @@ class AddressBookSyncer(context: Context): Syncer(context) {
                 LocalAddressBook.create(context, contactsProvider, account, info, forceAllReadOnly)
             }
         } finally {
-            contactsProvider?.closeCompat()
+            contactsProvider?.close()
         }
 
         return true

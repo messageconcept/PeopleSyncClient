@@ -15,6 +15,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.location.LocationManagerCompat
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
@@ -57,7 +58,7 @@ object PermissionUtils {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
                     true    // Android <9 doesn't require active location services
                 else
-                    ContextCompat.getSystemService(context, LocationManager::class.java)?.let { locationManager ->
+                    context.getSystemService<LocationManager>()?.let { locationManager ->
                         LocationManagerCompat.isLocationEnabled(locationManager)
                     } ?: /* location feature not available on this device */ false
 

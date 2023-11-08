@@ -64,6 +64,11 @@ class App: Application(), Thread.UncaughtExceptionHandler, Configuration.Provide
 
     @Inject lateinit var workerFactory: HiltWorkerFactory
 
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
     override fun onCreate() {
         super.onCreate()
         Logger.initialize(this)
@@ -106,11 +111,6 @@ class App: Application(), Thread.UncaughtExceptionHandler, Configuration.Provide
             AccountSettings.updateAccounts(this)
         }
     }
-
-    override fun getWorkManagerConfiguration() =
-        Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
 
     override fun uncaughtException(t: Thread, e: Throwable) {
         Logger.log.log(Level.SEVERE, "Unhandled exception!", e)

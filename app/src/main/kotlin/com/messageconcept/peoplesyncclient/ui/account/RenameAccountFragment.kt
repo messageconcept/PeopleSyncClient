@@ -33,7 +33,6 @@ import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.AccountsCleanupWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
-import com.messageconcept.peoplesyncclient.util.closeCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -206,7 +205,7 @@ class RenameAccountFragment: DialogFragment() {
                                     addressBook.mainAccount = Account(newName, oldAccount.type)
                             }
                         } finally {
-                            provider.closeCompat()
+                            provider.close()
                         }
                     }
                 } catch (e: Exception) {

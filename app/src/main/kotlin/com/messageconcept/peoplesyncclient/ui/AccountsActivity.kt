@@ -12,6 +12,7 @@ import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -38,27 +39,27 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SettingsManager.OnChangeListener {
 
-    companion object {
-        const val REQUEST_INTRO = 0
-    }
-
     @Inject lateinit var accountsDrawerHandler: AccountsDrawerHandler
     @Inject lateinit var settings: SettingsManager
 
     private lateinit var binding: ActivityAccountsBinding
     val model by viewModels<Model>()
 
+    private val introActivityLauncher = registerForActivityResult(IntroActivity.Contract) { cancelled ->
+        if (cancelled) {
+            finish()
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
+            // use a separate thread to check whether IntroActivity should be shown
             CoroutineScope(Dispatchers.Default).launch {
-                // use a separate thread to check whether IntroActivity should be shown
-                if (IntroActivity.shouldShowIntroActivity(this@AccountsActivity)) {
-                    val intro = Intent(this@AccountsActivity, IntroActivity::class.java)
-                    startActivityForResult(intro, REQUEST_INTRO)
-                }
+                if (IntroActivity.shouldShowIntroActivity(this@AccountsActivity))
+                    introActivityLauncher.launch(null)
             }
         }
 
@@ -82,6 +83,14 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
 
+        onBackPressedDispatcher.addCallback(this) {
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                finish()
+            }
+        }
+
         // handle "Sync all" intent from launcher shortcut
         if (savedInstanceState == null && intent.action == Intent.ACTION_SYNC)
             syncAllAccounts()
@@ -90,21 +99,6 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
     override fun onResume() {
         super.onResume()
         accountsDrawerHandler.initMenu(this, binding.navView.menu)
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_INTRO && resultCode == Activity.RESULT_CANCELED)
-            finish()
-        else
-            super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        else
-            super.onBackPressed()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -131,7 +125,7 @@ class AccountsActivity: AppCompatActivity(), NavigationView.OnNavigationItemSele
     private fun allAccounts() =
             AccountManager.get(this).getAccountsByType(getString(R.string.account_type))
 
-    fun syncAllAccounts(item: MenuItem? = null) {
+    fun syncAllAccounts() {
         if (Build.VERSION.SDK_INT >= 25)
             getSystemService<ShortcutManager>()?.reportShortcutUsed(UiUtils.SHORTCUT_SYNC_ALL)
 

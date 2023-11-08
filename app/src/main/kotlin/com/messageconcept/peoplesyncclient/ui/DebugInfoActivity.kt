@@ -15,6 +15,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.*
 import android.provider.ContactsContract
+import android.text.format.DateUtils
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +45,6 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KE
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.PeriodicSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
-import com.messageconcept.peoplesyncclient.util.closeCompat
 import com.google.android.material.snackbar.Snackbar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -59,7 +59,6 @@ import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.exception.ExceptionUtils
 import java.io.*
-import java.util.Locale
 import java.util.TimeZone
 import java.util.logging.Level
 import java.util.zip.ZipEntry
@@ -364,10 +363,7 @@ class DebugInfoActivity : AppCompatActivity() {
                 }
 
                 // system info
-                val locales: Any = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                    LocaleList.getAdjustedDefault()
-                else
-                    Locale.getDefault()
+                val locales: Any = LocaleList.getAdjustedDefault()
                 writer.append(
                     "\nSYSTEM INFORMATION\n\n" +
                             "Android version: ${Build.VERSION.RELEASE} (${Build.DISPLAY})\n" +
@@ -386,7 +382,7 @@ class DebugInfoActivity : AppCompatActivity() {
                 // connectivity
                 context.getSystemService<ConnectivityManager>()?.let { connectivityManager ->
                     writer.append("\nCONNECTIVITY\n\n")
-                    val activeNetwork = if (Build.VERSION.SDK_INT >= 23) connectivityManager.activeNetwork else null
+                    val activeNetwork = connectivityManager.activeNetwork
                     connectivityManager.allNetworks.sortedByDescending { it == activeNetwork }.forEach { network ->
                         val properties = connectivityManager.getLinkProperties(network)
                         connectivityManager.getNetworkCapabilities(network)?.let { capabilities ->
@@ -406,19 +402,17 @@ class DebugInfoActivity : AppCompatActivity() {
                     }
                     writer.append('\n')
 
-                    if (Build.VERSION.SDK_INT >= 23)
-                        connectivityManager.defaultProxy?.let { proxy ->
-                            writer.append("System default proxy: ${proxy.host}:${proxy.port}\n")
+                    connectivityManager.defaultProxy?.let { proxy ->
+                        writer.append("System default proxy: ${proxy.host}:${proxy.port}\n")
+                    }
+                    writer.append("Data saver: ").append(
+                        when (connectivityManager.restrictBackgroundStatus) {
+                            ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED -> "enabled"
+                            ConnectivityManager.RESTRICT_BACKGROUND_STATUS_WHITELISTED -> "whitelisted"
+                            ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED -> "disabled"
+                            else -> connectivityManager.restrictBackgroundStatus.toString()
                         }
-                    if (Build.VERSION.SDK_INT >= 24)
-                        writer.append("Data saver: ").append(
-                            when (connectivityManager.restrictBackgroundStatus) {
-                                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED -> "enabled"
-                                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_WHITELISTED -> "whitelisted"
-                                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED -> "disabled"
-                                else -> connectivityManager.restrictBackgroundStatus.toString()
-                            }
-                        ).append('\n')
+                    ).append('\n')
                     writer.append('\n')
                 }
 
@@ -432,12 +426,11 @@ class DebugInfoActivity : AppCompatActivity() {
                             writer.append(" (RESTRICTED!)")
                         writer.append('\n')
                     }
-                if (Build.VERSION.SDK_INT >= 23)
-                    context.getSystemService<PowerManager>()?.let { powerManager ->
-                        writer.append("Power saving disabled: ")
-                            .append(if (powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) "yes" else "no")
-                            .append('\n')
-                    }
+                context.getSystemService<PowerManager>()?.let { powerManager ->
+                    writer.append("Power saving disabled: ")
+                        .append(if (powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) "yes" else "no")
+                        .append('\n')
+                }
                 // system-wide sync
                 writer.append("System-wide synchronization: ")
                     .append(if (ContentResolver.getMasterSyncAutomatically()) "automatically" else "manually")
@@ -624,7 +617,7 @@ class DebugInfoActivity : AppCompatActivity() {
         }
 
         private fun dumpAccount(account: Account, infos: Iterable<AccountDumpInfo>): String {
-            val table = TextTable("Authority", "getIsSyncable", "getSyncAutomatically", "PeriodicSyncWorker", "Interval", "Entries")
+            val table = TextTable("Authority", "isSyncable", "syncAutomatically", "Interval", "Entries")
             for (info in infos) {
                 var nrEntries = "—"
                 var client: ContentProviderClient? = null
@@ -640,14 +633,13 @@ class DebugInfoActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         nrEntries = e.toString()
                     } finally {
-                        client?.closeCompat()
+                        client?.close()
                     }
                 val accountSettings = AccountSettings(context, account)
                 table.addLine(
                     info.authority,
                     ContentResolver.getIsSyncable(account, info.authority),
                     ContentResolver.getSyncAutomatically(account, info.authority),  // content-triggered sync
-                    PeriodicSyncWorker.isEnabled(context, account, info.authority), // should always be false for address book accounts
                     accountSettings.getSyncInterval(info.authority)?.let {"${it/60} min"},
                     nrEntries
                 )
@@ -661,7 +653,7 @@ class DebugInfoActivity : AppCompatActivity() {
          * whether they exist one by one
          */
         private fun dumpSyncWorkersInfo(account: Account): String {
-            val table = TextTable("Tags", "Authority", "State", "Retries", "Generation", "ID")
+            val table = TextTable("Tags", "Authority", "State", "Next run", "Retries", "Generation", "Periodicity")
             listOf(
                 context.getString(R.string.address_books_authority)
             ).forEach { authority ->
@@ -673,12 +665,20 @@ class DebugInfoActivity : AppCompatActivity() {
                         WorkQuery.Builder.fromUniqueWorkNames(listOf(workerName)).build()
                     ).get().forEach { workInfo ->
                         table.addLine(
-                            workInfo.tags.map { StringUtils.removeStartIgnoreCase(it, SyncWorker::class.java.getPackage()!!.name + ".") },
+                            workInfo.tags.map { it.replace("\\bat\\.bitfire\\.davdroid\\.".toRegex(), ".") },
                             authority,
-                            workInfo.state,
+                            "${workInfo.state} (${workInfo.stopReason})",
+                            workInfo.nextScheduleTimeMillis.let { nextRun ->
+                                when (nextRun) {
+                                    Long.MAX_VALUE -> "—"
+                                    else -> DateUtils.getRelativeTimeSpanString(nextRun)
+                                }
+                            },
                             workInfo.runAttemptCount,
                             workInfo.generation,
-                            workInfo.id
+                            workInfo.periodicityInfo?.let { periodicity ->
+                                "every ${periodicity.repeatIntervalMillis/60000} min"
+                            } ?: "not periodic"
                         )
                     }
                 }

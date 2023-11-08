@@ -7,6 +7,7 @@ package com.messageconcept.peoplesyncclient.ui.setup
 import androidx.lifecycle.ViewModel
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
+import at.bitfire.vcard4android.GroupMethod
 import java.net.URI
 
 class LoginModel: ViewModel() {
@@ -16,9 +17,10 @@ class LoginModel: ViewModel() {
 
     var configuration: DavResourceFinder.Configuration? = null
 
-    /**
-     * Account name that should be used as default account name when no email addresses have been found.
-     */
+    /** account name that should be used as default account name when no email addresses have been found */
     var suggestedAccountName: String? = null
+
+    /** group method that should be pre-selectedbr */
+    var suggestedGroupMethod: GroupMethod = GroupMethod.GROUP_VCARDS
 
 }

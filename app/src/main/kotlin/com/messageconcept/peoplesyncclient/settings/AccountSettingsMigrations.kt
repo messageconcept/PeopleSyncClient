@@ -21,7 +21,6 @@ import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
-import com.messageconcept.peoplesyncclient.util.closeCompat
 import com.messageconcept.peoplesyncclient.util.setAndVerifyUserData
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
@@ -245,7 +244,7 @@ class AccountSettingsMigrations(
                 throw ContactsStorageException("Couldn't migrate contacts to new address book", e)
             } finally {
                 parcel.recycle()
-                provider.closeCompat()
+                provider.close()
             }
         }
 
