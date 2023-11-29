@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_margin"
             android:layout_marginRight="@dimen/activity_margin"
+            android:layout_marginTop="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/card_padding"
             android:visibility="gone">
             <androidx.constraintlayout.widget.ConstraintLayout
