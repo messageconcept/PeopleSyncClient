@@ -56,11 +56,44 @@ fun ActionCard(
 }
 
 @Composable
+fun NotificationCard(
+    icon: Painter? = null,
+    content: @Composable () -> Unit
+) {
+    Card(Modifier
+        .padding(horizontal = 8.dp, vertical = 4.dp)
+        .fillMaxWidth()
+    ) {
+        Column(Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+            if (icon != null)
+                Row {
+                    Icon(icon, "", Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(end = 8.dp))
+                    content()
+                }
+            else
+                content()
+        }
+    }
+}
+
+@Composable
 @Preview
 fun ActionCard_Sample() {
     ActionCard(
         icon = painterResource(R.drawable.ic_notifications_off),
         actionText = "Some Action"
+    ) {
+        Text("Some Content")
+    }
+}
+
+@Composable
+@Preview
+fun NotificationCard_Sample() {
+    NotificationCard(
+        icon = painterResource(R.drawable.ic_settings),
     ) {
         Text("Some Content")
     }
