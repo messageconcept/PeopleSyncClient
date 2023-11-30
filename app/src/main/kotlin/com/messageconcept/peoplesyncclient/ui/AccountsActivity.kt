@@ -182,13 +182,16 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
                     ) {
 
                         // background image
-                        Image(
-                            painterResource(R.drawable.accounts_background),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .matchParentSize()
-                                .align(Alignment.Center)
-                        )
+                        if (accounts?.isNotEmpty() != true) {
+                            Image(
+                                painterResource(R.drawable.accounts_background),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .align(Alignment.Center)
+                                    .padding(16.dp)
+                            )
+                        }
 
                         Column {
                             val warnings = model.warnings
