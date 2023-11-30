@@ -10,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.PermissionUtils.CONTACT_PERMISSIONS
-import com.messageconcept.peoplesyncclient.R
 import javax.inject.Inject
 
 class PermissionsIntroFragment : Fragment() {

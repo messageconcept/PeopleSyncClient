@@ -11,9 +11,7 @@ import android.provider.ContactsContract
 import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
-import androidx.work.testing.TestWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
-import androidx.work.workDataOf
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunningOrSuccessful
 import com.messageconcept.peoplesyncclient.db.Credentials
@@ -27,13 +25,10 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import org.junit.After
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.Executors
 
 @HiltAndroidTest
 class SyncWorkerTest {
@@ -44,15 +39,12 @@ class SyncWorkerTest {
     private val account = Account("Test Account", context.getString(R.string.account_type))
     private val fakeCredentials = Credentials("test", "test")
 
-    private val executor = Executors.newSingleThreadExecutor()
-
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Before
-    fun inject() {
-        hiltRule.inject()
-    }
+    fun inject() = hiltRule.inject()
+
 
     @Before
     fun setUp() {
@@ -125,33 +117,6 @@ class SyncWorkerTest {
     @Test
     fun testWifiConditionsMet_wrongWifiSsid() {
         // TODO: Write test
-    }
-
-
-    @Test
-    fun testOnStopped_interruptsSyncThread() {
-        val authority = ContactsContract.AUTHORITY
-        val inputData = workDataOf(
-            SyncWorker.ARG_AUTHORITY to authority,
-            SyncWorker.ARG_ACCOUNT_NAME to account.name,
-            SyncWorker.ARG_ACCOUNT_TYPE to account.type
-        )
-
-        // Create SyncWorker as TestWorker
-        val testSyncWorker = TestWorkerBuilder<SyncWorker>(context, executor, inputData).build()
-        assertNull(testSyncWorker.syncThread)
-
-        // Run SyncWorker and assert sync thread is alive
-        testSyncWorker.doWork()
-        assertNotNull(testSyncWorker.syncThread)
-        assertTrue(testSyncWorker.syncThread!!.isAlive)
-        assertFalse(testSyncWorker.syncThread!!.isInterrupted) // Sync running
-
-        // Stop SyncWorker and assert sync thread was interrupted
-        testSyncWorker.onStopped()
-        assertNotNull(testSyncWorker.syncThread)
-        assertTrue(testSyncWorker.syncThread!!.isAlive)
-        assertTrue(testSyncWorker.syncThread!!.isInterrupted) // Sync thread interrupted
     }
 
 }

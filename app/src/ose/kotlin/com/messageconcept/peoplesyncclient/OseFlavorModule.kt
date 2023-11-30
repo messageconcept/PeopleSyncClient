@@ -4,7 +4,9 @@
 
 package com.messageconcept.peoplesyncclient
 
+import com.messageconcept.peoplesyncclient.ui.AboutActivity
 import com.messageconcept.peoplesyncclient.ui.AccountsDrawerHandler
+import com.messageconcept.peoplesyncclient.ui.OpenSourceLicenseInfoProvider
 import com.messageconcept.peoplesyncclient.ui.OseAccountsDrawerHandler
 import com.messageconcept.peoplesyncclient.ui.intro.IntroFragmentFactory
 import com.messageconcept.peoplesyncclient.ui.intro.PermissionsIntroFragment
@@ -12,28 +14,28 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class OseFlavorModule {
+interface OseFlavorModules {
 
-    //// navigation drawer handler ////
+    @Module
+    @InstallIn(ActivityComponent::class)
+    interface ForActivities {
+        @Binds
+        abstract fun accountsDrawerHandler(impl: OseAccountsDrawerHandler): AccountsDrawerHandler
 
-    @Binds
-    abstract fun accountsDrawerHandler(handler: OseAccountsDrawerHandler): AccountsDrawerHandler
+        @Binds
+        fun appLicenseInfoProvider(impl: OpenSourceLicenseInfoProvider): AboutActivity.AppLicenseInfoProvider
+    }
 
 
     //// intro fragments ////
 
-    // WelcomeFragment and BatteryOptimizationsFragment modules are hardcoded there
-
     @Module
     @InstallIn(ActivityComponent::class)
-    abstract class PermissionsIntroFragmentModule {
+    interface PermissionsIntroFragmentModule {
         @Binds @IntoSet
-        abstract fun getFactory(factory: PermissionsIntroFragment.Factory): IntroFragmentFactory
+        fun getFactory(factory: PermissionsIntroFragment.Factory): IntroFragmentFactory
     }
 
 }

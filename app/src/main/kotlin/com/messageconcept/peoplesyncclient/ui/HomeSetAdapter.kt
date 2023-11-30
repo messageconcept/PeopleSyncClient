@@ -13,9 +13,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
-import com.messageconcept.peoplesyncclient.util.DavUtils
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.util.DavUtils
 
 class HomeSetAdapter(
         context: Context

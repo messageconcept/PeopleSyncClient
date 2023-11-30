@@ -9,13 +9,31 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.graphics.Typeface
+import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
+import android.text.Spanned
+import android.text.style.StyleSpan
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabsClient
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.core.content.getSystemService
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.text.getSpans
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.Settings
@@ -36,6 +54,19 @@ object UiUtils {
 
     const val SHORTCUT_SYNC_ALL = "syncAllAccounts"
     const val SNACKBAR_LENGTH_VERY_LONG = 5000          // 5s
+
+    @Composable
+    fun adaptiveIconPainterResource(@DrawableRes id: Int): Painter {
+        val context = LocalContext.current
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val adaptiveIcon = ResourcesCompat.getDrawable(context.resources, id, null) as? AdaptiveIconDrawable
+            if (adaptiveIcon != null)
+                BitmapPainter(adaptiveIcon.toBitmap().asImageBitmap())
+            else
+                painterResource(id)
+        } else
+            painterResource(id)
+    }
 
     fun haveCustomTabs(context: Context) = CustomTabsClient.getPackageName(context, null, false) != null
 
@@ -86,6 +117,30 @@ object UiUtils {
                     Logger.log.log(Level.WARNING, "Couldn't update dynamic shortcut(s)", e)
                 }
             }
+    }
+
+
+    @Composable
+    fun Spanned.toAnnotatedString() = buildAnnotatedString {
+        val spanned = this@toAnnotatedString
+        append(spanned.toString())
+        for (span in getSpans<Any>(0, spanned.length)) {
+            val start = getSpanStart(span)
+            val end = getSpanEnd(span)
+            when (span) {
+                is StyleSpan ->
+                    when (span.style) {
+                        Typeface.BOLD -> addStyle(
+                            SpanStyle(fontWeight = FontWeight.Bold),
+                            start = start, end = end
+                        )
+                        Typeface.ITALIC -> addStyle(
+                            SpanStyle(fontStyle = FontStyle.Italic),
+                            start = start, end = end
+                        )
+                    }
+            }
+        }
     }
 
 }
