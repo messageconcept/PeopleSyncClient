@@ -132,10 +132,7 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
     }
 
     private fun applyRestrictions() {
-        val isManaged = AccountSettings.isManaged(this)
-        val isEmptyOrNull = model.accounts.value?.isEmpty() != false
-        model.showAddAccount.value = !(isManaged && !isEmptyOrNull)
-        model.isManaged.value = isManaged
+        model.isManaged.value = AccountSettings.isManaged(this)
     }
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
@@ -161,6 +158,10 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
             })
 
             val accounts by model.accountInfos.observeAsState()
+
+            val isManaged by model.isManaged.observeAsState()
+
+            model.showAddAccount.value = !(isManaged == true && accounts?.isNotEmpty() == true)
 
             MdcTheme {
                 Scaffold(
