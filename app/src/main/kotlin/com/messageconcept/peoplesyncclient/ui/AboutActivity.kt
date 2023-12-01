@@ -285,7 +285,7 @@ fun AboutApp(licenseInfoProvider: AboutActivity.AppLicenseInfoProvider? = null) 
 
         Text(
             stringResource(R.string.about_contact_info),
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body2,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
