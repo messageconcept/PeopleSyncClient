@@ -11,6 +11,12 @@ plugins {
     id 'kotlin-kapt'     // remove as soon as Hilt supports KSP [https://issuetracker.google.com/179057202]
 }
 
+aboutLibraries {
+    // This means that we have to generate the dependencies explicitly:
+    // ./gradlew --no-configuration-cache --no-build-cache -PaboutLibraries.exportPath=src/main/res/raw/ app:exportLibraryDefinitions
+    registerAndroidTasks = false
+}
+
 // Android configuration
 android {
     compileSdk 34
@@ -51,7 +57,7 @@ android {
     composeOptions {
         // Keep this in sync with Kotlin version:
         // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
-        kotlinCompilerExtensionVersion = "1.5.4"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
 
     // Java namespace for our classes (not to be confused with Android package ID)
@@ -137,9 +143,9 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:${versions.hilt}"     // replace by KSP when ready [https://issuetracker.google.com/179057202]
 
     // support libs
-    implementation 'androidx.activity:activity-compose:1.8.0'
+    implementation 'androidx.activity:activity-compose:1.8.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.browser:browser:1.6.0'
+    implementation 'androidx.browser:browser:1.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.concurrent:concurrent-futures-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -156,11 +162,12 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation "androidx.work:work-runtime-ktx:${versions.workManager}"
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
 
     // Jetpack Compose
     implementation platform("androidx.compose:compose-bom:${versions.composeBom}")
     implementation 'androidx.compose.material:material'
+    implementation 'androidx.compose.material:material-icons-extended'
     implementation 'androidx.compose.runtime:runtime-livedata'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     implementation 'androidx.compose.ui:ui-tooling-preview'
@@ -192,7 +199,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.8.0'
     //noinspection GradleDependency - dnsjava 3.x requires Android 8 [https://github.com/bitfireAT/davx5/issues/453]
     implementation 'dnsjava:dnsjava:2.1.9'
-    implementation "io.github.nsk90:kstatemachine-jvm:0.22.1"
+    implementation 'io.github.nsk90:kstatemachine-jvm:0.24.0'
     implementation 'net.openid:appauth:0.11.1'
     implementation "org.apache.commons:commons-collections4:${versions.commonsCollections}"
     implementation "org.apache.commons:commons-lang3:${versions.commonsLang}"
