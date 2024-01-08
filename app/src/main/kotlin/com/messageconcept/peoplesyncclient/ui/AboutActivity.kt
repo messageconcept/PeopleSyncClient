@@ -24,6 +24,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -54,9 +55,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.ui.widget.PixelBoxes
 import com.google.accompanist.themeadapter.material.MdcTheme
-import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
-import com.mikepenz.aboutlibraries.util.withJson
 import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -164,14 +163,7 @@ class AboutActivity: AppCompatActivity() {
                                     TranslatorsGallery(translations.value)
                                 }
 
-                                2 -> LibrariesContainer(Modifier.fillMaxSize(),
-                                    itemContentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-                                    itemSpacing = 8.dp,
-                                    librariesBlock = { ctx ->
-                                        Libs.Builder()
-                                            .withJson(ctx, R.raw.aboutlibraries)
-                                            .build()
-                                    })
+                                2 -> LibrariesContainer(Modifier.fillMaxSize())
                             }
                         }
                     }
