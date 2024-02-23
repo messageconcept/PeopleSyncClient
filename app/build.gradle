@@ -11,6 +11,11 @@ plugins {
     id 'kotlin-kapt'    // remove when ui.widget.BindingAdapters are not required anymore
 }
 
+aboutLibraries {
+    // path to our custom library definitions
+    configPath = "config"
+}
+
 // Android configuration
 android {
     compileSdk 34
@@ -110,11 +115,6 @@ android {
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
-}
-
-aboutLibraries {
-    // path to our custom library definitions
-    configPath = "config"
 }
 
 configurations {
