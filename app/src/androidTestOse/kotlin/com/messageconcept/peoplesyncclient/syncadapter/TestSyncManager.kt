@@ -10,9 +10,9 @@ import android.content.SyncResult
 import at.bitfire.dav4jvm.DavCollection
 import at.bitfire.dav4jvm.MultiResponseCallback
 import at.bitfire.dav4jvm.Response
-import at.bitfire.dav4jvm.property.GetCTag
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import at.bitfire.dav4jvm.property.caldav.GetCTag
 import com.messageconcept.peoplesyncclient.db.SyncState
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.resource.LocalResource
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.util.DavUtils
@@ -82,7 +82,7 @@ class TestSyncManager(
 
         for ((url, eTag) in assertDownloadRemote) {
             val fileName = DavUtils.lastSegmentOfUrl(url)
-            var localEntry = localCollection.entries.filter { it.fileName == fileName }.firstOrNull()
+            var localEntry = localCollection.entries.firstOrNull { it.fileName == fileName }
             if (localEntry == null) {
                 val newEntry = LocalTestResource().also {
                     it.fileName = fileName

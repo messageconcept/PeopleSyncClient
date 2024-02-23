@@ -5,7 +5,7 @@
 package com.messageconcept.peoplesyncclient
 
 import org.apache.commons.lang3.StringUtils
-import java.util.*
+import java.util.Collections
 
 class TextTable(
         vararg val headers: String

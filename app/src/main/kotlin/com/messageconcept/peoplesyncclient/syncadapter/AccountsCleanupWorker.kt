@@ -8,7 +8,11 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
 import androidx.hilt.work.HiltWorker
-import androidx.work.*
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.log.Logger

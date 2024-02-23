@@ -7,19 +7,39 @@ package com.messageconcept.peoplesyncclient.ui.account
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Application
-import android.content.*
+import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.CallSuper
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
-import androidx.paging.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +73,7 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
     protected val binding get() = _binding!!
 
     val accountModel by activityViewModels<AccountActivity.Model>()
+    private val warnings by viewModels<AppWarningsModel>()
     @Inject lateinit var modelFactory: Model.Factory
     protected val model by viewModels<Model> {
         object: ViewModelProvider.Factory {
@@ -118,14 +139,15 @@ abstract class CollectionsFragment: Fragment(), SwipeRefreshLayout.OnRefreshList
     }
 
     override fun onRefresh() {
-        val networkAvailable = accountModel.networkAvailable.value
-        if (networkAvailable != null && !networkAvailable) {
-            Snackbar.make(
-                binding.swipeRefresh,
-                R.string.no_internet_sync_scheduled,
-                Snackbar.LENGTH_LONG
-            ).show()
-            binding.swipeRefresh.isRefreshing = false
+        warnings.networkAvailable.observe(this) { networkAvailable ->
+            if (networkAvailable == false) {
+                Snackbar.make(
+                    binding.swipeRefresh,
+                    R.string.no_internet_sync_scheduled,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
         model.refresh()
     }

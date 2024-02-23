@@ -38,7 +38,6 @@ import java.util.logging.Level
  * @throws InvalidAccountException on construction when the account doesn't exist (anymore)
  * @throws IllegalArgumentException when the account type is not _PeopleSync_ or _PeopleSync address book_
  */
-@Suppress("FunctionName")
 class AccountSettings(
     val context: Context,
     argAccount: Account
@@ -405,7 +404,7 @@ class AccountSettings(
             try {
                 return GroupMethod.valueOf(name)
             }
-            catch (e: IllegalArgumentException) {
+            catch (_: IllegalArgumentException) {
             }
         return GroupMethod.GROUP_VCARDS
     }

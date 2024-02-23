@@ -8,8 +8,8 @@ import android.security.NetworkSecurityPolicy
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import at.bitfire.dav4jvm.DavResource
-import at.bitfire.dav4jvm.property.AddressbookHomeSet
-import at.bitfire.dav4jvm.property.ResourceType
+import at.bitfire.dav4jvm.property.carddav.AddressbookHomeSet
+import at.bitfire.dav4jvm.property.webdav.ResourceType
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.network.HttpClient

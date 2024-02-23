@@ -78,7 +78,7 @@ class SettingsActivity: AppCompatActivity() {
 
 
     @AndroidEntryPoint
-    class AccountSettingsFragment(): PreferenceFragmentCompat() {
+    class AccountSettingsFragment : PreferenceFragmentCompat() {
 
         private val account by lazy { requireArguments().getParcelable<Account>(EXTRA_ACCOUNT)!! }
         @Inject lateinit var settings: SettingsManager

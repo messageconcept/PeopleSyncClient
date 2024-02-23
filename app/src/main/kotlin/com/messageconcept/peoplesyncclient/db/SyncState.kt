@@ -4,7 +4,7 @@
 
 package com.messageconcept.peoplesyncclient.db
 
-import at.bitfire.dav4jvm.property.SyncToken
+import at.bitfire.dav4jvm.property.webdav.SyncToken
 import org.json.JSONException
 import org.json.JSONObject
 

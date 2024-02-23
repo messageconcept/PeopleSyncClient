@@ -24,11 +24,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.databinding.ActivityPermissionsBinding
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.PermissionUtils.CONTACT_PERMISSIONS
 import com.messageconcept.peoplesyncclient.util.PermissionUtils.havePermissions
-import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.databinding.ActivityPermissionsBinding
 
 class PermissionsFragment: Fragment() {
 

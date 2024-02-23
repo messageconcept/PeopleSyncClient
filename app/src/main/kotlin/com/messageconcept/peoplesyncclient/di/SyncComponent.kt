@@ -4,7 +4,6 @@
 
 package com.messageconcept.peoplesyncclient.di
 
-import com.messageconcept.peoplesyncclient.log.Logger
 import dagger.hilt.DefineComponent
 import dagger.hilt.components.SingletonComponent
 import java.lang.ref.WeakReference

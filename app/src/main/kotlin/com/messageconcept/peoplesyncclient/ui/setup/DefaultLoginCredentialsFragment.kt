@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.RestrictionsManager
 import android.net.MailTo
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,7 +25,6 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KE
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
-import com.messageconcept.peoplesyncclient.ui.UiUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
@@ -247,7 +245,7 @@ class DefaultLoginCredentialsFragment : Fragment() {
     }
 
 
-    class Factory @Inject constructor() : LoginCredentialsFragmentFactory {
+    class Factory @Inject constructor() : LoginFragmentFactory {
 
         override fun getFragment(intent: Intent) = DefaultLoginCredentialsFragment()
 
@@ -259,7 +257,7 @@ class DefaultLoginCredentialsFragment : Fragment() {
         @Binds
         @IntoMap
         @IntKey(/* priority */ 10)
-        abstract fun factory(impl: Factory): LoginCredentialsFragmentFactory
+        abstract fun factory(impl: Factory): LoginFragmentFactory
     }
 
 }

@@ -14,6 +14,7 @@ import android.content.pm.ShortcutManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -49,7 +50,13 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BatterySaver
+import androidx.compose.material.icons.filled.DataSaverOn
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SignalCellularOff
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -84,6 +91,7 @@ import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.ui.account.AppWarningsModel
 import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
 import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 import com.messageconcept.peoplesyncclient.ui.widget.ActionCard
@@ -109,6 +117,7 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
     @Inject lateinit var settings: SettingsManager
 
     private val model by viewModels<Model>()
+    private val warnings by viewModels<AppWarningsModel>()
 
     private val introActivityLauncher = registerForActivityResult(IntroActivity.Contract) { cancelled ->
         if (cancelled)
@@ -195,8 +204,6 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
                         }
 
                         Column {
-                            val warnings = model.warnings
-
                             val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 rememberPermissionState(
                                     permission = Manifest.permission.POST_NOTIFICATIONS
@@ -214,19 +221,25 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
                                 },
                                 internetWarning = warnings.networkAvailable.observeAsState().value == false,
                                 onManageConnections = {
-                                    val intent = Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
-                                    if (intent.resolveActivity(packageManager) != null)
-                                        startActivity(intent)
-                                },
-                                lowStorageWarning = warnings.storageLow.observeAsState().value == true,
-                                onManageStorage = {
-                                    val intent = Intent(android.provider.Settings.ACTION_INTERNAL_STORAGE_SETTINGS)
+                                    val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
                                     if (intent.resolveActivity(packageManager) != null)
                                         startActivity(intent)
                                 },
                                 dataSaverActive = warnings.dataSaverEnabled.observeAsState().value == true,
                                 onManageDataSaver = {
-                                    val intent = Intent(android.provider.Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS, Uri.parse("package:" + packageName))
+                                    val intent = Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS, Uri.parse("package:$packageName"))
+                                    if (intent.resolveActivity(packageManager) != null)
+                                        startActivity(intent)
+                                },
+                                batterySaverActive = warnings.batterySaverActive.observeAsState().value == true,
+                                onManageBatterySaver = {
+                                    val intent = Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS)
+                                    if (intent.resolveActivity(packageManager) != null)
+                                        startActivity(intent)
+                                },
+                                lowStorageWarning = warnings.storageLow.observeAsState().value == true,
+                                onManageStorage = {
+                                    val intent = Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS)
                                     if (intent.resolveActivity(packageManager) != null)
                                         startActivity(intent)
                                 }
@@ -275,12 +288,19 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
         scope: CoroutineScope
     ): @Composable (SnackbarHostState) -> Unit = {
         SnackbarHost(snackbarHostState)
-        model.feedback.observeAsState().value?.let { msg ->
-            scope.launch {
-                snackbarHostState.showSnackbar(msg)
-            }
+        model.syncEnqueued.observeAsState().value?.let { enqueued ->
+            if (enqueued)
+                scope.launch {
+                    val msg = getString(
+                        if (warnings.networkAvailable.value == true)
+                            R.string.sync_started
+                        else
+                            R.string.no_internet_sync_scheduled
+                    )
+                    snackbarHostState.showSnackbar(msg)
+                }
             // reset feedback
-            model.feedback.value = null
+            model.syncEnqueued.value = null
         }
     }
 
@@ -374,11 +394,10 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
     @HiltViewModel
     class Model @Inject constructor(
         application: Application,
-        val db: AppDatabase,
-        val warnings: AppWarningsManager
+        val db: AppDatabase
     ): AndroidViewModel(application), OnAccountsUpdateListener {
 
-        val feedback = MutableLiveData<String>()
+        val syncEnqueued = MutableLiveData<Boolean>()
 
         val isManaged = MutableLiveData<Boolean>(false)
 
@@ -427,8 +446,6 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
             }
         }
 
-        val networkAvailable = warnings.networkAvailable
-
         val showAddAccount = MutableLiveData(true)
 
         init {
@@ -449,12 +466,7 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
             if (Build.VERSION.SDK_INT >= 25)
                 context.getSystemService<ShortcutManager>()?.reportShortcutUsed(UiUtils.SHORTCUT_SYNC_ALL)
 
-            feedback.value = context.getString(
-                if (networkAvailable.value == false)
-                    R.string.no_internet_sync_scheduled
-                else
-                    R.string.sync_started
-            )
+            syncEnqueued.value = true
 
             // Enqueue sync worker for all accounts and authorities. Will sync once internet is available
             for (account in allAccounts())
@@ -573,22 +585,24 @@ fun SyncWarnings(
     onClickPermissions: () -> Unit = {},
     internetWarning: Boolean,
     onManageConnections: () -> Unit = {},
-    lowStorageWarning: Boolean,
-    onManageStorage: () -> Unit = {},
+    batterySaverActive: Boolean,
+    onManageBatterySaver: () -> Unit = {},
     dataSaverActive: Boolean,
-    onManageDataSaver: () -> Unit = {}
+    onManageDataSaver: () -> Unit = {},
+    lowStorageWarning: Boolean,
+    onManageStorage: () -> Unit = {}
 ) {
     Column(Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
         if (managedWarning)
             NotificationCard(
-                icon = painterResource(R.drawable.ic_settings),
+                icon = Icons.Default.Settings,
             ) {
                 Text(stringResource(R.string.account_list_managed_configuration))
             }
 
         if (notificationsWarning)
             ActionCard(
-                icon = painterResource(R.drawable.ic_notifications_off),
+                icon = Icons.Default.NotificationsOff,
                 actionText = stringResource(R.string.account_permissions_action),
                 onAction = onClickPermissions
             ) {
@@ -597,29 +611,38 @@ fun SyncWarnings(
 
         if (internetWarning)
             ActionCard(
-                icon = painterResource(R.drawable.ic_signal_cellular_off),
+                icon = Icons.Default.SignalCellularOff,
                 actionText = stringResource(R.string.account_list_manage_connections),
                 onAction = onManageConnections
             ) {
                 Text(stringResource(R.string.account_list_no_internet))
             }
 
-        if (lowStorageWarning)
+        if (batterySaverActive)
             ActionCard(
-                icon = painterResource(R.drawable.ic_storage),
-                actionText = stringResource(R.string.account_list_manage_storage),
-                onAction = onManageStorage
+                icon = Icons.Default.BatterySaver,
+                actionText = stringResource(R.string.account_list_manage_battery_saver),
+                onAction = onManageBatterySaver
             ) {
-                Text(stringResource(R.string.account_list_low_storage))
+                Text(stringResource(R.string.account_list_battery_saver_enabled))
             }
 
         if (dataSaverActive)
             ActionCard(
-                icon = painterResource(R.drawable.ic_datasaver_on),
+                icon = Icons.Default.DataSaverOn,
                 actionText = stringResource(R.string.account_list_manage_datasaver),
                 onAction = onManageDataSaver
             ) {
                 Text(stringResource(R.string.account_list_datasaver_enabled))
+            }
+
+        if (lowStorageWarning)
+            ActionCard(
+                icon = Icons.Default.Storage,
+                actionText = stringResource(R.string.account_list_manage_storage),
+                onAction = onManageStorage
+            ) {
+                Text(stringResource(R.string.account_list_low_storage))
             }
     }
 }
@@ -631,7 +654,8 @@ fun SyncWarnings_Preview() {
         managedWarning = true,
         notificationsWarning = true,
         internetWarning = true,
-        lowStorageWarning = true,
-        dataSaverActive = true
+        batterySaverActive = true,
+        dataSaverActive = true,
+        lowStorageWarning = true
     )
 }

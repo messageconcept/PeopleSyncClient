@@ -4,7 +4,7 @@
 
 package com.messageconcept.peoplesyncclient.util
 
-import java.util.*
+import java.util.Collections
 
 object ConcurrentUtils {
 

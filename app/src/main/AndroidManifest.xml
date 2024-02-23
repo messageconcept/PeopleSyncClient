@@ -6,7 +6,6 @@
     <!-- normal permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
@@ -65,10 +64,6 @@
             tools:node="remove">
         </provider>
 
-        <service
-            android:name=".ForegroundService"
-            android:foregroundServiceType="dataSync" />
-
         <!-- Remove the node added by AppAuth (remove only from net.openid.appauth library, not from our flavor manifest files) -->
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity"
             tools:node="remove" tools:selector="net.openid.appauth"/>
@@ -76,7 +71,6 @@
         <activity android:name=".ui.intro.IntroActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.AccountsActivity"
-            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
@@ -141,7 +135,7 @@
         </activity>
         <activity
             android:name=".ui.account.CreateAddressBookActivity"
-            android:label="@string/create_addressbook"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.account.AccountActivity" />
         <activity
             android:name=".ui.account.SettingsActivity"
@@ -166,7 +160,8 @@
         <!-- account type "PeopleSync Address book" -->
         <service
             android:name=".syncadapter.AddressBookAuthenticatorService"
-            android:exported="true">   <!-- Since Android 11, this must be true so that Google Contacts shows the address book accounts -->
+            android:exported="true"
+            tools:ignore="ExportedService">   <!-- Since Android 11, this must be true so that Google Contacts shows the address book accounts -->
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>

@@ -14,17 +14,29 @@ import at.bitfire.dav4jvm.DavAddressBook
 import at.bitfire.dav4jvm.MultiResponseCallback
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.exception.DavException
-import at.bitfire.dav4jvm.property.*
-import com.messageconcept.peoplesyncclient.util.DavUtils
-import com.messageconcept.peoplesyncclient.util.DavUtils.sameTypeAs
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import at.bitfire.dav4jvm.property.caldav.GetCTag
+import at.bitfire.dav4jvm.property.carddav.AddressData
+import at.bitfire.dav4jvm.property.carddav.MaxResourceSize
+import at.bitfire.dav4jvm.property.carddav.SupportedAddressData
+import at.bitfire.dav4jvm.property.webdav.GetContentType
+import at.bitfire.dav4jvm.property.webdav.GetETag
+import at.bitfire.dav4jvm.property.webdav.ResourceType
+import at.bitfire.dav4jvm.property.webdav.SupportedReportSet
+import at.bitfire.dav4jvm.property.webdav.SyncToken
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.log.Logger
-import com.messageconcept.peoplesyncclient.resource.*
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.resource.LocalAddress
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalContact
+import com.messageconcept.peoplesyncclient.resource.LocalGroup
+import com.messageconcept.peoplesyncclient.resource.LocalResource
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.groups.CategoriesStrategy
 import com.messageconcept.peoplesyncclient.syncadapter.groups.VCard4Strategy
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils.sameTypeAs
 import at.bitfire.vcard4android.Contact
 import at.bitfire.vcard4android.GroupMethod
 import ezvcard.VCardVersion
@@ -131,9 +143,9 @@ class ContactsSyncManager(
     override fun queryCapabilities(): SyncState? {
         return remoteExceptionContext {
             var syncState: SyncState? = null
-            it.propfind(0, MaxVCardSize.NAME, SupportedAddressData.NAME, SupportedReportSet.NAME, GetCTag.NAME, SyncToken.NAME) { response, relation ->
+            it.propfind(0, MaxResourceSize.NAME, SupportedAddressData.NAME, SupportedReportSet.NAME, GetCTag.NAME, SyncToken.NAME) { response, relation ->
                 if (relation == Response.HrefRelation.SELF) {
-                    response[MaxVCardSize::class.java]?.maxSize?.let { maxSize ->
+                    response[MaxResourceSize::class.java]?.maxSize?.let { maxSize ->
                         Logger.log.info("Address book accepts vCards up to ${FileUtils.byteCountToDisplaySize(maxSize)}")
                     }
 

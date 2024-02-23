@@ -15,19 +15,36 @@ import android.os.RemoteException
 import android.provider.ContactsContract
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import at.bitfire.dav4jvm.*
-import at.bitfire.dav4jvm.exception.*
-import at.bitfire.dav4jvm.property.GetCTag
-import at.bitfire.dav4jvm.property.GetETag
-import at.bitfire.dav4jvm.property.ScheduleTag
-import at.bitfire.dav4jvm.property.SyncToken
-import com.messageconcept.peoplesyncclient.*
+import at.bitfire.dav4jvm.DavCollection
+import at.bitfire.dav4jvm.DavResource
+import at.bitfire.dav4jvm.Error
+import at.bitfire.dav4jvm.MultiResponseCallback
+import at.bitfire.dav4jvm.Response
+import at.bitfire.dav4jvm.exception.ConflictException
+import at.bitfire.dav4jvm.exception.DavException
+import at.bitfire.dav4jvm.exception.ForbiddenException
+import at.bitfire.dav4jvm.exception.GoneException
+import at.bitfire.dav4jvm.exception.HttpException
+import at.bitfire.dav4jvm.exception.NotFoundException
+import at.bitfire.dav4jvm.exception.PreconditionFailedException
+import at.bitfire.dav4jvm.exception.ServiceUnavailableException
+import at.bitfire.dav4jvm.exception.UnauthorizedException
+import at.bitfire.dav4jvm.property.caldav.GetCTag
+import at.bitfire.dav4jvm.property.caldav.ScheduleTag
+import at.bitfire.dav4jvm.property.webdav.GetETag
+import at.bitfire.dav4jvm.property.webdav.SyncToken
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.InvalidAccountException
+import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.SyncState
 import com.messageconcept.peoplesyncclient.db.SyncStats
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.network.HttpClient
-import com.messageconcept.peoplesyncclient.resource.*
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalCollection
+import com.messageconcept.peoplesyncclient.resource.LocalContact
+import com.messageconcept.peoplesyncclient.resource.LocalResource
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
@@ -38,7 +55,9 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
 import org.apache.commons.io.FileUtils
@@ -48,7 +67,7 @@ import java.io.InterruptedIOException
 import java.net.HttpURLConnection
 import java.security.cert.CertificateException
 import java.time.Instant
-import java.util.*
+import java.util.LinkedList
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.logging.Level
@@ -152,7 +171,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
             var remoteSyncState = queryCapabilities()
 
             Logger.log.info("Processing local deletes/updates")
-            val modificationsPresent = processLocallyDeleted() || uploadDirty()
+            val modificationsPresent = processLocallyDeleted() or uploadDirty()     // bitwise OR guarantees that both expressions are evaluated
 
             if (extras.contains(Syncer.SYNC_EXTRAS_FULL_RESYNC)) {
                 Logger.log.info("Forcing re-synchronization of all entries")
@@ -547,7 +566,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                         return@listRemote
 
                     // ignore collections
-                    if (response[at.bitfire.dav4jvm.property.ResourceType::class.java]?.types?.contains(at.bitfire.dav4jvm.property.ResourceType.COLLECTION) == true)
+                    if (response[at.bitfire.dav4jvm.property.webdav.ResourceType::class.java]?.types?.contains(at.bitfire.dav4jvm.property.webdav.ResourceType.COLLECTION) == true)
                         return@listRemote
 
                     val name = response.hrefName()

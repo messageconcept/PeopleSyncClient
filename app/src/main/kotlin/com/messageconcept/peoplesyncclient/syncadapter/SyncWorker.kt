@@ -46,6 +46,7 @@ import com.messageconcept.peoplesyncclient.ui.account.WifiPermissionsActivity
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -374,7 +375,7 @@ class SyncWorker @AssistedInject constructor(
                     // We block the SyncWorker here so that it won't be started by the sync framework immediately again.
                     // This should be replaced by proper work scheduling as soon as we don't depend on the sync framework anymore.
                     if (blockDuration > 0)
-                        Thread.sleep(blockDuration*1000)
+                        delay(blockDuration*1000)
 
                     Logger.log.warning("Retrying on soft error (attempt $runAttemptCount of $MAX_RUN_ATTEMPTS)")
                     return@withContext Result.retry()
@@ -416,6 +417,9 @@ class SyncWorker @AssistedInject constructor(
         return@withContext Result.success()
     }
 
+    /**
+     * Used by WorkManager to show a foreground service notification for expedited jobs on Android <12.
+     */
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val notification = NotificationUtils.newBuilder(applicationContext, NotificationUtils.CHANNEL_STATUS)
             .setSmallIcon(R.drawable.ic_foreground_notify)

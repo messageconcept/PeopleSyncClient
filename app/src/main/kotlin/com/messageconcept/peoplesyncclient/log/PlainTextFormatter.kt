@@ -7,7 +7,7 @@ package com.messageconcept.peoplesyncclient.log
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.apache.commons.lang3.time.DateFormatUtils
-import java.util.*
+import java.util.Locale
 import java.util.logging.Formatter
 import java.util.logging.LogRecord
 

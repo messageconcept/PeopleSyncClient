@@ -9,8 +9,8 @@ import android.content.ContentProviderClient
 import android.content.Context
 import android.content.SyncResult
 import android.provider.ContactsContract
-import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.log.Logger
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.util.setAndVerifyUserData

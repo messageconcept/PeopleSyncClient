@@ -23,7 +23,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import at.bitfire.cert4android.CustomCertStore
 import com.messageconcept.peoplesyncclient.BuildConfig
-import com.messageconcept.peoplesyncclient.ForegroundService
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
@@ -161,16 +160,6 @@ class AppSettingsActivity: AppCompatActivity() {
                             android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                             Uri.parse("package:" + BuildConfig.APPLICATION_ID)
                         ))
-                    false
-                }
-            }
-
-            findPreference<SwitchPreferenceCompat>(Settings.FOREGROUND_SERVICE)!!.apply {
-                isChecked = settings.getBooleanOrNull(Settings.FOREGROUND_SERVICE) == true
-                isEnabled = settings.getBooleanOrNull(Settings.BATTERY_OPTIMIZATION) == true
-                onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                    settings.putBoolean(Settings.FOREGROUND_SERVICE, newValue as Boolean)
-                    ForegroundService.startOrStop(requireActivity())
                     false
                 }
             }
