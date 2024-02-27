@@ -59,7 +59,10 @@ class DetectConfigurationFragment: Fragment() {
         model.result.observe(this) { result ->
             // save result for next step
             loginModel.configuration = result
-
+            val principal = result.cardDAV?.principal?.pathSegments?.dropLast(1)?.last()
+            if (!principal.isNullOrEmpty()) {
+                loginModel.suggestedAccountName = principal
+            }
             // remove "Detecting configuration" fragment, it shouldn't come back
             parentFragmentManager.popBackStack()
 
