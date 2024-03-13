@@ -6,8 +6,4 @@ package com.messageconcept.peoplesyncclient.resource
 
 import at.bitfire.vcard4android.Contact
 
-interface LocalAddress: LocalResource<Contact> {
-
-    fun resetDeleted()
-
-}
+interface LocalAddress: LocalResource<Contact>

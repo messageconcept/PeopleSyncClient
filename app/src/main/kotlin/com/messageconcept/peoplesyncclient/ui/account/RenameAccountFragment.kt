@@ -47,6 +47,7 @@ import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.AccountsCleanupWorker
+import com.messageconcept.peoplesyncclient.syncadapter.PeriodicSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.google.accompanist.themeadapter.material.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -202,12 +203,24 @@ class RenameAccountFragment: DialogFragment() {
             }
         }
 
+        /**
+         * Called when an account has been renamed.
+         *
+         * @param oldAccount the old account
+         * @param newName the new account
+         * @param syncIntervals map with entries of type (authority -> sync interval) of the old account
+         */
         @SuppressLint("Recycle")
         @WorkerThread
         fun onAccountRenamed(accountManager: AccountManager, oldAccount: Account, newName: String, syncIntervals: List<Pair<String, Long?>>) {
             // account has now been renamed
             Logger.log.info("Updating account name references")
             val context: Application = getApplication()
+
+            // disable periodic workers of old account
+            syncIntervals.forEach { (authority, _) ->
+                PeriodicSyncWorker.disable(context, oldAccount, authority)
+            }
 
             // cancel maybe running synchronization
             SyncWorker.cancelSync(context, oldAccount)

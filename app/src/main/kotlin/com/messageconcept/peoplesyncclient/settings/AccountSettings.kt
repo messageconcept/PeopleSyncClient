@@ -142,7 +142,7 @@ class AccountSettings(
                                 // Request an explicit sync after we changed the account password.
                                 // This should also clear any error notifications.
                                 val authority = context.getString(R.string.address_books_authority)
-                                SyncWorker.enqueue(context, account, authority)
+                                SyncWorker.enqueue(context, account, authority, expedited = true)
                             } else {
                                 // Password is up-to-date
                             }

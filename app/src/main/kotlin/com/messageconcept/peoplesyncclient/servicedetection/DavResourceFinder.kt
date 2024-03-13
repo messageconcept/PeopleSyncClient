@@ -205,7 +205,6 @@ class DavResourceFinder(
                         scanResponse(ResourceType.ADDRESSBOOK, response, config)
                     }
                 }
-
             }
         } catch(e: Exception) {
             log.log(Level.FINE, "PROPFIND/OPTIONS on user-given URL failed", e)

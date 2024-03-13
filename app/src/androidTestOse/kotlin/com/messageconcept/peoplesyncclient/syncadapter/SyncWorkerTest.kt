@@ -70,7 +70,7 @@ class SyncWorkerTest {
 
     @Test
     fun testEnqueue_enqueuesWorker() {
-        SyncWorker.enqueue(context, account, ContactsContract.AUTHORITY)
+        SyncWorker.enqueue(context, account, ContactsContract.AUTHORITY, true)
         val workerName = SyncWorker.workerName(account, ContactsContract.AUTHORITY)
         assertTrue(workScheduledOrRunningOrSuccessful(context, workerName))
     }
