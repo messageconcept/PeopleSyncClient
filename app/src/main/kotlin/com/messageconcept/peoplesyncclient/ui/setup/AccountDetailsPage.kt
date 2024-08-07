@@ -94,7 +94,7 @@ fun AccountDetailsPage(
             model.createAccountResult.value = null
         }
 
-    val suggestedAccountNames = foundConfig.calDAV?.emails ?: emptyList()
+    val suggestedAccountNames = listOfNotNull(foundConfig.cardDAV?.principal?.pathSegments?.dropLast(1)?.last())
     var accountName by remember { mutableStateOf(suggestedAccountNames.firstOrNull() ?: "") }
 
     var groupMethod by remember { mutableStateOf(loginInfo.suggestedGroupMethod) }
