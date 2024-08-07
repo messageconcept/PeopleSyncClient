@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.syncadapter
 
@@ -33,7 +33,6 @@ import at.bitfire.dav4jvm.property.caldav.GetCTag
 import at.bitfire.dav4jvm.property.caldav.ScheduleTag
 import at.bitfire.dav4jvm.property.webdav.GetETag
 import at.bitfire.dav4jvm.property.webdav.SyncToken
-import com.messageconcept.peoplesyncclient.Constants
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
@@ -49,7 +48,7 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
-import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
+import com.messageconcept.peoplesyncclient.ui.account.AccountSettingsActivity
 import at.bitfire.vcard4android.ContactsStorageException
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -60,7 +59,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.RequestBody
-import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.exception.ContextedException
 import java.io.IOException
 import java.io.InterruptedIOException
@@ -96,13 +94,27 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     }
 
     companion object {
-        const val DEBUG_INFO_MAX_RESOURCE_DUMP_SIZE = 100*FileUtils.ONE_KB.toInt()
 
+        /** Maximum number of resources that are requested with one multiget request. */
         const val MAX_MULTIGET_RESOURCES = 10
 
         const val DELAY_UNTIL_DEFAULT = 15*60L      // 15 min
         const val DELAY_UNTIL_MIN =      1*60L      // 1 min
         const val DELAY_UNTIL_MAX =     2*60*60L    // 2 hours
+
+        /**
+         * Context label for [org.apache.commons.lang3.exception.ContextedException].
+         * Context value is the [com.messageconcept.peoplesyncclient.resource.LocalResource]
+         * which is related to the exception cause.
+         */
+        const val EXCEPTION_CONTEXT_LOCAL_RESOURCE = "localResource"
+
+        /**
+         * Context label for [org.apache.commons.lang3.exception.ContextedException].
+         * Context value is the [okhttp3.HttpUrl] of the remote resource
+         * which is related to the exception cause.
+         */
+        const val EXCEPTION_CONTEXT_REMOTE_RESOURCE = "remoteResource"
 
         /**
          * Returns appropriate sync retry delay in seconds, considering the servers suggestion
@@ -753,8 +765,8 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         val contentIntent: Intent
         var viewItemAction: NotificationCompat.Action? = null
         if (e is UnauthorizedException) {
-            contentIntent = Intent(context, SettingsActivity::class.java)
-            contentIntent.putExtra(SettingsActivity.EXTRA_ACCOUNT,
+            contentIntent = Intent(context, AccountSettingsActivity::class.java)
+            contentIntent.putExtra(AccountSettingsActivity.EXTRA_ACCOUNT,
                     if (authority == ContactsContract.AUTHORITY)
                         mainAccount
                     else
@@ -783,7 +795,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                 .setContentTitle(localCollection.title)
                 .setContentText(message)
                 .setStyle(NotificationCompat.BigTextStyle(builder).bigText(message))
-                .setSubText(mainAccount.name)
+                .setSubText(mainAccount?.name)
                 .setOnlyAlertOnce(true)
                 .setContentIntent(PendingIntent.getActivity(context, 0, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 .setPriority(priority)
@@ -833,7 +845,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         builder .setSmallIcon(R.drawable.ic_warning_notify)
                 .setContentTitle(notifyInvalidResourceTitle())
                 .setContentText(context.getString(R.string.sync_invalid_resources_ignoring))
-                .setSubText(mainAccount.name)
+                .setSubText(mainAccount?.name)
                 .setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
@@ -847,11 +859,11 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         try {
             return body(local)
         } catch (e: ContextedException) {
-            e.addContextValue(Constants.EXCEPTION_CONTEXT_LOCAL_RESOURCE, local)
+            e.addContextValue(EXCEPTION_CONTEXT_LOCAL_RESOURCE, local)
             throw e
         } catch (e: Throwable) {
             if (local != null)
-                throw ContextedException(e).setContextValue(Constants.EXCEPTION_CONTEXT_LOCAL_RESOURCE, local)
+                throw ContextedException(e).setContextValue(EXCEPTION_CONTEXT_LOCAL_RESOURCE, local)
             else
                 throw e
         }
@@ -861,10 +873,10 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         try {
             return body(remote)
         } catch (e: ContextedException) {
-            e.addContextValue(Constants.EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.location)
+            e.addContextValue(EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.location)
             throw e
         } catch(e: Throwable) {
-            throw ContextedException(e).setContextValue(Constants.EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.location)
+            throw ContextedException(e).setContextValue(EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.location)
         }
     }
 
@@ -872,10 +884,10 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         try {
             return body(remote)
         } catch (e: ContextedException) {
-            e.addContextValue(Constants.EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.href)
+            e.addContextValue(EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.href)
             throw e
         } catch (e: Throwable) {
-            throw ContextedException(e).setContextValue(Constants.EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.href)
+            throw ContextedException(e).setContextValue(EXCEPTION_CONTEXT_REMOTE_RESOURCE, remote.href)
         }
     }
 
@@ -896,13 +908,11 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
         if (ex is ContextedException) {
             @Suppress("UNCHECKED_CAST")
             // we want the innermost context value, which is the first one
-            (ex.getFirstContextValue(Constants.EXCEPTION_CONTEXT_LOCAL_RESOURCE) as? ResourceType)?.let {
-                if (local == null)
-                    local = it
+            (ex.getFirstContextValue(EXCEPTION_CONTEXT_LOCAL_RESOURCE) as? ResourceType)?.let {
+                local = it
             }
-            (ex.getFirstContextValue(Constants.EXCEPTION_CONTEXT_REMOTE_RESOURCE) as? HttpUrl)?.let {
-                if (remote == null)
-                    remote = it
+            (ex.getFirstContextValue(EXCEPTION_CONTEXT_REMOTE_RESOURCE) as? HttpUrl)?.let {
+                remote = it
             }
             ex = ex.cause
         }

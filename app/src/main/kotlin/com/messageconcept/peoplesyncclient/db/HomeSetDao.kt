@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.db
 
@@ -27,8 +27,8 @@ interface HomeSetDao {
     @Query("SELECT * FROM homeset WHERE serviceId=:serviceId AND privBind")
     fun getBindableByService(serviceId: Long): List<HomeSet>
 
-    @Query("SELECT COUNT(*) FROM homeset WHERE serviceId=:serviceId AND privBind")
-    fun hasBindableByServiceLive(serviceId: Long): LiveData<Boolean>
+    @Query("SELECT * FROM homeset WHERE serviceId=:serviceId AND privBind")
+    fun getLiveBindableByService(serviceId: Long): LiveData<List<HomeSet>>
 
     @Insert
     fun insert(homeSet: HomeSet): Long

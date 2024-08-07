@@ -1,25 +1,22 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient
 
 import android.app.Application
-import android.content.Context
-import android.net.Uri
 import android.os.StrictMode
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.syncadapter.AccountsUpdatedListener
-import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.UiUtils
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import java.util.logging.Level
 import javax.inject.Inject
 import kotlin.concurrent.thread
@@ -28,40 +25,7 @@ import kotlin.system.exitProcess
 @HiltAndroidApp
 class App: Application(), Thread.UncaughtExceptionHandler, Configuration.Provider {
 
-    companion object {
-
-        const val HOMEPAGE_PRIVACY = "privacy"
-
-        fun getLauncherBitmap(context: Context) =
-                AppCompatResources.getDrawable(context, R.mipmap.ic_launcher)?.toBitmap()
-
-        /**
-         * Gets the PeopleSync Web site URL that should be used to open in the user's browser.
-         * Package ID, version number and calling context name will be appended as arguments.
-         *
-         * @param context   context name to use
-         * @param page      optional page segment to append (for instance: [HOMEPAGE_PRIVACY]])
-         *
-         * @return the Uri for the browser
-         */
-        fun homepageUrl(context: Context, page: String? = null): Uri {
-            val builder = Uri.parse(context.getString(R.string.homepage_url)).buildUpon()
-
-            if (page != null)
-                builder.appendPath(page)
-
-            return builder
-                .appendQueryParameter("pk_campaign", BuildConfig.APPLICATION_ID)
-                .appendQueryParameter("pk_kwd", context::class.java.simpleName)
-                .appendQueryParameter("app-version", BuildConfig.VERSION_NAME)
-                .build()
-        }
-
-    }
-
     @Inject lateinit var accountsUpdatedListener: AccountsUpdatedListener
-    @Inject lateinit var storageLowReceiver: StorageLowReceiver
-
     @Inject lateinit var workerFactory: HiltWorkerFactory
 
     override val workManagerConfiguration: Configuration
@@ -90,16 +54,14 @@ class App: Application(), Thread.UncaughtExceptionHandler, Configuration.Provide
         NotificationUtils.createChannels(this)
 
         // set light/dark mode
-        UiUtils.setTheme(this)   // when this is called in the asynchronous thread below, it recreates
+        UiUtils.updateTheme(this)   // when this is called in the asynchronous thread below, it recreates
                                  // some current activity and causes an IllegalStateException in rare cases
 
         // don't block UI for some background checks
+        @OptIn(DelicateCoroutinesApi::class)
         thread {
             // watch for account changes/deletions
             accountsUpdatedListener.listen()
-
-            // watch storage because low storage means synchronization is stopped
-            storageLowReceiver.listen()
 
             // create/update app shortcuts
             UiUtils.updateShortcuts(this)

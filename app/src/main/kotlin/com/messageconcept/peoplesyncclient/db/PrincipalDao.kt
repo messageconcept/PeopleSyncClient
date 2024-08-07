@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.db
 
@@ -19,7 +19,7 @@ interface PrincipalDao {
     fun get(id: Long): Principal
 
     @Query("SELECT * FROM principal WHERE id=:id")
-    fun getLive(id: Long): LiveData<Principal>
+    fun getLive(id: Long): LiveData<Principal?>
 
     @Query("SELECT * FROM principal WHERE serviceId=:serviceId")
     fun getByService(serviceId: Long): List<Principal>

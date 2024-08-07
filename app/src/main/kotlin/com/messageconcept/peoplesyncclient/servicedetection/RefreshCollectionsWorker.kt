@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.servicedetection
 
@@ -39,6 +39,8 @@ import at.bitfire.dav4jvm.property.caldav.SupportedCalendarComponentSet
 import at.bitfire.dav4jvm.property.carddav.AddressbookDescription
 import at.bitfire.dav4jvm.property.carddav.AddressbookHomeSet
 import at.bitfire.dav4jvm.property.carddav.SupportedAddressData
+import at.bitfire.dav4jvm.property.push.PushTransports
+import at.bitfire.dav4jvm.property.push.Topic
 import at.bitfire.dav4jvm.property.webdav.CurrentUserPrivilegeSet
 import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.GroupMembership
@@ -61,7 +63,7 @@ import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
-import com.messageconcept.peoplesyncclient.ui.account.SettingsActivity
+import com.messageconcept.peoplesyncclient.ui.account.AccountSettingsActivity
 import com.messageconcept.peoplesyncclient.util.DavUtils.parent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -112,7 +114,10 @@ class RefreshCollectionsWorker @AssistedInject constructor(
             Owner.NAME,
             AddressbookDescription.NAME, SupportedAddressData.NAME,
             CalendarDescription.NAME, CalendarColor.NAME, SupportedCalendarComponentSet.NAME,
-            Source.NAME
+            Source.NAME,
+            // WebDAV Push
+            PushTransports.NAME,
+            Topic.NAME
         )
 
         // Principal properties to ask the server
@@ -220,8 +225,8 @@ class RefreshCollectionsWorker @AssistedInject constructor(
         } catch (e: UnauthorizedException) {
             Logger.log.log(Level.SEVERE, "Not authorized (anymore)", e)
             // notify that we need to re-authenticate in the account settings
-            val settingsIntent = Intent(applicationContext, SettingsActivity::class.java)
-                .putExtra(SettingsActivity.EXTRA_ACCOUNT, account)
+            val settingsIntent = Intent(applicationContext, AccountSettingsActivity::class.java)
+                .putExtra(AccountSettingsActivity.EXTRA_ACCOUNT, account)
             notifyRefreshError(
                 applicationContext.getString(R.string.sync_error_authentication_failed),
                 settingsIntent

@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.db
 
@@ -16,6 +16,9 @@ interface ServiceDao {
 
     @Query("SELECT * FROM service WHERE accountName=:accountName AND type=:type")
     fun getByAccountAndType(accountName: String, type: String): Service?
+
+    @Query("SELECT * FROM service WHERE accountName=:accountName AND type=:type")
+    fun getLiveByAccountAndType(accountName: String, type: String): LiveData<Service?>
 
     @Query("SELECT id FROM service WHERE accountName=:accountName")
     fun getIdsByAccount(accountName: String): List<Long>

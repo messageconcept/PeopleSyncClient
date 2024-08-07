@@ -1,13 +1,12 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.ui
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.app.Application
 import android.app.usage.UsageStatsManager
-import android.content.ContentProviderClient
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
@@ -83,10 +82,9 @@ import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_USERNAME
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.syncadapter.PeriodicSyncWorker
-import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
-import com.messageconcept.peoplesyncclient.ui.widget.CardWithImage
-import com.google.accompanist.themeadapter.material.MdcTheme
+import com.messageconcept.peoplesyncclient.syncadapter.BaseSyncWorker
+import com.messageconcept.peoplesyncclient.ui.composable.BasicTopAppBar
+import com.messageconcept.peoplesyncclient.ui.composable.CardWithImage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -176,7 +174,7 @@ class DebugInfoActivity : AppCompatActivity() {
         }
 
         setContent { 
-            MdcTheme {
+            AppTheme {
                 val debugInfo by model.debugInfo.observeAsState()
                 val zipProgress by model.zipProgress.observeAsState(false)
 
@@ -194,6 +192,11 @@ class DebugInfoActivity : AppCompatActivity() {
                     },
                     snackbarHost = {
                         SnackbarHost(hostState = snackbarHostState)
+                    },
+                    topBar = {
+                        BasicTopAppBar(
+                            titleStringRes = R.string.debug_info_title
+                        )
                     }
                 ) { paddingValues ->
                     val error by model.error.observeAsState()
@@ -228,9 +231,17 @@ class DebugInfoActivity : AppCompatActivity() {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            if (debugInfo == null) item { LinearProgressIndicator() }
+            if (debugInfo == null)
+                item {
+                    LinearProgressIndicator(color = MaterialTheme.colors.secondary)
+                }
+
             if (debugInfo != null) {
-                if (zipProgress) item { LinearProgressIndicator() }
+                if (zipProgress)
+                    item {
+                        LinearProgressIndicator(color = MaterialTheme.colors.secondary)
+                    }
+
                 item {
                     CardWithImage(
                         image = painterResource(R.drawable.undraw_server_down),
@@ -764,7 +775,7 @@ class DebugInfoActivity : AppCompatActivity() {
 
                 val credentials = accountSettings.credentials()
                 val authStr = mutableListOf<String>()
-                if (credentials.userName != null)
+                if (credentials.username != null)
                     authStr += "user name"
                 if (credentials.password != null)
                     authStr += "password"
@@ -814,20 +825,15 @@ class DebugInfoActivity : AppCompatActivity() {
             val table = TextTable("Authority", "isSyncable", "syncAutomatically", "Interval", "Entries")
             for (info in infos) {
                 var nrEntries = "—"
-                var client: ContentProviderClient? = null
                 if (info.countUri != null)
                     try {
-                        client = context.contentResolver.acquireContentProviderClient(info.authority)
-                        if (client != null)
+                        context.contentResolver.acquireContentProviderClient(info.authority)?.use { client ->
                             client.query(info.countUri, null, null, null, null)?.use { cursor ->
                                 nrEntries = "${cursor.count} ${info.countStr}"
                             }
-                        else
-                            nrEntries = "n/a"
+                        }
                     } catch (e: Exception) {
                         nrEntries = e.toString()
-                    } finally {
-                        client?.close()
                     }
                 val accountSettings = AccountSettings(context, account)
                 table.addLine(
@@ -851,30 +857,26 @@ class DebugInfoActivity : AppCompatActivity() {
             listOf(
                 context.getString(R.string.address_books_authority)
             ).forEach { authority ->
-                for (workerName in listOf(
-                    SyncWorker.workerName(account, authority),
-                    PeriodicSyncWorker.workerName(account, authority)
-                )) {
-                    WorkManager.getInstance(context).getWorkInfos(
-                        WorkQuery.Builder.fromUniqueWorkNames(listOf(workerName)).build()
-                    ).get().forEach { workInfo ->
-                        table.addLine(
-                            workInfo.tags.map { it.replace("\\bat\\.bitfire\\.davdroid\\.".toRegex(), ".") },
-                            authority,
-                            "${workInfo.state} (${workInfo.stopReason})",
-                            workInfo.nextScheduleTimeMillis.let { nextRun ->
-                                when (nextRun) {
-                                    Long.MAX_VALUE -> "—"
-                                    else -> DateUtils.getRelativeTimeSpanString(nextRun)
-                                }
-                            },
-                            workInfo.runAttemptCount,
-                            workInfo.generation,
-                            workInfo.periodicityInfo?.let { periodicity ->
-                                "every ${periodicity.repeatIntervalMillis/60000} min"
-                            } ?: "not periodic"
-                        )
-                    }
+                val tag = BaseSyncWorker.commonTag(account, authority)
+                WorkManager.getInstance(context).getWorkInfos(
+                    WorkQuery.Builder.fromTags(listOf(tag)).build()
+                ).get().forEach { workInfo ->
+                    table.addLine(
+                        workInfo.tags.map { it.replace("\\bat\\.bitfire\\.davdroid\\.".toRegex(), ".") },
+                        authority,
+                        "${workInfo.state} (${workInfo.stopReason})",
+                        workInfo.nextScheduleTimeMillis.let { nextRun ->
+                            when (nextRun) {
+                                Long.MAX_VALUE -> "—"
+                                else -> DateUtils.getRelativeTimeSpanString(nextRun)
+                            }
+                        },
+                        workInfo.runAttemptCount,
+                        workInfo.generation,
+                        workInfo.periodicityInfo?.let { periodicity ->
+                            "every ${periodicity.repeatIntervalMillis/60000} min"
+                        } ?: "not periodic"
+                    )
                 }
             }
             return table.toString()

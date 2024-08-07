@@ -23,7 +23,14 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationService
-import okhttp3.*
+import okhttp3.Cache
+import okhttp3.ConnectionSpec
+import okhttp3.CookieJar
+import okhttp3.Interceptor
+import okhttp3.OkHttp
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Response
 import okhttp3.brotli.BrotliInterceptor
 import okhttp3.internal.tls.OkHostnameVerifier
 import okhttp3.logging.HttpLoggingInterceptor
@@ -34,10 +41,15 @@ import java.net.Socket
 import java.security.KeyStore
 import java.security.Principal
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import java.util.logging.Level
-import javax.net.ssl.*
+import javax.net.ssl.KeyManager
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509ExtendedKeyManager
+import javax.net.ssl.X509TrustManager
 
 class HttpClient private constructor(
     val okHttpClient: OkHttpClient,
@@ -167,8 +179,8 @@ class HttpClient private constructor(
         }
 
         fun addAuthentication(host: String?, credentials: Credentials, insecurePreemptive: Boolean = false, authStateCallback: BearerAuthInterceptor.AuthStateUpdateCallback? = null): Builder {
-            if (credentials.userName != null && credentials.password != null) {
-                val authHandler = BasicDigestAuthHandler(UrlUtils.hostToDomain(host), credentials.userName, credentials.password, insecurePreemptive)
+            if (credentials.username != null && credentials.password != null) {
+                val authHandler = BasicDigestAuthHandler(UrlUtils.hostToDomain(host), credentials.username, credentials.password, insecurePreemptive)
                 orig.addNetworkInterceptor(authHandler)
                     .authenticator(authHandler)
             }

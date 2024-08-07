@@ -10,7 +10,6 @@
   <string name="help">Aide</string>
   <string name="manage_accounts">Gestion des comptes</string>
   <string name="share">Partager</string>
-  <string name="sync_started">La synchronisation a débuté</string>
   <string name="database_destructive_migration_title">Base de données corrompue</string>
   <string name="database_destructive_migration_text">Tous les comptes ont été supprimés localement.</string>
   <string name="notification_channel_debugging">Débogage</string>
@@ -25,8 +24,6 @@
   <string name="notification_channel_sync_io_errors_desc">Délais d\'attente, problèmes de connexion, etc. (souvent temporaires)</string>
   <!--IntroActivity-->
   <string name="intro_battery_title">Intervalles de synchronisation régulières</string>
-  <string name="intro_battery_not_whitelisted">Désactiver (non recommandé)</string>
-  <string name="intro_battery_whitelisted">Activé (recommandé)</string>
   <string name="intro_battery_text">Pour une synchronisation à intervalles régulières, %s doit être autorisé à fonctionner en arrière-plan. Sinon, Android peut interrompre la synchronisation à tout moment.</string>
   <string name="intro_battery_dont_show">Je n\'ai pas besoin d\'intervalles de synchronisation régulières.*</string>
   <string name="intro_autostart_title">%s compatibilité</string>
@@ -64,12 +61,8 @@
   <string name="permissions_notification_status_off">Notifications désactivées (non recommandé)</string>
   <string name="permissions_notification_status_on">Notifications activées</string>
   <string name="permissions_jtx_title">Autorisations jtx Board</string>
-  <string name="permissions_jtx_status_not_installed">Pas de synchronisation des tâches, journaux et notes (non installé)</string>
-  <string name="permissions_jtx_status_off">Pas de synchronisation des tâches, journaux et notes</string>
-  <string name="permissions_jtx_status_on">Synchronisation possible des tâches, des journaux et des notes</string>
   <string name="permissions_opentasks_title">Autorisations d\'OpenTasks</string>
   <string name="permissions_tasksorg_title">Autorisations de Tasks</string>
-  <string name="permissions_tasks_status_not_installed">Pas de synchronisation des tâches (non installé)</string>
   <string name="permissions_tasks_status_off">Aucune tâche de synchro</string>
   <string name="permissions_tasks_status_on">Synchronisation des tâches possible</string>
   <string name="permissions_autoreset_title">Conserver les autorisations</string>
@@ -86,8 +79,6 @@
   <string name="wifi_permissions_location_permission_off">Autorisation de localisation refusée</string>
   <string name="wifi_permissions_background_location_permission">Autorisation de localisation en arrière-plan</string>
   <string name="wifi_permissions_background_location_permission_label">Autorisez tout le temps</string>
-  <string name="wifi_permissions_background_location_permission_on"><![CDATA[Autorisation de localisation réglée sur <b>%s</b> ]]></string>
-  <string name="wifi_permissions_background_location_permission_off"><![CDATA[Autorisation de localisation non réglée sur <b>%s</b>]]></string>
   <string name="wifi_permissions_background_location_disclaimer">%s utilise l\'autorisation de localisation uniquement pour déterminer le SSID du WiFi actuel pour les comptes à SSID restreint. Cela se produit même lorsque l\'application est en arrière-plan. Aucune donnée de localisation n\'est collectée, stockée, traitée ou envoyée nulle part.</string>
   <string name="wifi_permissions_location_enabled">Localisation toujours activée</string>
   <string name="wifi_permissions_location_enabled_on">Le service de localisation est activé</string>
@@ -97,9 +88,7 @@
   <string name="about_libraries">Librairies</string>
   <string name="about_version">Version %1$s (%2$d)</string>
   <string name="about_build_date">Générée le %s</string>
-  <string name="about_flavor_info">Cette version ne peut être distribuée que sur Google Play.</string>
   <string name="about_license_info_no_warranty">Ce programme est fourni sans AUCUNE GARANTIE. C\'est un logiciel libre, et vous êtes en droit de le redistribuer sous certaines conditions.</string>
-  <string name="about_translations_thanks"><![CDATA[<i>Merci à : </i> %s]]></string>
   <!--global settings-->
   <string name="logging_couldnt_create_file">Impossible de créer le fichier journal</string>
   <string name="logging_notification_text">Maintenant toutes les activités de %s seront enregistrées</string>
@@ -109,7 +98,6 @@
   <string name="navigation_drawer_subtitle">Adaptateur de synchronisation CardDAV</string>
   <string name="navigation_drawer_about">À propos / Licence</string>
   <string name="navigation_drawer_beta_feedback">Commentaire pour la version Beta</string>
-  <string name="install_email_client">Veuillez installer un client mail</string>
   <string name="install_browser">Veuillez installer un navigateur</string>
   <string name="navigation_drawer_settings">Paramètres</string>
   <string name="navigation_drawer_news_updates">Actualités &amp; mises à jour</string>
@@ -119,7 +107,6 @@
   <string name="navigation_drawer_manual">Manuel</string>
   <string name="navigation_drawer_faq">Foire aux questions</string>
   <string name="navigation_drawer_community">Communauté</string>
-  <string name="navigation_drawer_donate">Faire un don</string>
   <string name="navigation_drawer_privacy_policy">Politique de confidentialité</string>
   <string name="account_list_no_notification_permission">Notifications désactivées. Vous ne serez pas averti des erreurs de synchronisation.</string>
   <string name="account_list_no_internet">Pas de connexion Internet. La synchronisation risque de ne pas fonctionner.</string>
@@ -131,8 +118,6 @@
   <string name="account_list_low_storage">Espace de stockage faible. Android ne synchronisera pas les changements locaux immédiatement mais pendant la prochaine synchronisation.</string>
   <string name="account_list_manage_storage">Gérer le stockage</string>
   <string name="account_list_empty">Bienvenue sur PeopleSync!\n\nVous pouvez maintenant ajouter un compte CalDAV ou CardDAV.</string>
-  <string name="accounts_global_sync_disabled">La synchronisation automatique globale est désactivée</string>
-  <string name="accounts_global_sync_enable">Activer</string>
   <string name="accounts_sync_all">Synchroniser tous les comptes</string>
   <!--RefreshCollectionsWorker-->
   <string name="refresh_collections_worker_refresh_failed">La détection du service a échoué</string>
@@ -149,8 +134,6 @@
   <string name="app_settings_logging_on">La journalisation est activée</string>
   <string name="app_settings_logging_off">La journalisation est désactivée</string>
   <string name="app_settings_battery_optimization">Optimisation de la batterie</string>
-  <string name="app_settings_battery_optimization_whitelisted">L\'App est dans la liste blanche (recommandé)</string>
-  <string name="app_settings_battery_optimization_not_whitelisted">L\'App n\'est pas dans la liste blanche (non recommandé)</string>
   <string name="app_settings_connection">Connexion</string>
   <string name="app_settings_proxy">Type de Proxy</string>
   <string-array name="app_settings_proxy_types">
@@ -184,22 +167,11 @@
   <string name="app_settings_reset_hints_success">Toutes les astuces seront affichés à nouveau</string>
   <string name="app_settings_integration">Intégration</string>
   <string name="app_settings_tasks_provider">Applications de gestion de taches</string>
-  <string name="app_settings_tasks_provider_synchronizing_with">Synchronisation avec %s</string>
   <string name="app_settings_tasks_provider_none">Aucune application de tâches compatibles trouvée</string>
   <!--AccountActivity-->
   <string name="account_carddav">Carnets d\'adresses</string>
   <string name="account_caldav">Agendas</string>
   <string name="account_webcal">WebCal</string>
-  <string name="account_carddav_missing_permissions">Pas de synchronisation du carnet d\'adresses (autorisations manquantes)</string>
-  <string name="account_caldav_missing_calendar_permissions">Pas de synchronisation du calendrier (autorisations manquantes)</string>
-  <string name="account_caldav_missing_tasks_permissions">Pas de synchronisation des tâches (autorisations manquantes)</string>
-  <string name="account_caldav_missing_permissions">Pas de synchronisation du calendrier et des tâches (autorisations manquantes)</string>
-  <string name="account_webcal_missing_calendar_permissions">Impossible d\'accéder aux calendriers (autorisations manquantes)</string>
-  <string name="account_permissions_action">Autorisations</string>
-  <string name="account_no_address_books">Il n\'y a pas (encore) de carnet d\'adresses.</string>
-  <string name="account_no_calendars">Il n\'y a pas (encore) de calendriers.</string>
-  <string name="account_no_webcals">Il n\'y a pas (encore) d\'abonnement à des calendriers.</string>
-  <string name="account_swipe_down">Glisser vers le bas pour rafraîchir la liste à partir du serveur.</string>
   <string name="account_synchronize_now">Synchroniser maintenant</string>
   <string name="account_settings">Paramètres du compte</string>
   <string name="account_rename">Renommer le compte</string>
@@ -216,39 +188,28 @@
   <string name="account_task_list">liste de tâche</string>
   <string name="account_journal">journal</string>
   <string name="account_only_personal">N\'afficher que les comptes perso.</string>
-  <string name="account_refresh_address_book_list">Actualiser la liste des carnets d\'adresses</string>
-  <string name="account_create_new_address_book">Créer un nouveau carnet d\'adresses</string>
-  <string name="account_refresh_calendar_list">Actualiser la liste des calendriers</string>
-  <string name="account_create_new_calendar">Créer un nouveau calendrier</string>
   <string name="account_no_webcal_handler_found">Aucune application compatible WebCal</string>
   <string name="account_install_icsx5">Installer ICSx⁵</string>
   <!--AddAccountActivity-->
   <string name="login_title">Ajouter un compte</string>
+  <string name="login_login">Se connecter</string>
   <string name="login_type_email">Connexion avec une adresse email</string>
   <string name="login_email_address">Adresse mail</string>
   <string name="login_email_address_error">Une adresse e-mail valide est requise</string>
   <string name="login_password">Mot de passe</string>
   <string name="login_password_hide">Cacher le mot de passe</string>
   <string name="login_password_show">Montrer le mot de passe</string>
-  <string name="login_password_required">Mot de passe requis</string>
   <string name="login_type_url">Connexion avec une URL et un nom d\'utilisateur</string>
-  <string name="login_url_must_be_http_or_https">L\'URL doit commencer par http(s)://</string>
   <string name="login_user_name">Nom d\'utilisateur</string>
-  <string name="login_user_name_required">Nom d\'utilisateur requis</string>
   <string name="login_base_url">URL de base</string>
   <string name="login_select_certificate">Choisir le certificat</string>
-  <string name="login_login">Se connecter</string>
   <string name="login_create_account">Créer un compte</string>
   <string name="login_account_name">Nom du compte</string>
-  <string name="login_account_avoid_apostrophe">L\'utilisation d\'apostrophes (\') est connue pour causer des problèmes sur certains appareils.</string>
   <string name="login_account_name_info">Utilisez votre adresse e-mail comme nom de compte car Android utilisera ce nom en tant que champ ORGANISATEUR pour les événements que vous créerez. Vous ne pouvez pas avoir deux comptes avec le même nom.</string>
   <string name="login_account_contact_group_method">Méthode pour les contacts de type groupe :</string>
   <string name="login_account_name_required">Nom du compte requis</string>
   <string name="login_account_name_already_taken">Le nom du compte est déjà pris</string>
   <string name="login_account_not_created">Le compte n\'a pas pu être créé</string>
-  <string name="login_type_advanced">Connexion avancée (cas particuliers)</string>
-  <string name="login_use_username_password">Utiliser le nom d\'utilisateur/mot de passe</string>
-  <string name="login_use_client_certificate">Utiliser le certificat du client</string>
   <string name="login_no_certificate_found">Aucun certificat trouvé</string>
   <string name="login_install_certificate">Installer un certificat</string>
   <string name="login_type_google">Google Contacts / Agenda</string>
@@ -267,11 +228,9 @@
   <string name="login_nextcloud_login_flow_no_login_data">Impossible d\'obtenir les données de connexion</string>
   <string name="login_configuration_detection">Détection de la configuration</string>
   <string name="login_querying_server">Veuillez patienter, nous interrogeons le serveur …</string>
-  <string name="login_no_caldav_carddav">Aucun accès possible au service CalDAV ou CardDAV.</string>
-  <string name="login_username_password_wrong">Nom d\'utilisateur (courriel) / mot de passe incorrect ?</string>
-  <string name="login_view_logs">Afficher les détails</string>
+  <string name="login_no_service">Aucun accès possible au service CalDAV ou CardDAV.</string>
+  <string name="login_view_logs">Voir les logs</string>
   <!--AccountSettingsActivity-->
-  <string name="settings_title">Paramètres: %s</string>
   <string name="settings_sync">Synchronisation</string>
   <string name="settings_sync_interval_contacts">Intervalle de synchronisation des carnets d\'adresses</string>
   <string name="settings_sync_summary_manually">Manuellement</string>
@@ -292,20 +251,15 @@
   <string name="settings_sync_wifi_only_off">Le type de connexion n\'est pas pris en charge</string>
   <string name="settings_sync_wifi_only_ssids">Restriction WiFi SSID</string>
   <string name="settings_sync_wifi_only_ssids_on">Synchronisation possible seulement en %s</string>
-  <string name="settings_sync_wifi_only_ssids_on_location_services">Ne synchronise que sur %s (nécessite des services de localisation actifs)</string>
   <string name="settings_sync_wifi_only_ssids_off">Toutes les connexions WiFi seront utilisées</string>
   <string name="settings_sync_wifi_only_ssids_message">Liste des points d\'accès WiFi (SSID) autorisés, séparés par des virgules. (Laissez vide pour tous)</string>
   <string name="settings_sync_wifi_only_ssids_permissions_required">La restriction du SSID WiFi nécessite des réglages supplémentaires</string>
   <string name="settings_sync_wifi_only_ssids_permissions_action">Gérer</string>
   <string name="settings_authentication">Authentification</string>
-  <string name="settings_username_key">nom d\'utilisateur</string>
   <string name="settings_username">Nom d\'utilisateur</string>
-  <string name="settings_enter_username">Saisissez votre nom d\'utilisateur :</string>
   <string name="settings_password">Mot de passe</string>
   <string name="settings_password_summary">Mettre à jour le mot de passe </string>
-  <string name="settings_enter_password">Saisissez votre mot de passe :</string>
-  <string name="settings_certificate_alias">Alias ​​du certificat client</string>
-  <string name="settings_certificate_alias_empty">Aucun certificat sélectionné</string>
+  <string name="settings_certificate_install">Installer un certificat</string>
   <string name="settings_caldav">CalDAV</string>
   <string name="settings_sync_time_range_past">Limite des événements passés</string>
   <string name="settings_sync_time_range_past_none">Tous les événements seront synchronisés</string>
@@ -338,7 +292,6 @@
   <!--collection management-->
   <string name="create_addressbook">Créer un carnet d\'adresses</string>
   <string name="create_calendar">Créer un calendrier</string>
-  <string name="create_calendar_time_zone">Fuseau horaire</string>
   <string name="create_calendar_type">Entrées possibles de calendrier</string>
   <string name="create_calendar_type_vevent">Événements</string>
   <string name="create_calendar_type_vtodo">Tâches</string>
@@ -426,9 +379,9 @@
   <string name="sync_invalid_event">Reçu un événement invalide du serveur</string>
   <string name="sync_invalid_task">Reçu une tâche invalide du serveur</string>
   <string name="sync_invalid_resources_ignoring">Ignorer une ou plusieurs ressources non valides</string>
+  <!--widgets-->
+  <string name="widget_sync_all_accounts">Synchroniser tous les comptes</string>
   <!--cert4android-->
-  <string name="certificate_notification_connection_security">PeopleSync : Sécurité de la connexion</string>
-  <string name="trust_certificate_unknown_certificate_found">PeopleSync a rencontré un certificat inconnu. Voulez-vous lui faire confiance?</string>
   <!--managed configurations-->
   <string name="account_list_managed_configuration">Les comptes sont gérés par votre organisation.</string>
 </resources>

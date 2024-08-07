@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.db
 
@@ -12,7 +12,13 @@ import android.database.sqlite.SQLiteQueryBuilder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.getStringOrNull
-import androidx.room.*
+import androidx.room.AutoMigration
+import androidx.room.Database
+import androidx.room.DeleteColumn
+import androidx.room.ProvidedAutoMigrationSpec
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -38,8 +44,9 @@ import javax.inject.Singleton
     Collection::class,
     Principal::class,
     SyncStats::class,
-], exportSchema = true, version = 12, autoMigrations = [
-    AutoMigration(from = 9, to = 12, spec = AppDatabase.AutoMigration11_12::class)
+], exportSchema = true, version = 13, autoMigrations = [
+    AutoMigration(from = 9, to = 12, spec = AppDatabase.AutoMigration11_12::class),
+    AutoMigration(from = 12, to = 13)
 ])
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {

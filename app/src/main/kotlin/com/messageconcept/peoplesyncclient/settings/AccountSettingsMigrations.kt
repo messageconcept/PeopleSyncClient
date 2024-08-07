@@ -1,3 +1,7 @@
+/*
+ * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
+ */
+
 package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.Account
@@ -20,10 +24,15 @@ import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.syncadapter.BaseSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
 import com.messageconcept.peoplesyncclient.util.setAndVerifyUserData
 import at.bitfire.vcard4android.ContactsStorageException
 import at.bitfire.vcard4android.GroupMethod
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
@@ -31,12 +40,36 @@ import java.util.logging.Level
 
 class AccountSettingsMigrations(
     val context: Context,
-    val db: AppDatabase,
-    val settings: SettingsManager,
     val account: Account,
-    val accountManager: AccountManager,
     val accountSettings: AccountSettings
 ) {
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface AccountSettingsMigrationsEntryPoint {
+        fun appDatabase(): AppDatabase
+        fun settingsManager(): SettingsManager
+    }
+
+    val db = EntryPointAccessors.fromApplication<AccountSettingsMigrationsEntryPoint>(context).appDatabase()
+    val settings = EntryPointAccessors.fromApplication<AccountSettingsMigrationsEntryPoint>(context).settingsManager()
+
+    val accountManager: AccountManager = AccountManager.get(context)
+
+
+    /**
+     * Updates the periodic sync workers by re-setting the same sync interval.
+     *
+     * The goal is to add the [BaseSyncWorker.commonTag] to all existing periodic sync workers so that they can be detected by
+     * the new [BaseSyncWorker.exists] and [com.messageconcept.peoplesyncclient.ui.AccountsActivity.Model].
+     */
+    @Suppress("unused","FunctionName")
+    fun update_14_15() {
+        for (authority in SyncUtils.syncAuthorities(context)) {
+            val interval = accountSettings.getSyncInterval(authority)
+            accountSettings.setSyncInterval(authority, interval ?: AccountSettings.SYNC_INTERVAL_MANUALLY)
+        }
+    }
 
     /**
      * Disables all sync adapter periodic syncs for every authority. Then enables
@@ -44,7 +77,6 @@ class AccountSettingsMigrations(
      */
     @Suppress("unused","FunctionName")
     fun update_13_14() {
-
         // Cancel any potentially running syncs for this account (sync framework)
         ContentResolver.cancelSync(account, null)
 
@@ -191,9 +223,9 @@ class AccountSettingsMigrations(
     }
 
     @Suppress("unused")
-    @SuppressLint("Recycle", "ParcelClassLoader")
+    @SuppressLint("ParcelClassLoader")
     private fun update_5_6() {
-        context.contentResolver.acquireContentProviderClient(ContactsContract.AUTHORITY)?.let { provider ->
+        context.contentResolver.acquireContentProviderClient(ContactsContract.AUTHORITY)?.use { provider ->
             val parcel = Parcel.obtain()
             try {
                 // don't run syncs during the migration
@@ -244,7 +276,6 @@ class AccountSettingsMigrations(
                 throw ContactsStorageException("Couldn't migrate contacts to new address book", e)
             } finally {
                 parcel.recycle()
-                provider.close()
             }
         }
 

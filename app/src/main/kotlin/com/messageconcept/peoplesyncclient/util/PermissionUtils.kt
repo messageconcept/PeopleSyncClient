@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.util
 
@@ -25,6 +25,9 @@ import com.messageconcept.peoplesyncclient.ui.NotificationUtils.notifyIfPossible
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 
 object PermissionUtils {
+
+    /** There's an undocumented intent that is sent when the battery optimization whitelist changes. */
+    const val ACTION_POWER_SAVE_WHITELIST_CHANGED = "android.os.action.POWER_SAVE_WHITELIST_CHANGED"
 
     val CONTACT_PERMISSIONS = arrayOf(
         Manifest.permission.READ_CONTACTS,
@@ -64,18 +67,6 @@ object PermissionUtils {
 
         return  havePermissions(context, WIFI_SSID_PERMISSIONS) &&
                 locationAvailable
-    }
-
-    /**
-     * Whether this app declares the given permission (regardless of whether it has been granted or not).
-     *
-     * @param permission  permission to check
-     *
-     * @return *true* if this app declares [permission] in the manifest; *false* otherwise
-     */
-    fun declaresPermission(packageManager: PackageManager, permission: String): Boolean {
-        val info = packageManager.getPackageInfo(BuildConfig.APPLICATION_ID, PackageManager.GET_PERMISSIONS)
-        return info.requestedPermissions.contains(permission)
     }
 
     /**

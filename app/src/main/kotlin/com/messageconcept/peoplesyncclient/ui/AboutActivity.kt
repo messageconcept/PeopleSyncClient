@@ -1,12 +1,11 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.ui
 
 import android.app.Application
 import android.os.Bundle
-import android.view.*
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -34,7 +32,7 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -42,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,12 +48,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.messageconcept.peoplesyncclient.App
 import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.Constants.withStatParams
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.log.Logger
-import com.messageconcept.peoplesyncclient.ui.widget.PixelBoxes
-import com.google.accompanist.themeadapter.material.MdcTheme
+import com.messageconcept.peoplesyncclient.ui.composable.PixelBoxes
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import dagger.BindsOptionalOf
 import dagger.Module
@@ -70,7 +69,9 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.*
+import java.util.LinkedList
+import java.util.Locale
+import java.util.Optional
 import java.util.logging.Level
 import javax.inject.Inject
 import kotlin.jvm.optionals.getOrNull
@@ -89,14 +90,16 @@ class AboutActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MdcTheme {
+            AppTheme {
+                val uriHandler = LocalUriHandler.current
+
                 Scaffold(
                     topBar = {
                         TopAppBar(
                             navigationIcon = {
-                                IconButton(onClick = { onNavigateUp() }) {
+                                IconButton(onClick = { onSupportNavigateUp() }) {
                                     Icon(
-                                        Icons.Default.ArrowBack,
+                                        Icons.AutoMirrored.Default.ArrowBack,
                                         contentDescription = stringResource(R.string.navigate_up)
                                     )
                                 }
@@ -106,8 +109,10 @@ class AboutActivity: AppCompatActivity() {
                             },
                             actions = {
                                 IconButton(onClick = {
-                                    val context = this@AboutActivity
-                                    UiUtils.launchUri(context, App.homepageUrl(context))
+                                    uriHandler.openUri(Constants.HOMEPAGE_URL
+                                        .buildUpon()
+                                        .withStatParams("AboutActivity")
+                                        .build().toString())
                                 }) {
                                     Icon(
                                         Icons.Default.Home,

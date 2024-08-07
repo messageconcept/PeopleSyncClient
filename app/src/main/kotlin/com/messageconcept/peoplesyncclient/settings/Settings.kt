@@ -1,14 +1,12 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.settings
 
 import androidx.appcompat.app.AppCompatDelegate
 
 object Settings {
-
-    const val BATTERY_OPTIMIZATION = "battery_optimization"
 
     const val DISTRUST_SYSTEM_CERTIFICATES = "distrust_system_certs"
 
@@ -38,9 +36,6 @@ object Settings {
      */
     const val PREFERRED_THEME = "preferred_theme"
     const val PREFERRED_THEME_DEFAULT = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-
-    const val LANGUAGE = "language"
-    const val LANGUAGE_SYSTEM = "language_system"
 
     /** whether collections are automatically selected for synchronization after their initial detection */
     const val PRESELECT_COLLECTIONS = "preselect_collections"

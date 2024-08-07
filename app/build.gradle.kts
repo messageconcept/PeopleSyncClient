@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.ksp)
 }
 
@@ -50,8 +49,6 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
-        viewBinding = true
-        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
@@ -158,9 +155,11 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.base)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.paging)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.preference)
     implementation(libs.androidx.security)
     implementation(libs.androidx.swiperefreshlayout)
@@ -170,7 +169,6 @@ dependencies {
 
     // Jetpack Compose
     implementation(libs.compose.accompanist.permissions)
-    implementation(libs.compose.accompanist.themeAdapter)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material)
     implementation(libs.compose.materialIconsExtended)
@@ -178,6 +176,10 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.toolingPreview)
     implementation(libs.compose.ui.text.google.fonts)
+
+    // Glance Widgets
+    implementation(libs.glance.base)
+    implementation(libs.glance.material)
 
     // Jetpack Room
     implementation(libs.room.runtime)
@@ -193,9 +195,7 @@ dependencies {
     implementation(libs.bitfire.vcard4android)
 
     // third-party libs
-    implementation(libs.openid.appauth)
     implementation(libs.appintro)
-    implementation(libs.mikepenz.aboutLibraries)
     implementation(libs.commons.collections)
     @Suppress("RedundantSuppression")
     implementation(libs.commons.io)
@@ -203,11 +203,12 @@ dependencies {
     implementation(libs.commons.text)
     @Suppress("RedundantSuppression")
     implementation(libs.dnsjava)
-    implementation(libs.jaredrummler.colorpicker)
+    implementation(libs.mikepenz.aboutLibraries)
     implementation(libs.nsk90.kstatemachine)
     implementation(libs.okhttp.base)
     implementation(libs.okhttp.brotli)
     implementation(libs.okhttp.logging)
+    implementation(libs.openid.appauth)
 
     // for tests
     androidTestImplementation(libs.androidx.arch.core.testing)

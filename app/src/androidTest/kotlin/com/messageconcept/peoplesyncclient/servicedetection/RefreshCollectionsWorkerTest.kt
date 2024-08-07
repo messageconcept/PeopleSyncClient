@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.servicedetection
 
@@ -10,14 +10,9 @@ import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
-import androidx.work.WorkManager
-import androidx.work.await
 import androidx.work.testing.WorkManagerTestInitHelper
-import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunning
-import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunningOrSuccessful
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
-import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Principal
 import com.messageconcept.peoplesyncclient.db.Service
@@ -26,12 +21,11 @@ import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.ui.NotificationUtils
-import com.messageconcept.peoplesyncclient.ui.setup.LoginModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
+import io.mockk.junit4.MockKRule
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -45,7 +39,6 @@ import org.junit.Assume
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.net.URI
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -53,6 +46,8 @@ class RefreshCollectionsWorkerTest {
     
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
+    @get:Rule
+    val mockkRule = MockKRule(this)
 
     val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
 
@@ -100,7 +95,6 @@ class RefreshCollectionsWorkerTest {
     var mockServer =  MockWebServer()
 
     lateinit var client: HttpClient
-    lateinit var loginModel: LoginModel
 
     @Before
     fun mockServerSetup() {
@@ -108,13 +102,7 @@ class RefreshCollectionsWorkerTest {
         mockServer.dispatcher = TestDispatcher()
         mockServer.start()
 
-        loginModel = LoginModel()
-        loginModel.baseURI = URI.create("/")
-        loginModel.credentials = Credentials("mock", "12345")
-
-        client = HttpClient.Builder(InstrumentationRegistry.getInstrumentation().targetContext)
-            .addAuthentication(null, loginModel.credentials!!)
-            .build()
+        client = HttpClient.Builder(InstrumentationRegistry.getInstrumentation().targetContext).build()
 
         Assume.assumeTrue(NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted)
     }

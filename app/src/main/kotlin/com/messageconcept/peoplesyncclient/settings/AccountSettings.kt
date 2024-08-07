@@ -1,23 +1,24 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.content.*
+import android.content.ContentResolver
+import android.content.Context
+import android.content.RestrictionsManager
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.InvalidAccountException
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.syncadapter.OneTimeSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.PeriodicSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
-import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.util.setAndVerifyUserData
 import at.bitfire.vcard4android.GroupMethod
 import dagger.hilt.EntryPoint
@@ -46,7 +47,6 @@ class AccountSettings(
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface AccountSettingsEntryPoint {
-        fun appDatabase(): AppDatabase
         fun settingsManager(): SettingsManager
     }
 
@@ -55,7 +55,7 @@ class AccountSettings(
         const val KEY_LOGIN_USER_NAME = "login_user_name"
         const val KEY_LOGIN_PASSWORD = "login_password"
 
-        const val CURRENT_VERSION = 14
+        const val CURRENT_VERSION = 15
         const val KEY_SETTINGS_VERSION = "version"
 
         const val KEY_SYNC_INTERVAL_ADDRESSBOOKS = "sync_interval_addressbooks"
@@ -94,8 +94,8 @@ class AccountSettings(
             bundle.putString(KEY_SETTINGS_VERSION, CURRENT_VERSION.toString())
 
             if (credentials != null) {
-                if (credentials.userName != null)
-                    bundle.putString(KEY_USERNAME, credentials.userName)
+                if (credentials.username != null)
+                    bundle.putString(KEY_USERNAME, credentials.username)
 
                 if (credentials.certificateAlias != null)
                     bundle.putString(KEY_CERTIFICATE_ALIAS, credentials.certificateAlias)
@@ -135,14 +135,14 @@ class AccountSettings(
                             return
                         }
                         // check if baseUrl and userName match
-                        if (managedBaseUrl == baseUrl && managedUserName == creds.userName) {
+                        if (managedBaseUrl == baseUrl && managedUserName == creds.username) {
                             if (managedPassword != creds.password) {
                                 Logger.log.info("${account.name}: Managed login password changed. Updating account settings and requesting sync.")
                                 am.setPassword(account, managedPassword)
                                 // Request an explicit sync after we changed the account password.
                                 // This should also clear any error notifications.
                                 val authority = context.getString(R.string.address_books_authority)
-                                SyncWorker.enqueue(context, account, authority, expedited = true)
+                                OneTimeSyncWorker.enqueue(context, account, authority)
                             } else {
                                 // Password is up-to-date
                             }
@@ -163,23 +163,24 @@ class AccountSettings(
     }
 
 
-    val db = EntryPointAccessors.fromApplication(context, AccountSettingsEntryPoint::class.java).appDatabase()
     val settings = EntryPointAccessors.fromApplication(context, AccountSettingsEntryPoint::class.java).settingsManager()
 
     val accountManager: AccountManager = AccountManager.get(context)
     val account: Account
 
     init {
-        when (argAccount.type) {
+        account = when (argAccount.type) {
             context.getString(R.string.account_type_address_book) -> {
                 /* argAccount is an address book account, which is not a main account. However settings are
-                   stored in the main account, so resolve and use the main account instead. */
-                account = LocalAddressBook.mainAccount(context, argAccount)
+                       stored in the main account, so resolve and use the main account instead. */
+                LocalAddressBook.mainAccount(context, argAccount) ?: throw IllegalArgumentException("Main account of $argAccount not found")
             }
+
             context.getString(R.string.account_type) ->
-                account = argAccount
+                argAccount
+
             else ->
-                throw IllegalArgumentException("Account type not supported")
+                throw IllegalArgumentException("Account type ${argAccount.type} not supported")
         }
 
         // synchronize because account migration must only be run one time
@@ -222,7 +223,7 @@ class AccountSettings(
 
     fun credentials(credentials: Credentials) {
         // Basic/Digest auth
-        accountManager.setAndVerifyUserData(account, KEY_USERNAME, credentials.userName)
+        accountManager.setAndVerifyUserData(account, KEY_USERNAME, credentials.username)
         accountManager.setPassword(account, credentials.password)
 
         // client certificate
@@ -416,6 +417,17 @@ class AccountSettings(
 
     // UI settings
 
+    data class ShowOnlyPersonal(
+        val onlyPersonal: Boolean,
+        val locked: Boolean
+    )
+
+    fun getShowOnlyPersonal(): ShowOnlyPersonal {
+        @Suppress("DEPRECATION")
+        val pair = getShowOnlyPersonalPair()
+        return ShowOnlyPersonal(onlyPersonal = pair.first, locked = !pair.second)
+    }
+
     /**
      * Whether only personal collections should be shown.
      *
@@ -424,7 +436,8 @@ class AccountSettings(
      *   1. (first) whether only personal collections should be shown
      *   2. (second) whether the user shall be able to change the setting (= setting not locked)
      */
-    fun getShowOnlyPersonal(): Pair<Boolean, Boolean> =
+    @Deprecated("Use getShowOnlyPersonal() instead", replaceWith = ReplaceWith("getShowOnlyPersonal()"))
+    fun getShowOnlyPersonalPair(): Pair<Boolean, Boolean> =
             when (settings.getIntOrNull(KEY_SHOW_ONLY_PERSONAL)) {
                 0 -> Pair(false, false)
                 1 -> Pair(true, false)
@@ -445,10 +458,7 @@ class AccountSettings(
             try {
                 val migrations = AccountSettingsMigrations(
                     context = context,
-                    db = db,
-                    settings = settings,
                     account = account,
-                    accountManager = accountManager,
                     accountSettings = this
                 )
                 val updateProc = AccountSettingsMigrations::class.java.getDeclaredMethod("update_${fromVersion}_$toVersion")

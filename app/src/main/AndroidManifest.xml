@@ -65,10 +65,9 @@
         <activity android:name="net.openid.appauth.RedirectUriReceiverActivity"
             tools:node="remove" tools:selector="net.openid.appauth"/>
 
-        <activity android:name=".ui.intro.IntroActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.intro.IntroActivity" />
         <activity
             android:name=".ui.AccountsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -79,7 +78,6 @@
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/navigation_drawer_about"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.AccountsActivity"/>
 
         <activity
@@ -109,8 +107,8 @@
 
         <activity
             android:name=".ui.setup.LoginActivity"
-            android:label="@string/login_title"
             android:parentActivityName=".ui.AccountsActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -127,20 +125,17 @@
         <activity
             android:name=".ui.account.AccountActivity"
             android:parentActivityName=".ui.AccountsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
         </activity>
         <activity
             android:name=".ui.account.CreateAddressBookActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.account.AccountActivity" />
         <activity
-            android:name=".ui.account.SettingsActivity"
+            android:name=".ui.account.AccountSettingsActivity"
             android:parentActivityName=".ui.account.AccountActivity" />
         <activity
             android:name=".ui.account.WifiPermissionsActivity"
-            android:label="@string/wifi_permissions_label"
-            android:parentActivityName=".ui.account.SettingsActivity" />
+            android:parentActivityName=".ui.account.AccountSettingsActivity" />
 
         <!-- account type "PeopleSync" -->
         <service
@@ -210,6 +205,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/debug_paths" />
         </provider>
+
+        <!-- Widgets -->
+        <receiver android:name=".ui.widget.SyncButtonWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_sync_button" />
+        </receiver>
 
     </application>
 

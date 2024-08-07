@@ -1,6 +1,6 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.ui
 
@@ -9,7 +9,9 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
 import android.app.Application
+import android.content.Context
 import android.content.Intent
+import android.content.RestrictionsManager
 import android.content.pm.ShortcutManager
 import android.net.Uri
 import android.os.Build
@@ -23,11 +25,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -40,10 +39,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -69,16 +66,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -88,19 +86,21 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.syncadapter.BaseSyncWorker
+import com.messageconcept.peoplesyncclient.syncadapter.OneTimeSyncWorker
 import com.messageconcept.peoplesyncclient.syncadapter.SyncUtils
-import com.messageconcept.peoplesyncclient.syncadapter.SyncWorker
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
-import com.messageconcept.peoplesyncclient.ui.account.AppWarningsModel
+import com.messageconcept.peoplesyncclient.ui.account.progressAlpha
+import com.messageconcept.peoplesyncclient.ui.composable.ActionCard
+import com.messageconcept.peoplesyncclient.ui.composable.NotificationCard
 import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
 import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
-import com.messageconcept.peoplesyncclient.ui.widget.ActionCard
-import com.messageconcept.peoplesyncclient.ui.widget.NotificationCard
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.themeadapter.material.MdcTheme
-import com.google.android.material.navigation.NavigationView
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_BASE_URL
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_PASSWORD
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_LOGIN_USER_NAME
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -158,8 +158,10 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
 
         setContent {
             val scope = rememberCoroutineScope()
-            val scaffoldState = rememberScaffoldState()
             val snackbarHostState = remember { SnackbarHostState() }
+            val scaffoldState = rememberScaffoldState(
+                snackbarHostState = snackbarHostState
+            )
 
             val refreshing by remember { mutableStateOf(false) }
             val pullRefreshState = rememberPullRefreshState(refreshing, onRefresh = {
@@ -172,13 +174,21 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
 
             model.showAddAccount.value = !(isManaged == true && accounts?.isNotEmpty() == true)
 
-            MdcTheme {
+            AppTheme {
                 Scaffold(
                     scaffoldState = scaffoldState,
-                    drawerContent = drawerContent(scope, scaffoldState),
+                    drawerContent = {
+                        accountsDrawerHandler.AccountsDrawer(
+                            snackbarHostState = snackbarHostState,
+                            onCloseDrawer = {
+                                scope.launch {
+                                    scaffoldState.drawerState.close()
+                                }
+                            }
+                        )
+                    },
                     topBar = topBar(scope, scaffoldState, accounts?.isNotEmpty() == true),
-                    floatingActionButton = floatingActionButton(),
-                    snackbarHost = snackbarHost(snackbarHostState, scope)
+                    floatingActionButton = floatingActionButton()
                 ) { padding ->
                     Box(
                         Modifier
@@ -190,7 +200,6 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
                             )
                             .verticalScroll(rememberScrollState())
                     ) {
-
                         // background image
                         if (accounts?.isNotEmpty() != true) {
                             Image(
@@ -225,19 +234,19 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
                                     if (intent.resolveActivity(packageManager) != null)
                                         startActivity(intent)
                                 },
-                                dataSaverActive = warnings.dataSaverEnabled.observeAsState().value == true,
+                                dataSaverActive = warnings.dataSaverEnabled.collectAsStateWithLifecycle().value,
                                 onManageDataSaver = {
                                     val intent = Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS, Uri.parse("package:$packageName"))
                                     if (intent.resolveActivity(packageManager) != null)
                                         startActivity(intent)
                                 },
-                                batterySaverActive = warnings.batterySaverActive.observeAsState().value == true,
+                                batterySaverActive = warnings.batterySaverActive.collectAsStateWithLifecycle().value,
                                 onManageBatterySaver = {
                                     val intent = Intent(Settings.ACTION_BATTERY_SAVER_SETTINGS)
                                     if (intent.resolveActivity(packageManager) != null)
                                         startActivity(intent)
                                 },
-                                lowStorageWarning = warnings.storageLow.observeAsState().value == true,
+                                lowStorageWarning = warnings.storageLow.collectAsStateWithLifecycle().value,
                                 onManageStorage = {
                                     val intent = Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS)
                                     if (intent.resolveActivity(packageManager) != null)
@@ -247,7 +256,7 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
 
                             // account list
                             AccountList(
-                                accounts = accounts ?: emptyList(),
+                                accounts = accounts ?: emptyMap(),
                                 onClickAccount = { account ->
                                     val activity = this@AccountsActivity
                                     val intent = Intent(activity, AccountActivity::class.java)
@@ -283,33 +292,26 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
     }
 
     @Composable
-    private fun snackbarHost(
-        snackbarHostState: SnackbarHostState,
-        scope: CoroutineScope
-    ): @Composable (SnackbarHostState) -> Unit = {
-        SnackbarHost(snackbarHostState)
-        model.syncEnqueued.observeAsState().value?.let { enqueued ->
-            if (enqueued)
-                scope.launch {
-                    val msg = getString(
-                        if (warnings.networkAvailable.value == true)
-                            R.string.sync_started
-                        else
-                            R.string.no_internet_sync_scheduled
-                    )
-                    snackbarHostState.showSnackbar(msg)
-                }
-            // reset feedback
-            model.syncEnqueued.value = null
-        }
-    }
-
-    @Composable
     private fun floatingActionButton(): @Composable (() -> Unit) = {
         val show by model.showAddAccount.observeAsState()
         if (show == true)
             FloatingActionButton(onClick = {
-                startActivity(Intent(this@AccountsActivity, LoginActivity::class.java))
+                intent = Intent(this@AccountsActivity, LoginActivity::class.java)
+                // get infos from managed settings
+                val restrictionsManager = getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
+                val appRestrictions = restrictionsManager.applicationRestrictions
+
+                if (!appRestrictions.getString(KEY_LOGIN_BASE_URL).isNullOrEmpty()) {
+                    intent.putExtra(LoginActivity.EXTRA_URL, appRestrictions.getString(KEY_LOGIN_BASE_URL))
+                    intent.putExtra(LoginActivity.EXTRA_LOGIN_MANAGED, true)
+                }
+                if (!appRestrictions.getString(KEY_LOGIN_USER_NAME).isNullOrEmpty()) {
+                    intent.putExtra(LoginActivity.EXTRA_USERNAME, appRestrictions.getString(KEY_LOGIN_USER_NAME))
+                }
+                if (!appRestrictions.getString(KEY_LOGIN_PASSWORD).isNullOrEmpty()) {
+                    intent.putExtra(LoginActivity.EXTRA_PASSWORD, appRestrictions.getString(KEY_LOGIN_PASSWORD))
+                }
+                startActivity(intent)
             }) {
                 Icon(
                     Icons.Filled.Add,
@@ -356,40 +358,6 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
         )
     }
 
-    @Composable
-    private fun drawerContent(
-        scope: CoroutineScope,
-        scaffoldState: ScaffoldState
-    ): @Composable (ColumnScope.() -> Unit) =
-        {
-            AndroidView(factory = { context ->
-                // use legacy NavigationView for now
-                NavigationView(context).apply {
-                    inflateHeaderView(R.layout.nav_header_accounts)
-
-                    inflateMenu(R.menu.activity_accounts_drawer)
-                    accountsDrawerHandler.initMenu(this@AccountsActivity, menu)
-
-                    setNavigationItemSelectedListener { item ->
-                        scope.launch {
-                            accountsDrawerHandler.onNavigationItemSelected(
-                                this@AccountsActivity,
-                                item
-                            )
-                            scaffoldState.drawerState.close()
-                        }
-                        true
-                    }
-                }
-            }, modifier = Modifier.fillMaxWidth())
-        }
-
-
-    data class AccountInfo(
-        val account: Account,
-        val isRefreshing: Boolean,
-        val isSyncing: Boolean
-    )
 
     @HiltViewModel
     class Model @Inject constructor(
@@ -397,18 +365,16 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
         val db: AppDatabase
     ): AndroidViewModel(application), OnAccountsUpdateListener {
 
-        val syncEnqueued = MutableLiveData<Boolean>()
-
         val isManaged = MutableLiveData<Boolean>(false)
 
         val accountManager = AccountManager.get(application)
         private val accountType = application.getString(R.string.account_type)
 
         val workManager = WorkManager.getInstance(application)
-        val runningWorkers = workManager.getWorkInfosLiveData(WorkQuery.fromStates(WorkInfo.State.RUNNING))
+        val runningWorkers = workManager.getWorkInfosLiveData(WorkQuery.fromStates(WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING))
 
         val accounts = MutableLiveData<Set<Account>>()
-        val accountInfos = object: MediatorLiveData<List<AccountInfo>>() {
+        val accountInfos = object: MediatorLiveData<Map<Account, AccountActivity.Progress>>() {
             var myAccounts: Set<Account> = emptySet()
             var workInfos: List<WorkInfo> = emptyList()
             init {
@@ -422,26 +388,31 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
                 }
             }
             fun update() = viewModelScope.launch(Dispatchers.Default) {
-                val authorities = SyncUtils.syncAuthorities(application, withContacts = true)
+                val authorities = SyncUtils.syncAuthorities(application)
                 val collator = Collator.getInstance()
                 postValue(myAccounts
-                    .toList()
                     .sortedWith { a, b -> collator.compare(a.name, b.name) }
-                    .map { account ->
+                    .associateWith { account ->
                         val services = db.serviceDao().getIdsByAccount(account.name)
-                        AccountInfo(
-                            account = account,
-                            isRefreshing = workInfos.any { info ->
-                                services.any { serviceId ->
-                                    info.tags.contains(RefreshCollectionsWorker.workerName(serviceId))
+                        when {
+                            workInfos.any { info ->
+                                info.state == WorkInfo.State.RUNNING && (
+                                    services.any { serviceId ->
+                                        info.tags.contains(RefreshCollectionsWorker.workerName(serviceId))
+                                    } || authorities.any { authority ->
+                                        info.tags.contains(BaseSyncWorker.commonTag(account, authority))
+                                    }
+                                )
+                            } -> AccountActivity.Progress.Active
+
+                            workInfos.any { info ->
+                                info.state == WorkInfo.State.ENQUEUED && authorities.any { authority ->
+                                    info.tags.contains(OneTimeSyncWorker.workerName(account, authority))
                                 }
-                            },
-                            isSyncing = workInfos.any { info ->
-                                authorities.any { authority ->
-                                    info.tags.contains(SyncWorker.workerName(account, authority))
-                                }
-                            }
-                        )
+                            } -> AccountActivity.Progress.Pending
+
+                            else -> AccountActivity.Progress.Idle
+                        }
                     })
             }
         }
@@ -466,11 +437,9 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
             if (Build.VERSION.SDK_INT >= 25)
                 context.getSystemService<ShortcutManager>()?.reportShortcutUsed(UiUtils.SHORTCUT_SYNC_ALL)
 
-            syncEnqueued.value = true
-
             // Enqueue sync worker for all accounts and authorities. Will sync once internet is available
             for (account in allAccounts())
-                SyncWorker.enqueueAllAuthorities(context, account)
+                OneTimeSyncWorker.enqueueAllAuthorities(context, account, manual = true)
         }
 
 
@@ -486,7 +455,7 @@ class AccountsActivity: AppCompatActivity(), SettingsManager.OnChangeListener {
 
 @Composable
 fun AccountList(
-    accounts: List<AccountsActivity.AccountInfo>,
+    accounts: Map<Account, AccountActivity.Progress>,
     modifier: Modifier = Modifier,
     onClickAccount: (Account) -> Unit = {}
 ) {
@@ -506,23 +475,35 @@ fun AccountList(
             )
         }
     else
-        for (account in accounts)
+        for ((account, progress) in accounts)
             Card(
                 backgroundColor = MaterialTheme.colors.secondaryVariant,
                 contentColor = MaterialTheme.colors.onSecondary,
                 modifier = Modifier
-                    .clickable { onClickAccount(account.account) }
+                    .clickable { onClickAccount(account) }
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
                 Column {
-                    if (account.isRefreshing || account.isSyncing)
-                        LinearProgressIndicator(
-                            color = MaterialTheme.colors.onSecondary,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    else
-                        Spacer(Modifier.height(ProgressIndicatorDefaults.StrokeWidth))
+                    val progressAlpha = progressAlpha(progress)
+                    when (progress) {
+                        AccountActivity.Progress.Active ->
+                            LinearProgressIndicator(
+                                color = MaterialTheme.colors.onSecondary,
+                                modifier = Modifier
+                                    .alpha(progressAlpha)
+                                    .fillMaxWidth()
+                            )
+                        AccountActivity.Progress.Pending,
+                        AccountActivity.Progress.Idle ->
+                            LinearProgressIndicator(
+                                progress = 1f,
+                                color = MaterialTheme.colors.onSecondary,
+                                modifier = Modifier
+                                    .alpha(progressAlpha)
+                                    .fillMaxWidth()
+                            )
+                    }
 
                     Column(Modifier.padding(8.dp)) {
                         Icon(
@@ -534,7 +515,7 @@ fun AccountList(
                         )
 
                         Text(
-                            text = account.account.name,
+                            text = account.name,
                             style = MaterialTheme.typography.h5,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -550,31 +531,31 @@ fun AccountList(
 @Composable
 @Preview
 fun AccountList_Preview_Idle() {
-    AccountList(listOf(
-        AccountsActivity.AccountInfo(
-            Account("Account Name", "test"),
-            isRefreshing = false,
-            isSyncing = false
-        )
+    AccountList(mapOf(
+        Account("Account Name", "test") to AccountActivity.Progress.Idle
     ))
 }
 
 @Composable
 @Preview
-fun AccountList_Preview_IsSyncing() {
-    AccountList(listOf(
-        AccountsActivity.AccountInfo(
-            Account("Account Name", "test"),
-            isRefreshing = false,
-            isSyncing = true
-        )
+fun AccountList_Preview_SyncPending() {
+    AccountList(mapOf(
+        Account("Account Name", "test") to AccountActivity.Progress.Pending
+    ))
+}
+
+@Composable
+@Preview
+fun AccountList_Preview_Syncing() {
+    AccountList(mapOf(
+        Account("Account Name", "test") to AccountActivity.Progress.Active
     ))
 }
 
 @Composable
 @Preview
 fun AccountList_Preview_Empty() {
-    AccountList(listOf())
+    AccountList(emptyMap())
 }
 
 
@@ -603,7 +584,7 @@ fun SyncWarnings(
         if (notificationsWarning)
             ActionCard(
                 icon = Icons.Default.NotificationsOff,
-                actionText = stringResource(R.string.account_permissions_action),
+                actionText = stringResource(R.string.account_manage_permissions),
                 onAction = onClickPermissions
             ) {
                 Text(stringResource(R.string.account_list_no_notification_permission))

@@ -1,13 +1,13 @@
-/***************************************************************************************************
+/*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
- **************************************************************************************************/
+ */
 
 package com.messageconcept.peoplesyncclient.settings
 
 import android.content.Context
 import android.util.NoSuchPropertyException
 import androidx.annotation.AnyThread
-import androidx.lifecycle.MutableLiveData
+import androidx.annotation.VisibleForTesting
 import com.messageconcept.peoplesyncclient.log.Logger
 import com.messageconcept.peoplesyncclient.settings.SettingsManager.OnChangeListener
 import dagger.Module
@@ -17,9 +17,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import java.io.Writer
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.LinkedList
 import java.util.logging.Level
 import javax.inject.Singleton
 
@@ -101,10 +104,34 @@ class SettingsManager internal constructor(
         }
     }
 
+    /**
+     * Returns a Flow that
+     *
+     * - always emits the initial value of the setting, and then
+     * - emits the new value whenever the setting changes.
+     *
+     * @param getValue   used to determine the current value of the setting
+     */
+    @VisibleForTesting
+    internal fun<T> observerFlow(getValue: () -> T): Flow<T> = callbackFlow {
+        // emit value on changes
+        val listener = OnChangeListener {
+            trySend(getValue())
+        }
+        addOnChangeListener(listener)
+
+        // get current value and emit it as first state
+        trySend(getValue())
+
+        // wait and clean up
+        awaitClose { removeOnChangeListener(listener) }
+    }
+
 
     /*** SETTINGS ACCESS ***/
 
     fun containsKey(key: String) = providers.any { it.contains(key) }
+    fun containsKeyFlow(key: String): Flow<Boolean> = observerFlow { containsKey(key) }
 
     private fun<T> getValue(key: String, reader: (SettingsProvider) -> T?): T? {
         Logger.log.fine("Looking up setting $key")
@@ -127,14 +154,18 @@ class SettingsManager internal constructor(
 
     fun getBooleanOrNull(key: String): Boolean? = getValue(key) { provider -> provider.getBoolean(key) }
     fun getBoolean(key: String): Boolean = getBooleanOrNull(key) ?: throw NoSuchPropertyException(key)
+    fun getBooleanFlow(key: String): Flow<Boolean?> = observerFlow { getBooleanOrNull(key) }
+    fun getBooleanFlow(key: String, defaultValue: Boolean): Flow<Boolean> = observerFlow { getBooleanOrNull(key) ?: defaultValue }
 
     fun getIntOrNull(key: String): Int? = getValue(key) { provider -> provider.getInt(key) }
     fun getInt(key: String): Int = getIntOrNull(key) ?: throw NoSuchPropertyException(key)
+    fun getIntFlow(key: String): Flow<Int?> = observerFlow { getIntOrNull(key) }
 
     fun getLongOrNull(key: String): Long? = getValue(key) { provider -> provider.getLong(key) }
     fun getLong(key: String) = getLongOrNull(key) ?: throw NoSuchPropertyException(key)
 
     fun getString(key: String) = getValue(key) { provider -> provider.getString(key) }
+    fun getStringFlow(key: String): Flow<String?> = observerFlow { getString(key) }
 
 
     fun isWritable(key: String): Boolean {
@@ -159,50 +190,18 @@ class SettingsManager internal constructor(
     }
 
     fun putBoolean(key: String, value: Boolean?) =
-            putValue(key, value) { provider -> provider.putBoolean(key, value) }
+        putValue(key, value) { provider -> provider.putBoolean(key, value) }
 
     fun putInt(key: String, value: Int?) =
-            putValue(key, value) { provider -> provider.putInt(key, value) }
+        putValue(key, value) { provider -> provider.putInt(key, value) }
 
     fun putLong(key: String, value: Long?) =
-            putValue(key, value) { provider -> provider.putLong(key, value) }
+        putValue(key, value) { provider -> provider.putLong(key, value) }
 
     fun putString(key: String, value: String?) =
-            putValue(key, value) { provider -> provider.putString(key, value) }
+        putValue(key, value) { provider -> provider.putString(key, value) }
 
     fun remove(key: String) = putString(key, null)
-
-
-    /*** LIVE DATA ***/
-
-    /**
-     * Returns a [MutableLiveData] which is backed by the settings with the given key.
-     * An observer must be added to the returned [MutableLiveData] to make it active.
-     */
-    fun getBooleanLive(key: String) = object : MutableLiveData<Boolean?>() {
-        private val preferenceChangeListener = OnChangeListener { updateValue() }
-
-        private fun updateValue() {
-            value = getBooleanOrNull(key)
-        }
-
-        // setValue is also called from postValue, so no need to override
-        override fun setValue(value: Boolean?) {
-            super.setValue(value)
-            putBoolean(key, value)
-        }
-
-        override fun onActive() {
-            super.onActive()
-            updateValue()
-            addOnChangeListener(preferenceChangeListener)
-        }
-
-        override fun onInactive() {
-            super.onInactive()
-            removeOnChangeListener(preferenceChangeListener)
-        }
-    }
 
 
     /*** HELPERS ***/

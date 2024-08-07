@@ -2,7 +2,6 @@
 
     <!-- common strings -->
     <string name="app_name" translatable="false">PeopleSync</string>
-    <string name="homepage_url" translatable="false">https://www.messageconcept.com/peoplesync/</string>
 
     <string name="account_invalid">Account does not exist (anymore)</string>
     <string name="account_type" translatable="false">com.messageconcept.peoplesync</string>
@@ -16,9 +15,10 @@
     <string name="help">Help</string>
     <string name="manage_accounts">Manage accounts</string>
     <string name="navigate_up">Navigate up</string>
-    <string name="no_internet_sync_scheduled">No Internet, scheduling sync</string>
+    <string name="optional_label">* optional</string>
+    <string name="options_menu">Options menu</string>
     <string name="share">Share</string>
-    <string name="sync_started">Synchronization started</string>
+    <string name="sync_started">Synchronization started/enqueued</string>
 
     <string name="database_destructive_migration_title">Database corrupted</string>
     <string name="database_destructive_migration_text">All accounts have been removed locally.</string>
@@ -38,8 +38,6 @@
     <string name="intro_slogan1">PeopleSync</string>
     <string name="intro_slogan2">All contacts. Everywhere.</string>
     <string name="intro_battery_title">Regular sync intervals</string>
-    <string name="intro_battery_not_whitelisted">Disabled (not recommended)</string>
-    <string name="intro_battery_whitelisted">Enabled (recommended)</string>
     <string name="intro_battery_text">For synchronization at regular intervals, %s must be allowed to run in the background. Otherwise, Android may pause synchronization at any time.</string>
     <string name="intro_battery_dont_show">I don\'t need regular sync intervals.*</string>
     <string name="intro_autostart_title">%s compatibility</string>
@@ -78,12 +76,8 @@
     <string name="permissions_notification_status_off">Notifications disabled (not recommended)</string>
     <string name="permissions_notification_status_on">Notifications enabled</string>
     <string name="permissions_jtx_title">jtx Board permissions</string>
-    <string name="permissions_jtx_status_not_installed">No task, journals &amp; notes sync (not installed)</string>
-    <string name="permissions_jtx_status_off">No tasks, journals, notes sync</string>
-    <string name="permissions_jtx_status_on">Tasks, journals, notes sync possible</string>
     <string name="permissions_opentasks_title">OpenTasks permissions</string>
     <string name="permissions_tasksorg_title">Tasks permissions</string>
-    <string name="permissions_tasks_status_not_installed">No task sync (not installed)</string>
     <string name="permissions_tasks_status_off">No task sync</string>
     <string name="permissions_tasks_status_on">Task sync possible</string>
     <string name="permissions_autoreset_title">Keep permissions</string>
@@ -101,8 +95,8 @@
     <string name="wifi_permissions_location_permission_off">Location permission denied</string>
     <string name="wifi_permissions_background_location_permission">Background location permission</string>
     <string name="wifi_permissions_background_location_permission_label">Allow all the time</string>
-    <string name="wifi_permissions_background_location_permission_on"><![CDATA[Location permission set to <b>%s</b>]]></string>
-    <string name="wifi_permissions_background_location_permission_off"><![CDATA[Location permission not set to <b>%s</b>]]></string>
+    <string name="wifi_permissions_background_location_permission_on">Location permission set to: %s</string>
+    <string name="wifi_permissions_background_location_permission_off">Location permission not set to: %s</string>
     <string name="wifi_permissions_background_location_disclaimer">%s uses the Location permission only to determine the current WiFi\'s SSID for SSID-restricted accounts. This will happen even when the app is in background. No location data are collected, stored, processed or sent anywhere.</string>
     <string name="wifi_permissions_location_enabled">Location always enabled</string>
     <string name="wifi_permissions_location_enabled_on">Location service is enabled</string>
@@ -114,9 +108,7 @@
     <string name="about_version">Version %1$s (%2$d)</string>
     <string name="about_build_date">Compiled on %s</string>
     <string name="about_copyright" translatable="false">© messageconcept software GmbH</string>
-    <string name="about_flavor_info">This version is only eligible for distribution over Google Play.</string>
     <string name="about_license_info_no_warranty">This program comes with ABSOLUTELY NO WARRANTY. It is free software, and you are welcome to redistribute it under certain conditions.</string>
-    <string name="about_translations_thanks"><![CDATA[<i>Thanks to: </i> %s]]></string>
     <string name="about_contact_info">messageconcept software GmbH\nGrosse Witschgasse 17\n50676 Cologne, Germany\nPhone +49 221 677855 88\n(no app support)</string>
 
     <!-- global settings -->
@@ -130,7 +122,6 @@
     <string name="navigation_drawer_subtitle">CardDAV Sync Adapter</string>
     <string name="navigation_drawer_about">About / License</string>
     <string name="navigation_drawer_beta_feedback">Beta feedback</string>
-    <string name="install_email_client">Please install an email client</string>
     <string name="install_browser">Please install a Web browser</string>
     <string name="navigation_drawer_settings">Settings</string>
     <string name="navigation_drawer_news_updates">News &amp; updates</string>
@@ -140,7 +131,8 @@
     <string name="navigation_drawer_manual">Manual</string>
     <string name="navigation_drawer_faq">FAQ</string>
     <string name="navigation_drawer_community">Community</string>
-    <string name="navigation_drawer_donate">Donate</string>
+    <string name="navigation_drawer_support_project">Support the project</string>
+    <string name="navigation_drawer_contribute">How to contribute</string>
     <string name="navigation_drawer_privacy_policy">Privacy policy</string>
     <string name="account_list_no_notification_permission">Notifications disabled. You won\'t be notified about sync errors.</string>
     <string name="account_list_no_internet">No validated Internet connectivity. Synchronization may not run.</string>
@@ -152,8 +144,6 @@
     <string name="account_list_low_storage">Storage space low. Android will not sync local changes immediately, but during the next regular sync.</string>
     <string name="account_list_manage_storage">Manage storage</string>
     <string name="account_list_empty">Welcome to PeopleSync!\n\nYou can add a CardDAV account now.</string>
-    <string name="accounts_global_sync_disabled">System-wide automatic synchronization is disabled</string>
-    <string name="accounts_global_sync_enable">Enable</string>
     <string name="accounts_sync_all">Sync all accounts</string>
 
     <!-- RefreshCollectionsWorker -->
@@ -173,8 +163,8 @@
     <string name="app_settings_logging_on">Logging is active</string>
     <string name="app_settings_logging_off">Logging is disabled</string>
     <string name="app_settings_battery_optimization">Battery optimization</string>
-    <string name="app_settings_battery_optimization_whitelisted">App is whitelisted (recommended)</string>
-    <string name="app_settings_battery_optimization_not_whitelisted">App is not whitelisted (not recommended)</string>
+    <string name="app_settings_battery_optimization_exempted">App is exempted (recommended)</string>
+    <string name="app_settings_battery_optimization_optimized">Battery restrictions apply (not recommended)</string>
     <string name="app_settings_connection">Connection</string>
     <string name="app_settings_proxy">Proxy type</string>
     <string-array name="app_settings_proxy_types">
@@ -219,23 +209,14 @@
     <string name="app_settings_reset_hints_success">All hints will be shown again</string>
     <string name="app_settings_integration">Integration</string>
     <string name="app_settings_tasks_provider">Tasks app</string>
-    <string name="app_settings_tasks_provider_synchronizing_with">Synchronizing with %s</string>
     <string name="app_settings_tasks_provider_none">No compatible tasks app found</string>
 
     <!-- AccountActivity -->
     <string name="account_carddav">CardDAV</string>
     <string name="account_caldav">CalDAV</string>
     <string name="account_webcal">Webcal</string>
-    <string name="account_carddav_missing_permissions">No contacts sync (missing permissions)</string>
-    <string name="account_caldav_missing_calendar_permissions">No calendar sync (missing permissions)</string>
-    <string name="account_caldav_missing_tasks_permissions">No tasks sync (missing permissions)</string>
-    <string name="account_caldav_missing_permissions">No calendar and tasks sync (missing permissions)</string>
-    <string name="account_webcal_missing_calendar_permissions">Can\'t access calendars (missing permissions)</string>
-    <string name="account_permissions_action">Permissions</string>
-    <string name="account_no_address_books">There are no address books (yet).</string>
-    <string name="account_no_calendars">There are no calendars (yet).</string>
-    <string name="account_no_webcals">There are no calendar subscriptions (yet).</string>
-    <string name="account_swipe_down">Swipe down to refresh the list from the server.</string>
+    <string name="account_missing_permissions">Additional permissions are required to synchronize these collections.</string>
+    <string name="account_manage_permissions">Manage permissions</string>
     <string name="account_synchronize_now">Synchronize now</string>
     <string name="account_settings">Account settings</string>
     <string name="account_rename">Rename account</string>
@@ -253,40 +234,43 @@
     <string name="account_task_list">task list</string>
     <string name="account_journal">journal</string>
     <string name="account_only_personal">Show only personal</string>
-    <string name="account_refresh_address_book_list">Refresh address book list</string>
-    <string name="account_create_new_address_book">Create new address book</string>
-    <string name="account_refresh_calendar_list">Refresh calendar list</string>
-    <string name="account_create_new_calendar">Create new calendar</string>
+    <string name="account_refresh_collections">Refresh collections</string>
+    <string name="account_refreshing_collections">Refreshing collection list</string>
+    <string name="account_webcal_external_app">"Webcal subscriptions can be synchronized with external apps."</string>
     <string name="account_no_webcal_handler_found">No Webcal-capable app found</string>
     <string name="account_install_icsx5">Install ICSx⁵</string>
 
     <!-- AddAccountActivity -->
     <string name="login_title">Add account</string>
+    <string name="login_generic_login">Generic login</string>
+    <string name="login_provider_login">Provider-specific login</string>
+    <string name="login_continue">Continue</string>
+    <string name="login_login">Login</string>
     <string name="login_type_email">Login with email address</string>
     <string name="login_email_address">Email address</string>
     <string name="login_email_address_error">Valid email address required</string>
+    <string name="login_email_address_info"><![CDATA[The email domain is used as base URL. <a href="%s">Services are discovered</a> using DNS records and well-known URLs.]]></string>
     <string name="login_password">Password</string>
     <string name="login_password_hide">Hide password</string>
     <string name="login_password_show">Show password</string>
-    <string name="login_password_required">Password required</string>
+    <string name="login_password_optional">Password*</string>
     <string name="login_type_url">Login with URL and user name</string>
-    <string name="login_url_must_be_http_or_https">URL must begin with http(s)://</string>
     <string name="login_user_name">User name</string>
-    <string name="login_user_name_required">User name required</string>
+    <string name="login_user_name_optional">User name*</string>
     <string name="login_base_url">Base URL</string>
+    <string name="login_base_url_info"><![CDATA[The base URL will be checked directly, but <a href="%s">services are also discovered</a> using DNS records and well-known URLs.]]></string>
     <string name="login_select_certificate">Select certificate</string>
-    <string name="login_login">Login</string>
     <string name="login_create_account">Create account</string>
     <string name="login_account_name">Account name</string>
-    <string name="login_account_avoid_apostrophe">Use of apostrophes (\'), have been reported to cause problems on some devices.</string>
+    <string name="login_account_avoid_apostrophe">Usage of apostrophes (\') seems to cause problems on some devices.</string>
     <string name="login_account_name_info">Use your email address as account name because Android will use the account name as ORGANIZER field for events you create. You can\'t have two accounts with the same name.</string>
     <string name="login_account_contact_group_method">Contact group method:</string>
     <string name="login_account_name_required">Account name required</string>
     <string name="login_account_name_already_taken">Account name already taken</string>
     <string name="login_account_not_created">Account could not be created</string>
-    <string name="login_type_advanced">Advanced login (special use cases)</string>
-    <string name="login_use_username_password">Use username/password</string>
-    <string name="login_use_client_certificate">Use client certificate</string>
+    <string name="login_type_advanced">Advanced login</string>
+    <string name="login_no_client_certificate_optional">No client certificate*</string>
+    <string name="login_client_certificate_selected">Client certificate: %s</string>
     <string name="login_no_certificate_found">No certificate found</string>
     <string name="login_install_certificate">Install certificate</string>
     <string name="login_type_google">Google Contacts / Calendar</string>
@@ -300,7 +284,6 @@
     <string name="login_oauth_couldnt_obtain_auth_code">Couldn\'t obtain authorization code</string>
     <string name="login_type_nextcloud">Nextcloud</string>
     <string name="login_nextcloud_login_with_nextcloud">Login with Nextcloud</string>
-    <string name="login_nextcloud_login_flow">Login Flow</string>
     <string name="login_nextcloud_login_flow_text">This will start the Nextcloud Login Flow in a Web browser.</string>
     <string name="login_nextcloud_login_flow_server_address">Nextcloud server address</string>
     <string name="login_nextcloud_login_flow_sign_in">Sign in</string>
@@ -309,20 +292,19 @@
 
     <string name="login_configuration_detection">Configuration detection</string>
     <string name="login_querying_server">Please wait, querying server…</string>
-    <string name="login_no_caldav_carddav">Couldn\'t find CalDAV or CardDAV service.</string>
-    <string name="login_username_password_wrong">Username (email address) / password wrong?</string>
-    <string name="login_view_logs">Show details</string>
+    <string name="login_no_service">Couldn\'t find CalDAV or CardDAV service.</string>
+    <string name="login_no_service_info">The base URL doesn\'t seem to be an accessible CardDAV URL and service detection was not successful.</string>
+    <string name="login_see_tested_services"><![CDATA[Please see the manual of your service provider and <a href="%s">our list of tested services</a> and their base URLs.</a>]]></string>
+    <string name="login_check_credentials">Please also double-check authentication (usually username and password).</string>
+    <string name="login_logs_available">Further technical information is available in the logs.</string>
+    <string name="login_view_logs">View logs</string>
 
     <!-- AccountSettingsActivity -->
-    <string name="settings_title">Settings: %s</string>
     <string name="settings_sync">Synchronization</string>
-    <string name="settings_sync_interval_contacts_key" translatable="false">sync_interval_contacts</string>
     <string name="settings_sync_interval_contacts">Contacts sync. interval</string>
     <string name="settings_sync_summary_manually">Only manually</string>
     <string name="settings_sync_summary_periodically" tools:ignore="PluralsCandidate">Every %d minutes + immediately on local changes</string>
-    <string name="settings_sync_interval_calendars_key" translatable="false">sync_interval_calendars</string>
     <string name="settings_sync_interval_calendars">Calendars sync. interval</string>
-    <string name="settings_sync_interval_tasks_key" translatable="false">sync_interval_tasks</string>
     <string name="settings_sync_interval_tasks">Tasks sync. interval</string>
     <string-array name="settings_sync_interval_seconds" translatable="false">
         <item>-1</item>
@@ -342,39 +324,29 @@
         <item>Every 4 hours</item>
         <item>Once a day</item>
     </string-array>
-    <string name="settings_sync_wifi_only_key" translatable="false">sync_wifi_only</string>
     <string name="settings_sync_wifi_only">Sync over WiFi only</string>
     <string name="settings_sync_wifi_only_on">Synchronization is restricted to WiFi connections</string>
     <string name="settings_sync_wifi_only_off">Connection type is not taken into consideration</string>
-    <string name="settings_sync_wifi_only_ssids_key" translatable="false">sync_wifi_only_ssids</string>
     <string name="settings_sync_wifi_only_ssids">WiFi SSID restriction</string>
     <string name="settings_sync_wifi_only_ssids_on">Will only sync over %s</string>
-    <string name="settings_sync_wifi_only_ssids_on_location_services">Will only sync over %s (requires active location services)</string>
     <string name="settings_sync_wifi_only_ssids_off">All WiFi connections will be used</string>
     <string name="settings_sync_wifi_only_ssids_message">Comma-separated names (SSIDs) of allowed WiFi networks (leave blank for all)</string>
     <string name="settings_sync_wifi_only_ssids_permissions_required">WiFi SSID restriction requires further settings</string>
     <string name="settings_sync_wifi_only_ssids_permissions_action">Manage</string>
-    <string name="settings_ignore_vpns_key" translatable="false">ignore_vpns</string>
     <string name="settings_ignore_vpns">VPN requires underlying Internet</string>
     <string name="settings_ignore_vpns_on">VPN without underlying validated Internet connection is not enough to run synchronization (recommended)</string>
     <string name="settings_ignore_vpns_off">VPN without underlying validated Internet connection is enough to run synchronization</string>
     <string name="settings_authentication">Authentication</string>
-    <string name="settings_oauth_key" translatable="false">oauth</string>
     <string name="settings_oauth">Re-authenticate</string>
     <string name="settings_oauth_summary">Perform OAuth login again</string>
-    <string name="settings_username_key">username</string>
     <string name="settings_username">User name</string>
-    <string name="settings_enter_username">Enter user name:</string>
-    <string name="settings_password_key" translatable="false">password</string>
     <string name="settings_password">Password</string>
+    <string name="settings_new_password">New password</string>
     <string name="settings_password_summary">Update the password according to your server.</string>
-    <string name="settings_enter_password">Enter your password:</string>
-    <string name="settings_certificate_alias_key" translatable="false">certificate_alias</string>
-    <string name="settings_certificate_alias">Client certificate alias</string>
-    <string name="settings_certificate_alias_empty">No certificate selected</string>
-    <string name="settings_caldav_key" translatable="false">caldav</string>
+    <string name="settings_certificate_alias">Client certificate</string>
+    <string name="settings_certificate_alias_empty">No certificate available or selected</string>
+    <string name="settings_certificate_install">Install certificate</string>
     <string name="settings_caldav">CalDAV</string>
-    <string name="settings_sync_time_range_past_key" translatable="false">time_range_past_days</string>
     <string name="settings_sync_time_range_past">Past event time limit</string>
     <string name="settings_sync_time_range_past_none">All events will be synchronized</string>
     <plurals name="settings_sync_time_range_past_days">
@@ -382,7 +354,6 @@
         <item quantity="other">Events more than %d days in the past will be ignored</item>
     </plurals>
     <string name="settings_sync_time_range_past_message">Events which are more than this number of days in the past will be ignored (may be 0). Leave blank to synchronize all events.</string>
-    <string name="settings_key_default_alarm" translatable="false">default_alarm</string>
     <string name="settings_default_alarm">Default reminder</string>
     <plurals name="settings_default_alarm_on">
         <item quantity="one">Default reminder one minute before event</item>
@@ -390,17 +361,13 @@
     </plurals>
     <string name="settings_default_alarm_off">No default reminders are created</string>
     <string name="settings_default_alarm_message">If default reminders shall be created for events without reminder: the desired number of minutes before the event. Leave blank to disable default reminders.</string>
-    <string name="settings_manage_calendar_colors_key" translatable="false">manage_calendar_colors</string>
     <string name="settings_manage_calendar_colors">Manage calendar colors</string>
     <string name="settings_manage_calendar_colors_on">Calendar colors are reset at each sync</string>
     <string name="settings_manage_calendar_colors_off">Calendar colors can be set by other apps</string>
-    <string name="settings_event_colors_key" translatable="false">event_colors</string>
     <string name="settings_event_colors">Event color support</string>
     <string name="settings_event_colors_on">Event colors are synced</string>
     <string name="settings_event_colors_off">Event colors are not synced</string>
-    <string name="settings_carddav_key" translatable="false">carddav</string>
     <string name="settings_carddav">CardDAV</string>
-    <string name="settings_contact_group_method_key" translatable="false">contact_group_method</string>
     <string name="settings_contact_group_method">Contact group method</string>
     <string-array name="settings_contact_group_method_values" translatable="false">
         <item>GROUP_VCARDS</item>
@@ -414,7 +381,7 @@
     <!-- collection management -->
     <string name="create_addressbook">Create address book</string>
     <string name="create_calendar">Create calendar</string>
-    <string name="create_calendar_time_zone">Time zone</string>
+    <string name="create_calendar_time_zone">Default time zone</string>
     <string name="create_calendar_type">Possible calendar entries</string>
     <string name="create_calendar_type_vevent">Events</string>
     <string name="create_calendar_type_vtodo">Tasks</string>
@@ -435,10 +402,14 @@
     <string name="delete_collection_data_shall_be_deleted">These data shall be deleted from the server.</string>
     <string name="collection_force_read_only">Force read-only</string>
     <string name="collection_properties">Properties</string>
-    <string name="collection_properties_sync_time">Last synced:</string>
+    <string name="collection_properties_sync_time">Last synced</string>
     <string name="collection_properties_sync_time_never">Never synced</string>
-    <string name="collection_properties_url">Address (URL):</string>
-    <string name="collection_properties_owner">Owner:</string>
+    <string name="collection_properties_url">Address (URL)</string>
+    <string name="collection_properties_owner">Owner</string>
+    <string name="collection_properties_push_support">Push support</string>
+    <string name="collection_properties_push_support_web_push">Yes (over Web Push)</string>
+    <string name="collection_properties_push_subscribed_at">Subscribed at %s</string>
+    <string name="collection_properties_push_subscribed_never">Not yet subscribed</string>
 
     <!-- debugging and DebugInfoActivity -->
     <string name="authority_debug_provider" translatable="false">com.messageconcept.peoplesyncclient.debug</string>
@@ -512,9 +483,11 @@
     <string name="sync_invalid_task">Received invalid task from server</string>
     <string name="sync_invalid_resources_ignoring">Ignoring one or more invalid resources</string>
 
+    <!-- widgets -->
+    <string name="widget_sync_all">Sync all</string>
+    <string name="widget_sync_all_accounts">Sync all accounts</string>
+
     <!-- cert4android -->
-    <string name="certificate_notification_connection_security">PeopleSync: Connection security</string>
-    <string name="trust_certificate_unknown_certificate_found">PeopleSync has encountered an unknown certificate. Do you want to trust it?</string>
 
     <!-- Restrictions -->
     <string name="login_base_url_description">Base URL</string>
@@ -531,5 +504,6 @@
     <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
 
     <!-- managed configurations -->
+    <string name="login_type_managed">Please login</string>
     <string name="account_list_managed_configuration">Account settings are managed by your organisation.</string>
 </resources>
