@@ -91,8 +91,6 @@ class AccountSettingsActivity: AppCompatActivity() {
 
     companion object {
         const val EXTRA_ACCOUNT = "account"
-
-        const val ACCOUNT_SETTINGS_HELP_URL = "https://manual.davx5.com/settings.html#account-settings"
     }
 
     private val account by lazy {
@@ -128,13 +126,6 @@ class AccountSettingsActivity: AppCompatActivity() {
                                 }
                             },
                             title = { Text(account.name) },
-                            actions = {
-                                IconButton(onClick = {
-                                    uriHandler.openUri(ACCOUNT_SETTINGS_HELP_URL)
-                                }) {
-                                    Icon(Icons.AutoMirrored.Filled.Help, stringResource(R.string.help))
-                                }
-                            }
                         )
                     },
                     snackbarHost = { SnackbarHost(snackbarHostState) }
