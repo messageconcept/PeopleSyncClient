@@ -174,16 +174,16 @@ abstract class AccountsDrawerHandler {
             Box(
                 Modifier
                 .background(
-                    color = MaterialTheme.colors.primary,
+                    color = Color.White,
                     shape = RoundedCornerShape(16.dp)
                 )
             ) {
                 Icon(
                     painterResource(R.drawable.ic_launcher_foreground),
                     stringResource(R.string.app_name),
-                    tint = Color.White,
+                    tint = MaterialTheme.colors.primary,
                     modifier = Modifier
-                        .scale(1.2f)
+                        .scale(1.5f)
                         .height(56.dp)
                         .width(56.dp)
                 )
