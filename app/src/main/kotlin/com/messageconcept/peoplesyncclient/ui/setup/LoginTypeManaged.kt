@@ -134,6 +134,16 @@ fun LoginTypeManaged_Content(
         onNext = onLogin
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
+            appRestrictions.getString("organization")?.let { organization ->
+                Text(
+                    text = organization,
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
+            }
+
             Text(
                 stringResource(R.string.login_type_managed),
                 style = MaterialTheme.typography.h5,

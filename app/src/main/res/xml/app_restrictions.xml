@@ -60,6 +60,11 @@
         android:restrictionType="integer"
         android:title="@string/default_sync_interval"/>
 
+    <restriction
+        android:key="organization"
+        android:restrictionType="string"
+        android:title="@string/organization"/>
+
     <!-- per account restrictions -->
     <restriction
         android:defaultValue="false"
