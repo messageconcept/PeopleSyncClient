@@ -68,14 +68,9 @@ fun LoginScreen(
                     Text(stringResource(R.string.login_title))
                 },
                 actions = {
-                    val testedWithUrl = Constants.HOMEPAGE_URL.buildUpon()
-                        .appendPath(Constants.HOMEPAGE_PATH_TESTED_SERVICES)
-                        .withStatParams("LoginActivity")
-                        .build()
                     val helpUri: Uri? =
                         when (phase) {
-                            LoginActivity.Phase.LOGIN_TYPE -> testedWithUrl
-                            LoginActivity.Phase.LOGIN_DETAILS -> selectedLoginType.helpUrl ?: testedWithUrl
+                            LoginActivity.Phase.LOGIN_DETAILS -> selectedLoginType.helpUrl
                             else -> null
                         }
                     if (helpUri != null)
