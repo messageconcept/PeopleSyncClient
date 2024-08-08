@@ -415,4 +415,5 @@
   <!--cert4android-->
   <!--managed configurations-->
   <string name="account_list_managed_configuration">Die Kontoeinstellungen werden von ihrer Organisation verwaltet.</string>
+  <string name="login_type_managed">Bitte anmelden</string>
 </resources>
