@@ -85,10 +85,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AppSettingsActivity: AppCompatActivity() {
 
-    companion object {
-        const val APP_SETTINGS_HELP_URL = "https://manual.davx5.com/settings.html#app-wide-settings"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -116,13 +112,6 @@ class AppSettingsActivity: AppCompatActivity() {
                         }
                     },
                     title = { Text(stringResource(R.string.app_settings)) },
-                    actions = {
-                        IconButton(onClick = {
-                            uriHandler.openUri(APP_SETTINGS_HELP_URL)
-                        }) {
-                            Icon(Icons.AutoMirrored.Filled.Help, stringResource(R.string.help))
-                        }
-                    }
                 )
             },
             snackbarHost = { SnackbarHost(snackbarHostState) }

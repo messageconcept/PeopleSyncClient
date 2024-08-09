@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.messageconcept.peoplesyncclient.Constants
 import com.messageconcept.peoplesyncclient.Constants.COMMUNITY_URL
 import com.messageconcept.peoplesyncclient.Constants.FEDIVERSE_URL
-import com.messageconcept.peoplesyncclient.Constants.MANUAL_URL
 import com.messageconcept.peoplesyncclient.Constants.withStatParams
 import com.messageconcept.peoplesyncclient.R
 import javax.inject.Inject

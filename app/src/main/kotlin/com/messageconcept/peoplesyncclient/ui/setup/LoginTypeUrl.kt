@@ -142,19 +142,6 @@ fun LoginTypeUrl_Content(
                     .focusRequester(focusRequester)
             )
 
-            val manualUrl = Constants.MANUAL_URL.buildUpon()
-                .appendPath(Constants.MANUAL_PATH_ACCOUNTS_COLLECTIONS)
-                .fragment(Constants.MANUAL_FRAGMENT_SERVICE_DISCOVERY)
-                .build()
-            val urlInfo = HtmlCompat.fromHtml(stringResource(R.string.login_base_url_info, manualUrl), HtmlCompat.FROM_HTML_MODE_COMPACT)
-            ClickableTextWithLink(
-                urlInfo.toAnnotatedString(),
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, bottom = 16.dp)
-            )
-
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
