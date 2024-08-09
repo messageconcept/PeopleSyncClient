@@ -50,7 +50,6 @@ fun PermissionSwitchRow(
         }
         Switch(
             checked = allPermissionsGranted,
-            enabled = !allPermissionsGranted,
             onCheckedChange = { checked ->
                 if (checked) {
                     onLaunchRequest()
