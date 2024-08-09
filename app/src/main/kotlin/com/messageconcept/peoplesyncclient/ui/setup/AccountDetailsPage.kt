@@ -199,22 +199,6 @@ fun AccountDetailsPage_Content(
                         style = MaterialTheme.typography.body1
                     )
                 }
-
-            // email address info
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Icon(
-                    Icons.Default.Email,
-                    contentDescription = null,
-                    modifier = Modifier.padding(top = 8.dp, end = 8.dp, bottom = 8.dp)
-                )
-                Text(
-                    stringResource(R.string.login_account_name_info),
-                    style = MaterialTheme.typography.body1
-                )
-            }
         }
     }
 }
