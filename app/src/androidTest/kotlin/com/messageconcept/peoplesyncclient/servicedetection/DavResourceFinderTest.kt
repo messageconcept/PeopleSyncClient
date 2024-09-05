@@ -41,6 +41,9 @@ class DavResourceFinderTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
+    lateinit var resourceFinderFactory: DavResourceFinder.Factory
+
+    @Inject
     lateinit var settingsManager: SettingsManager
 
     @Before
@@ -72,7 +75,7 @@ class DavResourceFinderTest {
         val baseURI = URI.create("/")
         val credentials = Credentials("mock", "12345")
 
-        finder = DavResourceFinder(InstrumentationRegistry.getInstrumentation().targetContext, baseURI, credentials)
+        finder = resourceFinderFactory.create(baseURI, credentials)
         client = HttpClient.Builder(InstrumentationRegistry.getInstrumentation().targetContext)
                 .addAuthentication(null, credentials)
                 .build()

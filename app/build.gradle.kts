@@ -39,7 +39,9 @@ android {
     }
 
     compileOptions {
-        // enable because ical4android requires desugaring
+        // required for
+        // - dnsjava 3.x: java.nio.file.Path
+        // - ical4android: time API
         isCoreLibraryDesugaringEnabled = true
 
         sourceCompatibility = JavaVersion.VERSION_17

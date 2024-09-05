@@ -41,6 +41,7 @@ import javax.inject.Inject
 class LoginModel @Inject constructor(
     val context: Application,
     val db: AppDatabase,
+    private val resourceFinderFactory: DavResourceFinder.Factory,
     val settingsManager: SettingsManager
 ): ViewModel() {
 
@@ -63,7 +64,7 @@ class LoginModel @Inject constructor(
         val job = viewModelScope.launch(Dispatchers.IO) {
             try {
                 val configuration = runInterruptible {
-                    DavResourceFinder(context, loginInfo.baseUri!!, loginInfo.credentials).use { finder ->
+                    resourceFinderFactory.create(loginInfo.baseUri!!, loginInfo.credentials).use { finder ->
                         finder.findInitialConfiguration()
                     }
                 }

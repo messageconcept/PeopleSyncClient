@@ -28,12 +28,15 @@ import at.bitfire.dav4jvm.property.webdav.ResourceType
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Credentials
 import com.messageconcept.peoplesyncclient.log.StringHandler
+import com.messageconcept.peoplesyncclient.network.DnsRecordResolver
 import com.messageconcept.peoplesyncclient.network.HttpClient
-import com.messageconcept.peoplesyncclient.util.DavUtils
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder
-import org.xbill.DNS.Lookup
 import org.xbill.DNS.Type
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
@@ -55,11 +58,17 @@ import java.util.logging.Logger
  * @param baseURI        user-given base URI (either mailto: URI or http(s):// URL)
  * @param credentials    optional login credentials (username/password, client certificate, OAuth state)
  */
-class DavResourceFinder(
-    val context: Context,
-    private val baseURI: URI,
-    private val credentials: Credentials? = null
+class DavResourceFinder @AssistedInject constructor(
+    @Assisted private val baseURI: URI,
+    @Assisted private val credentials: Credentials? = null,
+    @ApplicationContext val context: Context,
+    private val dnsRecordResolver: DnsRecordResolver
 ): AutoCloseable {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(baseURI: URI, credentials: Credentials?): DavResourceFinder
+    }
 
     enum class Service(val wellKnownName: String) {
         CARDDAV("carddav");
@@ -346,9 +355,8 @@ class DavResourceFinder(
         var query = "_${service.wellKnownName}s._tcp.$domain"
         log.fine("Looking up SRV records for $query")
 
-        var srvLookup = Lookup(query, Type.SRV)
-        DavUtils.prepareLookup(context, srvLookup)
-        var srv = DavUtils.selectSRVRecord(srvLookup.run().orEmpty())
+        var srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
+        var srv = dnsRecordResolver.bestSRVRecord(srvRecords)
 
         if (srv != null) {
             // choose SRV record to use (query may return multiple SRV records)
@@ -360,9 +368,8 @@ class DavResourceFinder(
             // try peoplesync SRV record
             query = "_peoplesync._tcp.$domain"
             log.fine("Looking up SRV records for $query")
-            srvLookup = Lookup(query, Type.SRV)
-            DavUtils.prepareLookup(context, srvLookup)
-            srv = DavUtils.selectSRVRecord(srvLookup.run())
+            srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
+            srv = dnsRecordResolver.bestSRVRecord(srvRecords)
             if (srv != null && srv.weight == 0) {
                 // Weight 0 means https, 1 means http.
                 // Don't allow non-encrypted auto-configuration.
@@ -380,9 +387,8 @@ class DavResourceFinder(
         }
 
         // look for TXT record too (for initial context path)
-        val txtLookup = Lookup(query, Type.TXT)
-        DavUtils.prepareLookup(context, txtLookup)
-        paths.addAll(DavUtils.pathsFromTXTRecords(txtLookup.run()))
+        val txtRecords = dnsRecordResolver.resolve(query, Type.TXT)
+        paths.addAll(dnsRecordResolver.pathsFromTXTRecords(txtRecords))
 
         // in case there's a TXT record, but it's wrong, try well-known
         paths.add("/.well-known/" + service.wellKnownName)
