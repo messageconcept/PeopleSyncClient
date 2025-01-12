@@ -79,12 +79,7 @@ fun LoginTypeManaged_Content(
 ) {
     val context = LocalContext.current
 
-    val baseUrl by remember { mutableStateOf(
-        loginInfo.baseUri?.takeIf {
-            it.scheme.equals("http", ignoreCase = true) ||
-            it.scheme.equals("https", ignoreCase = true)
-        }?.toString() ?: ""
-    ) }
+    val baseUrl by remember { mutableStateOf(loginInfo.baseUri?.toString() ?: "") }
     var username by remember { mutableStateOf(loginInfo.credentials?.username ?: "") }
     var password by remember { mutableStateOf(loginInfo.credentials?.password ?: "") }
 
