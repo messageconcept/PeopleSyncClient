@@ -427,4 +427,7 @@
   <!--managed configurations-->
   <string name="login_type_managed">Por favor, inicie sesión</string>
   <string name="account_list_managed_configuration">La configuración de la cuenta es gestionada por su organización.</string>
+
+  <string name="sync_condition_internet_not_available">No hay conexión a Internet disponible. Abortando solicitud de sincronización.</string>
+  <string name="sync_condition_wifi_restriction_not_met">No está conectado a la red wifi correcta. Abortando solicitud de sincronización.</string>
 </resources>

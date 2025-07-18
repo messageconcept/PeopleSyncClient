@@ -467,4 +467,7 @@
   <!--managed configurations-->
   <string name="login_type_managed">Inloggen</string>
   <string name="account_list_managed_configuration">Accountinstellingen worden beheerd door uw organisatie.</string>
+
+  <string name="sync_condition_internet_not_available">Geen internetverbinding beschikbaar. Synchronisatieverzoek afbreken.</string>
+  <string name="sync_condition_wifi_restriction_not_met">Niet verbonden met de juiste wifi. Synchronisatieverzoek afbreken.</string>
 </resources>
