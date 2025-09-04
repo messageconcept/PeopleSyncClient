@@ -91,6 +91,9 @@ class AccountRepository @Inject constructor(
                 RefreshCollectionsWorker.enqueue(context, id)
             }
 
+            // set up automatic sync (processes inserted services)
+            automaticSyncManager.get().updateAutomaticSync(account)
+
         } catch(e: InvalidAccountException) {
             logger.log(Level.SEVERE, "Couldn't access account settings", e)
             return null
