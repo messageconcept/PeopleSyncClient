@@ -32,7 +32,7 @@ class ManagedSettings @Inject constructor(
     @ApplicationContext private val context: Context,
     private val logger: Logger,
     private val syncWorkerManager: SyncWorkerManager
-)  {
+) {
 
     companion object {
         private const val KEY_LOGIN_BASE_URL = "login_base_url"
