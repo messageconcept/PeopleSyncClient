@@ -59,6 +59,10 @@
         tools:ignore="UnusedAttribute"
         android:supportsRtl="true">
 
+        <meta-data
+            android:name="android.content.APP_RESTRICTIONS"
+            android:resource="@xml/app_restrictions" />
+
         <!-- Required for Hilt/WorkManager integration. See
         - https://developer.android.com/develop/background-work/background-tasks/persistent/configuration/custom-configuration#remove-default
         - https://developer.android.com/training/dependency-injection/hilt-jetpack#workmanager
