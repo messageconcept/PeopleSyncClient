@@ -29,7 +29,6 @@ import okhttp3.CookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
-import okhttp3.brotli.BrotliInterceptor
 import okhttp3.internal.tls.OkHostnameVerifier
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
@@ -214,9 +213,6 @@ class HttpClient(
                     ConnectionSpec.CLEARTEXT,
                     ConnectionSpec.MODERN_TLS
                 ))
-
-                // offer Brotli and gzip compression (can be disabled per request with `Accept-Encoding: identity`)
-                .addInterceptor(BrotliInterceptor)
 
                 // add cache, if requested
                 .cache(cache)
