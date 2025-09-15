@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Icon
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.LinkAnnotation
@@ -136,6 +138,18 @@ object UiUtils {
                 }
             }
         }
+    }
+
+    @Composable
+    fun isPortrait(): Boolean = when (LocalConfiguration.current.orientation){
+        Configuration.ORIENTATION_PORTRAIT -> true
+        else -> false
+    }
+
+    @Composable
+    fun isLandscape(): Boolean = when (LocalConfiguration.current.orientation){
+        Configuration.ORIENTATION_LANDSCAPE -> true
+        else -> false
     }
 
 }
