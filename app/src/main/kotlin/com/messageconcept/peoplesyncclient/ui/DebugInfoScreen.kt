@@ -215,8 +215,6 @@ fun DebugInfoScreen(
 
                 if (showDebugInfo)
                     CardWithImage(
-                        image = painterResource(R.drawable.undraw_server_down),
-                        imageAlignment = BiasAlignment(0f, .7f),
                         title = stringResource(R.string.debug_info_title),
                         subtitle = stringResource(R.string.debug_info_subtitle),
                         icon = Icons.Rounded.BugReport,
