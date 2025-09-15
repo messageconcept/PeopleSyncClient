@@ -221,13 +221,6 @@ fun CollectionScreen(
                             CollectionScreenModel.ReadOnlyState.READ_ONLY_BY_USER ->
                                 stringResource(R.string.collection_read_only_forced)
                             else -> stringResource(R.string.collection_read_write)
-                        },
-                        control = {
-                            Switch(
-                                checked = readOnly.isReadOnly(),
-                                enabled = readOnly.canUserChange(),
-                                onCheckedChange = onSetForceReadOnly
-                            )
                         }
                     )
 
