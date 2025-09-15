@@ -8,7 +8,6 @@ import android.content.Context
 import android.util.Log
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.repository.PreferenceRepository
-import at.bitfire.synctools.log.LogcatHandler
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

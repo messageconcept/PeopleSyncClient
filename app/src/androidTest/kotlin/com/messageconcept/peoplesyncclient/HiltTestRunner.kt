@@ -10,8 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import androidx.test.runner.AndroidJUnitRunner
 import com.messageconcept.peoplesyncclient.di.TestCoroutineDispatchersModule
+import com.messageconcept.peoplesyncclient.log.LogcatHandler
 import com.messageconcept.peoplesyncclient.test.BuildConfig
-import at.bitfire.synctools.log.LogcatHandler
 import dagger.hilt.android.testing.HiltTestApplication
 import java.util.logging.Level
 import java.util.logging.Logger

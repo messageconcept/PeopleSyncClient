@@ -4,7 +4,6 @@
 
 package com.messageconcept.peoplesyncclient.log
 
-import at.bitfire.synctools.log.PlainTextFormatter
 import com.google.common.base.Ascii
 import java.util.logging.Handler
 import java.util.logging.LogRecord
