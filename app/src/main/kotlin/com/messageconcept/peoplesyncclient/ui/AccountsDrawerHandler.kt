@@ -151,7 +151,7 @@ abstract class AccountsDrawerHandler {
         onShowSnackbar: (message: String, actionLabel: String, action: () -> Unit) -> Unit
     ) {
         val mailto = URI(
-            "mailto", "play@bitfire.at?subject=${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} feedback (${BuildConfig.VERSION_CODE})", null
+            "mailto", "peoplesync.app@messageconcept.com?subject=${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} feedback (${BuildConfig.VERSION_CODE})", null
         )
         val intent = Intent(Intent.ACTION_SENDTO, mailto.toString().toUri())
         try {
