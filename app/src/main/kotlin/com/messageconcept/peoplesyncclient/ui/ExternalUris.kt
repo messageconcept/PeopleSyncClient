@@ -20,7 +20,7 @@ object ExternalUris {
     object Homepage {
 
         val baseUrl
-            get() = "https://www.davx5.com".toUri()
+            get() = "https://www.messageconcept.com/peoplesync/".toUri()
 
         const val PATH_FAQ = "faq"
         const val PATH_FAQ_SYNC_NOT_RUN = "synchronization-is-not-run-as-expected"
