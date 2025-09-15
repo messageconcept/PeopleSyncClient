@@ -15,6 +15,7 @@ import com.messageconcept.peoplesyncclient.di.DefaultDispatcher
 import com.messageconcept.peoplesyncclient.network.OAuthIntegration
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Credentials
+import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.sync.ResyncType
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
@@ -50,6 +51,7 @@ class AccountSettingsModel @AssistedInject constructor(
     private val logger: Logger,
     private val settings: SettingsManager,
     private val syncWorkerManager: SyncWorkerManager,
+    private val managedSettings: ManagedSettings,
 ): ViewModel(), SettingsManager.OnChangeListener {
 
     @AssistedFactory
@@ -80,7 +82,10 @@ class AccountSettingsModel @AssistedInject constructor(
         val manageCalendarColors: Boolean = false,
         val eventColors: Boolean = false,
 
-        val contactGroupMethod: GroupMethod = GroupMethod.GROUP_VCARDS
+        val contactGroupMethod: GroupMethod = GroupMethod.GROUP_VCARDS,
+
+        val allowUsernameChange: Boolean = true,
+        val allowPasswordChange: Boolean = true,
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -127,6 +132,9 @@ class AccountSettingsModel @AssistedInject constructor(
             allowCredentialsChange = accountSettings.changingCredentialsAllowed(),
 
             contactGroupMethod = accountSettings.getGroupMethod(),
+
+            allowUsernameChange = managedSettings.getUsername().isNullOrEmpty(),
+            allowPasswordChange = managedSettings.getPassword().isNullOrEmpty(),
         )
     }
 
