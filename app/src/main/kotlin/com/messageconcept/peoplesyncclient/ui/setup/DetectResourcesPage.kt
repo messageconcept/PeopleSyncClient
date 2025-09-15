@@ -120,20 +120,6 @@ fun DetectResourcesPageContent_NothingFound(
                     modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                 )
 
-                val urlServices = ExternalUris.Homepage.baseUrl.buildUpon()
-                    .appendPath(ExternalUris.Homepage.PATH_TESTED_SERVICES)
-                    .withStatParams("DetectResourcesPage")
-                    .build()
-                val testedServices = HtmlCompat.fromHtml(
-                    stringResource(R.string.login_see_tested_services, urlServices),
-                    HtmlCompat.FROM_HTML_MODE_COMPACT
-                ).toAnnotatedString()
-                Text(
-                    text = testedServices,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-
                 if (encountered401)
                     Text(
                         stringResource(R.string.login_check_credentials),
