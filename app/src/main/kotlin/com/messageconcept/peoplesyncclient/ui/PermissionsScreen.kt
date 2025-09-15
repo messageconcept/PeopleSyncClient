@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -136,6 +137,7 @@ fun PermissionsScreen(
                 stringResource(R.string.app_name)
             ),
             image = painterResource(R.drawable.intro_permissions),
+            imageContentScale = ContentScale.Fit,
             modifier = Modifier.padding(8.dp)
         ) {
             if (keepPermissions != null) {
