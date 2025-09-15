@@ -85,20 +85,50 @@ abstract class BaseSyncWorker(
                 return Result.failure()
             }
 
-            if (inputData.getBoolean(INPUT_MANUAL, false))
-                logger.info("Manual sync, skipping network checks")
-            else {
+            inputData.getBoolean(INPUT_MANUAL, false).let { manual ->
                 val syncConditions = syncConditionsFactory.create(accountSettings)
+                val conditionsErrorNotificationTag = "${account.type}-${account.name}-${dataType}-condition"
+
+                // clear existing warnings
+                val notificationManager = NotificationManagerCompat.from(applicationContext)
+                notificationManager.cancel(
+                    conditionsErrorNotificationTag,
+                    NotificationRegistry.NOTIFY_SYNC_ERROR
+                )
 
                 // check internet connection
                 if (!syncConditions.internetAvailable()) {
                     logger.info("WorkManager started SyncWorker without Internet connection. Aborting.")
+                    if (manual)
+                        notificationRegistry.notifyIfPossible(NotificationRegistry.NOTIFY_SYNC_ERROR, tag = conditionsErrorNotificationTag) {
+                            NotificationCompat.Builder(applicationContext, notificationRegistry.CHANNEL_SYNC_ERRORS)
+                                .setSmallIcon(R.drawable.ic_sync_problem_notify)
+                                .setContentTitle(account.name)
+                                .setContentText(applicationContext.getString(R.string.sync_condition_internet_not_available))
+                                .setSubText(account.name)
+                                .setOnlyAlertOnce(true)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setCategory(NotificationCompat.CATEGORY_ERROR)
+                                .build()
+                        }
                     return Result.success()
                 }
 
                 // check WiFi restriction
                 if (!syncConditions.wifiConditionsMet()) {
-                    logger.info("WiFi conditions not met. Won't run periodic sync.")
+                    logger.info("WiFi conditions not met. Won't run sync.")
+                    if (manual)
+                        notificationRegistry.notifyIfPossible(NotificationRegistry.NOTIFY_SYNC_ERROR, tag = conditionsErrorNotificationTag) {
+                            NotificationCompat.Builder(applicationContext, notificationRegistry.CHANNEL_SYNC_ERRORS)
+                                .setSmallIcon(R.drawable.ic_sync_problem_notify)
+                                .setContentTitle(account.name)
+                                .setContentText(applicationContext.getString(R.string.sync_condition_wifi_restriction_not_met))
+                                .setSubText(account.name)
+                                .setOnlyAlertOnce(true)
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setCategory(NotificationCompat.CATEGORY_ERROR)
+                                .build()
+                        }
                     return Result.success()
                 }
             }

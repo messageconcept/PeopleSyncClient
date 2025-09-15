@@ -558,4 +558,7 @@
     <!-- managed configurations -->
     <string name="login_type_managed">Please login</string>
     <string name="account_list_managed_configuration">Account settings are managed by your organization.</string>
+
+    <string name="sync_condition_internet_not_available">No Internet connection available. Aborting sync request.</string>
+    <string name="sync_condition_wifi_restriction_not_met">Not connected to correct Wi-Fi. Aborting sync request.</string>
 </resources>
