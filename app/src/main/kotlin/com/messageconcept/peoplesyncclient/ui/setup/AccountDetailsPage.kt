@@ -176,33 +176,6 @@ fun AccountDetailsPageContent(
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
-
-            // group type selector
-            Text(
-                stringResource(R.string.login_account_contact_group_method),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-            val groupMethodNames = stringArrayResource(R.array.settings_contact_group_method_entries)
-            val groupMethodValues = stringArrayResource(R.array.settings_contact_group_method_values).map { GroupMethod.valueOf(it) }
-            for ((name, method) in groupMethodNames.zip(groupMethodValues)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = groupMethod == method,
-                        enabled = !groupMethodReadOnly,
-                        onClick = { onUpdateGroupMethod(method) }
-                    )
-
-                    var modifier = Modifier.padding(vertical = 4.dp)
-                    if (!groupMethodReadOnly)
-                        modifier = modifier.clickable(onClick = { onUpdateGroupMethod(method) })
-                    Text(
-                        name,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = modifier
-                    )
-                }
-            }
         }
     }
 }
