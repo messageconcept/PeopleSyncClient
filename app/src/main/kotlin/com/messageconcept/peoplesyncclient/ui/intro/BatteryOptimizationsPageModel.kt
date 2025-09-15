@@ -67,8 +67,7 @@ class BatteryOptimizationsPageModel @Inject constructor(
          *
          * @see evilManufacturers
          */
-        val manufacturerWarning =
-            (evilManufacturers.contains(Build.MANUFACTURER.lowercase(Locale.ROOT)) || BuildConfig.DEBUG)
+        val manufacturerWarning = false
 
         fun isExempted(context: Context) =
             context.getSystemService<PowerManager>()!!.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)

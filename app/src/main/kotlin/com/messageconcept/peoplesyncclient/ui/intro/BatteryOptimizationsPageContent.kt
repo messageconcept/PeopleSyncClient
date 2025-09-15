@@ -7,11 +7,13 @@ package com.messageconcept.peoplesyncclient.ui.intro
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,6 +93,15 @@ fun BatteryOptimizationsPageContent(
         Card(
             modifier = Modifier.padding(8.dp)
         ) {
+            Column {
+                Image(
+                    painter = painterResource(R.drawable.intro_regular_sync),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 252.dp),
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -101,7 +113,7 @@ fun BatteryOptimizationsPageContent(
                 ) {
                     Text(
                         text = stringResource(R.string.intro_battery_title),
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.weight(1f)
                     )
                     Switch(
@@ -125,6 +137,7 @@ fun BatteryOptimizationsPageContent(
                 )
                 AnimatedVisibility(visible = !isExempted) {
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
