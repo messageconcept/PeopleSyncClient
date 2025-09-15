@@ -28,7 +28,7 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 /**
- * With DAVx5 4.4.3 address book account names now contain the collection ID as a unique
+ * With PeopleSync 4.4.3 address book account names now contain the collection ID as a unique
  * identifier. We need to update the address book account names.
  */
 class AccountSettingsMigration17 @Inject constructor(

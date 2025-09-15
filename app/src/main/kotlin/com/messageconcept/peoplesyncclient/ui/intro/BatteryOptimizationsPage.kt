@@ -23,7 +23,7 @@ class BatteryOptimizationsPage @Inject constructor(
 
     override fun getShowPolicy(): ShowPolicy {
         // show fragment when:
-        // 1. DAVx5 is not whitelisted yet and "don't show anymore" has not been clicked, and/or
+        // 1. PeopleSync is not whitelisted yet and "don't show anymore" has not been clicked, and/or
         // 2a. evil manufacturer AND
         // 2b. "don't show anymore" has not been clicked
         return if (

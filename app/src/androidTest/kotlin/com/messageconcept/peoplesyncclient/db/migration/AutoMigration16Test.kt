@@ -20,7 +20,7 @@ class AutoMigration16Test: DatabaseMigrationTest(toVersion = 16) {
             val minimalVTimezone = """
                 BEGIN:VCALENDAR
                 VERSION:2.0
-                PRODID:DAVx5
+                PRODID:PeopleSync
                 BEGIN:VTIMEZONE
                 TZID:America/New_York
                 END:VTIMEZONE

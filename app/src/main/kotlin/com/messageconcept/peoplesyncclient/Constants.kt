@@ -17,7 +17,7 @@ object Constants {
 
     // product IDs for iCalendar/vCard
 
-    val iCalProdId = ProdId("DAVx5/${BuildConfig.VERSION_NAME} ical4j/$ical4jVersion")
-    const val vCardProdId = "+//IDN bitfire.at//DAVx5/${BuildConfig.VERSION_NAME} ez-vcard/${Ezvcard.VERSION}"
+    val iCalProdId = ProdId("PeopleSync/${BuildConfig.VERSION_NAME} ical4j/$ical4jVersion")
+    const val vCardProdId = "+//IDN bitfire.at//PeopleSync/${BuildConfig.VERSION_NAME} ez-vcard/${Ezvcard.VERSION}"
 
 }

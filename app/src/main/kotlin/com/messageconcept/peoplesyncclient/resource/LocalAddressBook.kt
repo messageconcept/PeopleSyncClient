@@ -43,11 +43,11 @@ import java.util.logging.Logger
 
 /**
  * A local address book. Requires its own Android account, because Android manages contacts per
- * account and there is no such thing as "address books". So, DAVx5 creates a "DAVx5
+ * account and there is no such thing as "address books". So, PeopleSync creates a "PeopleSync
  * address book" account for every CardDAV address book.
  *
- * @param account             DAVx5 account which "owns" this address book
- * @param _addressBookAccount Address book account (not: DAVx5 account) storing the actual Android
+ * @param account             PeopleSync account which "owns" this address book
+ * @param _addressBookAccount Address book account (not: PeopleSync account) storing the actual Android
  * contacts. This is the initial value of [addressBookAccount]. However when the address book is renamed,
  * the new name will only be available in [addressBookAccount], so usually that one should be used.
  * @param provider            Content provider needed to access and modify the address book

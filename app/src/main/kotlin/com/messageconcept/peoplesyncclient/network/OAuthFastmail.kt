@@ -12,7 +12,7 @@ import java.net.URI
 
 object OAuthFastmail {
 
-    // DAVx5 Client ID (issued by Fastmail)
+    // PeopleSync Client ID (issued by Fastmail)
     private const val CLIENT_ID = "34ce41ae"
 
     private val SCOPES = arrayOf(

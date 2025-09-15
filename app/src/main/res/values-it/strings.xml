@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
   <string name="account_invalid">Account inesistente (o cancellato)</string>
-  <string name="account_title_address_book">Rubrica DAVx⁵</string>
+  <string name="account_title_address_book">Rubrica PeopleSync</string>
   <string name="dialog_delete">Cancella</string>
   <string name="dialog_remove">Elimina</string>
   <string name="dialog_deny">Annulla</string>
@@ -390,7 +390,7 @@ Lasciare vuoto per non creare un promemoria predefinito.</string>
   <string name="webdav_notification_upload">Caricare file WebDAV</string>
   <string name="webdav_provider_root_title">Installazione WebDAV</string>
   <!--sync-->
-  <string name="sync_error_permissions">Autorizzazioni DAVx⁵</string>
+  <string name="sync_error_permissions">Autorizzazioni PeopleSync</string>
   <string name="sync_error_permissions_text">Autorizzazioni addizionali richieste</string>
   <string name="sync_error_tasks_too_old">%s troppo vecchio</string>
   <string name="sync_error_tasks_required_version">Versione minima richiesta %1$s</string>

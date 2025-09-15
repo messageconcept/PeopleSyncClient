@@ -21,7 +21,7 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 /**
- * Between DAVx5 4.4.1-beta.1 and 4.4.1-rc.1 (both v15), the periodic sync workers were renamed (moved to another
+ * Between PeopleSync 4.4.1-beta.1 and 4.4.1-rc.1 (both v15), the periodic sync workers were renamed (moved to another
  * package) and thus automatic synchronization stopped (because the enqueued workers rely on the full class
  * name and no new workers were enqueued). Here we enqueue all periodic sync workers again with the correct class name.
  */

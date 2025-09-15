@@ -38,7 +38,7 @@ class SharedPreferencesProvider @Inject constructor(
         val meta = context.getSharedPreferences("meta", MODE_PRIVATE)
         val version = meta.getInt(META_VERSION, -1)
         if (version == -1) {
-            // first call, check whether to migrate from SQLite database (DAVdroid <1.9)
+            // first call, check whether to migrate from SQLite database (PeopleSync <1.9)
             firstCall()
             meta.edit {
                 putInt(META_VERSION, CURRENT_VERSION)
@@ -133,7 +133,7 @@ class SharedPreferencesProvider @Inject constructor(
 
 
     private fun firstCall() {
-        // remove possible artifacts from DAVdroid <1.9
+        // remove possible artifacts from PeopleSync <1.9
         preferences.edit {
             remove("override_proxy")
             remove("proxy_host")

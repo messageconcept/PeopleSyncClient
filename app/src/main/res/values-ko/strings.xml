@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--common strings-->
   <string name="account_invalid">계정이 (더이상) 존재하지 않음</string>
-  <string name="account_title_address_book">DAVx⁵ 주소록</string>
+  <string name="account_title_address_book">PeopleSync 주소록</string>
   <string name="account_prefs_use_app">여기에서 계정을 변경하지 마세요. 앱에서 직접 계정을 관리해 주세요.</string>
   <string name="dialog_delete">삭제</string>
   <string name="dialog_remove">제거</string>
@@ -122,7 +122,7 @@
   <string name="navigation_drawer_support_project">프로젝트 지원</string>
   <string name="navigation_drawer_contribute">기여 방법</string>
   <string name="navigation_drawer_privacy_policy">개인 정보 보호 정책</string>
-  <string name="account_list_welcome">DAVx⁵에 오신 것을 환영합니다!</string>
+  <string name="account_list_welcome">PeopleSync에 오신 것을 환영합니다!</string>
   <string name="account_list_empty">서버에 연결하여 캘린더와 주소록을 항상 동기화된 상태로 유지하세요.</string>
   <string name="accounts_sync_all">모든 계정 동기화</string>
   <!--Sync warnings-->
@@ -440,7 +440,7 @@
   <string name="webdav_notification_upload">Uploading WebDAV file</string>
   <string name="webdav_provider_root_title">WebDAV mount</string>
   <!--sync-->
-  <string name="sync_error_permissions">DAVx⁵ 권한</string>
+  <string name="sync_error_permissions">PeopleSync 권한</string>
   <string name="sync_error_permissions_text">추가 권한 필요</string>
   <string name="sync_error_tasks_too_old">%s는 너무 오래되었습니다.</string>
   <string name="sync_error_tasks_required_version">최소 필요 버전: %1$s</string>

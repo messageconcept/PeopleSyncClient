@@ -35,7 +35,7 @@ class LocalTestAddressBookProvider @Inject constructor(
      * Creates and provides a new temporary [LocalTestAddressBook] for the given [account] and
      * removes it again.
      *
-     * @param account       The DAVx5 account to use for the address book
+     * @param account       The PeopleSync account to use for the address book
      * @param provider      Content provider needed to access and modify the address book
      * @param groupMethod   The group method the address book should use
      * @param block         Function to execute with the temporary available address book

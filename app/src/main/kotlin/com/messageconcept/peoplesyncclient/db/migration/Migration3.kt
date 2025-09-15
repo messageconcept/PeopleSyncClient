@@ -14,7 +14,7 @@ import java.util.logging.Logger
 
 val Migration3 = Migration(2, 3) { db ->
     // We don't have access to the context in a Room migration now, so
-    // we will just drop those settings from old DAVx5 versions.
+    // we will just drop those settings from old PeopleSync versions.
     Logger.getGlobal().warning("Dropping settings distrustSystemCerts and overrideProxy*")
 }
 

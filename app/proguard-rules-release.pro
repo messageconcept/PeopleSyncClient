@@ -1,5 +1,5 @@
 
-# R8 usage for DAVx⁵:
+# R8 usage for PeopleSync:
 #    shrinking        yes (only in release builds)
 #    optimization     yes (on by R8 defaults)
 #      full-mode      no (see gradle.properties)
@@ -9,7 +9,7 @@
 -printusage build/reports/r8-usage.txt
 
 # keep rules
--keep class at.bitfire.** { *; }        # all DAVx5 code is required
+-keep class at.bitfire.** { *; }        # all PeopleSync code is required
 -keep class org.xmlpull.** { *; }
 
 # Additional rules which are now required since missing classes can't be ignored in R8 anymore.

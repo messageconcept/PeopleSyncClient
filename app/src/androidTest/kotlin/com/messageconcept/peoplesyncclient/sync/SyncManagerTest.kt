@@ -170,7 +170,7 @@ class SyncManagerTest {
                 .setResponseCode(204)
                 .setHeader("ETag", "etag-from-put"))
 
-        // modifications sent, so DAVx5 will query CTag again
+        // modifications sent, so PeopleSync will query CTag again
         server.enqueue(queryCapabilitiesResponse("ctag2"))
 
         val syncManager = syncManager(collection).apply {
@@ -215,7 +215,7 @@ class SyncManagerTest {
                 .setResponseCode(204)
                 .addHeader("ETag", "etag-from-put"))
 
-        // modifications sent, so DAVx5 will query CTag again
+        // modifications sent, so PeopleSync will query CTag again
         server.enqueue(queryCapabilitiesResponse("ctag2"))
 
         val syncManager = syncManager(collection).apply {
@@ -260,7 +260,7 @@ class SyncManagerTest {
         // PUT -> 204 No Content
         server.enqueue(MockResponse().setResponseCode(204))
 
-        // modifications sent, so DAVx5 will query CTag again
+        // modifications sent, so PeopleSync will query CTag again
         server.enqueue(queryCapabilitiesResponse("ctag2"))
 
         val syncManager = syncManager(collection).apply {
@@ -306,7 +306,7 @@ class SyncManagerTest {
         server.enqueue(MockResponse()
                 .setResponseCode(412))
 
-        // modifications sent, so DAVx5 will query CTag again
+        // modifications sent, so PeopleSync will query CTag again
         server.enqueue(queryCapabilitiesResponse("ctag1"))
 
         val syncManager = syncManager(collection).apply {

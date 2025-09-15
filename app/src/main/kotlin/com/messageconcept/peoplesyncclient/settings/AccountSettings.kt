@@ -39,7 +39,7 @@ import javax.inject.Provider
  * @param abortOnMissingMigration   whether to throw an [IllegalArgumentException] when migrations are missing (useful for testing)
  *
  * @throws InvalidAccountException   on construction when the account doesn't exist (anymore)
- * @throws IllegalArgumentException  when the account is not a DAVx5 account or migrations are missing and [abortOnMissingMigration] is set
+ * @throws IllegalArgumentException  when the account is not a PeopleSync account or migrations are missing and [abortOnMissingMigration] is set
  */
 @WorkerThread   
 class AccountSettings @AssistedInject constructor(
@@ -394,12 +394,12 @@ class AccountSettings @AssistedInject constructor(
          */
         const val KEY_DEFAULT_ALARM = "default_alarm"
 
-        /** Whether DAVx5 sets the local calendar color to the value from service DB at every sync
+        /** Whether PeopleSync sets the local calendar color to the value from service DB at every sync
         value = *null* (not existing): true (default);
         "0"                    false */
         const val KEY_MANAGE_CALENDAR_COLORS = "manage_calendar_colors"
 
-        /** Whether DAVx5 populates and uses CalendarContract.Colors
+        /** Whether PeopleSync populates and uses CalendarContract.Colors
         value = *null* (not existing)   false (default);
         "1"                     true */
         const val KEY_EVENT_COLORS = "event_colors"

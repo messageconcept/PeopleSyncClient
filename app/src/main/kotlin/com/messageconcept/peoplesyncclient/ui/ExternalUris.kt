@@ -14,7 +14,7 @@ import com.messageconcept.peoplesyncclient.BuildConfig
 object ExternalUris {
 
     /**
-     * URLs of the DAVx5 homepage
+     * URLs of the PeopleSync homepage
      */
     @Suppress("unused")     // build variants
     object Homepage {
@@ -36,7 +36,7 @@ object ExternalUris {
 
 
     /**
-     * URLs of the DAVx5 Manual
+     * URLs of the PeopleSync Manual
      */
     object Manual {
 
@@ -60,7 +60,7 @@ object ExternalUris {
 
 
     /**
-     * URLs of DAVx5 social sites
+     * URLs of PeopleSync social sites
      */
     object Social {
 

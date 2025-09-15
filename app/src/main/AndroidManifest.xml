@@ -174,7 +174,7 @@
             android:parentActivityName=".ui.webdav.WebdavMountsActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- account type "DAVx⁵" -->
+        <!-- account type "PeopleSync" -->
         <service
             android:name=".sync.account.AccountAuthenticatorService"
             android:exported="false">
@@ -240,7 +240,7 @@
             </intent-filter>
         </provider>
 
-        <!-- account type "DAVx⁵ Address book" -->
+        <!-- account type "PeopleSync Address book" -->
         <service
             android:name=".sync.account.AddressBookAuthenticatorService"
             android:exported="true"
