@@ -71,7 +71,6 @@ class DavResourceFinder @AssistedInject constructor(
     }
 
     enum class Service(val wellKnownName: String) {
-        CALDAV("caldav"),
         CARDDAV("carddav");
 
         override fun toString() = wellKnownName
@@ -129,13 +128,6 @@ class DavResourceFinder @AssistedInject constructor(
                 cardDavConfig = findInitialConfiguration(Service.CARDDAV)
             } catch (e: Exception) {
                 log.log(Level.INFO, "CardDAV service detection failed", e)
-                processException(e)
-            }
-
-            try {
-                calDavConfig = findInitialConfiguration(Service.CALDAV)
-            } catch (e: Exception) {
-                log.log(Level.INFO, "CalDAV service detection failed", e)
                 processException(e)
             }
         } catch(_: Exception) {
@@ -201,12 +193,6 @@ class DavResourceFinder @AssistedInject constructor(
                 }
             }
 
-        // detect email address
-        if (service == Service.CALDAV)
-            config.principal?.let { principal ->
-                config.emails.addAll(queryEmailAddress(principal))
-            }
-
         // return config or null if config doesn't contain useful information
         val serviceAvailable = config.principal != null || config.homeSets.isNotEmpty() || config.collections.isNotEmpty()
         return if (serviceAvailable)
@@ -239,16 +225,6 @@ class DavResourceFinder @AssistedInject constructor(
                         CurrentUserPrincipal.NAME
                     ) { response, _ ->
                         scanResponse(ResourceType.ADDRESSBOOK, response, config)
-                    }
-                }
-                Service.CALDAV -> {
-                    davBaseURL.propfind(
-                        0,
-                        ResourceType.NAME, DisplayName.NAME, CalendarColor.NAME, CalendarDescription.NAME, CalendarTimezone.NAME, CurrentUserPrivilegeSet.NAME, SupportedCalendarComponentSet.NAME,
-                        CalendarHomeSet.NAME,
-                        CurrentUserPrincipal.NAME
-                    ) { response, _ ->
-                        scanResponse(ResourceType.CALENDAR, response, config)
                     }
                 }
             }
@@ -309,10 +285,6 @@ class DavResourceFinder @AssistedInject constructor(
                 homeSetClass = AddressbookHomeSet::class.java
                 serviceType = Service.CARDDAV
             }
-            ResourceType.CALENDAR -> {
-                homeSetClass = CalendarHomeSet::class.java
-                serviceType = Service.CALDAV
-            }
             else -> throw IllegalArgumentException()
         }
 
@@ -366,8 +338,7 @@ class DavResourceFinder @AssistedInject constructor(
         var provided = false
         try {
             DavResource(httpClient.okHttpClient, url, log).options { capabilities, _ ->
-                if ((service == Service.CARDDAV && capabilities.contains("addressbook")) ||
-                    (service == Service.CALDAV && capabilities.contains("calendar-access")))
+                if (service == Service.CARDDAV && capabilities.contains("addressbook"))
                     provided = true
             }
         } catch(e: Exception) {
