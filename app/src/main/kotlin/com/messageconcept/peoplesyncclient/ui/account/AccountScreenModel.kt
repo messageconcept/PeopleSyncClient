@@ -73,7 +73,7 @@ class AccountScreenModel @AssistedInject constructor(
 
     init {
         logger.log(Level.INFO, "Triggering sync for $account")
-        sync()
+        sync(manual = false)
     }
 
     /** whether the account is invalid and the screen shall be closed */
@@ -186,8 +186,8 @@ class AccountScreenModel @AssistedInject constructor(
         }
     }
 
-    fun sync() {
-        syncWorkerManager.enqueueOneTimeAllAuthorities(account, manual = true)
+    fun sync(manual: Boolean = true) {
+        syncWorkerManager.enqueueOneTimeAllAuthorities(account, manual = manual)
     }
 
 }
