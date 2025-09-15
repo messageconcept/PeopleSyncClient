@@ -287,7 +287,7 @@
   <string name="login_configuration_detection">Detecció de la configuració</string>
   <string name="login_querying_server">Espereu, s\'està consultant el servidor…</string>
   <string name="login_no_service">No s\'ha pogut trobar cap servei CalDAV o CardDAV.</string>
-  <string name="login_no_service_info">L\'URL base no sembla que sigui un URL accessible de CalDAV/CardDAV i la detecció del servei no ha estat correcta.</string>
+  <string name="login_no_service_info">L\'URL base no sembla que sigui un URL accessible de CardDAV i la detecció del servei no ha estat correcta.</string>
   <string name="login_see_tested_services"><![CDATA[Per favor, revisa el manual del teu proveïdor i <a href="%s">la nostra llista de serveis provats</a> i les seves URL base.]]></string>
   <string name="login_check_credentials">Comproveu també l\'autenticació (normalment nom d\'usuari i contrasenya).</string>
   <string name="login_logs_available">Hi ha més informació tècnica disponible als registres.</string>

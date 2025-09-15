@@ -107,7 +107,7 @@
   <string name="logging_notification_view_share">보기/공유</string>
   <string name="logging_notification_disable">사용 안함</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV 동기화 어댑터</string>
+  <string name="navigation_drawer_subtitle">CardDAV 동기화 어댑터</string>
   <string name="navigation_drawer_about">관련 / 라이센스</string>
   <string name="navigation_drawer_beta_feedback">베타 피드백</string>
   <string name="install_browser">웹 브라우저를 설치해 주십시오.</string>
@@ -280,7 +280,7 @@
   <string name="login_configuration_detection">구성 탐색</string>
   <string name="login_querying_server">잠시 기다려 주십시오. 서버를 쿼리하고 있습니다...</string>
   <string name="login_no_service">CalDAV 또는 CardDAV 서비스를 찾을 수 없습니다.</string>
-  <string name="login_no_service_info">기본 URL이 접근 가능한 CalDAV/CardDAV 주소가 아닌 것 같으며, 서비스 탐색에 실패했습니다.</string>
+  <string name="login_no_service_info">기본 URL이 접근 가능한 CardDAV 주소가 아닌 것 같으며, 서비스 탐색에 실패했습니다.</string>
   <string name="login_see_tested_services"><![CDATA[서비스 제공자의 매뉴얼과 <a href="%s">저희가 테스트한 서비스 목록</a> 그리고 기본 URL을 참조하시기 바랍니다.]]></string>
   <string name="login_check_credentials">인증 정보(일반적으로 사용자 이름 및 비밀번호)를 다시 한번 확인해 주십시오.</string>
   <string name="login_logs_available">더 자세한 기술 정보는 로그에서 확인하실 수 있습니다.</string>

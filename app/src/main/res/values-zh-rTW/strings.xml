@@ -85,7 +85,7 @@
   <!--global settings-->
   <string name="logging_couldnt_create_file">無法創建事項記錄文檔</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV 同步器</string>
+  <string name="navigation_drawer_subtitle">CardDAV 同步器</string>
   <string name="navigation_drawer_about">關於我們 / 授權條款</string>
   <string name="navigation_drawer_beta_feedback">為測試版本給回饋意見</string>
   <string name="install_browser">請安裝一個瀏覽器程式</string>

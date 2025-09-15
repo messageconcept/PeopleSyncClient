@@ -108,7 +108,7 @@
   <string name="logging_notification_view_share">Megtekintés/megosztás</string>
   <string name="logging_notification_disable">Kikapcsolás</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV szinkronizációs adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV szinkronizációs adapter</string>
   <string name="navigation_drawer_about">Névjegy/licenc</string>
   <string name="navigation_drawer_beta_feedback">Tesztelői visszajelzés</string>
   <string name="install_browser">Telepítsen egy böngészőt</string>
@@ -276,7 +276,7 @@
   <string name="login_configuration_detection">A konfiguráció felderítése</string>
   <string name="login_querying_server">Várjon, a kiszolgáló lekérdezése…</string>
   <string name="login_no_service">Nem található CalDAV vagy CardDAV szolgáltatás.</string>
-  <string name="login_no_service_info">Ez az alapwebcím nem tűnik elérhető CalDAV/CardDAV webcímnek, és a szolgáltatásfelderítés nem sikerült.</string>
+  <string name="login_no_service_info">Ez az alapwebcím nem tűnik elérhető CardDAV webcímnek, és a szolgáltatásfelderítés nem sikerült.</string>
   <string name="login_see_tested_services"><![CDATA[Ellenőrizze a szolgáltatója leírását, az <a href="%s">általunk tesztelt szolgáltatások listáját</a>, és az alapwebcímeiket.]]></string>
   <string name="login_check_credentials">Ellenőrizze a hitelesítő adatok is (általában a felhasználónevet és a jelszót).</string>
   <string name="login_logs_available">További műszaki információk érhetők el a naplókban.</string>

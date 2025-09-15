@@ -111,7 +111,7 @@
   <string name="logging_notification_view_share">Просмотр/обмен</string>
   <string name="logging_notification_disable">Отключить</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Адаптер синхронизации CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Адаптер синхронизации CardDAV</string>
   <string name="navigation_drawer_about">О программе / Лицензия</string>
   <string name="navigation_drawer_beta_feedback">Отзыв о бета-тестировании</string>
   <string name="install_browser">Пожалуйста, установите браузер</string>
@@ -289,7 +289,7 @@
   <string name="login_configuration_detection">Обнаружение конфигурации</string>
   <string name="login_querying_server">Ожидайте, выполняется запрос к серверу…</string>
   <string name="login_no_service">Не удалось найти службу CalDAV или CardDAV.</string>
-  <string name="login_no_service_info">Судя по всему, базовый URL не является допустимым URL CalDAV/CardDAV, и обнаружение службы не увенчалось успехом.</string>
+  <string name="login_no_service_info">Судя по всему, базовый URL не является допустимым URL CardDAV, и обнаружение службы не увенчалось успехом.</string>
   <string name="login_see_tested_services"><![CDATA[Обратитесь к инструкциям вашего поставщика сервиса, а также к <a href="%s">нашему списку проверенных сервисов</a> и их базовых URL.]]></string>
   <string name="login_check_credentials">Кроме того, проверьте правильность авторизации (обычно это имя пользователя и пароль).</string>
   <string name="login_logs_available">Дополнительную техническую информацию можно найти в логах.</string>

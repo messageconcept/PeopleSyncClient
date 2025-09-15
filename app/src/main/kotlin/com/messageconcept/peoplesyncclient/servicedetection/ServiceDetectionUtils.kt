@@ -35,7 +35,7 @@ object ServiceDetectionUtils {
             ResourceType.NAME,
             PushTransports.NAME,        // WebDAV-Push
             Topic.NAME
-        ) + when (serviceType) {       // service-specific CalDAV/CardDAV properties
+        ) + when (serviceType) {       // service-specific CardDAV properties
             Service.TYPE_CARDDAV -> arrayOf(
                 AddressbookDescription.NAME
             )
@@ -55,7 +55,7 @@ object ServiceDetectionUtils {
     /**
      * Finds out whether given collection is usable for synchronization, by checking that either
      *
-     *  - CalDAV/CardDAV: service and collection type match, or
+     *  - CardDAV: service and collection type match, or
      *  - WebCal: subscription source URL is not empty.
      */
     fun isUsableCollection(service: Service, collection: Collection) =

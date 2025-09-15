@@ -108,7 +108,7 @@
   <string name="logging_notification_view_share">Visa/dela</string>
   <string name="logging_notification_disable">Inaktivera</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Synk Adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV Synk Adapter</string>
   <string name="navigation_drawer_about">Om / Licens</string>
   <string name="navigation_drawer_beta_feedback">Betafeedback</string>
   <string name="install_browser">Vänligen installera en webbläsare</string>

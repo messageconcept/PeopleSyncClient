@@ -125,7 +125,7 @@
     <string name="logging_notification_disable">Disable</string>
 
     <!-- AccountsScreen -->
-    <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync Adapter</string>
+    <string name="navigation_drawer_subtitle">CardDAV Sync Adapter</string>
     <string name="navigation_drawer_about">About / License</string>
     <string name="navigation_drawer_beta_feedback">Beta feedback</string>
     <string name="install_browser">Please install a Web browser</string>
@@ -323,7 +323,7 @@
     <string name="login_configuration_detection">Configuration detection</string>
     <string name="login_querying_server">Please wait, querying server…</string>
     <string name="login_no_service">Couldn\'t find CalDAV or CardDAV service.</string>
-    <string name="login_no_service_info">The base URL doesn\'t seem to be an accessible CalDAV/CardDAV URL and service detection was not successful.</string>
+    <string name="login_no_service_info">The base URL doesn\'t seem to be an accessible CardDAV URL and service detection was not successful.</string>
     <string name="login_see_tested_services"><![CDATA[Please see the manual of your service provider and <a href="%s">our list of tested services</a> and their base URLs.]]></string>
     <string name="login_check_credentials">Please also double-check authentication (usually username and password).</string>
     <string name="login_logs_available">Further technical information is available in the logs.</string>

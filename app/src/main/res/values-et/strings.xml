@@ -109,7 +109,7 @@
   <string name="logging_notification_view_share">Vaata/jaga</string>
   <string name="logging_notification_disable">Lülita välja</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV sünkroniseerimise sobitaja</string>
+  <string name="navigation_drawer_subtitle">CardDAV sünkroniseerimise sobitaja</string>
   <string name="navigation_drawer_about">Teave / litsents</string>
   <string name="navigation_drawer_beta_feedback">Beetaversiooni tagasiside</string>
   <string name="install_browser">Palun paigalda veebibrauser</string>

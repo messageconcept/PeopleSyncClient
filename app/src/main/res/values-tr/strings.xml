@@ -16,7 +16,7 @@
   <string name="about_license_info_no_warranty">Bu uygulama HİÇ BİR GARANTİ ile gelmemektedir. Bedava bir yazılımdır ve belli koşullar altında dağıtabilirsiniz.</string>
   <!--global settings-->
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Senkronizasyon Adaptörü</string>
+  <string name="navigation_drawer_subtitle">CardDAV Senkronizasyon Adaptörü</string>
   <string name="navigation_drawer_about">Hakkında / Lisans</string>
   <string name="navigation_drawer_settings">Ayarlar</string>
   <string name="navigation_drawer_news_updates">Haberler  &amp; güncellemeler </string>

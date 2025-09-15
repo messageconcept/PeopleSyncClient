@@ -109,7 +109,7 @@
   <string name="logging_notification_view_share">Bekijken/delen</string>
   <string name="logging_notification_disable">Uitschakelen</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV Sync adapter</string>
   <string name="navigation_drawer_about">Over / Licentie</string>
   <string name="navigation_drawer_beta_feedback">Beta terugkoppeling</string>
   <string name="install_browser">Webbrowser is vereist</string>
@@ -287,7 +287,7 @@
   <string name="login_configuration_detection">Configuratie detecteren</string>
   <string name="login_querying_server">Even geduld, verzoek naar server…</string>
   <string name="login_no_service">Geen CalDAV- of CardDAV-service gevonden.</string>
-  <string name="login_no_service_info">De basis URL lijkt geen toegankelijke CalDAV/CardDAV URL te zijn en de detectie van de service was niet succesvol.</string>
+  <string name="login_no_service_info">De basis URL lijkt geen toegankelijke CardDAV URL te zijn en de detectie van de service was niet succesvol.</string>
   <string name="login_see_tested_services"><![CDATA[Raadpleeg de handleiding van uw serviceprovider en <a href="%s">onze lijst met geteste services</a> en hun basis URL\'s.]]></string>
   <string name="login_check_credentials">Controleer ook de authenticatie (meestal gebruikersnaam en wachtwoord).</string>
   <string name="login_logs_available">Meer technische informatie is beschikbaar in de logboeken.</string>

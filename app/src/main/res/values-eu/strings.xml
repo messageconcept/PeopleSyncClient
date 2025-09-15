@@ -110,7 +110,7 @@
   <string name="logging_notification_view_share">Ikusi/partekatu</string>
   <string name="logging_notification_disable">Desgaitu</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV sinkronizazio moldagailua</string>
+  <string name="navigation_drawer_subtitle">CardDAV sinkronizazio moldagailua</string>
   <string name="navigation_drawer_about">Honi buruz / Lizentzia</string>
   <string name="navigation_drawer_beta_feedback">Beta iritzia</string>
   <string name="install_browser">Instalatu web nabigatzaile bat</string>
@@ -288,7 +288,7 @@
   <string name="login_configuration_detection">Konfigurazio detekzioa</string>
   <string name="login_querying_server">Mesedez itxaron, zerbitzaria kontsultatzen...</string>
   <string name="login_no_service">Ezin izan da CalDAV edo CardDAV zerbitzua aurkitu.</string>
-  <string name="login_no_service_info">Oinarrizko URLa ez dirudi CalDAV/CardDAV URL eskuragarria denik eta zerbitzuaren detekzioa ez da gauzatu.</string>
+  <string name="login_no_service_info">Oinarrizko URLa ez dirudi CardDAV URL eskuragarria denik eta zerbitzuaren detekzioa ez da gauzatu.</string>
   <string name="login_see_tested_services"><![CDATA[Ikusi zure zerbitzu-hornitzailearen eskuliburua eta <a href="%s">gure probatutako zerbitzuen zerrenda</a> eta haien oinarrizko URLak.]]></string>
   <string name="login_check_credentials">Mesedez, egiaztatu autentifikazioa ere (normalean erabiltzaile-izena eta pasahitza).</string>
   <string name="login_logs_available">Informazio tekniko gehiago eskuragarri dago erregistroetan.</string>

@@ -55,7 +55,7 @@
   <!--global settings-->
   <string name="logging_couldnt_create_file">لا يمكن إنشاء ملف سجل</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">مهايئ مزامنة CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">مهايئ مزامنة CardDAV</string>
   <string name="navigation_drawer_about">حول / الترخيص</string>
   <string name="navigation_drawer_beta_feedback">انطباعات المستخدمين عن البيتا</string>
   <string name="navigation_drawer_settings">الإعدادات</string>

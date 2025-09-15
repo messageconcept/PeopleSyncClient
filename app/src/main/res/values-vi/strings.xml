@@ -87,7 +87,7 @@
   <string name="logging_notification_view_share">Xem/chia sẻ</string>
   <string name="logging_notification_disable">Tắt</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Đồng bộ CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Đồng bộ CardDAV</string>
   <string name="navigation_drawer_about">Giới thiệu / Giấy phép</string>
   <string name="navigation_drawer_beta_feedback">Phản hồi về bản beta</string>
   <string name="install_browser">Vui lòng cài đặt một trình duyệt web</string>

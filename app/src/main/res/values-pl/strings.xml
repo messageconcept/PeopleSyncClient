@@ -94,7 +94,7 @@
   <string name="logging_notification_view_share">Zobacz/udostępnij</string>
   <string name="logging_notification_disable">Wyłącz</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Adapter synchronizacji CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adapter synchronizacji CardDAV</string>
   <string name="navigation_drawer_about">Informacje/Licencja</string>
   <string name="navigation_drawer_beta_feedback">Przekaż opinię</string>
   <string name="install_browser">Proszę zainstalować przeglądarkę internetową</string>

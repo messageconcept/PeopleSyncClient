@@ -99,7 +99,7 @@
   <string name="logging_notification_view_share">Vis/del</string>
   <string name="logging_notification_disable">Deaktivere</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV synkroniseringsadapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV synkroniseringsadapter</string>
   <string name="navigation_drawer_about">Om / licens</string>
   <string name="navigation_drawer_beta_feedback">Beta tilbagemelding</string>
   <string name="install_browser">Installere netlæser</string>
@@ -248,7 +248,7 @@ Lav lagerplads. Android vil ikke synkronisere lokale ændringer med det samme, m
   <string name="login_configuration_detection">Check konfiguration</string>
   <string name="login_querying_server">Vent, forespørger serveren…</string>
   <string name="login_no_service">Kunne ikke finde CalDAV- eller CardDAV-tjeneste.</string>
-  <string name="login_no_service_info">Basis-URL\'en ser ikke ud til at være en tilgængelig CalDAV/CardDAV-URL, og tjenestegenkendelsen lykkedes ikke.</string>
+  <string name="login_no_service_info">Basis-URL\'en ser ikke ud til at være en tilgængelig CardDAV-URL, og tjenestegenkendelsen lykkedes ikke.</string>
   <string name="login_see_tested_services"><![CDATA[Venligst se manualen for din tjenesteudbyder og <a href="%s">vores liste af testede tjenester</a> og deres basis-URL\'er.]]></string>
   <string name="login_check_credentials">Dobbelttjek også autentificeringen (oftest brugernavn og adgangskode).</string>
   <string name="login_logs_available">Yderligere tekniske oplysninger findes i logfilerne.</string>

@@ -97,7 +97,7 @@
   <string name="logging_notification_view_share">ნახვა/გაზიარება</string>
   <string name="logging_notification_disable">გათიშვა</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV სინქრონიზაციის ადაპტერი</string>
+  <string name="navigation_drawer_subtitle">CardDAV სინქრონიზაციის ადაპტერი</string>
   <string name="navigation_drawer_about">შესახებ / ლიცენზია</string>
   <string name="navigation_drawer_beta_feedback">ბეტას უკუკავშირი</string>
   <string name="install_browser">გთხოვთ, დააყენოთ ვებ ბრაუზერი</string>
@@ -245,7 +245,7 @@
   <string name="login_configuration_detection">კონფიგურაციის აღმოჩენა</string>
   <string name="login_querying_server">გთხოვთ, დაელოდოთ, მიმდინარეობს სერვერის გამოკითხვა...</string>
   <string name="login_no_service">CalDAV-ის ან CardDAV-ის სერვისის მოძებნა ვერ მოხერხდა.</string>
-  <string name="login_no_service_info">საბაზო URL არ არის წვდომადი CalDAV/CardDAV URL და სერვერისის აღმოჩენა არ იყო წარმატებული.</string>
+  <string name="login_no_service_info">საბაზო URL არ არის წვდომადი CardDAV URL და სერვერისის აღმოჩენა არ იყო წარმატებული.</string>
   <string name="login_see_tested_services"><![CDATA[გთხოვთ, იხილოთ თქვენი მომსახურების მომწოდებლის ინსტრუქცია და <a href="%s">ჩვენს მიერ ტესტირებული სერვისების სია</a> და მათი საბაზო URL.]]></string>
   <string name="login_check_credentials">გთხოვთ, ასევე გადაამოწმოთ აუთენტიფიკაცია (ზოგადად, მომხმარებლის სახელი დაპაროლი).</string>
   <string name="login_logs_available">დამატებითი ტექნიკური ინფორმაცია ხელმისაწვდომია ჟურნალებში.</string>

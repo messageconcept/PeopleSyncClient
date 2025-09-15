@@ -103,7 +103,7 @@
   <string name="logging_notification_view_share">Voir/partager</string>
   <string name="logging_notification_disable">Désactiver</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Adaptateur de synchronisation CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptateur de synchronisation CardDAV</string>
   <string name="navigation_drawer_about">À propos / Licence</string>
   <string name="navigation_drawer_beta_feedback">Commentaire pour la version Beta</string>
   <string name="install_browser">Veuillez installer un navigateur</string>
@@ -263,7 +263,7 @@
   <string name="login_configuration_detection">Détection de la configuration</string>
   <string name="login_querying_server">Veuillez patienter, nous interrogeons le serveur …</string>
   <string name="login_no_service">Aucun accès possible au service CalDAV ou CardDAV.</string>
-  <string name="login_no_service_info">L\'URL de base ne semble pas être une URL CalDAV/CardDAV et la détection du service a échoué.</string>
+  <string name="login_no_service_info">L\'URL de base ne semble pas être une URL CardDAV et la détection du service a échoué.</string>
   <string name="login_see_tested_services"><![CDATA[Merci de vous reporter au manuel de votre fournisseur de services et <a href="%s">notre liste de services testés</a> ainsi que leurs URL de base.]]></string>
   <string name="login_check_credentials">Merci de bien vérifier l\'authentification (souvent le nom d\'utilisateur et le mot de passe).</string>
   <string name="login_logs_available">Plus d\'information technique est disponible dans les journaux.</string>

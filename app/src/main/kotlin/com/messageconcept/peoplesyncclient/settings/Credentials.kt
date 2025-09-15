@@ -7,7 +7,7 @@ package com.messageconcept.peoplesyncclient.settings
 import net.openid.appauth.AuthState
 
 /**
- * Represents credentials that are used to authenticate against a CalDAV/CardDAV/WebDAV server.
+ * Represents credentials that are used to authenticate against a CardDAV/WebDAV server.
  *
  * Note: [authState] can change from request to request, so make sure that you have an up-to-date
  * copy when using it.

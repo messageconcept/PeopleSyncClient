@@ -110,7 +110,7 @@
   <string name="logging_notification_view_share">Vizualizare/distribuire</string>
   <string name="logging_notification_disable">Dezactivează</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Adaptor de sincronizare CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptor de sincronizare CardDAV</string>
   <string name="navigation_drawer_about">Despre / Licență</string>
   <string name="navigation_drawer_beta_feedback">Feedback beta</string>
   <string name="install_browser">Instalează un browser web</string>
@@ -288,7 +288,7 @@
   <string name="login_configuration_detection">Detectarea configurației</string>
   <string name="login_querying_server">Se interoghează serverul…</string>
   <string name="login_no_service">Nu s-a putut găsi serviciul CalDAV sau CardDAV.</string>
-  <string name="login_no_service_info">Adresa URL de bază nu pare să fie o adresă URL CalDAV/CardDAV accesibilă, iar detectarea serviciului nu a avut succes.</string>
+  <string name="login_no_service_info">Adresa URL de bază nu pare să fie o adresă URL CardDAV accesibilă, iar detectarea serviciului nu a avut succes.</string>
   <string name="login_see_tested_services"><![CDATA[Consultă manualul furnizorului de servicii, <a href="%s">lista de servicii testate</a> și adresele lor URL de bază.]]></string>
   <string name="login_check_credentials">Verifică, de asemenea, și autentificarea (de obicei, numele de utilizator și parola).</string>
   <string name="login_logs_available">Informații tehnice suplimentare sunt disponibile în jurnale.</string>

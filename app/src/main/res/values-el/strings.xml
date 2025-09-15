@@ -98,7 +98,7 @@
   <string name="logging_notification_view_share">Προβολή/διαμοιρασμός</string>
   <string name="logging_notification_disable">Απενεργοποίηση</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Προσαρμογέας συγχρονισμού CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Προσαρμογέας συγχρονισμού CardDAV</string>
   <string name="navigation_drawer_about">Περί / άδεια χρήσης</string>
   <string name="navigation_drawer_beta_feedback">Ανατροφοδότηση beta</string>
   <string name="install_browser">Παρακαλούμε εγκαταστήστε έναν περιηγητή ιστού</string>
@@ -246,7 +246,7 @@
   <string name="login_configuration_detection">Ανίχνευση ρυθμίσεων</string>
   <string name="login_querying_server">Περιμένετε, γίνεται ερώτημα στο διακομιστή...</string>
   <string name="login_no_service">Αδυναμία εύρεσης υπηρεσίας CalDAV ή CardDAV.</string>
-  <string name="login_no_service_info">Η βασική διεύθυνση URL δεν φαίνεται να είναι προσβάσιμη διεύθυνση URL CalDAV/CardDAV και η ανίχνευση της υπηρεσίας δεν ήταν επιτυχής.</string>
+  <string name="login_no_service_info">Η βασική διεύθυνση URL δεν φαίνεται να είναι προσβάσιμη διεύθυνση URL CardDAV και η ανίχνευση της υπηρεσίας δεν ήταν επιτυχής.</string>
   <string name="login_see_tested_services"><![CDATA[Παρακαλούμε ανατρέξτε στο εγχειρίδιο του παρόχου της υπηρεσίας σας και <a href="%s">στον κατάλογο των δοκιμασμένων υπηρεσιών</a> και των βασικών διευθύνσεων URL τους.]]></string>
   <string name="login_check_credentials">Παρακαλούμε ελέγξτε επίσης δύο φορές τον έλεγχο ταυτότητας (συνήθως όνομα χρήστη και συνθηματικό).</string>
   <string name="login_logs_available">Περαιτέρω τεχνικές πληροφορίες είναι διαθέσιμες στα αρχεία καταγραφής.</string>

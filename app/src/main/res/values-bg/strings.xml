@@ -109,7 +109,7 @@
   <string name="logging_notification_view_share">Преглед/споделяне</string>
   <string name="logging_notification_disable">Изключване</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Адаптор за синхронизиране на CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Адаптор за синхронизиране на CardDAV</string>
   <string name="navigation_drawer_about">Относно / лиценз</string>
   <string name="navigation_drawer_beta_feedback">Обратна връзка към бета</string>
   <string name="install_browser">Инсталиране на мрежов четец</string>
@@ -287,7 +287,7 @@
   <string name="login_configuration_detection">Откриване на настройки</string>
   <string name="login_querying_server">Изчакайте, запитване на сървъра…</string>
   <string name="login_no_service">Не са открити услуги на CalDAV или CardDAV.</string>
-  <string name="login_no_service_info">Основата на адресът изглежда недостъпен за CalDAV/CardDAV адрес и откриването на услуги е неуспешно.</string>
+  <string name="login_no_service_info">Основата на адресът изглежда недостъпен за CardDAV адрес и откриването на услуги е неуспешно.</string>
   <string name="login_see_tested_services"><![CDATA[Вижте ръководството на доставчика на услуги и <a href="%s">нашия списък с изпробвани услуг</a>и и техните основи на адреса.]]></string>
   <string name="login_check_credentials">Също така отново проверете удостоверяването (обикновено потребителско име и парола).</string>
   <string name="login_logs_available">Повече техническа информация има в дневника.</string>

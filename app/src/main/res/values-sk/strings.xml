@@ -24,7 +24,7 @@
   <!--global settings-->
   <string name="logging_couldnt_create_file">Nie je možné vytvoriť súbor protokolu</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync Adaptér</string>
+  <string name="navigation_drawer_subtitle">CardDAV Sync Adaptér</string>
   <string name="navigation_drawer_about">O programe / Licencia</string>
   <string name="navigation_drawer_beta_feedback">Odozva na beta-verziu</string>
   <string name="install_browser">Prosím, nainštalujte webový prehliadač</string>

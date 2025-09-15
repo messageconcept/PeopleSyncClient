@@ -92,7 +92,7 @@
   <string name="logging_notification_view_share">View/share</string>
   <string name="logging_notification_disable">Disable</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV Sync Adapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV Sync Adapter</string>
   <string name="navigation_drawer_about">About / License</string>
   <string name="navigation_drawer_beta_feedback">Beta feedback</string>
   <string name="install_browser">Please install a Web browser</string>

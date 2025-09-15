@@ -37,7 +37,7 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 /**
- * Repository for managing CalDAV/CardDAV accounts.
+ * Repository for managing CardDAV accounts.
  *
  * *Note:* This class is not related to address book accounts, which are managed by
  * [com.messageconcept.peoplesyncclient.resource.LocalAddressBook].

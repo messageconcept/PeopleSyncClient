@@ -25,7 +25,7 @@
   <!--global settings-->
   <string name="logging_couldnt_create_file">Kan ikke opprette loggfil</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">CalDAV/CardDAV -synkroniseringsadapter</string>
+  <string name="navigation_drawer_subtitle">CardDAV -synkroniseringsadapter</string>
   <string name="navigation_drawer_about">Om / Lisens</string>
   <string name="navigation_drawer_beta_feedback">Tilbakemelding om beta-en</string>
   <string name="navigation_drawer_settings">Innstillinger</string>

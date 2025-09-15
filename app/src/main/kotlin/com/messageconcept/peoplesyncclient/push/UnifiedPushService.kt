@@ -46,7 +46,7 @@ class UnifiedPushService : PushService() {
         val serviceId = instance.toLongOrNull() ?: return
         logger.warning("Got UnifiedPush endpoint for service $serviceId: ${endpoint.url}")
 
-        // register new endpoint at CalDAV/CardDAV servers
+        // register new endpoint at CardDAV servers
         applicationScope.launch {
             pushRegistrationManager.get().processSubscription(serviceId, endpoint)
         }

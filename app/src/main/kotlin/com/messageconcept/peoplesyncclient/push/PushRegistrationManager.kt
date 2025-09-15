@@ -197,7 +197,7 @@ class PushRegistrationManager @Inject constructor(
                             subscribe(httpClient, collection, endpoint)
                         }
                     } catch (e: Exception) {
-                        logger.log(Level.WARNING, "Couldn't register subscription at CalDAV/CardDAV server", e)
+                        logger.log(Level.WARNING, "Couldn't register subscription at CardDAV server", e)
                     }
             }
     }

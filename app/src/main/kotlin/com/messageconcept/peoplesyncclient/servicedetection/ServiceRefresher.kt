@@ -62,7 +62,7 @@ class ServiceRefresher @AssistedInject constructor(
             DisplayName.NAME,
             GroupMembership.NAME,
             ResourceType.NAME
-        ) + when (service.type) {       // service-specific CalDAV/CardDAV properties
+        ) + when (service.type) {       // service-specific CardDAV properties
             Service.TYPE_CARDDAV -> arrayOf(
                 AddressbookHomeSet.NAME,
             )

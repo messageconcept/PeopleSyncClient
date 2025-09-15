@@ -81,7 +81,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
         /**
          * Uniquely identifies a refresh worker. Useful for stopping work, or querying its state.
          *
-         * @param serviceId     what service (CalDAV/CardDAV) the worker is running for
+         * @param serviceId     what service (CardDAV) the worker is running for
          */
         fun workerName(serviceId: Long): String = "$WORKER_TAG-$serviceId"
 

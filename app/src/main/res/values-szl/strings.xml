@@ -39,7 +39,7 @@
   <!--global settings-->
   <string name="logging_couldnt_create_file">Niy szło stworzić zbioru dziynnika</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Adapter synchrōnizacyje CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adapter synchrōnizacyje CardDAV</string>
   <string name="navigation_drawer_about">Ô PeopleSync / Licyncyjo</string>
   <string name="navigation_drawer_beta_feedback">Przekoż ôpinijo</string>
   <string name="install_browser">Zainstaluj przeglōndarka internetowo</string>

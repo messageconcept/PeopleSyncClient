@@ -99,7 +99,7 @@
   <string name="logging_notification_view_share">Zobrazit/sdílet</string>
   <string name="logging_notification_disable">Vypnout</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Adaptér synchronizace CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Adaptér synchronizace CardDAV</string>
   <string name="navigation_drawer_about">O aplikaci / Licence</string>
   <string name="navigation_drawer_beta_feedback">Zpětná vazba k vývojové verzi</string>
   <string name="install_browser">Nainstalujte si webový prohlížeč</string>

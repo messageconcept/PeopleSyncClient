@@ -59,7 +59,7 @@
   <string name="logging_couldnt_create_file">Не вдалося створити файл звіту</string>
   <string name="logging_notification_disable">Вимкнути</string>
   <!--AccountsScreen-->
-  <string name="navigation_drawer_subtitle">Адаптер синхронізації CalDAV/CardDAV</string>
+  <string name="navigation_drawer_subtitle">Адаптер синхронізації CardDAV</string>
   <string name="navigation_drawer_about">Про / Ліцензія</string>
   <string name="navigation_drawer_beta_feedback">Beta відгук</string>
   <string name="install_browser">Будь ласка, встановіть веб-браузер</string>
