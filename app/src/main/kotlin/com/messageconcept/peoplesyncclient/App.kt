@@ -78,6 +78,8 @@ class App: Application(), Configuration.Provider {
             managedSettings.updateAccounts()
             // trigger a (one-time) migration of the account settings for existing accounts
             upgradeFixes.enableNewAccountSettings()
+            // (re-)enable automatic sync for accounts that were created with v4.4-*
+            upgradeFixes.enableAutomaticSyncAllOnce()
 
             // run startup plugins (async)
             for (plugin in plugins.sortedBy { it.priorityAsync() }) {

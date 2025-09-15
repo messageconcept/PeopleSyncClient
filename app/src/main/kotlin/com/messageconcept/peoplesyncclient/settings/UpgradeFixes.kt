@@ -10,15 +10,27 @@ package com.messageconcept.peoplesyncclient.settings
 
 import android.accounts.AccountManager
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
+import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.logging.Logger
 import javax.inject.Inject
 
 class UpgradeFixes @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val accountRepository: AccountRepository,
+    private val automaticSyncManager: Lazy<AutomaticSyncManager>,
     private val logger: Logger
 ) {
+
+    companion object {
+        private const val KEY_PERIODIC_SYNC_FIX_DONE = "periodic_sync_fix_done"
+    }
 
     @Inject
     lateinit var accountSettingsFactory: AccountSettings.Factory
@@ -44,4 +56,25 @@ class UpgradeFixes @Inject constructor(
         }
     }
 
+    private fun enableAutomaticSyncAll() {
+        accountRepository.getAll().forEach { account ->
+            logger.info("Re-enable periodic sync for account ${account.name}")
+            automaticSyncManager.get().updateAutomaticSync(account)
+        }
+    }
+
+    /**
+     * For new accounts that were created with version 4.4-0-ps .. 4.4-4-ps the automatic sync was not correctly enabled.
+     * Fix those accounts by re-enabling automatic sync.
+     * To not run the upgrade code repeatedly, record a successful run in a shared preference so the upgrade routine
+     * is skipped on future invocations.
+     */
+    fun enableAutomaticSyncAllOnce() {
+        val prefs: SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+
+        if (prefs?.getBoolean(KEY_PERIODIC_SYNC_FIX_DONE, false) == false) {
+            enableAutomaticSyncAll()
+            prefs.edit { putBoolean(KEY_PERIODIC_SYNC_FIX_DONE, true) }
+        }
+    }
 }
