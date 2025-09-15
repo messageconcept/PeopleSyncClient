@@ -135,6 +135,8 @@ ksp {
 aboutLibraries {
     // exclude timestamps for reproducible builds [https://github.com/bitfireAT/davx5-ose/issues/994]
     excludeFields = arrayOf("generated")
+    // path to our custom library definitions
+    configPath = "config"
 }
 
 dependencies {
