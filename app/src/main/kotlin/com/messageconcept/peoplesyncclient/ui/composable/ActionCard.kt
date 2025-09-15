@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationAdd
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -66,6 +67,30 @@ fun ActionCard(
 }
 
 @Composable
+fun NotificationCard(
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    content: @Composable () -> Unit
+) {
+    Card(Modifier
+        .fillMaxWidth()
+        .then(modifier)
+    ) {
+        Column(Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+            if (icon != null)
+                Row {
+                    Icon(icon, "", Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(end = 8.dp))
+                    content()
+                }
+            else
+                content()
+        }
+    }
+}
+
+@Composable
 @Preview
 fun ActionCard_Sample() {
     ActionCard(
@@ -76,5 +101,15 @@ fun ActionCard_Sample() {
             Text("Some Content. Some Content. Some Content. Some Content. ")
             Text("Other Content. Other Content. Other Content. Other Content. Other Content. Other Content. Other Content. ", style = MaterialTheme.typography.bodyMedium)
         }
+    }
+}
+
+@Composable
+@Preview
+fun NotificationCard_Sample() {
+    NotificationCard(
+        icon = Icons.Default.Settings,
+    ) {
+        Text("Some Content")
     }
 }
