@@ -55,7 +55,7 @@
       android:fillColor="#2f2e41"/>
   <path
       android:pathData="M0,40.37h551v343.11h-551z"
-      android:fillColor="#e6e6e6"/>
+      android:fillColor="@color/secondaryGraphicsColor"/>
   <path
       android:pathData="M36.95,106.47h100.92v65.6h-100.92z"
       android:fillColor="#fff"/>
@@ -100,10 +100,10 @@
       android:fillColor="#fff"/>
   <path
       android:pathData="M138.25,0h12.11v69.63h-12.11z"
-      android:fillColor="#e6e6e6"/>
+      android:fillColor="@color/secondaryGraphicsColor"/>
   <path
       android:pathData="M388.53,0h12.11v69.63h-12.11z"
-      android:fillColor="#e6e6e6"/>
+      android:fillColor="@color/secondaryGraphicsColor"/>
   <path
       android:pathData="M486.41,139.26a22.76,22.76 0,1 1,-3.53 -12.19A22.76,22.76 0,0 1,486.41 139.26Z"
       android:fillColor="@color/primaryGraphicsColor"/>

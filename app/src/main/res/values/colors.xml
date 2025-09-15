@@ -4,4 +4,5 @@
     <color name="primaryLightColor">#5887ee</color>
     <color name="primaryDarkColor">#00338a</color>
     <color name="primaryGraphicsColor">#005bbb</color>
+    <color name="secondaryGraphicsColor">#b9b9b9</color>
 </resources>
