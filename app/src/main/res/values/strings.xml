@@ -552,4 +552,7 @@
     <string name="default_sync_interval">Default sync interval</string>
     <string name="wifi_only_title">Sync over WiFi only</string>
     <string name="wifi_only_ssids_title">WiFi SSID restriction</string>
+
+    <!-- managed configurations -->
+    <string name="login_type_managed">Please login</string>
 </resources>

@@ -73,6 +73,10 @@ class LoginActivity @Inject constructor(): AppCompatActivity() {
          */
         const val EXTRA_LOGIN_FLOW = "loginFlow"
 
+        /**
+         * When set, Managed Login will be used.
+         */
+        const val EXTRA_LOGIN_MANAGED = "loginManaged"
 
         /**
          * Extracts login information from given intent, validates it and returns it in [LoginInfo].

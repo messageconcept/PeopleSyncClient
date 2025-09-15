@@ -27,6 +27,8 @@ class StandardLoginTypesProvider @Inject constructor(
     override fun intentToInitialLoginType(intent: Intent): LoginAction =
         intent.data?.normalizeScheme().let { uri ->
             when {
+                intent.hasExtra(LoginActivity.EXTRA_LOGIN_MANAGED) ->
+                    LoginAction(ManagedLogin, true)
                 uri?.scheme == "mailto" ->
                     LoginAction(EmailLogin, true)
                 listOf("carddavs", "http", "https").any { uri?.scheme == it } ->
@@ -37,6 +39,9 @@ class StandardLoginTypesProvider @Inject constructor(
                 }
             }
         }
+
+    override val maybeNonInteractive: Boolean
+        get() = true
 
     @Composable
     override fun LoginTypePage(

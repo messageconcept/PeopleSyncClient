@@ -475,4 +475,6 @@
   <string name="widget_icon_sync_label">Sync-Taste-Symbol</string>
   <string name="widget_sync_description">Antippen, um die Synchronisierung manuell durchzuführen.</string>
   <!--cert4android-->
+  <!--managed configurations-->
+  <string name="login_type_managed">Bitte anmelden</string>
 </resources>

@@ -474,4 +474,6 @@
   <string name="widget_icon_sync_label">Pictogram synchronisatieknop</string>
   <string name="widget_sync_description">Tik om de synchronisatie handmatig uit te voeren.</string>
   <!--cert4android-->
+  <!--managed configurations-->
+  <string name="login_type_managed">Inloggen</string>
 </resources>

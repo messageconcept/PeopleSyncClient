@@ -49,6 +49,7 @@ class AccountsActivity: AppCompatActivity() {
                     // attach infos from managed settings
                     managedSettings.getBaseUrl()?.let {
                         intent.putExtra(LoginActivity.EXTRA_URL, it)
+                        intent.putExtra(LoginActivity.EXTRA_LOGIN_MANAGED, true)
                     }
                     managedSettings.getUsername()?.let {
                         intent.putExtra(LoginActivity.EXTRA_USERNAME, it)
