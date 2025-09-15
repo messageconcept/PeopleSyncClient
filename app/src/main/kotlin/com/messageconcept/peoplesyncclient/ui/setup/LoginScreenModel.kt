@@ -98,7 +98,9 @@ class LoginScreenModel @AssistedInject constructor(
             Page.DetectResources -> {
                 // continue to account details
                 val emails = foundConfig?.calDAV?.emails.orEmpty().toSet()
+                val principalName = foundConfig?.cardDAV?.principal?.pathSegments?.dropLast(1)?.last()
                 val initialAccountName = emails.firstOrNull()
+                    ?: principalName
                     ?: loginInfo.suggestedAccountName
                     ?: loginInfo.credentials?.username
                     ?: loginInfo.baseUri?.host
