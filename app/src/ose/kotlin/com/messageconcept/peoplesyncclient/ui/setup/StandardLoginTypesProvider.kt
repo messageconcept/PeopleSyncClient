@@ -20,10 +20,6 @@ class StandardLoginTypesProvider @Inject constructor(
             UrlLogin,
             EmailLogin,
         )
-
-        val specificLoginTypes = listOf(
-            GoogleLogin,
-        )
     }
 
     override val defaultLoginType = UrlLogin
