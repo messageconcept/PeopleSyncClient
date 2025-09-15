@@ -176,17 +176,6 @@ fun AccountSettingsScreen(
                     }
                 },
                 title = { Text(accountName) },
-                actions = {
-                    IconButton(onClick = {
-                        val settingsUri = ExternalUris.Manual.baseUrl.buildUpon()
-                            .appendPath(ExternalUris.Manual.PATH_SETTINGS)
-                            .fragment(ExternalUris.Manual.FRAGMENT_ACCOUNT_SETTINGS)
-                            .build()
-                        uriHandler.openUri(settingsUri.toString())
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.Help, stringResource(R.string.help))
-                    }
-                }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }

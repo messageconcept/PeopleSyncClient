@@ -51,7 +51,6 @@ object ExternalUris {
 
         const val PATH_SETTINGS = "settings.html"
         const val FRAGMENT_APP_SETTINGS = "app-wide-settings"
-        const val FRAGMENT_ACCOUNT_SETTINGS = "account-settings"
 
         const val PATH_WEBDAV_PUSH = "webdav_push.html"
         const val PATH_WEBDAV_MOUNTS = "webdav_mounts.html"
