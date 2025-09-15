@@ -364,11 +364,11 @@ class DavResourceFinder @AssistedInject constructor(
         var port = 443
         val paths = LinkedList<String>()     // there may be multiple paths to try
 
-        val query = "_${service.wellKnownName}s._tcp.$domain"
+        var query = "_${service.wellKnownName}s._tcp.$domain"
         log.fine("Looking up SRV records for $query")
 
-        val srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
-        val srv = dnsRecordResolver.bestSRVRecord(srvRecords)
+        var srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
+        var srv = dnsRecordResolver.bestSRVRecord(srvRecords)
 
         if (srv != null) {
             // choose SRV record to use (query may return multiple SRV records)
@@ -377,11 +377,25 @@ class DavResourceFinder @AssistedInject constructor(
             port = srv.port
             log.info("Found $service service at https://$fqdn:$port")
         } else {
-            // no SRV records, try domain name as FQDN
-            log.info("Didn't find $service service, trying at https://$domain:$port")
+            // try peoplesync SRV record
+            query = "_peoplesync._tcp.$domain"
+            log.fine("Looking up SRV records for $query")
+            srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
+            srv = dnsRecordResolver.bestSRVRecord(srvRecords)
+            if (srv != null && srv.weight == 0) {
+                // Weight 0 means https, 1 means http.
+                // Don't allow non-encrypted auto-configuration.
+                scheme = "https"
+                fqdn = srv.target.toString(true)
+                port = srv.port
+                log.info("Found $service service at https://$fqdn:$port")
+            } else {
+                // no SRV records, try domain name as FQDN
+                log.info("Didn't find $service service, trying at https://$domain:$port")
 
-            scheme = "https"
-            fqdn = domain
+                scheme = "https"
+                fqdn = domain
+            }
         }
 
         // look for TXT record too (for initial context path)
