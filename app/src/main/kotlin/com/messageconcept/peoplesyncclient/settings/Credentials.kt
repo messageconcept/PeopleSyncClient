@@ -22,7 +22,9 @@ data class Credentials(
     val certificateAlias: String? = null,
 
     /** OAuth authorization state */
-    val authState: AuthState? = null
+    val authState: AuthState? = null,
+
+    val baseUrl: String? = null
 ) {
 
     override fun toString(): String {

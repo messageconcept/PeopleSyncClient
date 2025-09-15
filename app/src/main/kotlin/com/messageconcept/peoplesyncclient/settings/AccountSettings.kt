@@ -287,7 +287,6 @@ class AccountSettings @AssistedInject constructor(
 
 
     companion object {
-
         const val CURRENT_VERSION = 20
         const val KEY_SETTINGS_VERSION = "version"
 
@@ -307,6 +306,8 @@ class AccountSettings @AssistedInject constructor(
 
         /** OAuth [AuthState] (serialized as JSON) */
         const val KEY_AUTH_STATE = "auth_state"
+
+        const val KEY_BASE_URL = "base_url"
 
         const val KEY_WIFI_ONLY = "wifi_only"               // sync on WiFi only (default: false)
         const val KEY_WIFI_ONLY_SSIDS = "wifi_only_ssids"   // restrict sync to specific WiFi SSIDs
@@ -340,6 +341,9 @@ class AccountSettings @AssistedInject constructor(
 
                 if (credentials.authState != null)
                     bundle.putString(KEY_AUTH_STATE, credentials.authState.jsonSerializeString())
+
+                if (credentials.baseUrl != null)
+                    bundle.putString(KEY_BASE_URL, credentials.baseUrl)
             }
 
             return bundle
