@@ -105,7 +105,7 @@ class RestrictionsProvider @Inject constructor(
         val keys = restrictions.keySet()
         val table = TextTable("Setting", "Value")
         keys.forEach { key ->
-            val value = restrictions.get(key)
+            val value = SettingsUtils.filterPassword(key, restrictions.get(key))
             table.addLine(key, value)
         }
         writer.write(table.toString())
