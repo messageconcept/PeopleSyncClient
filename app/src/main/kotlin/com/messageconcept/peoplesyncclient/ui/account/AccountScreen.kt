@@ -273,35 +273,6 @@ fun AccountScreen(
                 modifier = Modifier.padding(padding)
             ) {
                 if (nrPages > 0) {
-                    SharedTransitionLayout {
-                        val idxCurrentPage = pagerState.currentPage
-
-                        // The icon shall be shown when the scroll state is at the top (= we can't scroll backward)
-                        val currentPageScrollState = when (idxCurrentPage) {
-                            idxCardDav -> cardDavScrollState
-                            else -> null
-                        }
-                        AnimatedContent(
-                            targetState = currentPageScrollState?.canScrollBackward != true
-                        ) { showIcon ->
-                            TabRow(selectedTabIndex = idxCurrentPage) {
-                                if (idxCardDav != null)
-                                    AccountScreen_Tab(
-                                        selected = idxCurrentPage == idxCardDav,
-                                        showIcon = showIcon,
-                                        icon = Icons.Default.Group,
-                                        text = stringResource(R.string.account_carddav),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                    ) {
-                                        scope.launch {
-                                            pagerState.scrollToPage(idxCardDav)
-                                        }
-                                    }
-                            }
-                        }
-                    }
-
                     HorizontalPager(
                         pagerState,
                         verticalAlignment = Alignment.Top,
