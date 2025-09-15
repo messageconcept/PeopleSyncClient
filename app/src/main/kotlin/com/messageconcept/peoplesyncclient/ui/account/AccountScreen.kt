@@ -238,19 +238,6 @@ fun AccountScreen(
             },
             floatingActionButton = {
                 Column(horizontalAlignment = Alignment.End) {
-                    ExtendedFloatingActionButton(
-                        text = {
-                            Text(stringResource(R.string.account_refresh_collections))
-                        },
-                        icon = {
-                            Icon(Icons.Outlined.RuleFolder, stringResource(R.string.account_refresh_collections))
-                        },
-                        onClick = onRefreshCollections,
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-
                     if (pagerState.currentPage == idxCardDav)
                         ExtendedFloatingActionButton(
                             text = {
