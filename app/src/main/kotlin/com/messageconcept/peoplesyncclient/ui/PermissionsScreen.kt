@@ -149,19 +149,6 @@ fun PermissionsScreen(
                 )
             }
 
-            val allPermissions = mutableListOf<String>()
-            allPermissions.addAll(PermissionUtils.CONTACT_PERMISSIONS)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                allPermissions += Manifest.permission.POST_NOTIFICATIONS
-            PermissionSwitchRow(
-                text = stringResource(R.string.permissions_all_title),
-                permissions = allPermissions,
-                summaryWhenGranted = stringResource(R.string.permissions_all_status_on),
-                summaryWhenNotGranted = stringResource(R.string.permissions_all_status_off),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                 PermissionSwitchRow(
                     text = stringResource(R.string.permissions_notification_title),
