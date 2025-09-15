@@ -242,16 +242,16 @@ fun BrandingHeader() {
         Spacer(Modifier.height(16.dp))
         Box(
             Modifier.background(
-                color = M3ColorScheme.primaryLight,
+                color = Color.White,
                 shape = RoundedCornerShape(16.dp)
             )
         ) {
             Icon(
                 painterResource(R.drawable.ic_launcher_foreground),
                 stringResource(R.string.app_name),
-                tint = Color.White,
+                tint = M3ColorScheme.primaryLight,
                 modifier = Modifier
-                    .scale(1.2f)
+                    .scale(1.5f)
                     .size(64.dp)
             )
         }
