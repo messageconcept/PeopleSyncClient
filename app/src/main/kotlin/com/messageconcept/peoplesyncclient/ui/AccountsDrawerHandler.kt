@@ -258,7 +258,7 @@ fun BrandingHeader() {
         Spacer(Modifier.height(8.dp))
 
         Text(
-            stringResource(R.string.app_name),
+            stringResource(R.string.navigation_drawer_title),
             color = Color.White,
             style = MaterialTheme.typography.bodyLarge
         )
