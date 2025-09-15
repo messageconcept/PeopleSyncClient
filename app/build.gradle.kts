@@ -193,10 +193,6 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.openid.appauth)
 
-    // force some versions for compatibility with our minSdk level (see version catalog for details)
-    implementation(libs.commons.codec)
-    implementation(libs.commons.lang)
-
     // for tests
     androidTestImplementation(libs.androidx.arch.core.testing)
     androidTestImplementation(libs.androidx.test.core)
