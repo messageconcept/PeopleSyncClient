@@ -9,7 +9,8 @@
 -printusage build/reports/r8-usage.txt
 
 # keep rules
--keep class at.bitfire.** { *; }        # all PeopleSync code is required
+-keep class at.bitfire.** { *; }         # all DAVx⁵ code is required
+-keep class com.messageconcept.** { *; } # all PeopleSync code is required
 -keep class org.xmlpull.** { *; }
 
 # Additional rules which are now required since missing classes can't be ignored in R8 anymore.
