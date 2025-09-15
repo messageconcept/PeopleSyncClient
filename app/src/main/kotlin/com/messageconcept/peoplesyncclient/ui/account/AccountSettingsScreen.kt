@@ -493,32 +493,6 @@ fun AuthenticationSettings(
                     onClick = onAuthenticateOAuth
                 )
             }
-
-            // client certificate
-            Setting(
-                icon = null,
-                name = stringResource(R.string.settings_certificate_alias),
-                summary = credentials.certificateAlias ?: stringResource(R.string.settings_certificate_alias_empty),
-                enabled = isEnabled,
-                onClick = {
-                    val activity = context as Activity
-                    KeyChain.choosePrivateKeyAlias(activity, { newAlias ->
-                        if (newAlias != null)
-                            onUpdateCredentials(credentials.copy(certificateAlias = newAlias))
-                        else
-                            scope.launch {
-                                if (snackbarHostState.showSnackbar(
-                                        context.getString(R.string.settings_certificate_alias_empty),
-                                        actionLabel = context.getString(R.string.settings_certificate_install)
-                                    ) == SnackbarResult.ActionPerformed) {
-                                    val intent = KeyChain.createInstallIntent()
-                                    if (intent.resolveActivity(context.packageManager) != null)
-                                        context.startActivity(intent)
-                                }
-                            }
-                    }, null, null, null, -1, credentials.certificateAlias)
-                }
-            )
     }
 }
 
