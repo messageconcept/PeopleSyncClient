@@ -148,7 +148,7 @@ class DebugInfoModel @AssistedInject constructor(
         try {
             uiState = uiState.copy(zipInProgress = true)
 
-            val file = File(LogFileHandler.debugDir(context), "davx5-debug.zip")
+            val file = File(LogFileHandler.debugDir(context), "peoplesync-debug.zip")
             logger.fine("Writing debug info to ${file.absolutePath}")
             ZipOutputStream(file.outputStream().buffered()).use { zip ->
                 zip.setLevel(9)
