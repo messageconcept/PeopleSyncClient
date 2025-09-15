@@ -21,10 +21,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +43,14 @@ class WelcomePage: IntroPage() {
     override val customTopInsets: Boolean = true
 
     override fun getShowPolicy() = ShowPolicy.SHOW_ONLY_WITH_OTHERS
+
+    private val provider = GoogleFont.Provider(
+        providerAuthority = "com.google.android.gms.fonts",
+        providerPackage = "com.google.android.gms",
+        certificates = R.array.com_google_android_gms_fonts_certs
+    )
+    private val fontName = GoogleFont("Open Sans")
+    private val fontFamily = FontFamily(Font(googleFont = fontName, fontProvider = provider))
 
     @Composable
     override fun ComposePage() {
@@ -62,34 +75,37 @@ class WelcomePage: IntroPage() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 48.dp)
-                    .weight(2f)
+                    .weight(1.5f)
+                    .scale(0.8f)
             )
 
             Text(
                 text = stringResource(R.string.intro_slogan1),
                 color = Color.White,
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 34.sp),
-                lineHeight = 38.sp,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 48.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(horizontal = 16.dp)
+                    .weight(0.5f)
             )
 
             Text(
                 text = stringResource(R.string.intro_slogan2),
                 color = Color.White,
-                style = MaterialTheme.typography.labelLarge.copy(fontSize = 48.sp),
-                lineHeight = 52.sp,
+                fontFamily = fontFamily,
+                fontSize = 32.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(horizontal = 32.dp)
+                    .weight(1.5f)
             )
 
-            Spacer(modifier = Modifier.weight(0.1f))
+            Spacer(modifier = Modifier.weight(0.3f))
         }
     }
 
@@ -135,7 +151,9 @@ class WelcomePage: IntroPage() {
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .weight(1f)
+                        .padding(horizontal = 48.dp)
+                        .weight(1.5f)
+                        .scale(0.8f)
                 )
 
                 Column(
@@ -146,8 +164,9 @@ class WelcomePage: IntroPage() {
                     Text(
                         text = stringResource(R.string.intro_slogan1),
                         color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 34.sp),
-                        lineHeight = 38.sp,
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 48.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -155,8 +174,8 @@ class WelcomePage: IntroPage() {
                     Text(
                         text = stringResource(R.string.intro_slogan2),
                         color = Color.White,
-                        style = MaterialTheme.typography.labelLarge.copy(fontSize = 48.sp),
-                        lineHeight = 52.sp,
+                        fontFamily = fontFamily,
+                        fontSize = 32.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(top = 16.dp)

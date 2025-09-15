@@ -27,8 +27,6 @@
   <string name="notification_channel_sync_io_errors">Netwerk en I/O fouten</string>
   <string name="notification_channel_sync_io_errors_desc">Timeouts, connectie problemen, etc. (vaak tijdelijk).</string>
   <!--IntroActivity-->
-  <string name="intro_slogan1">Jouw gegevens. Jouw keuze.</string>
-  <string name="intro_slogan2">Houd zelf de controle</string>
   <string name="intro_battery_title">regelmatige sync-intervallen</string>
   <string name="intro_battery_text">Om op gezette tijden te synchroniseren moet %s zonder beperking op de achtergrond kunnen draaien. Anders kan Android het synchroniseren op elk moment onderbreken.</string>
   <string name="intro_battery_dont_show">Synchroniseren op gezette tijden is niet nodig.*</string>

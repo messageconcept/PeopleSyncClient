@@ -161,6 +161,7 @@ dependencies {
     implementation(libs.compose.materialIconsExtended)
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.toolingPreview)
+    implementation(libs.compose.ui.text.google.fonts)
 
     // Glance Widgets
     implementation(libs.glance.base)

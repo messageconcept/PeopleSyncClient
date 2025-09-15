@@ -27,8 +27,6 @@
   <string name="notification_channel_sync_io_errors">Erreurs de réseau et d\'entrée/sortie</string>
   <string name="notification_channel_sync_io_errors_desc">Délais d\'attente, problèmes de connexion, etc. (souvent temporaires)</string>
   <!--IntroActivity-->
-  <string name="intro_slogan1">Vos données, votre choix.</string>
-  <string name="intro_slogan2">Prenez le contrôle.</string>
   <string name="intro_battery_title">Intervalles de synchronisation régulières</string>
   <string name="intro_battery_text">Pour une synchronisation à intervalles réguliers, %s doit être autorisé à fonctionner en arrière-plan. Sinon, Android peut interrompre la synchronisation à tout moment.</string>
   <string name="intro_battery_dont_show">Je n\'ai pas besoin d\'intervalles de synchronisation réguliers.*</string>

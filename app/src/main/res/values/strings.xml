@@ -38,8 +38,8 @@
     <string name="notification_channel_sync_io_errors_desc">Timeouts, connection problems, etc. (often temporary)</string>
 
     <!-- IntroActivity -->
-    <string name="intro_slogan1">Your data. Your choice.</string>
-    <string name="intro_slogan2">Take control.</string>
+    <string name="intro_slogan1">PeopleSync</string>
+    <string name="intro_slogan2">All contacts. Everywhere.</string>
     <string name="intro_battery_title">Regular sync intervals</string>
     <string name="intro_battery_text">For synchronization at regular intervals, %s must be allowed to run in the background. Otherwise, Android may pause synchronization at any time.</string>
     <string name="intro_battery_dont_show">I don\'t need regular sync intervals.*</string>
