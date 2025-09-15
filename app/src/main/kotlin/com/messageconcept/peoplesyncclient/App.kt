@@ -9,6 +9,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.messageconcept.peoplesyncclient.log.LogManager
 import com.messageconcept.peoplesyncclient.startup.StartupPlugin
+import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.sync.account.AccountsCleanupWorker
 import com.messageconcept.peoplesyncclient.ui.UiUtils
 import dagger.hilt.android.HiltAndroidApp
@@ -42,6 +43,8 @@ class App: Application(), Configuration.Provider {
             .setWorkerFactory(workerFactory)
             .build()
 
+    @Inject
+    lateinit var managedSettings: ManagedSettings
 
     override fun onCreate() {
         super.onCreate()
@@ -66,6 +69,9 @@ class App: Application(), Configuration.Provider {
 
             // create/update app shortcuts
             UiUtils.updateShortcuts(this@App)
+
+            // trigger account updates when managed settings have changed
+            managedSettings.updateAccounts()
 
             // run startup plugins (async)
             for (plugin in plugins.sortedBy { it.priorityAsync() }) {
