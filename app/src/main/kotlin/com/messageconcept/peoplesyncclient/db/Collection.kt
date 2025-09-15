@@ -27,7 +27,6 @@ import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.ResourceType
 import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
 import com.messageconcept.peoplesyncclient.util.trimToNull
-import at.bitfire.ical4android.util.DateUtils
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -192,36 +191,6 @@ data class Collection(
             when (type) {
                 TYPE_ADDRESSBOOK -> {
                     dav[AddressbookDescription::class.java]?.let { description = it.description }
-                }
-                TYPE_CALENDAR, TYPE_WEBCAL -> {
-                    dav[CalendarDescription::class.java]?.let { description = it.description }
-                    dav[CalendarColor::class.java]?.let { color = it.color }
-                    dav[CalendarTimezoneId::class.java]?.let { timezoneId = it.identifier }
-                    if (timezoneId == null)
-                        dav[CalendarTimezone::class.java]?.vTimeZone?.let {
-                            timezoneId = DateUtils.parseVTimeZone(it)?.timeZoneId?.value
-                        }
-
-                    if (type == TYPE_CALENDAR) {
-                        supportsVEVENT = true
-                        supportsVTODO = true
-                        supportsVJOURNAL = true
-                        dav[SupportedCalendarComponentSet::class.java]?.let {
-                            supportsVEVENT = it.supportsEvents
-                            supportsVTODO = it.supportsTasks
-                            supportsVJOURNAL = it.supportsJournal
-                        }
-                    } else { // Type.WEBCAL
-                        dav[Source::class.java]?.let {
-                            source = it.hrefs.firstOrNull()?.let { rawHref ->
-                                val href = rawHref
-                                        .replace("^webcal://".toRegex(), "http://")
-                                        .replace("^webcals://".toRegex(), "https://")
-                                href.toHttpUrlOrNull()
-                            }
-                        }
-                        supportsVEVENT = true
-                    }
                 }
             }
 

@@ -9,7 +9,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SyncRequest
 import android.os.Bundle
-import android.provider.CalendarContract
+import android.provider.ContactsContract
 import androidx.test.filters.SdkSuppress
 import com.messageconcept.peoplesyncclient.sync.account.TestAccount
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -49,7 +49,7 @@ class AndroidSyncFrameworkTest {
     lateinit var logger: Logger
 
     lateinit var account: Account
-    val authority = CalendarContract.AUTHORITY
+    val authority = ContactsContract.AUTHORITY
 
     private lateinit var stateChangeListener: Any
     private val recordedStates = Collections.synchronizedList(LinkedList<State>())
@@ -58,7 +58,7 @@ class AndroidSyncFrameworkTest {
     fun setUp() {
         hiltRule.inject()
 
-        account = TestAccount.create()
+        account = TestAccount.createAddressbookAccount()
 
         // Enable sync globally and for the test account
         ContentResolver.setIsSyncable(account, authority, 1)

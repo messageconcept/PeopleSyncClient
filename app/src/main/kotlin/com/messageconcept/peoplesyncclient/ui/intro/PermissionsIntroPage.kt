@@ -9,9 +9,7 @@ import androidx.compose.runtime.Composable
 import com.messageconcept.peoplesyncclient.ui.PermissionsModel
 import com.messageconcept.peoplesyncclient.ui.PermissionsScreen
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
-import com.messageconcept.peoplesyncclient.util.PermissionUtils.CALENDAR_PERMISSIONS
 import com.messageconcept.peoplesyncclient.util.PermissionUtils.CONTACT_PERMISSIONS
-import at.bitfire.ical4android.TaskProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -23,10 +21,7 @@ class PermissionsIntroPage @Inject constructor(
 
     override fun getShowPolicy(): ShowPolicy {
         // show PermissionsFragment as intro fragment when no permissions are granted
-        val permissions = CONTACT_PERMISSIONS + CALENDAR_PERMISSIONS +
-                TaskProvider.PERMISSIONS_JTX +
-                TaskProvider.PERMISSIONS_OPENTASKS +
-                TaskProvider.PERMISSIONS_TASKS_ORG
+        val permissions = CONTACT_PERMISSIONS
         return if (PermissionUtils.haveAnyPermission(context, permissions))
             ShowPolicy.DONT_SHOW
         else

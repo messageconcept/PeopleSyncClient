@@ -30,6 +30,17 @@ object TestAccount {
         return account
     }
 
+    fun createAddressbookAccount(version: Int = AccountSettings.CURRENT_VERSION): Account {
+        val accountType = targetContext.getString(R.string.account_type_address_book)
+        val account = Account("Test Account", accountType)
+
+        val initialData = AccountSettings.initialUserData(null)
+        initialData.putString(AccountSettings.KEY_SETTINGS_VERSION, version.toString())
+        assertTrue(SystemAccountUtils.createAccount(targetContext, account, initialData))
+
+        return account
+    }
+
     /**
      * Removes a test account, usually in the `@After` tearDown of a test.
      */

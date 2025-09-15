@@ -38,14 +38,6 @@ object Settings {
     const val PREFERRED_THEME = "preferred_theme"
     const val PREFERRED_THEME_DEFAULT = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 
-    /**
-     * Selected tasks app. When at least one tasks app is installed, this setting is set to its sync authority.
-     * In case of multiple available tasks app, the user can choose one and this setting will reflect the selected one.
-     *
-     * This setting may even be set if the corresponding tasks app is not installed because it only reflects the user's choice.
-     */
-    const val SELECTED_TASKS_PROVIDER = "preferred_tasks_provider"
-
     /** whether collections are automatically selected for synchronization after their initial detection */
     const val PRESELECT_COLLECTIONS = "preselect_collections"
     /** collections are not automatically selected for synchronization */

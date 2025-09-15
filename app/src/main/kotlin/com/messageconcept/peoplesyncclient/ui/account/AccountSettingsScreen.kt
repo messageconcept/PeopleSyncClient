@@ -102,12 +102,6 @@ fun AccountSettingsScreen(
             hasContactsSync = uiState.hasContactsSync,
             contactsSyncInterval = uiState.syncIntervalContacts,
             onUpdateContactsSyncInterval = model::updateContactsSyncInterval,
-            hasCalendarsSync = uiState.hasCalendarsSync,
-            calendarSyncInterval = uiState.syncIntervalCalendars,
-            onUpdateCalendarSyncInterval = model::updateCalendarSyncInterval,
-            hasTasksSync = uiState.hasTasksSync,
-            tasksSyncInterval = uiState.syncIntervalTasks,
-            onUpdateTasksSyncInterval = model::updateTasksSyncInterval,
             syncOnlyOnWifi = uiState.syncWifiOnly,
             onUpdateSyncOnlyOnWifi = model::updateSyncWifiOnly,
             onlyOnSsids = uiState.syncWifiOnlySSIDs,
@@ -124,16 +118,6 @@ fun AccountSettingsScreen(
                     authRequestContract.launch(request)
             },
             isCredentialsUpdateAllowed = uiState.allowCredentialsChange,
-
-            // CalDav Settings
-            timeRangePastDays = uiState.timeRangePastDays,
-            onUpdateTimeRangePastDays = model::updateTimeRangePastDays,
-            defaultAlarmMinBefore = uiState.defaultAlarmMinBefore,
-            onUpdateDefaultAlarmMinBefore = model::updateDefaultAlarm,
-            manageCalendarColors = uiState.manageCalendarColors,
-            onUpdateManageCalendarColors = model::updateManageCalendarColors,
-            eventColors = uiState.eventColors,
-            onUpdateEventColors = model::updateEventColors,
 
             // CardDav Settings
             contactGroupMethod = uiState.contactGroupMethod,
@@ -155,12 +139,6 @@ fun AccountSettingsScreen(
     hasContactsSync: Boolean,
     contactsSyncInterval: Long?,
     onUpdateContactsSyncInterval: ((Long) -> Unit) = {},
-    hasCalendarsSync: Boolean,
-    calendarSyncInterval: Long?,
-    onUpdateCalendarSyncInterval: ((Long) -> Unit) = {},
-    hasTasksSync: Boolean,
-    tasksSyncInterval: Long?,
-    onUpdateTasksSyncInterval: ((Long) -> Unit) = {},
     syncOnlyOnWifi: Boolean,
     onUpdateSyncOnlyOnWifi: (Boolean) -> Unit = {},
     onlyOnSsids: List<String>?,
@@ -173,16 +151,6 @@ fun AccountSettingsScreen(
     onUpdateCredentials: (Credentials) -> Unit = {},
     onAuthenticateOAuth: () -> Unit = {},
     isCredentialsUpdateAllowed: Boolean,
-
-    // CalDav Settings
-    timeRangePastDays: Int?,
-    onUpdateTimeRangePastDays: (Int?) -> Unit = {},
-    defaultAlarmMinBefore: Int?,
-    onUpdateDefaultAlarmMinBefore: (Int?) -> Unit = {},
-    manageCalendarColors: Boolean,
-    onUpdateManageCalendarColors: (Boolean) -> Unit = {},
-    eventColors: Boolean,
-    onUpdateEventColors: (Boolean) -> Unit = {},
 
     // CardDav Settings
     contactGroupMethod: GroupMethod,
@@ -237,12 +205,6 @@ fun AccountSettingsScreen(
                 hasContactsSync = hasContactsSync,
                 contactsSyncInterval = contactsSyncInterval,
                 onUpdateContactsSyncInterval = onUpdateContactsSyncInterval,
-                hasCalendarsSync = hasCalendarsSync,
-                calendarSyncInterval = calendarSyncInterval,
-                onUpdateCalendarSyncInterval = onUpdateCalendarSyncInterval,
-                hasTasksSync = hasTasksSync,
-                taskSyncInterval = tasksSyncInterval,
-                onUpdateTaskSyncInterval = onUpdateTasksSyncInterval,
                 syncOnlyOnWifi = syncOnlyOnWifi,
                 onUpdateSyncOnlyOnWifi = onUpdateSyncOnlyOnWifi,
                 onlyOnSsids = onlyOnSsids,
@@ -255,16 +217,6 @@ fun AccountSettingsScreen(
                 onUpdateCredentials = onUpdateCredentials,
                 onAuthenticateOAuth = onAuthenticateOAuth,
                 isCredentialsUpdateAllowed = isCredentialsUpdateAllowed,
-
-                // CalDav Settings
-                timeRangePastDays = timeRangePastDays,
-                onUpdateTimeRangePastDays = onUpdateTimeRangePastDays,
-                defaultAlarmMinBefore = defaultAlarmMinBefore,
-                onUpdateDefaultAlarmMinBefore = onUpdateDefaultAlarmMinBefore,
-                manageCalendarColors = manageCalendarColors,
-                onUpdateManageCalendarColors = onUpdateManageCalendarColors,
-                eventColors = eventColors,
-                onUpdateEventColors = onUpdateEventColors,
 
                 // CardDav Settings
                 contactGroupMethod = contactGroupMethod,
@@ -284,12 +236,6 @@ fun AccountSettings_FromModel(
     hasContactsSync: Boolean,
     contactsSyncInterval: Long?,
     onUpdateContactsSyncInterval: ((Long) -> Unit) = {},
-    hasCalendarsSync: Boolean,
-    calendarSyncInterval: Long?,
-    onUpdateCalendarSyncInterval: ((Long) -> Unit) = {},
-    hasTasksSync: Boolean,
-    taskSyncInterval: Long?,
-    onUpdateTaskSyncInterval: ((Long) -> Unit) = {},
     syncOnlyOnWifi: Boolean,
     onUpdateSyncOnlyOnWifi: (Boolean) -> Unit = {},
     onlyOnSsids: List<String>?,
@@ -303,16 +249,6 @@ fun AccountSettings_FromModel(
     onAuthenticateOAuth: () -> Unit = {},
     isCredentialsUpdateAllowed: Boolean,
 
-    // CalDav Settings
-    timeRangePastDays: Int?,
-    onUpdateTimeRangePastDays: (Int?) -> Unit = {},
-    defaultAlarmMinBefore: Int?,
-    onUpdateDefaultAlarmMinBefore: (Int?) -> Unit = {},
-    manageCalendarColors: Boolean,
-    onUpdateManageCalendarColors: (Boolean) -> Unit = {},
-    eventColors: Boolean,
-    onUpdateEventColors: (Boolean) -> Unit = {},
-
     // CardDav Settings
     contactGroupMethod: GroupMethod,
     onUpdateContactGroupMethod: (GroupMethod) -> Unit = {},
@@ -324,12 +260,6 @@ fun AccountSettings_FromModel(
             hasContactsSync = hasContactsSync,
             contactsSyncInterval = contactsSyncInterval,
             onUpdateContactsSyncInterval = onUpdateContactsSyncInterval,
-            hasCalendarsSync = hasCalendarsSync,
-            calendarSyncInterval = calendarSyncInterval,
-            onUpdateCalendarSyncInterval = onUpdateCalendarSyncInterval,
-            hasTasksSync = hasTasksSync,
-            taskSyncInterval = taskSyncInterval,
-            onUpdateTaskSyncInterval = onUpdateTaskSyncInterval,
             syncOnlyOnWifi = syncOnlyOnWifi,
             onUpdateSyncOnlyOnWifi = onUpdateSyncOnlyOnWifi,
             onlyOnSsids = onlyOnSsids,
@@ -348,17 +278,6 @@ fun AccountSettings_FromModel(
             )
         }
 
-        CalDavSettings(
-            timeRangePastDays = timeRangePastDays,
-            onUpdateTimeRangePastDays = onUpdateTimeRangePastDays,
-            defaultAlarmMinBefore = defaultAlarmMinBefore,
-            onUpdateDefaultAlarmMinBefore = onUpdateDefaultAlarmMinBefore,
-            manageCalendarColors = manageCalendarColors,
-            onUpdateManageCalendarColors = onUpdateManageCalendarColors,
-            eventColors = eventColors,
-            onUpdateEventColors = onUpdateEventColors,
-        )
-
         CardDavSettings(
             contactGroupMethod = contactGroupMethod,
             onUpdateContactGroupMethod = onUpdateContactGroupMethod
@@ -373,12 +292,6 @@ fun SyncSettings(
     hasContactsSync: Boolean,
     contactsSyncInterval: Long?,
     onUpdateContactsSyncInterval: ((Long) -> Unit) = {},
-    hasCalendarsSync: Boolean,
-    calendarSyncInterval: Long?,
-    onUpdateCalendarSyncInterval: ((Long) -> Unit) = {},
-    hasTasksSync: Boolean,
-    taskSyncInterval: Long?,
-    onUpdateTaskSyncInterval: ((Long) -> Unit) = {},
     syncOnlyOnWifi: Boolean,
     onUpdateSyncOnlyOnWifi: (Boolean) -> Unit = {},
     onlyOnSsids: List<String>?,
@@ -397,20 +310,6 @@ fun SyncSettings(
                 name = R.string.settings_sync_interval_contacts,
                 syncInterval = contactsSyncInterval,
                 onUpdateSyncInterval = onUpdateContactsSyncInterval
-            )
-        if (hasCalendarsSync)
-            SyncIntervalSetting(
-                icon = Icons.Default.Event,
-                name = R.string.settings_sync_interval_calendars,
-                syncInterval = calendarSyncInterval,
-                onUpdateSyncInterval = onUpdateCalendarSyncInterval
-            )
-        if (hasTasksSync)
-            SyncIntervalSetting(
-                icon = Icons.Outlined.Task,
-                name = R.string.settings_sync_interval_tasks,
-                syncInterval = taskSyncInterval,
-                onUpdateSyncInterval = onUpdateTaskSyncInterval
             )
 
         SwitchSetting(
@@ -767,12 +666,6 @@ fun AccountSettingsScreen_Preview() {
             hasContactsSync = true,
             contactsSyncInterval = 80000L,
             onUpdateContactsSyncInterval = {},
-            hasCalendarsSync = true,
-            calendarSyncInterval = 50000L,
-            onUpdateCalendarSyncInterval = {},
-            hasTasksSync = true,
-            tasksSyncInterval = 900000L,
-            onUpdateTasksSyncInterval = {},
             syncOnlyOnWifi = true,
             onUpdateSyncOnlyOnWifi = {},
             onlyOnSsids = listOf("HeyWifi", "Another"),
@@ -784,16 +677,6 @@ fun AccountSettingsScreen_Preview() {
             credentials = Credentials(username = "test", password = "test".toCharArray()),
             onUpdateCredentials = {},
             isCredentialsUpdateAllowed = true,
-
-            // CalDav Settings
-            timeRangePastDays = 365,
-            onUpdateTimeRangePastDays = {},
-            defaultAlarmMinBefore = 585,
-            onUpdateDefaultAlarmMinBefore = {},
-            manageCalendarColors = false,
-            onUpdateManageCalendarColors = {},
-            eventColors = false,
-            onUpdateEventColors = {},
 
             // CardDav Settings
             contactGroupMethod = GroupMethod.GROUP_VCARDS,

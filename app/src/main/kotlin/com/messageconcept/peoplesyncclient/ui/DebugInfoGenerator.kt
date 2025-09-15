@@ -19,7 +19,6 @@ import android.os.Environment
 import android.os.LocaleList
 import android.os.PowerManager
 import android.os.StatFs
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.text.format.DateUtils
 import android.text.format.Formatter
@@ -44,10 +43,7 @@ import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import com.messageconcept.peoplesyncclient.sync.adapter.SyncFrameworkIntegration
 import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker
-import at.bitfire.ical4android.TaskProvider
-import at.techbee.jtx.JtxContract
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.dmfs.tasks.contract.TaskContract
 import java.io.PrintWriter
 import java.io.Writer
 import java.time.Instant
@@ -59,9 +55,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import kotlin.use
-import at.bitfire.ical4android.util.MiscUtils.asSyncAdapter as asCalendarSyncAdapter
 import at.bitfire.vcard4android.Utils.asSyncAdapter as asContactsSyncAdapter
-import at.techbee.jtx.JtxContract.asSyncAdapter as asJtxSyncAdapter
 
 @WorkerThread
 class DebugInfoGenerator @Inject constructor(
@@ -140,19 +134,13 @@ class DebugInfoGenerator @Inject constructor(
 
             val packageNames = mutableSetOf(      // we always want info about these packages:
                 BuildConfig.APPLICATION_ID,            // PeopleSync
-                TaskProvider.ProviderName.JtxBoard.packageName,     // jtx Board
-                TaskProvider.ProviderName.OpenTasks.packageName,    // OpenTasks
-                TaskProvider.ProviderName.TasksOrg.packageName      // tasks.org
             )
-            // ... and info about contact and calendar provider
-            for (authority in arrayOf(ContactsContract.AUTHORITY, CalendarContract.AUTHORITY))
+            // ... and info about contact provider
+            for (authority in arrayOf(ContactsContract.AUTHORITY))
                 pm.resolveContentProvider(authority, 0)?.let { packageNames += it.packageName }
-            // ... and info about contact, calendar, task-editing apps
+            // ... and info about contact-editing apps
             val dataUris = arrayOf(
                 ContactsContract.Contacts.CONTENT_URI,
-                CalendarContract.Events.CONTENT_URI,
-                TaskContract.Tasks.getContentUri(TaskProvider.ProviderName.OpenTasks.authority),
-                TaskContract.Tasks.getContentUri(TaskProvider.ProviderName.TasksOrg.authority)
             )
             for (uri in dataUris) {
                 val viewIntent = Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(uri, /* some random ID */ 1))
@@ -364,11 +352,7 @@ class DebugInfoGenerator @Inject constructor(
                 writer.append(", SSIDs: ${ssids.joinToString(", ")}")
             }
             writer.append(
-                "\n  Contact group method: ${accountSettings.getGroupMethod()}\n" +
-                        "  Time range (past days): ${accountSettings.getTimeRangePastDays()}\n" +
-                        "  Default alarm (min before): ${accountSettings.getDefaultAlarm()}\n" +
-                        "  Manage calendar colors: ${accountSettings.getManageCalendarColors()}\n" +
-                        "  Use event colors: ${accountSettings.getEventColors()}\n"
+                "\n  Contact group method: ${accountSettings.getGroupMethod()}\n"
             )
 
             writer.append("\nSync workers:\n")
@@ -541,12 +525,6 @@ class DebugInfoGenerator @Inject constructor(
         companion object {
 
             internal fun caldavAccount(account: Account) = listOf(
-                AccountDumpInfo(account, CalendarContract.AUTHORITY, CalendarContract.Events.CONTENT_URI.asCalendarSyncAdapter(account), "event(s)"),
-                AccountDumpInfo(account, TaskProvider.ProviderName.JtxBoard.authority, JtxContract.JtxICalObject.CONTENT_URI.asJtxSyncAdapter(account), "jtx Board ICalObject(s)"),
-                AccountDumpInfo(account, TaskProvider.ProviderName.OpenTasks.authority, TaskContract.Tasks.getContentUri(
-                    TaskProvider.ProviderName.OpenTasks.authority).asCalendarSyncAdapter(account), "OpenTasks task(s)"),
-                AccountDumpInfo(account, TaskProvider.ProviderName.TasksOrg.authority, TaskContract.Tasks.getContentUri(
-                    TaskProvider.ProviderName.TasksOrg.authority).asCalendarSyncAdapter(account), "tasks.org task(s)"),
                 AccountDumpInfo(account, ContactsContract.AUTHORITY, ContactsContract.RawContacts.CONTENT_URI.asContactsSyncAdapter(account), "wrongly assigned raw contact(s)")
             )
 

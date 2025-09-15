@@ -46,9 +46,6 @@ open class OseAccountsDrawerHandler @Inject constructor(): AccountsDrawerHandler
             }
         )
 
-        // Tools
-        Tools()
-
         // Support the project
         MenuHeading(R.string.navigation_drawer_support_project)
         Contribute(onContribute = {

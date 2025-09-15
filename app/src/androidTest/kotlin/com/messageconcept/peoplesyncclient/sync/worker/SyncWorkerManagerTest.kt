@@ -59,10 +59,10 @@ class SyncWorkerManagerTest {
 
     @Test
     fun testEnqueueOneTime() {
-        val workerName = OneTimeSyncWorker.workerName(account, SyncDataType.EVENTS)
+        val workerName = OneTimeSyncWorker.workerName(account, SyncDataType.CONTACTS)
         assertFalse(TestUtils.workScheduledOrRunningOrSuccessful(context, workerName))
 
-        val returnedName = syncWorkerManager.enqueueOneTime(account, SyncDataType.EVENTS)
+        val returnedName = syncWorkerManager.enqueueOneTime(account, SyncDataType.CONTACTS)
         assertEquals(workerName, returnedName)
         assertTrue(TestUtils.workScheduledOrRunningOrSuccessful(context, workerName))
     }
@@ -72,18 +72,18 @@ class SyncWorkerManagerTest {
 
     @Test
     fun enablePeriodic() {
-        syncWorkerManager.enablePeriodic(account, SyncDataType.EVENTS, 60, false).result.get()
+        syncWorkerManager.enablePeriodic(account, SyncDataType.CONTACTS, 60, false).result.get()
 
-        val workerName = PeriodicSyncWorker.workerName(account, SyncDataType.EVENTS)
+        val workerName = PeriodicSyncWorker.workerName(account, SyncDataType.CONTACTS)
         assertTrue(workScheduledOrRunning(context, workerName))
     }
 
     @Test
     fun disablePeriodic() {
-        syncWorkerManager.enablePeriodic(account, SyncDataType.EVENTS, 60, false).result.get()
-        syncWorkerManager.disablePeriodic(account, SyncDataType.EVENTS).result.get()
+        syncWorkerManager.enablePeriodic(account, SyncDataType.CONTACTS, 60, false).result.get()
+        syncWorkerManager.disablePeriodic(account, SyncDataType.CONTACTS).result.get()
 
-        val workerName = PeriodicSyncWorker.workerName(account, SyncDataType.EVENTS)
+        val workerName = PeriodicSyncWorker.workerName(account, SyncDataType.CONTACTS)
         assertFalse(workScheduledOrRunning(context, workerName))
     }
 

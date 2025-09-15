@@ -5,7 +5,6 @@
 package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
@@ -33,7 +32,6 @@ class AutomaticSyncManager @Inject constructor(
     private val localAddressBookStore: LocalAddressBookStore,
     private val serviceRepository: DavServiceRepository,
     private val syncFramework: SyncFrameworkIntegration,
-    private val tasksAppManager: Provider<TasksAppManager>,
     private val workerManager: SyncWorkerManager
 ) {
 
@@ -85,23 +83,6 @@ class AutomaticSyncManager @Inject constructor(
                     addressBookAccount.updateSyncFrameworkSettings()
             }
 
-        } else {
-            // everything but contacts
-            val possibleAuthorities = dataType.possibleAuthorities()
-            val authority: String? = when (dataType) {
-                SyncDataType.CONTACTS -> throw IllegalStateException()  // handled above
-                SyncDataType.EVENTS -> CalendarContract.AUTHORITY
-                SyncDataType.TASKS -> tasksAppManager.get().currentProvider()?.authority
-            }
-            if (authority != null && syncInterval != null) {
-                // enable given authority, but completely disable all other possible authorities
-                // (for instance, tasks apps which are not the current task app)
-                syncFramework.enableSyncOnContentChange(account, authority)
-                for (disableAuthority in possibleAuthorities - authority)
-                    syncFramework.disableSyncAbility(account, disableAuthority)
-            } else
-                for (authority in possibleAuthorities)
-                    syncFramework.disableSyncOnContentChange(account, authority)
         }
     }
 
@@ -131,15 +112,10 @@ class AutomaticSyncManager @Inject constructor(
     fun updateAutomaticSync(account: Account, dataType: SyncDataType) {
         val serviceType = when (dataType) {
             SyncDataType.CONTACTS -> Service.TYPE_CARDDAV
-            SyncDataType.EVENTS,
-            SyncDataType.TASKS -> Service.TYPE_CALDAV
         }
         val hasService = runBlocking { serviceRepository.getByAccountAndType(account.name, serviceType) != null }
 
-        val hasProvider = if (dataType == SyncDataType.TASKS)
-            tasksAppManager.get().currentProvider() != null
-        else
-            true
+        val hasProvider = true
 
         if (hasService && hasProvider)
             enableAutomaticSync(account, dataType)

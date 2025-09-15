@@ -42,7 +42,6 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.ui.composable.CardWithImage
 import com.messageconcept.peoplesyncclient.ui.composable.PermissionSwitchRow
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
-import at.bitfire.ical4android.TaskProvider
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -114,9 +113,6 @@ fun PermissionsScreen(
                 }
             }
         },
-        openTasksAvailable = model.openTasksAvailable,
-        tasksOrgAvailable = model.tasksOrgAvailable,
-        jtxAvailable = model.jtxAvailable,
         modifier = modifier
     )
 }
@@ -126,9 +122,6 @@ fun PermissionsScreen(
 fun PermissionsScreen(
     keepPermissions: Boolean?,
     onKeepPermissionsRequested: () -> Unit,
-    openTasksAvailable: Boolean?,
-    tasksOrgAvailable: Boolean?,
-    jtxAvailable: Boolean?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -158,15 +151,8 @@ fun PermissionsScreen(
 
             val allPermissions = mutableListOf<String>()
             allPermissions.addAll(PermissionUtils.CONTACT_PERMISSIONS)
-            allPermissions.addAll(PermissionUtils.CALENDAR_PERMISSIONS)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                 allPermissions += Manifest.permission.POST_NOTIFICATIONS
-            if (openTasksAvailable == true)
-                allPermissions.addAll(TaskProvider.PERMISSIONS_OPENTASKS)
-            if (tasksOrgAvailable == true)
-                allPermissions.addAll(TaskProvider.PERMISSIONS_TASKS_ORG)
-            if (jtxAvailable == true)
-                allPermissions.addAll(TaskProvider.PERMISSIONS_JTX)
             PermissionSwitchRow(
                 text = stringResource(R.string.permissions_all_title),
                 permissions = allPermissions,
@@ -186,44 +172,12 @@ fun PermissionsScreen(
                 )
 
             PermissionSwitchRow(
-                text = stringResource(R.string.permissions_calendar_title),
-                summaryWhenGranted = stringResource(R.string.permissions_calendar_status_on),
-                summaryWhenNotGranted = stringResource(R.string.permissions_calendar_status_off),
-                permissions = PermissionUtils.CALENDAR_PERMISSIONS.toList(),
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-            PermissionSwitchRow(
                 text = stringResource(R.string.permissions_contacts_title),
                 summaryWhenGranted = stringResource(R.string.permissions_contacts_status_on),
                 summaryWhenNotGranted = stringResource(R.string.permissions_contacts_status_off),
                 permissions = PermissionUtils.CONTACT_PERMISSIONS.toList(),
                 modifier = Modifier.padding(vertical = 4.dp)
             )
-
-            if (jtxAvailable == true)
-                PermissionSwitchRow(
-                    text = stringResource(R.string.permissions_jtx_title),
-                    summaryWhenGranted = stringResource(R.string.permissions_tasks_status_on),
-                    summaryWhenNotGranted = stringResource(R.string.permissions_tasks_status_off),
-                    permissions = TaskProvider.PERMISSIONS_JTX.toList(),
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-            if (openTasksAvailable == true)
-                PermissionSwitchRow(
-                    text = stringResource(R.string.permissions_opentasks_title),
-                    summaryWhenGranted = stringResource(R.string.permissions_tasks_status_on),
-                    summaryWhenNotGranted = stringResource(R.string.permissions_tasks_status_off),
-                    permissions = TaskProvider.PERMISSIONS_OPENTASKS.toList(),
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-            if (tasksOrgAvailable == true)
-                PermissionSwitchRow(
-                    text = stringResource(R.string.permissions_tasksorg_title),
-                    summaryWhenGranted = stringResource(R.string.permissions_tasks_status_on),
-                    summaryWhenNotGranted = stringResource(R.string.permissions_tasks_status_off),
-                    permissions = TaskProvider.PERMISSIONS_TASKS_ORG.toList(),
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
 
             Text(
                 text = stringResource(R.string.permissions_app_settings_hint),
@@ -249,9 +203,6 @@ fun PermissionsCard_Preview() {
         PermissionsScreen(
             keepPermissions = true,
             onKeepPermissionsRequested = {},
-            openTasksAvailable = true,
-            tasksOrgAvailable = true,
-            jtxAvailable = true
         )
     }
 }

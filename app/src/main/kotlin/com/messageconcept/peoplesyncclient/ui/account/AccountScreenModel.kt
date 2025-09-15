@@ -19,7 +19,6 @@ import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
-import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.Lazy
@@ -54,7 +53,6 @@ class AccountScreenModel @AssistedInject constructor(
     private val logger: Logger,
     serviceRepository: DavServiceRepository,
     private val syncWorkerManager: SyncWorkerManager,
-    tasksAppManager: TasksAppManager
 ): ViewModel() {
 
     @AssistedFactory
@@ -127,22 +125,6 @@ class AccountScreenModel @AssistedInject constructor(
     )
     val addressBooks = getServiceCollectionPager(cardDavSvc, Collection.TYPE_ADDRESSBOOK, showOnlyPersonal)
 
-    val calDavSvc = serviceRepository
-        .getCalDavServiceFlow(account.name)
-        .stateIn(viewModelScope, initialValue = null, started = SharingStarted.Eagerly)
-    private val bindableCalendarHomesets = getBindableHomesetsFromService(calDavSvc)
-    val canCreateCalendar = bindableCalendarHomesets.map { homeSets ->
-        homeSets.isNotEmpty()
-    }
-    val tasksProvider = tasksAppManager.currentProviderFlow()
-    val calDavProgress = accountProgressUseCase(
-        account = account,
-        serviceFlow = calDavSvc,
-        dataTypes = listOf(SyncDataType.EVENTS, SyncDataType.TASKS)
-    )
-    val calendars = getServiceCollectionPager(calDavSvc, Collection.TYPE_CALENDAR, showOnlyPersonal)
-    val subscriptions = getServiceCollectionPager(calDavSvc, Collection.TYPE_WEBCAL, showOnlyPersonal)
-
 
     var error by mutableStateOf<String?>(null)
         private set
@@ -168,9 +150,6 @@ class AccountScreenModel @AssistedInject constructor(
 
     fun refreshCollections() {
         cardDavSvc.value?.let { svc ->
-            RefreshCollectionsWorker.enqueue(context, svc.id)
-        }
-        calDavSvc.value?.let { svc ->
             RefreshCollectionsWorker.enqueue(context, svc.id)
         }
     }

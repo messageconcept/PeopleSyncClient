@@ -8,7 +8,6 @@ import androidx.room.ProvidedAutoMigrationSpec
 import androidx.room.RenameColumn
 import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
-import at.bitfire.ical4android.util.DateUtils
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,15 +24,7 @@ import javax.inject.Inject
 class AutoMigration16 @Inject constructor(): AutoMigrationSpec {
 
     override fun onPostMigrate(db: SupportSQLiteDatabase) {
-        db.query("SELECT id, timezoneId FROM collection").use { cursor ->
-            while (cursor.moveToNext()) {
-                val id: Long = cursor.getLong(0)
-                val timezoneDef: String = cursor.getString(1) ?: continue
-                val vTimeZone = DateUtils.parseVTimeZone(timezoneDef)
-                val timezoneId = vTimeZone?.timeZoneId?.value
-                db.execSQL("UPDATE collection SET timezoneId=? WHERE id=?", arrayOf(timezoneId, id))
-            }
-        }
+        // do nothing as the timezone column should be empty
     }
 
 

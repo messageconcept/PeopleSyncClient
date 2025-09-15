@@ -8,15 +8,13 @@ import javax.inject.Inject
 
 class OseIntroPageFactory @Inject constructor(
     batteryOptimizationsPage: BatteryOptimizationsPage,
-    permissionsIntroPage: PermissionsIntroPage,
-    tasksIntroPage: TasksIntroPage
+    permissionsIntroPage: PermissionsIntroPage
 ): IntroPageFactory {
 
     override val introPages = arrayOf(
         WelcomePage(),
-        tasksIntroPage,
         permissionsIntroPage,
-        batteryOptimizationsPage,
+        batteryOptimizationsPage
     )
 
 }

@@ -4,14 +4,12 @@
 
 package com.messageconcept.peoplesyncclient.db.migration
 
-import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.room.ProvidedAutoMigrationSpec
 import androidx.room.RenameColumn
 import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
-import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,10 +43,6 @@ class AutoMigration18 @Inject constructor() : AutoMigrationSpec {
 
                 val dataType = when (authority) {
                     ContactsContract.AUTHORITY -> SyncDataType.CONTACTS.name
-                    CalendarContract.AUTHORITY -> SyncDataType.EVENTS.name
-                    TaskProvider.ProviderName.JtxBoard.authority,
-                    TaskProvider.ProviderName.TasksOrg.authority,
-                    TaskProvider.ProviderName.OpenTasks.authority -> SyncDataType.TASKS.name
                     else -> {
                         db.execSQL("DELETE FROM syncstats WHERE id = ?", arrayOf(id))
                         continue

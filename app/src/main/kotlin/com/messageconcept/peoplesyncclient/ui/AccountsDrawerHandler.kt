@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.ui.webdav.WebdavMountsActivity
 import kotlinx.coroutines.launch
 import java.net.URI
 
@@ -140,20 +139,6 @@ abstract class AccountsDrawerHandler {
             title = stringResource(R.string.navigation_drawer_settings),
             onClick = {
                 context.startActivity(Intent(context, AppSettingsActivity::class.java))
-            }
-        )
-    }
-
-    @Composable
-    fun Tools() {
-        val context = LocalContext.current
-
-        MenuHeading(R.string.navigation_drawer_tools)
-        MenuEntry(
-            icon = Icons.Default.Storage,
-            title = stringResource(R.string.webdav_mounts_title),
-            onClick = {
-                context.startActivity(Intent(context, WebdavMountsActivity::class.java))
             }
         )
     }

@@ -12,7 +12,6 @@ import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
-import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.Lazy
 import org.unifiedpush.android.connector.data.PushMessage
@@ -32,7 +31,6 @@ class PushMessageHandler @Inject constructor(
     private val logger: Logger,
     private val serviceRepository: DavServiceRepository,
     private val syncWorkerManager: SyncWorkerManager,
-    private val tasksAppManager: Lazy<TasksAppManager>
 ) {
 
     suspend fun processMessage(message: PushMessage, instance: String) {
@@ -58,16 +56,6 @@ class PushMessageHandler @Inject constructor(
                     // If the type is an address book, add the contacts type
                     if (collection.type == TYPE_ADDRESSBOOK)
                         syncDataTypes += SyncDataType.CONTACTS
-
-                    // If the collection supports events, add the events type
-                    if (collection.supportsVEVENT != false)
-                        syncDataTypes += SyncDataType.EVENTS
-
-                    // If the collection supports tasks, make sure there's a provider installed,
-                    // and add the tasks type
-                    if (collection.supportsVJOURNAL != false || collection.supportsVTODO != false)
-                        if (tasksAppManager.get().currentProvider() != null)
-                            syncDataTypes += SyncDataType.TASKS
 
                     // Schedule sync for all the types identified
                     val account = accountRepository.fromName(service.accountName)

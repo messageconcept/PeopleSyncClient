@@ -8,8 +8,6 @@ import android.Manifest
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
-import android.provider.CalendarContract
-import android.provider.CalendarContract.Calendars
 import androidx.core.content.contentValuesOf
 import androidx.core.database.getLongOrNull
 import androidx.test.rule.GrantPermissionRule
@@ -17,10 +15,8 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalCalendarStore
 import com.messageconcept.peoplesyncclient.resource.LocalTestAddressBookProvider
 import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
-import at.bitfire.ical4android.util.MiscUtils.asSyncAdapter
 import at.bitfire.vcard4android.GroupMethod
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -36,9 +32,6 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 class AccountSettingsMigration20Test {
-
-    @Inject
-    lateinit var calendarStore: LocalCalendarStore
 
     @Inject @ApplicationContext
     lateinit var context: Context
@@ -61,7 +54,6 @@ class AccountSettingsMigration20Test {
     @get:Rule
     val permissionsRule = GrantPermissionRule.grant(
         Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
-        Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR
     )
 
     val accountManager by lazy { AccountManager.get(context) }
@@ -98,46 +90,6 @@ class AccountSettingsMigration20Test {
                 collectionId,
                 accountManager.getUserData(addressBook.addressBookAccount, LocalAddressBook.USER_DATA_COLLECTION_ID).toLongOrNull()
             )
-        }
-    }
-
-
-    @Test
-    fun testMigrateCalendars_UrlMatchesCollection() {
-        // set up legacy calendar with URL, but without collection ID
-        val account = Account("test", CalendarContract.ACCOUNT_TYPE_LOCAL)
-        val url = "https://example.com/"
-
-        db.serviceDao().insertOrReplace(Service(id = 1, accountName = account.name, type = Service.TYPE_CALDAV, principal = null))
-        val collectionId = db.collectionDao().insert(
-            Collection(
-                serviceId = 1,
-                type = Collection.Companion.TYPE_CALENDAR,
-                url = url.toHttpUrl()
-            )
-        )
-
-        context.contentResolver.acquireContentProviderClient(CalendarContract.AUTHORITY)!!.use { provider ->
-            val uri = provider.insert(
-                Calendars.CONTENT_URI.asSyncAdapter(account),
-                contentValuesOf(
-                    Calendars.ACCOUNT_NAME to account.name,
-                    Calendars.ACCOUNT_TYPE to account.type,
-                    Calendars.CALENDAR_DISPLAY_NAME to "Test",
-                    Calendars.NAME to url,
-                    Calendars.SYNC_EVENTS to 1
-                )
-            )!!.asSyncAdapter(account)
-            try {
-                migration.migrateCalendars(account, 1)
-
-                provider.query(uri, arrayOf(Calendars._SYNC_ID), null, null, null)!!.use { cursor ->
-                    cursor.moveToNext()
-                    assertEquals(collectionId, cursor.getLongOrNull(0))
-                }
-            } finally {
-                provider.delete(uri, null, null)
-            }
         }
     }
 

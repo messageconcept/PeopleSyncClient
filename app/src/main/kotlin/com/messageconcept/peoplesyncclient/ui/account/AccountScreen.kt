@@ -90,8 +90,6 @@ import com.messageconcept.peoplesyncclient.ui.account.CollectionsList
 import com.messageconcept.peoplesyncclient.ui.account.RenameAccountDialog
 import com.messageconcept.peoplesyncclient.ui.composable.ActionCard
 import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
-import com.messageconcept.peoplesyncclient.ui.icon.CalendarImport
-import at.bitfire.ical4android.TaskProvider
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.delay
@@ -102,7 +100,6 @@ fun AccountScreen(
     account: Account,
     onAccountSettings: () -> Unit,
     onCreateAddressBook: () -> Unit,
-    onCreateCalendar: () -> Unit,
     onCollectionDetails: (Collection) -> Unit,
     onNavUp: () -> Unit,
     onFinish: () -> Unit
@@ -115,11 +112,6 @@ fun AccountScreen(
 
     val cardDavService by model.cardDavSvc.collectAsStateWithLifecycle()
     val addressBooks = model.addressBooks.collectAsLazyPagingItems()
-
-    val calDavService by model.calDavSvc.collectAsStateWithLifecycle()
-    val calendars = model.calendars.collectAsLazyPagingItems()
-    val currentTasksApp by model.tasksProvider.collectAsStateWithLifecycle(null)
-    val subscriptions = model.subscriptions.collectAsLazyPagingItems()
 
     val context = LocalContext.current
     AccountScreen(
@@ -134,39 +126,12 @@ fun AccountScreen(
         canCreateAddressBook = model.canCreateAddressBook.collectAsStateWithLifecycle(false).value,
         cardDavProgress = model.cardDavProgress.collectAsStateWithLifecycle(AccountProgress.Idle).value,
         addressBooks = addressBooks,
-        hasCalDav = calDavService != null,
-        canCreateCalendar = model.canCreateCalendar.collectAsStateWithLifecycle(false).value,
-        calDavProgress = model.calDavProgress.collectAsStateWithLifecycle(AccountProgress.Idle).value,
-        calendars = calendars,
-        currentTasksProvider = currentTasksApp,
-        hasWebcal = subscriptions.itemCount != 0,
-        subscriptions = subscriptions,
         onUpdateCollectionSync = model::setCollectionSync,
-        onSubscribe = { collection ->
-            // subscribe
-            var uri = collection.source.toString().toUri()
-            when {
-                uri.scheme.equals("http", true) -> uri = uri.buildUpon().scheme("webcal").build()
-                uri.scheme.equals("https", true) -> uri = uri.buildUpon().scheme("webcals").build()
-            }
-
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            collection.displayName?.let { intent.putExtra("title", it) }
-            collection.color?.let { intent.putExtra("color", it) }
-
-            if (context.packageManager.resolveActivity(intent, 0) != null)
-                context.startActivity(intent)
-            else
-                model.noWebcalApp()
-        },
         onCollectionDetails = onCollectionDetails,
-        showNoWebcalApp = model.showNoWebcalApp,
-        resetShowNoWebcalApp = model::resetShowNoWebcalApp,
         onRefreshCollections = model::refreshCollections,
         onSync = model::sync,
         onAccountSettings = onAccountSettings,
         onCreateAddressBook = onCreateAddressBook,
-        onCreateCalendar = onCreateCalendar,
         onRenameAccount = model::renameAccount,
         onDeleteAccount = model::deleteAccount,
         onNavUp = onNavUp,
@@ -188,23 +153,12 @@ fun AccountScreen(
     canCreateAddressBook: Boolean,
     cardDavProgress: AccountProgress,
     addressBooks: LazyPagingItems<Collection>?,
-    hasCalDav: Boolean,
-    canCreateCalendar: Boolean,
-    calDavProgress: AccountProgress,
-    calendars: LazyPagingItems<Collection>?,
-    currentTasksProvider: TaskProvider.ProviderName?,
-    hasWebcal: Boolean,
-    subscriptions: LazyPagingItems<Collection>?,
     onUpdateCollectionSync: (collectionId: Long, sync: Boolean) -> Unit = { _, _ -> },
-    onSubscribe: (Collection) -> Unit = {},
     onCollectionDetails: (Collection) -> Unit = {},
-    showNoWebcalApp: Boolean = false,
-    resetShowNoWebcalApp: () -> Unit = {},
     onRefreshCollections: () -> Unit = {},
     onSync: () -> Unit = {},
     onAccountSettings: () -> Unit = {},
     onCreateAddressBook: () -> Unit = {},
-    onCreateCalendar: () -> Unit = {},
     onRenameAccount: (newName: String) -> Unit = {},
     onDeleteAccount: () -> Unit = {},
     onNavUp: () -> Unit = {},
@@ -242,13 +196,8 @@ fun AccountScreen(
         var nextIdx = -1
 
         @Suppress("KotlinConstantConditions")
-        val idxCalDav: Int? = if (hasCalDav) ++nextIdx else null
         val idxCardDav: Int? = if (hasCardDav) ++nextIdx else null
-        val idxWebcal: Int? = if (hasWebcal) ++nextIdx else null
-        val nrPages =
-            (if (idxCalDav != null) 1 else 0) +
-                    (if (idxCardDav != null) 1 else 0) +
-                    (if (idxWebcal != null) 1 else 0)
+        val nrPages = (if (idxCardDav != null) 1 else 0)
         val pagerState = rememberPagerState(pageCount = { nrPages })
 
         val calDavScrollState = rememberLazyListState()
@@ -275,14 +224,11 @@ fun AccountScreen(
                             accountName = accountName,
                             canCreateAddressBook = canCreateAddressBook,
                             onCreateAddressBook = onCreateAddressBook,
-                            canCreateCalendar = canCreateCalendar,
-                            onCreateCalendar = onCreateCalendar,
                             showOnlyPersonal = showOnlyPersonal,
                             showOnlyPersonalLocked = showOnlyPersonalLocked,
                             onSetShowOnlyPersonal = onSetShowOnlyPersonal,
                             currentPage = pagerState.currentPage,
                             idxCardDav = idxCardDav,
-                            idxCalDav = idxCalDav,
                             onRenameAccount = onRenameAccount,
                             onDeleteAccount = onDeleteAccount,
                             onAccountSettings = onAccountSettings
@@ -305,7 +251,7 @@ fun AccountScreen(
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
-                    if (pagerState.currentPage == idxCardDav || pagerState.currentPage == idxCalDav)
+                    if (pagerState.currentPage == idxCardDav)
                         ExtendedFloatingActionButton(
                             text = {
                                 Text(stringResource(R.string.account_synchronize_now))
@@ -332,29 +278,13 @@ fun AccountScreen(
 
                         // The icon shall be shown when the scroll state is at the top (= we can't scroll backward)
                         val currentPageScrollState = when (idxCurrentPage) {
-                            idxCalDav -> calDavScrollState
                             idxCardDav -> cardDavScrollState
-                            idxWebcal -> webcalScrollState
                             else -> null
                         }
                         AnimatedContent(
                             targetState = currentPageScrollState?.canScrollBackward != true
                         ) { showIcon ->
                             TabRow(selectedTabIndex = idxCurrentPage) {
-                                if (idxCalDav != null)
-                                    AccountScreen_Tab(
-                                        selected = idxCurrentPage == idxCalDav,
-                                        showIcon = showIcon,
-                                        icon = Icons.Default.CalendarToday,
-                                        text = stringResource(R.string.account_caldav),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                    ) {
-                                        scope.launch {
-                                            pagerState.scrollToPage(idxCalDav)
-                                        }
-                                    }
-
                                 if (idxCardDav != null)
                                     AccountScreen_Tab(
                                         selected = idxCurrentPage == idxCardDav,
@@ -366,20 +296,6 @@ fun AccountScreen(
                                     ) {
                                         scope.launch {
                                             pagerState.scrollToPage(idxCardDav)
-                                        }
-                                    }
-
-                                if (idxWebcal != null)
-                                    AccountScreen_Tab(
-                                        selected = idxCurrentPage == idxWebcal,
-                                        showIcon = showIcon,
-                                        icon = Icons.Default.Link,
-                                        text = stringResource(R.string.account_webcal),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                    ) {
-                                        scope.launch {
-                                            pagerState.scrollToPage(idxWebcal)
                                         }
                                     }
                             }
@@ -407,57 +323,6 @@ fun AccountScreen(
                                         onCollectionDetails = onCollectionDetails,
                                         state = cardDavScrollState
                                     )
-
-                                idxCalDav -> {
-                                    val permissions = mutableListOf(Manifest.permission.WRITE_CALENDAR)
-                                    if (currentTasksProvider != null)
-                                        permissions += currentTasksProvider.permissions
-                                    AccountScreen_ServiceTab(
-                                        requiredPermissions = permissions,
-                                        progress = calDavProgress,
-                                        collections = calendars,
-                                        onUpdateCollectionSync = onUpdateCollectionSync,
-                                        onCollectionDetails = onCollectionDetails,
-                                        state = calDavScrollState
-                                    )
-                                }
-
-                                idxWebcal -> {
-                                    LaunchedEffect(showNoWebcalApp) {
-                                        if (showNoWebcalApp) {
-                                            if (snackbarHostState.showSnackbar(
-                                                    message = context.getString(R.string.account_no_webcal_handler_found),
-                                                    actionLabel = context.getString(R.string.account_install_icsx5),
-                                                    duration = SnackbarDuration.Long
-                                                ) == SnackbarResult.ActionPerformed
-                                            ) {
-                                                val installIntent = Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    "market://details?id=at.bitfire.icsdroid".toUri()
-                                                )
-                                                if (context.packageManager.resolveActivity(installIntent, 0) != null)
-                                                    context.startActivity(installIntent)
-                                            }
-                                            resetShowNoWebcalApp()
-                                        }
-                                    }
-
-                                    Column {
-                                        Text(
-                                            stringResource(R.string.account_webcal_external_app),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
-                                        )
-
-                                        AccountScreen_ServiceTab(
-                                            requiredPermissions = listOf(Manifest.permission.WRITE_CALENDAR),
-                                            progress = calDavProgress,
-                                            collections = subscriptions,
-                                            onSubscribe = onSubscribe,
-                                            state = webcalScrollState
-                                        )
-                                    }
-                                }
                             }
                         }
                     }
@@ -521,14 +386,11 @@ fun AccountScreen_Actions(
     accountName: String,
     canCreateAddressBook: Boolean,
     onCreateAddressBook: () -> Unit,
-    canCreateCalendar: Boolean,
-    onCreateCalendar: () -> Unit,
     showOnlyPersonal: Boolean,
     showOnlyPersonalLocked: Boolean,
     onSetShowOnlyPersonal: (showOnlyPersonal: Boolean) -> Unit,
     currentPage: Int,
     idxCardDav: Int?,
-    idxCalDav: Int?,
     onRenameAccount: (newName: String) -> Unit,
     onDeleteAccount: () -> Unit,
     onAccountSettings: () -> Unit
@@ -565,24 +427,6 @@ fun AccountScreen_Actions(
                 },
                 onClick = {
                     onCreateAddressBook()
-                    overflowOpen = false
-                }
-            )
-        } else if (currentPage == idxCalDav && canCreateCalendar) {
-            // create calendar
-            DropdownMenuItem(
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.CreateNewFolder,
-                        contentDescription = stringResource(R.string.create_calendar),
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                },
-                text = {
-                    Text(stringResource(R.string.create_calendar))
-                },
-                onClick = {
-                    onCreateCalendar()
                     overflowOpen = false
                 }
             )
@@ -743,13 +587,6 @@ fun AccountScreen_Preview() {
         canCreateAddressBook = false,
         cardDavProgress = AccountProgress.Active,
         addressBooks = null,
-        hasCalDav = true,
-        canCreateCalendar = true,
-        calDavProgress = AccountProgress.Pending,
-        calendars = null,
-        currentTasksProvider = TaskProvider.ProviderName.JtxBoard,
-        hasWebcal = true,
-        subscriptions = null
     )
 }
 

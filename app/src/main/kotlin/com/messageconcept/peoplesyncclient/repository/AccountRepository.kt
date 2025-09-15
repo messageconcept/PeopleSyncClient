@@ -13,14 +13,12 @@ import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.db.ServiceType
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
-import com.messageconcept.peoplesyncclient.resource.LocalCalendarStore
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Credentials
 import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
-import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import com.messageconcept.peoplesyncclient.sync.account.AccountsCleanupWorker
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import com.messageconcept.peoplesyncclient.sync.account.SystemAccountUtils
@@ -48,12 +46,10 @@ class AccountRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val collectionRepository: DavCollectionRepository,
     private val homeSetRepository: DavHomeSetRepository,
-    private val localCalendarStore: Lazy<LocalCalendarStore>,
     private val localAddressBookStore: Lazy<LocalAddressBookStore>,
     private val logger: Logger,
     private val serviceRepository: DavServiceRepository,
     private val syncWorkerManager: Lazy<SyncWorkerManager>,
-    private val tasksAppManager: Lazy<TasksAppManager>
 ) {
 
     private val accountType = context.getString(R.string.account_type)
@@ -92,14 +88,6 @@ class AccountRepository @Inject constructor(
                 accountSettings.setGroupMethod(groupMethod)
 
                 // start CardDAV service detection (refresh collections)
-                RefreshCollectionsWorker.enqueue(context, id)
-            }
-
-            if (config.calDAV != null) {
-                // insert CalDAV service
-                val id = insertService(accountName, Service.TYPE_CALDAV, config.calDAV)
-
-                // start CalDAV service detection (refresh collections)
                 RefreshCollectionsWorker.enqueue(context, id)
             }
 
@@ -220,21 +208,6 @@ class AccountRepository @Inject constructor(
                 localAddressBookStore.get().updateAccount(oldAccount, newAccount)
             } catch (e: Exception) {
                 logger.log(Level.WARNING, "Couldn't change address books to renamed account", e)
-            }
-
-            try {
-                // update calendar events
-                localCalendarStore.get().updateAccount(oldAccount, newAccount)
-            } catch (e: Exception) {
-                logger.log(Level.WARNING, "Couldn't change calendars to renamed account", e)
-            }
-
-            try {
-                // update account_name of local tasks
-                val dataStore = tasksAppManager.get().getDataStore()
-                dataStore?.updateAccount(oldAccount, newAccount)
-            } catch (e: Exception) {
-                logger.log(Level.WARNING, "Couldn't change task lists to renamed account", e)
             }
 
             // update automatic sync

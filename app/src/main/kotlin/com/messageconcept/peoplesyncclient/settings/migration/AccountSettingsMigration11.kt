@@ -10,7 +10,6 @@ import android.content.ContentResolver
 import android.content.Context
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.SYNC_INTERVAL_MANUALLY
-import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
 import dagger.Binds
 import dagger.Module
@@ -27,16 +26,10 @@ import javax.inject.Inject
  */
 class AccountSettingsMigration11 @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val tasksAppManager: TasksAppManager
 ): AccountSettingsMigration {
 
     override fun migrate(account: Account) {
-        val accountManager: AccountManager = AccountManager.get(context)
-        tasksAppManager.currentProvider()?.let { provider ->
-            val interval = getSyncFrameworkInterval(account, provider.authority)
-            if (interval != null)
-                accountManager.setAndVerifyUserData(account, AccountSettings.KEY_SYNC_INTERVAL_TASKS, interval.toString())
-        }
+        // nothing to do
     }
 
     private fun getSyncFrameworkInterval(account: Account, authority: String): Long? {

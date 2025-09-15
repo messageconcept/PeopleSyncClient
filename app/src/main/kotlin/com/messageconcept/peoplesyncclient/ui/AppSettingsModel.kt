@@ -19,7 +19,6 @@ import com.messageconcept.peoplesyncclient.push.PushRegistrationManager
 import com.messageconcept.peoplesyncclient.repository.PreferenceRepository
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.broadcastReceiverFlow
@@ -41,7 +40,6 @@ class AppSettingsModel @Inject constructor(
     private val preferences: PreferenceRepository,
     private val pushRegistrationManager: PushRegistrationManager,
     private val settings: SettingsManager,
-    tasksAppManager: TasksAppManager
 ) : ViewModel() {
 
 
@@ -100,21 +98,9 @@ class AppSettingsModel @Inject constructor(
     fun resetHints() {
         settings.remove(BatteryOptimizationsPageModel.HINT_BATTERY_OPTIMIZATIONS)
         settings.remove(BatteryOptimizationsPageModel.HINT_AUTOSTART_PERMISSION)
-        settings.remove(TasksModel.HINT_OPENTASKS_NOT_INSTALLED)
     }
-
-
-    // tasks
 
     private val pm: PackageManager = context.packageManager
-    private val appInfoFlow = tasksAppManager.currentProviderFlow().map { tasksProvider ->
-        tasksProvider?.packageName?.let { pkgName ->
-            pm.getApplicationInfo(pkgName, 0)
-        }
-    }
-    val tasksAppName = appInfoFlow.map { it?.loadLabel(pm)?.toString() }
-    val tasksAppIcon = appInfoFlow.map { it?.loadIcon(pm) }
-
 
     // push
 

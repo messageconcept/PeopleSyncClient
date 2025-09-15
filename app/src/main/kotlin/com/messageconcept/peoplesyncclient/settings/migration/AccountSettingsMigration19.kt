@@ -9,7 +9,6 @@ import android.content.Context
 import android.provider.CalendarContract
 import androidx.work.WorkManager
 import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
-import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,8 +34,6 @@ class AccountSettingsMigration19 @Inject constructor(
         val workManager = WorkManager.getInstance(context)
         val authorities = listOf(
             "com.messageconcept.peoplesyncclient.addressbooks",
-            CalendarContract.AUTHORITY,
-            *TaskProvider.TASK_PROVIDERS.map { it.authority }.toTypedArray()
         )
         for (authority in authorities) {
             val oldWorkerName = "periodic-sync $authority ${account.type}/${account.name}"

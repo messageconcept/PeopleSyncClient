@@ -154,8 +154,6 @@ class AccountSettings @AssistedInject constructor(
     fun getSyncInterval(dataType: SyncDataType): Long? {
         val key = when (dataType) {
             SyncDataType.CONTACTS -> KEY_SYNC_INTERVAL_ADDRESSBOOKS
-            SyncDataType.EVENTS -> KEY_SYNC_INTERVAL_CALENDARS
-            SyncDataType.TASKS -> KEY_SYNC_INTERVAL_TASKS
         }
         val seconds = accountManager.getUserData(account, key)?.toLong()
         return when (seconds) {
@@ -174,8 +172,6 @@ class AccountSettings @AssistedInject constructor(
     fun setSyncInterval(dataType: SyncDataType, seconds: Long?) {
         val key = when (dataType) {
             SyncDataType.CONTACTS -> KEY_SYNC_INTERVAL_ADDRESSBOOKS
-            SyncDataType.EVENTS -> KEY_SYNC_INTERVAL_CALENDARS
-            SyncDataType.TASKS -> KEY_SYNC_INTERVAL_TASKS
         }
         val newValue = seconds ?: SYNC_INTERVAL_MANUALLY
         accountManager.setAndVerifyUserData(account, key, newValue.toString())
@@ -216,68 +212,6 @@ class AccountSettings @AssistedInject constructor(
     fun setIgnoreVpns(ignoreVpns: Boolean) =
         accountManager.setAndVerifyUserData(account, KEY_IGNORE_VPNS, if (ignoreVpns) "1" else "0")
 
-
-    // CalDAV settings
-
-    fun getTimeRangePastDays(): Int? {
-        val strDays = accountManager.getUserData(account, KEY_TIME_RANGE_PAST_DAYS)
-        return if (strDays != null) {
-            val days = strDays.toInt()
-            if (days < 0)
-                null
-            else
-                days
-        } else
-            DEFAULT_TIME_RANGE_PAST_DAYS
-    }
-
-    fun setTimeRangePastDays(days: Int?) =
-        accountManager.setAndVerifyUserData(account, KEY_TIME_RANGE_PAST_DAYS, (days ?: -1).toString())
-
-    /**
-     * Takes the default alarm setting (in this order) from
-     *
-     * 1. the local account settings
-     * 2. the settings provider (unless the value is -1 there).
-     *
-     * @return A default reminder shall be created this number of minutes before the start of every
-     * non-full-day event without reminder. *null*: No default reminders shall be created.
-     */
-    fun getDefaultAlarm() =
-        accountManager.getUserData(account, KEY_DEFAULT_ALARM)?.toInt() ?:
-        settingsManager.getIntOrNull(KEY_DEFAULT_ALARM)?.takeIf { it != -1 }
-
-    /**
-     * Sets the default alarm value in the local account settings, if the new value differs
-     * from the value of the settings provider. If the new value is the same as the value of
-     * the settings provider, the local setting will be deleted, so that the settings provider
-     * value applies.
-     *
-     * @param minBefore The number of minutes a default reminder shall be created before the
-     * start of every non-full-day event without reminder. *null*: No default reminders shall be created.
-     */
-    fun setDefaultAlarm(minBefore: Int?) =
-        accountManager.setAndVerifyUserData(account, KEY_DEFAULT_ALARM,
-                if (minBefore == settingsManager.getIntOrNull(KEY_DEFAULT_ALARM)?.takeIf { it != -1 })
-                    null
-                else
-                    minBefore?.toString())
-
-    fun getManageCalendarColors() =
-        if (settingsManager.containsKey(KEY_MANAGE_CALENDAR_COLORS))
-            settingsManager.getBoolean(KEY_MANAGE_CALENDAR_COLORS)
-        else
-            accountManager.getUserData(account, KEY_MANAGE_CALENDAR_COLORS) == null
-    fun setManageCalendarColors(manage: Boolean) =
-            accountManager.setAndVerifyUserData(account, KEY_MANAGE_CALENDAR_COLORS, if (manage) null else "0")
-
-    fun getEventColors() =
-        if (settingsManager.containsKey(KEY_EVENT_COLORS))
-            settingsManager.getBoolean(KEY_EVENT_COLORS)
-        else
-            accountManager.getUserData(account, KEY_EVENT_COLORS) != null
-    fun setEventColors(useColors: Boolean) =
-            accountManager.setAndVerifyUserData(account, KEY_EVENT_COLORS, if (useColors) "1" else null)
 
     // CardDAV settings
 
@@ -377,32 +311,6 @@ class AccountSettings @AssistedInject constructor(
         const val KEY_WIFI_ONLY = "wifi_only"               // sync on WiFi only (default: false)
         const val KEY_WIFI_ONLY_SSIDS = "wifi_only_ssids"   // restrict sync to specific WiFi SSIDs
         const val KEY_IGNORE_VPNS = "ignore_vpns"           // ignore vpns at connection detection
-
-        /** Time range limitation to the past [in days]. Values:
-         *
-         * - null: default value (DEFAULT_TIME_RANGE_PAST_DAYS)
-         * - <0 (typically -1): no limit
-         * - n>0: entries more than n days in the past won't be synchronized
-         */
-        const val KEY_TIME_RANGE_PAST_DAYS = "time_range_past_days"
-        const val DEFAULT_TIME_RANGE_PAST_DAYS = 90
-
-        /**
-         * Whether a default alarm shall be assigned to received events/tasks which don't have an alarm.
-         * Value can be null (no default alarm) or an integer (default alarm shall be created this
-         * number of minutes before the event/task).
-         */
-        const val KEY_DEFAULT_ALARM = "default_alarm"
-
-        /** Whether PeopleSync sets the local calendar color to the value from service DB at every sync
-        value = *null* (not existing): true (default);
-        "0"                    false */
-        const val KEY_MANAGE_CALENDAR_COLORS = "manage_calendar_colors"
-
-        /** Whether PeopleSync populates and uses CalendarContract.Colors
-        value = *null* (not existing)   false (default);
-        "1"                     true */
-        const val KEY_EVENT_COLORS = "event_colors"
 
         /** Contact group method:
          *null (not existing)*     groups as separate vCards (default);

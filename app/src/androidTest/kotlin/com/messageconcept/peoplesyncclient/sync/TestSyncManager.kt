@@ -34,7 +34,7 @@ class TestSyncManager @AssistedInject constructor(
 ): SyncManager<LocalTestResource, LocalTestCollection, DavCollection>(
     account,
     httpClient,
-    SyncDataType.EVENTS,
+    SyncDataType.CONTACTS,
     syncResult,
     localCollection,
     collection,

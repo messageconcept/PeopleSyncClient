@@ -15,53 +15,6 @@ import org.junit.Test
 class AutoMigration16Test: DatabaseMigrationTest(toVersion = 16) {
 
     @Test
-    fun testMigrate_WithTimeZone() = testMigration(
-        prepare = { db ->
-            val minimalVTimezone = """
-                BEGIN:VCALENDAR
-                VERSION:2.0
-                PRODID:PeopleSync
-                BEGIN:VTIMEZONE
-                TZID:America/New_York
-                END:VTIMEZONE
-                END:VCALENDAR
-            """.trimIndent()
-            db.execSQL(
-                "INSERT INTO service (id, accountName, type) VALUES (?, ?, ?)",
-                arrayOf(1, "test", Service.Companion.TYPE_CALDAV)
-            )
-            db.execSQL(
-                "INSERT INTO collection (id, serviceId, type, url, privWriteContent, privUnbind, forceReadOnly, sync, timezone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                arrayOf(1, 1, TYPE_CALENDAR, "https://example.com", true, true, false, false, minimalVTimezone)
-            )
-        }
-    ) { db ->
-        db.query("SELECT timezoneId FROM collection WHERE id=1").use { cursor ->
-            cursor.moveToFirst()
-            assertEquals("America/New_York", cursor.getString(0))
-        }
-    }
-
-    @Test
-    fun testMigrate_WithTimeZone_Unparseable() = testMigration(
-        prepare = { db ->
-            db.execSQL(
-                "INSERT INTO service (id, accountName, type) VALUES (?, ?, ?)",
-                arrayOf(1, "test", Service.Companion.TYPE_CALDAV)
-            )
-            db.execSQL(
-                "INSERT INTO collection (id, serviceId, type, url, privWriteContent, privUnbind, forceReadOnly, sync, timezone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                arrayOf(1, 1, TYPE_CALENDAR, "https://example.com", true, true, false, false, "Some Garbage Content")
-            )
-        }
-    ) { db ->
-        db.query("SELECT timezoneId FROM collection WHERE id=1").use { cursor ->
-            cursor.moveToFirst()
-            assertNull(cursor.getString(0))
-        }
-    }
-
-    @Test
     fun testMigrate_WithoutTimezone() = testMigration(
         prepare = { db ->
             db.execSQL(

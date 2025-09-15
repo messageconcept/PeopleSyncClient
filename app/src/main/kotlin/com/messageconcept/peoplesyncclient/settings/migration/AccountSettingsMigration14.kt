@@ -9,7 +9,6 @@ import android.content.ContentResolver
 import android.provider.CalendarContract
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
-import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,10 +32,6 @@ class AccountSettingsMigration14 @Inject constructor(
 
         val authorities = listOf(
             "com.messageconcept.peoplesyncclient.addressbooks",
-            CalendarContract.AUTHORITY,
-            TaskProvider.ProviderName.JtxBoard.authority,
-            TaskProvider.ProviderName.OpenTasks.authority,
-            TaskProvider.ProviderName.TasksOrg.authority
         )
 
         // Disable periodic syncs (sync adapter framework)

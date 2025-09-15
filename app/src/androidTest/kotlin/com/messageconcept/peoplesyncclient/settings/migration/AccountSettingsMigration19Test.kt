@@ -71,10 +71,6 @@ class AccountSettingsMigration19Test {
 
         verify {
             workManager.cancelUniqueWork("periodic-sync com.messageconcept.peoplesyncclient.addressbooks Test/Some")
-            workManager.cancelUniqueWork("periodic-sync com.android.calendar Test/Some")
-            workManager.cancelUniqueWork("periodic-sync at.techbee.jtx.provider Test/Some")
-            workManager.cancelUniqueWork("periodic-sync org.dmfs.tasks Test/Some")
-            workManager.cancelUniqueWork("periodic-sync org.tasks.opentasks Test/Some")
 
             automaticSyncManager.updateAutomaticSync(account)
         }

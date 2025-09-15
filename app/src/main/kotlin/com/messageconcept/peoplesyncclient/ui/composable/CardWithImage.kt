@@ -115,7 +115,7 @@ fun CardWithImage(
 @Composable
 fun CardWithImage_Preview() {
     CardWithImage(
-        image = painterResource(R.drawable.intro_tasks),
+        image = painterResource(R.drawable.intro_permissions),
         title = "Demo card",
         message = "This is the message to be displayed under the title, but before the content."
     )

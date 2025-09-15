@@ -9,7 +9,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SyncResult
 import android.os.Bundle
-import android.provider.CalendarContract
+import android.provider.ContactsContract
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -77,8 +77,8 @@ class SyncAdapterImplTest {
         account = TestAccount.create()
 
         ContentResolver.setMasterSyncAutomatically(true)
-        ContentResolver.setSyncAutomatically(account, CalendarContract.AUTHORITY, true)
-        ContentResolver.setIsSyncable(account, CalendarContract.AUTHORITY, 1)
+        ContentResolver.setSyncAutomatically(account, ContactsContract.AUTHORITY, true)
+        ContentResolver.setIsSyncable(account, ContactsContract.AUTHORITY, 1)
     }
 
     @After
@@ -101,7 +101,7 @@ class SyncAdapterImplTest {
             every { workManager.getWorkInfosForUniqueWorkFlow("TheSyncWorker") } just Awaits
 
             val sync = launch {
-                syncAdapter.onPerformSync(account, Bundle(), CalendarContract.AUTHORITY, mockk(), SyncResult())
+                syncAdapter.onPerformSync(account, Bundle(), ContactsContract.AUTHORITY, mockk(), SyncResult())
             }
 
             // simulate incoming cancellation from sync framework
@@ -128,7 +128,7 @@ class SyncAdapterImplTest {
                 // immediate timeout (instead of really waiting)
                 coEvery { withTimeout(any<Long>(), any<suspend CoroutineScope.() -> Unit>()) } throws CancellationException("Simulated timeout")
 
-                syncAdapter.onPerformSync(account, Bundle(), CalendarContract.AUTHORITY, mockk(), SyncResult())
+                syncAdapter.onPerformSync(account, Bundle(), ContactsContract.AUTHORITY, mockk(), SyncResult())
             }
         }
     }
@@ -151,7 +151,7 @@ class SyncAdapterImplTest {
             }
 
             // should just run
-            syncAdapter.onPerformSync(account, Bundle(), CalendarContract.AUTHORITY, mockk(), SyncResult())
+            syncAdapter.onPerformSync(account, Bundle(), ContactsContract.AUTHORITY, mockk(), SyncResult())
         }
     }
 
