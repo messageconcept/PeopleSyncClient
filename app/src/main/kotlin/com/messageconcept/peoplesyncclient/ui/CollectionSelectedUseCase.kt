@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.ui
 import android.accounts.Account
 import com.messageconcept.peoplesyncclient.di.ApplicationScope
 import com.messageconcept.peoplesyncclient.di.DefaultDispatcher
-import com.messageconcept.peoplesyncclient.push.PushRegistrationManager
 import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
@@ -31,7 +30,6 @@ class CollectionSelectedUseCase @Inject constructor(
     @ApplicationScope private val applicationScope: CoroutineScope,
     private val collectionRepository: DavCollectionRepository,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
-    private val pushRegistrationManager: PushRegistrationManager,
     private val serviceRepository: DavServiceRepository,
     private val syncWorkerManager: SyncWorkerManager
 ) {
@@ -62,9 +60,6 @@ class CollectionSelectedUseCase @Inject constructor(
 
                 // enqueue sync
                 syncWorkerManager.enqueueOneTimeAllAuthorities(account)
-
-                // update push subscriptions
-                pushRegistrationManager.update(service.id)
 
                 // remove complete job
                 delayJobs -= account

@@ -6,7 +6,6 @@ package com.messageconcept.peoplesyncclient.ui
 
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
-import com.messageconcept.peoplesyncclient.push.PushRegistrationManager
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
@@ -52,10 +51,6 @@ class CollectionSelectedUseCaseTest {
         accountName = "test@example.com"
     )
 
-    @BindValue
-    @RelaxedMockK
-    lateinit var pushRegistrationManager: PushRegistrationManager
-
     @Inject
     lateinit var serviceRepository: DavServiceRepository
 
@@ -87,7 +82,6 @@ class CollectionSelectedUseCaseTest {
         advanceUntilIdle()
         coVerify {
             syncWorkerManager.enqueueOneTimeAllAuthorities(any())
-            pushRegistrationManager.update(service.id)
         }
     }
 

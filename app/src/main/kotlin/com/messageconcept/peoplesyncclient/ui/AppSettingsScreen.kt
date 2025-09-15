@@ -69,7 +69,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.Settings
-import com.messageconcept.peoplesyncclient.ui.AppSettingsModel.PushDistributorInfo
 import com.messageconcept.peoplesyncclient.ui.composable.EditTextInputDialog
 import com.messageconcept.peoplesyncclient.ui.composable.MultipleChoiceInputDialog
 import com.messageconcept.peoplesyncclient.ui.composable.Setting
@@ -116,11 +115,6 @@ fun AppSettingsScreen(
             theme = model.theme().collectAsStateWithLifecycle(null).value ?: Settings.PREFERRED_THEME_DEFAULT,
             onThemeSelected = model::updateTheme,
             onResetHints = model::resetHints,
-
-            // Integration (Tasks and Push)
-            pushDistributors = model.pushDistributors.collectAsState().value,
-            pushDistributor = model.pushDistributor.collectAsState().value,
-            onPushDistributorChange = model::updatePushDistributor,
         )
     }
 }
@@ -154,11 +148,6 @@ fun AppSettingsScreen(
     theme: Int,
     onThemeSelected: (Int) -> Unit,
     onResetHints: () -> Unit,
-
-    // AppSettings Integration
-    pushDistributors: List<PushDistributorInfo>?,
-    pushDistributor: String?,
-    onPushDistributorChange: (String?) -> Unit,
 
     onShowNotificationSettings: () -> Unit,
     onNavUp: () -> Unit
@@ -240,12 +229,6 @@ fun AppSettingsScreen(
                     },
                     onShowNotificationSettings = onShowNotificationSettings
                 )
-
-                AppSettings_Integration(
-                    pushDistributors = pushDistributors,
-                    pushDistributor = pushDistributor,
-                    onPushDistributorChange = onPushDistributorChange,
-                )
             }
         }
     }
@@ -277,9 +260,6 @@ fun AppSettingsScreen_Preview() {
             onNavPermissionsScreen = {},
             onThemeSelected = {},
             onResetHints = {},
-            pushDistributors = null,
-            pushDistributor = null,
-            onPushDistributorChange = {},
         )
     }
 }
@@ -530,202 +510,5 @@ fun AppSettings_UserInterface(
         name = stringResource(R.string.app_settings_reset_hints),
         summary = stringResource(R.string.app_settings_reset_hints_summary),
         onClick = onResetHints
-    )
-}
-
-@Composable
-private fun PushDistributorSelectionDialog(
-    pushDistributor: String?,
-    onPushDistributorChange: (String?) -> Unit,
-    pushDistributors: List<PushDistributorInfo>?,
-    onDismissRequested: () -> Unit
-) {
-    var selectedDistributor by remember { mutableStateOf(pushDistributor) }
-    val context = LocalContext.current
-
-    AlertDialog(
-        onDismissRequest = onDismissRequested,
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onPushDistributorChange(selectedDistributor)
-                    onDismissRequested()
-                }
-            ) { Text(stringResource(android.R.string.ok)) }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismissRequested
-            ) { Text(stringResource(android.R.string.cancel)) }
-        },
-        title = {
-            Text(stringResource(R.string.app_settings_unifiedpush_choose_distributor))
-        },
-        text = {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                if (pushDistributors.isNullOrEmpty()) item {
-                    Text(stringResource(R.string.app_settings_unifiedpush_no_distributor))
-                } else item {
-                    ListItem(
-                        leadingContent = {
-                            Icon(
-                                imageVector = if (selectedDistributor == null) {
-                                    Icons.Default.RadioButtonChecked
-                                } else {
-                                    Icons.Default.RadioButtonUnchecked
-                                },
-                                contentDescription = null
-                            )
-                        },
-                        headlineContent = {
-                            Text(stringResource(R.string.app_settings_unifiedpush_disable))
-                        },
-                        modifier = Modifier.clickable {
-                            selectedDistributor = null
-                        },
-                        colors = ListItemDefaults.colors(
-                            containerColor = Color.Transparent
-                        )
-                    )
-                }
-
-                items(pushDistributors.orEmpty()) { (distributor, name, icon) ->
-                    val isSelf = distributor == context.packageName
-                    val headline = if (isSelf) stringResource(R.string.app_settings_unifiedpush_distributor_fcm) else name ?: distributor
-                    ListItem(
-                        leadingContent = {
-                            Icon(
-                                imageVector = if (selectedDistributor == distributor) {
-                                    Icons.Default.RadioButtonChecked
-                                } else {
-                                    Icons.Default.RadioButtonUnchecked
-                                },
-                                contentDescription = null
-                            )
-                        },
-                        trailingContent = {
-                            if (isSelf)
-                                Image(
-                                    painter = painterResource(R.drawable.product_logomark_cloud_messaging_full_color),
-                                    contentDescription = headline,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            else
-                                icon?.let {
-                                    Image(
-                                        bitmap = icon.toBitmap().asImageBitmap(),
-                                        contentDescription = headline,
-                                        modifier = Modifier.size(32.dp)
-                                    )
-                                }
-                        },
-                        headlineContent = {
-                            Text(headline)
-                        },
-                        modifier = Modifier.clickable {
-                            selectedDistributor = distributor
-                        },
-                        colors = ListItemDefaults.colors(
-                            containerColor = Color.Transparent
-                        )
-                    )
-                }
-
-                item {
-                    Text(
-                        text = buildAnnotatedString {
-                            pushStyle(
-                                SpanStyle(color = MaterialTheme.colorScheme.primary, textDecoration = TextDecoration.Underline)
-                            )
-                            pushLink(
-                                LinkAnnotation.Url(
-                                    ExternalUris.Manual.baseUrl.buildUpon()
-                                        .appendPath(ExternalUris.Manual.PATH_WEBDAV_PUSH)
-                                        .build().toString()
-                                )
-                            )
-                            append(stringResource(R.string.app_settings_unifiedpush_encrypted))
-                        },
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
-            }
-        }
-    )
-}
-
-@Composable
-@Preview("No distributors installed", "PushDistributorSelectionDialog")
-fun PushDistributorSelectionDialog_Preview_NoDistributors() {
-    PushDistributorSelectionDialog(null, {}, null) { }
-}
-
-@Composable
-@Preview("Push disabled", "PushDistributorSelectionDialog")
-fun PushDistributorSelectionDialog_Preview_PushDisabled() {
-    val ctx = LocalContext.current
-    PushDistributorSelectionDialog(
-        null,
-        {},
-        listOf(
-            PushDistributorInfo(
-                "com.example.distributor1",
-                "Distributor 1",
-                AppCompatResources.getDrawable(ctx, R.drawable.ic_launcher_foreground)
-            )
-        )
-    ) { }
-}
-
-@Composable
-@Preview("Distributor Selected", "PushDistributorSelectionDialog")
-fun PushDistributorSelectionDialog_Preview_DistributorSelected() {
-    val ctx = LocalContext.current
-    PushDistributorSelectionDialog(
-        "com.example.distributor1",
-        {},
-        listOf(
-            PushDistributorInfo(
-                "com.example.distributor1",
-                "Distributor 1",
-                AppCompatResources.getDrawable(ctx, R.drawable.ic_launcher_foreground)
-            ),
-            PushDistributorInfo("com.example.distributor2")
-        )
-    ) { }
-}
-
-@Composable
-fun AppSettings_Integration(
-    pushDistributors: List<PushDistributorInfo>?,
-    pushDistributor: String?,
-    onPushDistributorChange: (String?) -> Unit,
-) {
-    SettingsHeader(divider = true) {
-        Text(stringResource(R.string.app_settings_integration))
-    }
-
-    var showingDistributorDialog by remember { mutableStateOf(false) }
-    if (showingDistributorDialog) {
-        PushDistributorSelectionDialog(
-            pushDistributor = pushDistributor,
-            onPushDistributorChange = onPushDistributorChange,
-            pushDistributors = pushDistributors
-        ) { showingDistributorDialog = false }
-    }
-
-    val context = LocalContext.current
-    val pushAppName = if (pushDistributor == context.packageName) {
-        stringResource(R.string.app_settings_unifiedpush_distributor_fcm)
-    } else {
-        pushDistributors?.find { it.packageName == pushDistributor }?.appName
-    }
-    Setting(
-        name = stringResource(R.string.app_settings_unifiedpush),
-        summary = if (pushDistributor != null)
-            stringResource(R.string.app_settings_unifiedpush_ready, pushAppName ?: pushDistributor)
-        else
-            stringResource(R.string.app_settings_unifiedpush_no_endpoint),
-        onClick = { showingDistributorDialog = true }
     )
 }

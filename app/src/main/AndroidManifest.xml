@@ -215,13 +215,6 @@
                 android:resource="@xml/debug_paths" />
         </provider>
 
-        <!-- UnifiedPush -->
-        <service android:exported="false" android:name=".push.UnifiedPushService">
-            <intent-filter>
-                <action android:name="org.unifiedpush.android.connector.PUSH_EVENT"/>
-            </intent-filter>
-        </service>
-
         <!-- Widgets -->
         <receiver android:name=".ui.widget.LabeledSyncButtonWidgetReceiver"
             android:label="@string/widget_labeled_sync_label"

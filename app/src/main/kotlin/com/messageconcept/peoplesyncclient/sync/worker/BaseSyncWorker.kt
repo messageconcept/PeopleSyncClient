@@ -16,7 +16,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.push.PushNotificationManager
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.sync.AddressBookSyncer
 import com.messageconcept.peoplesyncclient.sync.ResyncType
@@ -54,9 +53,6 @@ abstract class BaseSyncWorker(
     lateinit var notificationRegistry: NotificationRegistry
 
     @Inject
-    lateinit var pushNotificationManager: PushNotificationManager
-
-    @Inject
     lateinit var syncConditionsFactory: SyncConditions.Factory
 
 
@@ -75,9 +71,6 @@ abstract class BaseSyncWorker(
             logger.info("There's already another worker running for $syncTag, skipping")
             return Result.success()
         }
-
-        // Dismiss any pending push notification
-        pushNotificationManager.dismiss(account, dataType)
 
         try {
             val accountSettings = try {

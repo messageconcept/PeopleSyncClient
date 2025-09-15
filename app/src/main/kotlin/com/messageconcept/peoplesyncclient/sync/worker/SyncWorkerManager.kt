@@ -22,7 +22,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import androidx.work.WorkRequest
-import com.messageconcept.peoplesyncclient.push.PushNotificationManager
 import com.messageconcept.peoplesyncclient.sync.ResyncType
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_ACCOUNT_NAME
@@ -50,7 +49,6 @@ import javax.inject.Inject
 class SyncWorkerManager @Inject constructor(
     @ApplicationContext val context: Context,
     val logger: Logger,
-    val pushNotificationManager: Lazy<PushNotificationManager>,
 ) {
 
     // one-time sync workers
@@ -146,9 +144,6 @@ class SyncWorkerManager @Inject constructor(
             resync = resync,
             fromUpload = fromUpload
         )
-
-        if (fromPush)
-            pushNotificationManager.get().notify(account, dataType)
 
         /* We want to append only one work request, regardless of how many sync requests came in.
         So we have to append the work one time, and as soon as there is already a pending
