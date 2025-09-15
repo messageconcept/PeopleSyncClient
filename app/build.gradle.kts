@@ -10,6 +10,16 @@ plugins {
     alias(libs.plugins.ksp)
 
     alias(libs.plugins.mikepenz.aboutLibraries)
+    alias(libs.plugins.cyclonedx)
+}
+
+tasks.cyclonedxBom {
+    projectType = "application"
+    outputName = "sbom-android-app"
+    outputFormat = "json"
+    includeLicenseText = false
+    componentName = "PeopleSyncClient"
+    componentVersion = android.defaultConfig.versionName
 }
 
 // Android configuration
