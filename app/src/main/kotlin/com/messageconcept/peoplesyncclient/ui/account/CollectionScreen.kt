@@ -149,25 +149,6 @@ fun CollectionScreen(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                    },
-                    actions = {
-                        var showDeleteDialog by remember { mutableStateOf(false) }
-                        IconButton(
-                            onClick = { showDeleteDialog = true },
-                            enabled = !inProgress
-                        ) {
-                            Icon(Icons.Default.DeleteForever, contentDescription = stringResource(R.string.collection_delete))
-                        }
-
-                        if (showDeleteDialog)
-                            DeleteCollectionDialog(
-                                displayName = title,
-                                onDismiss = { showDeleteDialog = false },
-                                onConfirm = {
-                                    onDelete()
-                                    showDeleteDialog = false
-                                }
-                            )
                     }
                 )
             }
