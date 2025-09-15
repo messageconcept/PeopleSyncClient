@@ -70,7 +70,7 @@ class WelcomePage: IntroPage() {
                 .safeContentPadding()
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_launcher_foreground),
+                painter = painterResource(R.drawable.ic_logo_white),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -147,7 +147,7 @@ class WelcomePage: IntroPage() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    painter = painterResource(R.drawable.ic_logo_white),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxHeight()
