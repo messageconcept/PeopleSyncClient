@@ -98,6 +98,7 @@ class WelcomePage: IntroPage() {
                 color = Color.White,
                 fontFamily = fontFamily,
                 fontSize = 32.sp,
+                lineHeight = 40.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
