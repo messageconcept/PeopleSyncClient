@@ -15,6 +15,6 @@ object Constants {
 
     // product IDs for iCalendar/vCard
 
-    const val vCardProdId = "+//IDN bitfire.at//PeopleSync/${BuildConfig.VERSION_NAME} ez-vcard/${Ezvcard.VERSION}"
+    const val vCardProdId = "+//IDN messageconcept.com//PeopleSync/${BuildConfig.VERSION_NAME} ez-vcard/${Ezvcard.VERSION}"
 
 }
