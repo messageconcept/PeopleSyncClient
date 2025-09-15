@@ -418,4 +418,5 @@
   <!--cert4android-->
   <!--managed configurations-->
   <string name="login_type_managed">Por favor, inicie sesión</string>
+  <string name="account_list_managed_configuration">La configuración de la cuenta es gestionada por su organización.</string>
 </resources>

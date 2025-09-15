@@ -437,4 +437,5 @@
   <!--cert4android-->
   <!--managed configurations-->
   <string name="login_type_managed">Veuillez vous identifier</string>
+  <string name="account_list_managed_configuration">Les comptes sont gérés par votre organisation.</string>
 </resources>

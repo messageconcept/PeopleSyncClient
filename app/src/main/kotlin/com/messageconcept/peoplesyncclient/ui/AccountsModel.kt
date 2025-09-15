@@ -7,6 +7,7 @@ package com.messageconcept.peoplesyncclient.ui
 import android.accounts.Account
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED
 import android.content.IntentFilter
 import android.content.pm.PackageManager.NameNotFoundException
 import android.net.ConnectivityManager
@@ -25,6 +26,7 @@ import androidx.work.WorkQuery
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
@@ -48,6 +50,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -64,6 +67,7 @@ class AccountsModel @AssistedInject constructor(
     private val db: AppDatabase,
     introPageFactory: IntroPageFactory,
     private val logger: Logger,
+    private val managedSettings: ManagedSettings,
     private val settings: SettingsManager,
     private val syncWorkerManager: SyncWorkerManager,
     private val syncFrameWork: SyncFrameworkIntegration
@@ -92,6 +96,8 @@ class AccountsModel @AssistedInject constructor(
     private val maxAccounts = settings.getIntFlow(Settings.MAX_ACCOUNTS)
     val showAddAccount: Flow<FABStyle> = combine(accounts, maxAccounts) { accounts, maxAccounts ->
         if (maxAccounts != null && accounts.size >= maxAccounts)
+            FABStyle.None
+        else if (accounts.isNotEmpty() && isManaged.first())
             FABStyle.None
         else if (accounts.isEmpty())
             FABStyle.WithText
@@ -190,6 +196,14 @@ class AccountsModel @AssistedInject constructor(
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()!!
     private val powerManager: PowerManager = context.getSystemService<PowerManager>()!!
+
+    /** whether to consider managed mode **/
+    val isManaged =
+        broadcastReceiverFlow(
+            context = context,
+            filter = IntentFilter(ACTION_APPLICATION_RESTRICTIONS_CHANGED),
+            immediate = true
+        ).map { managedSettings.isManaged() }
 
     /** whether a usable network connection is available (sync framework won't run synchronization otherwise) */
     val networkAvailable = callbackFlow<Boolean> {

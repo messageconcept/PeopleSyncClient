@@ -556,4 +556,5 @@
 
     <!-- managed configurations -->
     <string name="login_type_managed">Please login</string>
+    <string name="account_list_managed_configuration">Account settings are managed by your organization.</string>
 </resources>
