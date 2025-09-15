@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -52,9 +52,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.ui.AppTheme
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.ui.AppTheme
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 @Composable

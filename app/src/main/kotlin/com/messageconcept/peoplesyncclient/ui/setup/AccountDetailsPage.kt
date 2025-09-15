@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.accounts.Account
 import androidx.compose.foundation.clickable
@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.composable.Assistant
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.composable.Assistant
 import at.bitfire.vcard4android.GroupMethod
 
 @Composable

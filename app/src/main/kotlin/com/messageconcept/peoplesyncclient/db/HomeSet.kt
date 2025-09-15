@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import at.bitfire.davdroid.util.DavUtils.lastSegment
+import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
 import okhttp3.HttpUrl
 
 @Entity(tableName = "homeset",

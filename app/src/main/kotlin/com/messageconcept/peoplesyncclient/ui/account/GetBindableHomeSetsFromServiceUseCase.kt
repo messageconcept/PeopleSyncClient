@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
-import at.bitfire.davdroid.db.HomeSet
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.repository.DavHomeSetRepository
+import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.repository.DavHomeSetRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest

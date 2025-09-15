@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.network
+package com.messageconcept.peoplesyncclient.network
 
 import android.accounts.Account
 import android.content.Context
@@ -10,13 +10,13 @@ import androidx.annotation.WorkerThread
 import at.bitfire.cert4android.CustomCertManager
 import at.bitfire.dav4jvm.BasicDigestAuthHandler
 import at.bitfire.dav4jvm.UrlUtils
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.di.IoDispatcher
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.Credentials
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.ForegroundTracker
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.di.IoDispatcher
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.Credentials
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.ForegroundTracker
 import com.google.common.net.HttpHeaders
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -162,7 +162,7 @@ class HttpClient(
          * @param account   the account to take authentication from
          * @param onlyHost  if set: only authenticate for this host name
          *
-         * @throws at.bitfire.davdroid.sync.account.InvalidAccountException     when the account doesn't exist
+         * @throws com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException     when the account doesn't exist
          */
         @WorkerThread
         fun fromAccount(account: Account, onlyHost: String? = null): Builder {
@@ -182,7 +182,7 @@ class HttpClient(
         /**
          * Same as [fromAccount], but can be called on any thread.
          *
-         * @throws at.bitfire.davdroid.sync.account.InvalidAccountException     when the account doesn't exist
+         * @throws com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException     when the account doesn't exist
          */
         suspend fun fromAccountAsync(account: Account, onlyHost: String? = null): Builder = withContext(ioDispatcher) {
             fromAccount(account, onlyHost)

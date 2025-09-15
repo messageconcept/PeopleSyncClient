@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.util.DavUtils.lastSegment
-import at.bitfire.davdroid.util.DavUtils.parent
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
+import com.messageconcept.peoplesyncclient.util.DavUtils.parent
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import org.junit.Assert

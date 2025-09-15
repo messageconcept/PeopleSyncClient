@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.push
+package com.messageconcept.peoplesyncclient.push
 
 import android.accounts.Account
 import android.app.PendingIntent
@@ -11,10 +11,10 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.ui.NotificationRegistry
-import at.bitfire.davdroid.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

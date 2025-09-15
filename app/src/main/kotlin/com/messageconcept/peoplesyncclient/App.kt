@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import at.bitfire.davdroid.log.LogManager
-import at.bitfire.davdroid.startup.StartupPlugin
-import at.bitfire.davdroid.sync.account.AccountsCleanupWorker
-import at.bitfire.davdroid.ui.UiUtils
+import com.messageconcept.peoplesyncclient.log.LogManager
+import com.messageconcept.peoplesyncclient.startup.StartupPlugin
+import com.messageconcept.peoplesyncclient.sync.account.AccountsCleanupWorker
+import com.messageconcept.peoplesyncclient.ui.UiUtils
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers

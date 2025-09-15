@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.ContentUris
 import android.content.ContentValues
@@ -14,8 +14,8 @@ import android.provider.ContactsContract.Groups
 import android.provider.ContactsContract.RawContacts
 import android.provider.ContactsContract.RawContacts.Data
 import androidx.core.content.contentValuesOf
-import at.bitfire.davdroid.resource.LocalGroup.Companion.COLUMN_PENDING_MEMBERS
-import at.bitfire.davdroid.util.trimToNull
+import com.messageconcept.peoplesyncclient.resource.LocalGroup.Companion.COLUMN_PENDING_MEMBERS
+import com.messageconcept.peoplesyncclient.util.trimToNull
 import at.bitfire.synctools.storage.BatchOperation
 import at.bitfire.synctools.storage.ContactsBatchOperation
 import at.bitfire.vcard4android.AndroidAddressBook

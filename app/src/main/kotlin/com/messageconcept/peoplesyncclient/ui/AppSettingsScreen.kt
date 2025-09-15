@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -67,14 +67,14 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.ui.AppSettingsModel.PushDistributorInfo
-import at.bitfire.davdroid.ui.composable.EditTextInputDialog
-import at.bitfire.davdroid.ui.composable.MultipleChoiceInputDialog
-import at.bitfire.davdroid.ui.composable.Setting
-import at.bitfire.davdroid.ui.composable.SettingsHeader
-import at.bitfire.davdroid.ui.composable.SwitchSetting
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.ui.AppSettingsModel.PushDistributorInfo
+import com.messageconcept.peoplesyncclient.ui.composable.EditTextInputDialog
+import com.messageconcept.peoplesyncclient.ui.composable.MultipleChoiceInputDialog
+import com.messageconcept.peoplesyncclient.ui.composable.Setting
+import com.messageconcept.peoplesyncclient.ui.composable.SettingsHeader
+import com.messageconcept.peoplesyncclient.ui.composable.SwitchSetting
 import kotlinx.coroutines.launch
 
 @Composable

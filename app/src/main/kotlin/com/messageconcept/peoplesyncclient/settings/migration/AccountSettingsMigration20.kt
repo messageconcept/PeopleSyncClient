@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -10,13 +10,13 @@ import android.content.Context
 import android.provider.CalendarContract
 import androidx.annotation.OpenForTesting
 import androidx.core.content.contentValuesOf
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.repository.DavCollectionRepository
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.resource.LocalAddressBookStore
-import at.bitfire.davdroid.resource.LocalCalendarStore
-import at.bitfire.davdroid.resource.LocalTaskList
-import at.bitfire.davdroid.sync.TasksAppManager
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
+import com.messageconcept.peoplesyncclient.resource.LocalCalendarStore
+import com.messageconcept.peoplesyncclient.resource.LocalTaskList
+import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import at.bitfire.ical4android.JtxCollection
 import at.bitfire.synctools.storage.calendar.AndroidCalendarProvider
 import at.techbee.jtx.JtxContract
@@ -32,7 +32,7 @@ import org.dmfs.tasks.contract.TaskContract.TaskLists
 import javax.inject.Inject
 
 /**
- * [at.bitfire.davdroid.sync.Syncer] now users collection IDs instead of URLs to match
+ * [com.messageconcept.peoplesyncclient.sync.Syncer] now users collection IDs instead of URLs to match
  * local and remote (database) collections.
  *
  * This migration writes the database collection IDs to the local collections. If we wouldn't do that,

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.worker
+package com.messageconcept.peoplesyncclient.sync.worker
 
 import android.accounts.Account
 import android.content.Context
@@ -22,19 +22,19 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import androidx.work.WorkRequest
-import at.bitfire.davdroid.push.PushNotificationManager
-import at.bitfire.davdroid.sync.ResyncType
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.TasksAppManager
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.INPUT_ACCOUNT_NAME
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.INPUT_ACCOUNT_TYPE
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.INPUT_DATA_TYPE
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.INPUT_MANUAL
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.INPUT_RESYNC
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.INPUT_UPLOAD
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.RESYNC_ENTRIES
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.RESYNC_LIST
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.commonTag
+import com.messageconcept.peoplesyncclient.push.PushNotificationManager
+import com.messageconcept.peoplesyncclient.sync.ResyncType
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.TasksAppManager
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_ACCOUNT_NAME
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_ACCOUNT_TYPE
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_DATA_TYPE
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_MANUAL
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_RESYNC
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.INPUT_UPLOAD
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.RESYNC_ENTRIES
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.RESYNC_LIST
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.commonTag
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow

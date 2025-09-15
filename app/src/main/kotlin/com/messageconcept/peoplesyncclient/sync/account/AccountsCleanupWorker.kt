@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.account
+package com.messageconcept.peoplesyncclient.sync.account
 
 import android.accounts.AccountManager
 import android.content.Context
@@ -14,10 +14,10 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.repository.AccountRepository
-import at.bitfire.davdroid.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

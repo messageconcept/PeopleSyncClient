@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.widget
+package com.messageconcept.peoplesyncclient.ui.widget
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.bitfire.davdroid.repository.AccountRepository
-import at.bitfire.davdroid.sync.worker.SyncWorkerManager
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

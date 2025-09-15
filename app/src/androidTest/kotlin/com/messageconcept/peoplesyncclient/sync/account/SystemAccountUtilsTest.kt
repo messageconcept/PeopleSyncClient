@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.account
+package com.messageconcept.peoplesyncclient.sync.account
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
 import android.os.Bundle
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

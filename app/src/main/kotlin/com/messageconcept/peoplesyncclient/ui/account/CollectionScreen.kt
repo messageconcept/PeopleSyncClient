@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -51,12 +51,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.repository.DavSyncStatsRepository
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.composable.ExceptionInfoDialog
-import at.bitfire.davdroid.ui.composable.ProgressBar
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.repository.DavSyncStatsRepository
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.composable.ExceptionInfoDialog
+import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime

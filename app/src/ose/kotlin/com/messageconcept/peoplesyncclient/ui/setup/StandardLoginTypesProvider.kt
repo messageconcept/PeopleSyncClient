@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Intent
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import at.bitfire.davdroid.ui.setup.LoginTypesProvider.LoginAction
+import com.messageconcept.peoplesyncclient.ui.setup.LoginTypesProvider.LoginAction
 import java.util.logging.Logger
 import javax.inject.Inject
 

@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.startup
+package com.messageconcept.peoplesyncclient.startup
 
 import android.content.Context
-import at.bitfire.davdroid.startup.StartupPlugin.Companion.PRIORITY_DEFAULT
-import at.bitfire.davdroid.sync.TasksAppManager
-import at.bitfire.davdroid.util.packageChangedFlow
+import com.messageconcept.peoplesyncclient.startup.StartupPlugin.Companion.PRIORITY_DEFAULT
+import com.messageconcept.peoplesyncclient.sync.TasksAppManager
+import com.messageconcept.peoplesyncclient.util.packageChangedFlow
 import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import android.accounts.Account
 import android.app.PendingIntent
@@ -23,15 +23,15 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import at.bitfire.dav4jvm.exception.UnauthorizedException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.push.PushRegistrationManager
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.servicedetection.RefreshCollectionsWorker.Companion.ARG_SERVICE_ID
-import at.bitfire.davdroid.sync.account.InvalidAccountException
-import at.bitfire.davdroid.ui.DebugInfoActivity
-import at.bitfire.davdroid.ui.NotificationRegistry
-import at.bitfire.davdroid.ui.account.AccountSettingsActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.push.PushRegistrationManager
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker.Companion.ARG_SERVICE_ID
+import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.ui.account.AccountSettingsActivity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.map

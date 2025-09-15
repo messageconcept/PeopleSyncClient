@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.adapter
+package com.messageconcept.peoplesyncclient.sync.adapter
 
 import android.app.Service
 import android.content.Intent

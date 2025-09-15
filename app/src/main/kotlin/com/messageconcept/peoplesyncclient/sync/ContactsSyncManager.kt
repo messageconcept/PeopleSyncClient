@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -20,24 +20,24 @@ import at.bitfire.dav4jvm.property.webdav.GetETag
 import at.bitfire.dav4jvm.property.webdav.ResourceType
 import at.bitfire.dav4jvm.property.webdav.SupportedReportSet
 import at.bitfire.dav4jvm.property.webdav.SyncToken
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.di.SyncDispatcher
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.resource.LocalAddress
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalContact
-import at.bitfire.davdroid.resource.LocalGroup
-import at.bitfire.davdroid.resource.LocalResource
-import at.bitfire.davdroid.resource.SyncState
-import at.bitfire.davdroid.resource.workaround.ContactDirtyVerifier
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.groups.CategoriesStrategy
-import at.bitfire.davdroid.sync.groups.VCard4Strategy
-import at.bitfire.davdroid.util.DavUtils
-import at.bitfire.davdroid.util.DavUtils.lastSegment
-import at.bitfire.davdroid.util.DavUtils.sameTypeAs
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.di.SyncDispatcher
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.resource.LocalAddress
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalContact
+import com.messageconcept.peoplesyncclient.resource.LocalGroup
+import com.messageconcept.peoplesyncclient.resource.LocalResource
+import com.messageconcept.peoplesyncclient.resource.SyncState
+import com.messageconcept.peoplesyncclient.resource.workaround.ContactDirtyVerifier
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.groups.CategoriesStrategy
+import com.messageconcept.peoplesyncclient.sync.groups.VCard4Strategy
+import com.messageconcept.peoplesyncclient.util.DavUtils
+import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
+import com.messageconcept.peoplesyncclient.util.DavUtils.sameTypeAs
 import at.bitfire.vcard4android.Contact
 import at.bitfire.vcard4android.GroupMethod
 import dagger.assisted.Assisted

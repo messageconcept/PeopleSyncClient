@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.account
+package com.messageconcept.peoplesyncclient.sync.account
 
 import android.accounts.Account
 import android.accounts.AccountManager

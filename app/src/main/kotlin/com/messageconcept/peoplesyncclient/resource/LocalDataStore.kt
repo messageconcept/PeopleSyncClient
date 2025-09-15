@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
-import at.bitfire.davdroid.db.Collection
+import com.messageconcept.peoplesyncclient.db.Collection
 
 /**
  * Represents a local data store for a specific collection type.

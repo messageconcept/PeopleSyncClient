@@ -1,7 +1,7 @@
 /*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
-package at.bitfire.davdroid.sync.account
+package com.messageconcept.peoplesyncclient.sync.account
 
 import android.accounts.AbstractAccountAuthenticator
 import android.accounts.Account
@@ -12,7 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 
 class AddressBookAuthenticatorService: Service() {
 

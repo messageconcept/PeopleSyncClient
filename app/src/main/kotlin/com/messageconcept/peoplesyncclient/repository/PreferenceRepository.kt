@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.repository
+package com.messageconcept.peoplesyncclient.repository
 
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -17,7 +17,7 @@ import javax.inject.Inject
 /**
  * Repository to access preferences. Preferences are stored in a shared preferences file
  * and reflect settings that are very low-level and are therefore not covered by
- * [at.bitfire.davdroid.settings.SettingsManager].
+ * [com.messageconcept.peoplesyncclient.settings.SettingsManager].
  */
 class PreferenceRepository @Inject constructor(
     @ApplicationContext context: Context

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.accounts.AccountManager
 import android.content.Context
@@ -11,11 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.network.OAuthGoogle
-import at.bitfire.davdroid.network.OAuthIntegration
-import at.bitfire.davdroid.settings.Credentials
-import at.bitfire.davdroid.util.trimToNull
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.network.OAuthGoogle
+import com.messageconcept.peoplesyncclient.network.OAuthIntegration
+import com.messageconcept.peoplesyncclient.settings.Credentials
+import com.messageconcept.peoplesyncclient.util.trimToNull
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

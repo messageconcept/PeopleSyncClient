@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -43,11 +43,11 @@ import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.UiUtils.toAnnotatedString
-import at.bitfire.davdroid.ui.composable.CardWithImage
-import at.bitfire.davdroid.ui.composable.RadioWithSwitch
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.UiUtils.toAnnotatedString
+import com.messageconcept.peoplesyncclient.ui.composable.CardWithImage
+import com.messageconcept.peoplesyncclient.ui.composable.RadioWithSwitch
 import at.bitfire.ical4android.TaskProvider
 import kotlinx.coroutines.launch
 

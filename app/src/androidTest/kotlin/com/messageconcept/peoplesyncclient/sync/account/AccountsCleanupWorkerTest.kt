@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.account
+package com.messageconcept.peoplesyncclient.sync.account
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -10,12 +10,12 @@ import android.content.Context
 import android.os.Bundle
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.testing.TestListenableWorkerBuilder
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.TestUtils
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.TestUtils
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

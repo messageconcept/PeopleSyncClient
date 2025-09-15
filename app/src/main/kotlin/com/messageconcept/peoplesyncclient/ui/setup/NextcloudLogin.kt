@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
 import android.content.Intent
 import android.net.Uri
@@ -42,12 +42,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.ExternalUris
-import at.bitfire.davdroid.ui.ExternalUris.withStatParams
-import at.bitfire.davdroid.ui.UiUtils.haveCustomTabs
-import at.bitfire.davdroid.ui.composable.Assistant
-import at.bitfire.davdroid.ui.composable.ProgressBar
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.ExternalUris
+import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
+import com.messageconcept.peoplesyncclient.ui.UiUtils.haveCustomTabs
+import com.messageconcept.peoplesyncclient.ui.composable.Assistant
+import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
 import kotlinx.coroutines.launch
 
 object NextcloudLogin : LoginType {

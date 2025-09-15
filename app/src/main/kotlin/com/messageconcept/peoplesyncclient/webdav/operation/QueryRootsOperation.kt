@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav.operation
+package com.messageconcept.peoplesyncclient.webdav.operation
 
 import android.content.Context
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.provider.DocumentsContract.Root
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import java.util.logging.Logger

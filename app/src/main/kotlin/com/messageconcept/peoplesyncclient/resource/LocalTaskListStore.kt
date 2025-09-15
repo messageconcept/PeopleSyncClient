@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -11,12 +11,12 @@ import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.contentValuesOf
-import at.bitfire.davdroid.Constants
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.util.DavUtils.lastSegment
+import com.messageconcept.peoplesyncclient.Constants
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
 import at.bitfire.ical4android.DmfsTaskList
 import at.bitfire.ical4android.TaskProvider
 import dagger.assisted.Assisted

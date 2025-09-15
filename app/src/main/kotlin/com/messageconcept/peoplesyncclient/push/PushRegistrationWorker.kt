@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.push
+package com.messageconcept.peoplesyncclient.push
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker

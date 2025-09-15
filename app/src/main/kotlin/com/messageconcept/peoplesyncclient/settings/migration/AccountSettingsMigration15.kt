@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
-import at.bitfire.davdroid.sync.AutomaticSyncManager
+import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,7 +17,7 @@ import javax.inject.Inject
 /**
  * Updates the periodic sync workers by re-setting the same sync interval.
  *
- * The goal is to add the [at.bitfire.davdroid.sync.worker.BaseSyncWorker.commonTag] to all existing periodic sync workers so that they
+ * The goal is to add the [com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.commonTag] to all existing periodic sync workers so that they
  * can be detected correctly.
  */
 class AccountSettingsMigration15 @Inject constructor(

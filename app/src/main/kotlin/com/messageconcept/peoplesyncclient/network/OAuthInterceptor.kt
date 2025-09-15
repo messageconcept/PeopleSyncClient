@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.network
+package com.messageconcept.peoplesyncclient.network
 
-import at.bitfire.davdroid.BuildConfig
+import com.messageconcept.peoplesyncclient.BuildConfig
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

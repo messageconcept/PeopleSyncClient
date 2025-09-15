@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
-import at.bitfire.davdroid.resource.LocalResource
+import com.messageconcept.peoplesyncclient.resource.LocalResource
 import java.util.Optional
 
 class LocalTestResource: LocalResource<Any> {

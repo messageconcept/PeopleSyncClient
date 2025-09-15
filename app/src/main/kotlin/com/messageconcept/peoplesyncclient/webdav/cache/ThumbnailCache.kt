@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav.cache
+package com.messageconcept.peoplesyncclient.webdav.cache
 
 import android.content.Context
 import android.graphics.Point
@@ -10,7 +10,7 @@ import android.os.Build
 import android.os.storage.StorageManager
 import android.text.format.Formatter
 import androidx.core.content.getSystemService
-import at.bitfire.davdroid.db.WebDavDocument
+import com.messageconcept.peoplesyncclient.db.WebDavDocument
 import com.google.common.hash.Hashing
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File

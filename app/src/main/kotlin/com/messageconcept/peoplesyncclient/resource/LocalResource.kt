@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
-import at.bitfire.davdroid.resource.LocalResource.Companion.FLAG_REMOTELY_PRESENT
+import com.messageconcept.peoplesyncclient.resource.LocalResource.Companion.FLAG_REMOTELY_PRESENT
 import java.util.Optional
 
 /**

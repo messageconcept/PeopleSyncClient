@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.worker
+package com.messageconcept.peoplesyncclient.sync.worker
 
 import android.accounts.Account
 import android.content.Context
@@ -11,9 +11,9 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 

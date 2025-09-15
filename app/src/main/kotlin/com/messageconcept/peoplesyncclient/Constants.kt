@@ -1,7 +1,7 @@
 /*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import at.bitfire.synctools.icalendar.ical4jVersion
 import ezvcard.Ezvcard

@@ -2,17 +2,17 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.di
+package com.messageconcept.peoplesyncclient.di
 
-import at.bitfire.davdroid.ui.intro.OseIntroPageFactory
+import com.messageconcept.peoplesyncclient.ui.intro.OseIntroPageFactory
 
-import at.bitfire.davdroid.ui.AboutActivity
-import at.bitfire.davdroid.ui.AccountsDrawerHandler
-import at.bitfire.davdroid.ui.OpenSourceLicenseInfoProvider
-import at.bitfire.davdroid.ui.OseAccountsDrawerHandler
-import at.bitfire.davdroid.ui.intro.IntroPageFactory
-import at.bitfire.davdroid.ui.setup.LoginTypesProvider
-import at.bitfire.davdroid.ui.setup.StandardLoginTypesProvider
+import com.messageconcept.peoplesyncclient.ui.AboutActivity
+import com.messageconcept.peoplesyncclient.ui.AccountsDrawerHandler
+import com.messageconcept.peoplesyncclient.ui.OpenSourceLicenseInfoProvider
+import com.messageconcept.peoplesyncclient.ui.OseAccountsDrawerHandler
+import com.messageconcept.peoplesyncclient.ui.intro.IntroPageFactory
+import com.messageconcept.peoplesyncclient.ui.setup.LoginTypesProvider
+import com.messageconcept.peoplesyncclient.ui.setup.StandardLoginTypesProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

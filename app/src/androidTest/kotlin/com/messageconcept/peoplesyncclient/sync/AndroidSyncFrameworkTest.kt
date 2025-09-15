@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.content.ContentResolver
@@ -11,7 +11,7 @@ import android.content.SyncRequest
 import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.test.filters.SdkSuppress
-import at.bitfire.davdroid.sync.account.TestAccount
+import com.messageconcept.peoplesyncclient.sync.account.TestAccount
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

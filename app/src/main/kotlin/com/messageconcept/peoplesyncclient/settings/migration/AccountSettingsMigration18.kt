@@ -2,16 +2,16 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.sync.account.setAndVerifyUserData
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,7 +28,7 @@ import javax.inject.Inject
  *
  * However, it turned out that the account binding is needed even with collection IDs for the case
  * that the collection is not available in the database anymore (for instance, because it has been
- * removed on the server). In that case, the [at.bitfire.davdroid.sync.Syncer] still needs to get
+ * removed on the server). In that case, the [com.messageconcept.peoplesyncclient.sync.Syncer] still needs to get
  * a list of all address book accounts that belong to the account, and not _all_ address books.
  *
  * So this migration again assigns address book accounts to accounts.

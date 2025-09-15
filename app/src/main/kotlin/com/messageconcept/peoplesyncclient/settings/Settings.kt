@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
 import androidx.appcompat.app.AppCompatDelegate
-import at.bitfire.davdroid.settings.Settings.PRESELECT_COLLECTIONS_EXCLUDED
+import com.messageconcept.peoplesyncclient.settings.Settings.PRESELECT_COLLECTIONS_EXCLUDED
 
 object Settings {
 

@@ -2,21 +2,21 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.content.ContentProviderClient
 import android.content.Context
 import android.os.DeadObjectException
 import androidx.annotation.VisibleForTesting
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.ServiceType
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.repository.DavCollectionRepository
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.resource.LocalCollection
-import at.bitfire.davdroid.resource.LocalDataStore
-import at.bitfire.davdroid.sync.account.InvalidAccountException
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.ServiceType
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.resource.LocalCollection
+import com.messageconcept.peoplesyncclient.resource.LocalDataStore
+import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import java.util.logging.Level
@@ -95,7 +95,7 @@ abstract class Syncer<StoreType: LocalDataStore<CollectionType>, CollectionType:
 
     /**
      * Finds sync enabled collections in database. They contain collection info which might have
-     * been updated by collection refresh [at.bitfire.davdroid.servicedetection.DavResourceFinder].
+     * been updated by collection refresh [com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder].
      *
      * @return The sync enabled database collections as hash map identified by their ID
      */

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.Property
@@ -16,10 +16,10 @@ import at.bitfire.dav4jvm.property.common.HrefListProperty
 import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.GroupMembership
 import at.bitfire.dav4jvm.property.webdav.ResourceType
-import at.bitfire.davdroid.db.HomeSet
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.repository.DavHomeSetRepository
-import at.bitfire.davdroid.util.DavUtils.parent
+import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.repository.DavHomeSetRepository
+import com.messageconcept.peoplesyncclient.util.DavUtils.parent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

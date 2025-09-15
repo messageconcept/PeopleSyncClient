@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import androidx.sqlite.SQLiteException
-import at.bitfire.davdroid.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest

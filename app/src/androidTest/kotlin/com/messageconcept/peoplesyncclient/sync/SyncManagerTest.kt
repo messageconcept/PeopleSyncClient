@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.content.Context
@@ -12,14 +12,14 @@ import at.bitfire.dav4jvm.PropStat
 import at.bitfire.dav4jvm.Response
 import at.bitfire.dav4jvm.Response.HrefRelation
 import at.bitfire.dav4jvm.property.webdav.GetETag
-import at.bitfire.davdroid.TestUtils
-import at.bitfire.davdroid.TestUtils.assertWithin
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.repository.DavSyncStatsRepository
-import at.bitfire.davdroid.resource.SyncState
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.account.TestAccount
+import com.messageconcept.peoplesyncclient.TestUtils
+import com.messageconcept.peoplesyncclient.TestUtils.assertWithin
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.repository.DavSyncStatsRepository
+import com.messageconcept.peoplesyncclient.resource.SyncState
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.account.TestAccount
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

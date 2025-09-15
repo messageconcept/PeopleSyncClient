@@ -2,20 +2,20 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav.operation
+package com.messageconcept.peoplesyncclient.webdav.operation
 
 import android.content.Context
 import android.os.Build
 import android.os.CancellationSignal
 import android.os.ParcelFileDescriptor
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.di.IoDispatcher
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.webdav.DavHttpClientBuilder
-import at.bitfire.davdroid.webdav.DocumentProviderUtils
-import at.bitfire.davdroid.webdav.HeadResponse
-import at.bitfire.davdroid.webdav.RandomAccessCallbackWrapper
-import at.bitfire.davdroid.webdav.StreamingFileDescriptor
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.di.IoDispatcher
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.webdav.DavHttpClientBuilder
+import com.messageconcept.peoplesyncclient.webdav.DocumentProviderUtils
+import com.messageconcept.peoplesyncclient.webdav.HeadResponse
+import com.messageconcept.peoplesyncclient.webdav.RandomAccessCallbackWrapper
+import com.messageconcept.peoplesyncclient.webdav.StreamingFileDescriptor
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

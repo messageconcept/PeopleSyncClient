@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.network
+package com.messageconcept.peoplesyncclient.network
 
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.net.toUri
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.network.OAuthIntegration.redirectUri
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.network.OAuthIntegration.redirectUri
 import kotlinx.coroutines.CompletableDeferred
 import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException

@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db.migration
+package com.messageconcept.peoplesyncclient.db.migration
 
 import android.content.Context
 import androidx.room.DeleteColumn
 import androidx.room.ProvidedAutoMigrationSpec
 import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
-import at.bitfire.davdroid.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

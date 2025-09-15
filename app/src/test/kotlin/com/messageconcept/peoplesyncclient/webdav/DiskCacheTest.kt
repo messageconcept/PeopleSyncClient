@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.os.FileUtils
-import at.bitfire.davdroid.webdav.cache.DiskCache
+import com.messageconcept.peoplesyncclient.webdav.cache.DiskCache
 import com.google.common.io.ByteStreams
 import com.google.common.io.Files
 import ezvcard.util.IOUtils

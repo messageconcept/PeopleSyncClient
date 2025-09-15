@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.adapter
+package com.messageconcept.peoplesyncclient.sync.adapter
 
 import android.accounts.Account
 import android.content.ContentResolver
@@ -11,8 +11,8 @@ import android.content.SyncRequest
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.WorkerThread
-import at.bitfire.davdroid.resource.LocalAddressBookStore
-import at.bitfire.davdroid.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi

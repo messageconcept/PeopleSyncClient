@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.repository
+package com.messageconcept.peoplesyncclient.repository
 
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.db.ServiceType
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.db.ServiceType
 import javax.inject.Inject
 
 class DavServiceRepository @Inject constructor(

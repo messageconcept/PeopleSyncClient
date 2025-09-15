@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.widget
+package com.messageconcept.peoplesyncclient.ui.widget
 
 import android.content.Context
 import android.widget.Toast
@@ -28,8 +28,8 @@ import androidx.glance.layout.size
 import androidx.glance.text.Text
 import androidx.glance.text.TextDefaults
 import androidx.glance.unit.ColorProvider
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.M3ColorScheme
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.M3ColorScheme
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

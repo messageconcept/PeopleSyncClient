@@ -1,7 +1,7 @@
 /*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
-package at.bitfire.davdroid.servicedetection
+package com.messageconcept.peoplesyncclient.servicedetection
 
 import android.app.ActivityManager
 import android.content.Context
@@ -26,11 +26,11 @@ import at.bitfire.dav4jvm.property.webdav.CurrentUserPrincipal
 import at.bitfire.dav4jvm.property.webdav.CurrentUserPrivilegeSet
 import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.ResourceType
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.log.StringHandler
-import at.bitfire.davdroid.network.DnsRecordResolver
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.settings.Credentials
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.log.StringHandler
+import com.messageconcept.peoplesyncclient.network.DnsRecordResolver
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.settings.Credentials
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.webdav
+package com.messageconcept.peoplesyncclient.ui.webdav
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.bitfire.davdroid.db.WebDavMount
-import at.bitfire.davdroid.webdav.WebDavMountRepository
+import com.messageconcept.peoplesyncclient.db.WebDavMount
+import com.messageconcept.peoplesyncclient.webdav.WebDavMountRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

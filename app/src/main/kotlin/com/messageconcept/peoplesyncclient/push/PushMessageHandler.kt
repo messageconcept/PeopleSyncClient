@@ -2,18 +2,18 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.push
+package com.messageconcept.peoplesyncclient.push
 
 import androidx.annotation.VisibleForTesting
 import at.bitfire.dav4jvm.XmlReader
 import at.bitfire.dav4jvm.XmlUtils
-import at.bitfire.davdroid.db.Collection.Companion.TYPE_ADDRESSBOOK
-import at.bitfire.davdroid.repository.AccountRepository
-import at.bitfire.davdroid.repository.DavCollectionRepository
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.TasksAppManager
-import at.bitfire.davdroid.sync.worker.SyncWorkerManager
+import com.messageconcept.peoplesyncclient.db.Collection.Companion.TYPE_ADDRESSBOOK
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.TasksAppManager
+import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.Lazy
 import org.unifiedpush.android.connector.data.PushMessage
 import org.xmlpull.v1.XmlPullParserException

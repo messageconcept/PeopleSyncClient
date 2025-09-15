@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.push
+package com.messageconcept.peoplesyncclient.push
 
 import android.content.Context
 import androidx.work.BackoffPolicy
@@ -23,15 +23,15 @@ import at.bitfire.dav4jvm.property.push.PushResource
 import at.bitfire.dav4jvm.property.push.Subscription
 import at.bitfire.dav4jvm.property.push.SubscriptionPublicKey
 import at.bitfire.dav4jvm.property.push.WebPushSubscription
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.di.IoDispatcher
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.push.PushRegistrationManager.Companion.mutex
-import at.bitfire.davdroid.repository.AccountRepository
-import at.bitfire.davdroid.repository.DavCollectionRepository
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.sync.account.InvalidAccountException
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.di.IoDispatcher
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.push.PushRegistrationManager.Companion.mutex
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.network
+package com.messageconcept.peoplesyncclient.network
 
 import androidx.annotation.VisibleForTesting
 import okhttp3.Cookie

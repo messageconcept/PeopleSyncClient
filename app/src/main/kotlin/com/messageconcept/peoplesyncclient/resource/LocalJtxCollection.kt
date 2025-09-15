@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
@@ -13,7 +13,7 @@ import at.bitfire.ical4android.JtxICalObject
 /**
  * Application-specific implementation for jtx collections.
  *
- * [at.techbee.jtx.JtxContract.JtxCollection.SYNC_ID] corresponds to the database collection ID ([at.bitfire.davdroid.db.Collection.id]).
+ * [at.techbee.jtx.JtxContract.JtxCollection.SYNC_ID] corresponds to the database collection ID ([com.messageconcept.peoplesyncclient.db.Collection.id]).
  */
 class LocalJtxCollection(account: Account, client: ContentProviderClient, id: Long):
     JtxCollection<JtxICalObject>(account, client, LocalJtxICalObject.Factory, id),

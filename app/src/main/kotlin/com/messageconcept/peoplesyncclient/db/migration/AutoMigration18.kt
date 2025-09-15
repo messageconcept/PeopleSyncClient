@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db.migration
+package com.messageconcept.peoplesyncclient.db.migration
 
 import android.provider.CalendarContract
 import android.provider.ContactsContract
@@ -10,7 +10,7 @@ import androidx.room.ProvidedAutoMigrationSpec
 import androidx.room.RenameColumn
 import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
-import at.bitfire.davdroid.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module

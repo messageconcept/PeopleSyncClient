@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import at.bitfire.davdroid.ui.account.AccountActivity
-import at.bitfire.davdroid.ui.intro.IntroActivity
-import at.bitfire.davdroid.ui.setup.LoginActivity
+import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
+import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
+import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

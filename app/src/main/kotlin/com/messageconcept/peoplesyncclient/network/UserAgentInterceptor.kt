@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.network
+package com.messageconcept.peoplesyncclient.network
 
 import android.os.Build
-import at.bitfire.davdroid.BuildConfig
+import com.messageconcept.peoplesyncclient.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttp
 import okhttp3.Response

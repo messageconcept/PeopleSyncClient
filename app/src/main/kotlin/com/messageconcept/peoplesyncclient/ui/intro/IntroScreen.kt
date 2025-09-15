@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
@@ -53,9 +53,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.M3ColorScheme
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.M3ColorScheme
 import kotlinx.coroutines.launch
 
 @Composable

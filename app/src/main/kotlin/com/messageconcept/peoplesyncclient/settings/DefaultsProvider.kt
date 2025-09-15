@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings
+package com.messageconcept.peoplesyncclient.settings
 
-import at.bitfire.davdroid.TextTable
+import com.messageconcept.peoplesyncclient.TextTable
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

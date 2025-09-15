@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.app.PendingIntent
 import android.content.Context
@@ -12,15 +12,15 @@ import android.graphics.drawable.BitmapDrawable
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.repository.AccountRepository
-import at.bitfire.davdroid.resource.LocalDataStore
-import at.bitfire.davdroid.resource.LocalJtxCollectionStore
-import at.bitfire.davdroid.resource.LocalTaskListStore
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.NotificationRegistry
-import at.bitfire.davdroid.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.resource.LocalDataStore
+import com.messageconcept.peoplesyncclient.resource.LocalJtxCollectionStore
+import com.messageconcept.peoplesyncclient.resource.LocalTaskListStore
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import at.bitfire.ical4android.TaskProvider
 import at.bitfire.ical4android.TaskProvider.ProviderName
 import dagger.Lazy

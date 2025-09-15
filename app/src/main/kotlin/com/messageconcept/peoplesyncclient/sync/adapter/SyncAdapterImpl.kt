@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.adapter
+package com.messageconcept.peoplesyncclient.sync.adapter
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -15,16 +15,16 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.repository.DavCollectionRepository
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.SyncConditions
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.account.InvalidAccountException
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker
-import at.bitfire.davdroid.sync.worker.SyncWorkerManager
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.SyncConditions
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker
+import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

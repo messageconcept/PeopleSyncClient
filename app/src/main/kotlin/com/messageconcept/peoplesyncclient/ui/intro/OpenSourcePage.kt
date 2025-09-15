@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,13 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.ExternalUris
-import at.bitfire.davdroid.ui.ExternalUris.withStatParams
-import at.bitfire.davdroid.ui.composable.CardWithImage
-import at.bitfire.davdroid.ui.composable.RadioButtons
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.ExternalUris
+import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
+import com.messageconcept.peoplesyncclient.ui.composable.CardWithImage
+import com.messageconcept.peoplesyncclient.ui.composable.RadioButtons
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.logging.Logger
 import javax.inject.Inject

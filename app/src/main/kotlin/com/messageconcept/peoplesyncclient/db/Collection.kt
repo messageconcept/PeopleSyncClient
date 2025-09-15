@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import androidx.annotation.StringDef
 import androidx.room.ColumnInfo
@@ -25,8 +25,8 @@ import at.bitfire.dav4jvm.property.push.WebPush
 import at.bitfire.dav4jvm.property.webdav.CurrentUserPrivilegeSet
 import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.ResourceType
-import at.bitfire.davdroid.util.DavUtils.lastSegment
-import at.bitfire.davdroid.util.trimToNull
+import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
+import com.messageconcept.peoplesyncclient.util.trimToNull
 import at.bitfire.ical4android.util.DateUtils
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull

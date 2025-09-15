@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -32,18 +32,18 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import at.bitfire.dav4jvm.exception.DavException
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.repository.AccountRepository
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.account.InvalidAccountException
-import at.bitfire.davdroid.sync.adapter.SyncFrameworkIntegration
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
+import com.messageconcept.peoplesyncclient.sync.adapter.SyncFrameworkIntegration
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker
 import at.bitfire.ical4android.TaskProvider
 import at.techbee.jtx.JtxContract
 import dagger.hilt.android.qualifiers.ApplicationContext

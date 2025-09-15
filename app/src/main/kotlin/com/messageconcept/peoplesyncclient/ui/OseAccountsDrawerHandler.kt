@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
@@ -19,10 +19,10 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.ExternalUris.Homepage
-import at.bitfire.davdroid.ui.ExternalUris.Social
-import at.bitfire.davdroid.ui.ExternalUris.withStatParams
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.ExternalUris.Homepage
+import com.messageconcept.peoplesyncclient.ui.ExternalUris.Social
+import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
 import javax.inject.Inject
 
 open class OseAccountsDrawerHandler @Inject constructor(): AccountsDrawerHandler() {

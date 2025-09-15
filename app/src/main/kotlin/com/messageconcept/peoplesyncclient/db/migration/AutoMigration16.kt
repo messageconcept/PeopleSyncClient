@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db.migration
+package com.messageconcept.peoplesyncclient.db.migration
 
 import androidx.room.ProvidedAutoMigrationSpec
 import androidx.room.RenameColumn

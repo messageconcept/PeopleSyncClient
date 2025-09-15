@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.app.AuthenticationRequiredException
 import android.app.PendingIntent
@@ -14,8 +14,8 @@ import android.provider.DocumentsContract.buildRootsUri
 import android.webkit.MimeTypeMap
 import androidx.core.app.TaskStackBuilder
 import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.webdav.WebdavMountsActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.webdav.WebdavMountsActivity
 import java.io.FileNotFoundException
 import java.net.HttpURLConnection
 

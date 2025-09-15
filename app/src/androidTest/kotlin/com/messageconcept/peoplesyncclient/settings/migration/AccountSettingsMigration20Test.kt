@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.Manifest
 import android.accounts.Account
@@ -13,13 +13,13 @@ import android.provider.CalendarContract.Calendars
 import androidx.core.content.contentValuesOf
 import androidx.core.database.getLongOrNull
 import androidx.test.rule.GrantPermissionRule
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalCalendarStore
-import at.bitfire.davdroid.resource.LocalTestAddressBookProvider
-import at.bitfire.davdroid.sync.account.setAndVerifyUserData
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalCalendarStore
+import com.messageconcept.peoplesyncclient.resource.LocalTestAddressBookProvider
+import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
 import at.bitfire.ical4android.util.MiscUtils.asSyncAdapter
 import at.bitfire.vcard4android.GroupMethod
 import dagger.hilt.android.qualifiers.ApplicationContext

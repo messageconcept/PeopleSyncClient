@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.ContentValues
 import android.os.RemoteException
@@ -10,11 +10,11 @@ import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership
 import android.provider.ContactsContract.RawContacts.Data
 import androidx.core.content.contentValuesOf
-import at.bitfire.davdroid.resource.contactrow.CachedGroupMembershipHandler
-import at.bitfire.davdroid.resource.contactrow.GroupMembershipBuilder
-import at.bitfire.davdroid.resource.contactrow.GroupMembershipHandler
-import at.bitfire.davdroid.resource.contactrow.UnknownPropertiesBuilder
-import at.bitfire.davdroid.resource.contactrow.UnknownPropertiesHandler
+import com.messageconcept.peoplesyncclient.resource.contactrow.CachedGroupMembershipHandler
+import com.messageconcept.peoplesyncclient.resource.contactrow.GroupMembershipBuilder
+import com.messageconcept.peoplesyncclient.resource.contactrow.GroupMembershipHandler
+import com.messageconcept.peoplesyncclient.resource.contactrow.UnknownPropertiesBuilder
+import com.messageconcept.peoplesyncclient.resource.contactrow.UnknownPropertiesHandler
 import at.bitfire.synctools.storage.BatchOperation
 import at.bitfire.synctools.storage.ContactsBatchOperation
 import at.bitfire.vcard4android.AndroidAddressBook

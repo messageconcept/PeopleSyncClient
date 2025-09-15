@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -27,8 +27,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.HomeSet
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.HomeSet
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 @OptIn(ExperimentalMaterial3Api::class)

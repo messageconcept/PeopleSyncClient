@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav.operation
+package com.messageconcept.peoplesyncclient.webdav.operation
 
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.WebDavDocument
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.WebDavDocument
 import java.io.FileNotFoundException
 import java.util.logging.Logger
 import javax.inject.Inject

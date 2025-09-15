@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import androidx.annotation.WorkerThread
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.HttpUtils
 import at.bitfire.dav4jvm.property.webdav.GetETag
-import at.bitfire.davdroid.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClient
 import okhttp3.HttpUrl
 import java.time.Instant
 

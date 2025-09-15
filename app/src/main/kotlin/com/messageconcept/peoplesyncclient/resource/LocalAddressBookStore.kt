@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -14,14 +14,14 @@ import androidx.annotation.OpenForTesting
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.contentValuesOf
 import androidx.core.os.bundleOf
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.repository.DavServiceRepository
-import at.bitfire.davdroid.settings.Settings
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.sync.account.SystemAccountUtils
-import at.bitfire.davdroid.sync.account.setAndVerifyUserData
-import at.bitfire.davdroid.util.DavUtils.lastSegment
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
+import com.messageconcept.peoplesyncclient.settings.Settings
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.sync.account.SystemAccountUtils
+import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
+import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
 import com.google.common.base.CharMatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose

@@ -2,16 +2,16 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.ContentProviderClient
 import android.os.Build
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.resource.LocalJtxCollection
-import at.bitfire.davdroid.resource.LocalJtxCollectionStore
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.resource.LocalJtxCollection
+import com.messageconcept.peoplesyncclient.resource.LocalJtxCollectionStore
 import at.bitfire.ical4android.TaskProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

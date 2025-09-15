@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.worker
+package com.messageconcept.peoplesyncclient.sync.worker
 
 import android.accounts.Account
 import android.content.Context
@@ -15,24 +15,24 @@ import androidx.work.Data
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.push.PushNotificationManager
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.AddressBookSyncer
-import at.bitfire.davdroid.sync.CalendarSyncer
-import at.bitfire.davdroid.sync.JtxSyncer
-import at.bitfire.davdroid.sync.ResyncType
-import at.bitfire.davdroid.sync.SyncConditions
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.SyncResult
-import at.bitfire.davdroid.sync.TaskSyncer
-import at.bitfire.davdroid.sync.TasksAppManager
-import at.bitfire.davdroid.sync.account.InvalidAccountException
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.NO_RESYNC
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.RESYNC_ENTRIES
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.RESYNC_LIST
-import at.bitfire.davdroid.sync.worker.BaseSyncWorker.Companion.commonTag
-import at.bitfire.davdroid.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.push.PushNotificationManager
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.AddressBookSyncer
+import com.messageconcept.peoplesyncclient.sync.CalendarSyncer
+import com.messageconcept.peoplesyncclient.sync.JtxSyncer
+import com.messageconcept.peoplesyncclient.sync.ResyncType
+import com.messageconcept.peoplesyncclient.sync.SyncConditions
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.SyncResult
+import com.messageconcept.peoplesyncclient.sync.TaskSyncer
+import com.messageconcept.peoplesyncclient.sync.TasksAppManager
+import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.NO_RESYNC
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.RESYNC_ENTRIES
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.RESYNC_LIST
+import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker.Companion.commonTag
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
 import at.bitfire.ical4android.TaskProvider
 import dagger.Lazy
 import kotlinx.coroutines.delay

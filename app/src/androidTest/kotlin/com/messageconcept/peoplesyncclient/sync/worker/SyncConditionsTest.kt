@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.worker
+package com.messageconcept.peoplesyncclient.sync.worker
 
 import android.accounts.Account
 import android.content.Context
@@ -16,9 +16,9 @@ import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import androidx.core.content.getSystemService
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.SyncConditions
-import at.bitfire.davdroid.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.SyncConditions
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

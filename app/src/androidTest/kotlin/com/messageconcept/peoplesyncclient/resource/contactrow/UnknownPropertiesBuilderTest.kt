@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource.contactrow
+package com.messageconcept.peoplesyncclient.resource.contactrow
 
 import android.net.Uri
 import at.bitfire.vcard4android.Contact

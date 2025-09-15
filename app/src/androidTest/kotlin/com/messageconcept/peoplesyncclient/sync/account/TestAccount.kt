@@ -1,13 +1,13 @@
 /*
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
-package at.bitfire.davdroid.sync.account
+package com.messageconcept.peoplesyncclient.sync.account
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import androidx.test.platform.app.InstrumentationRegistry
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import org.junit.Assert.assertTrue
 
 object TestAccount {

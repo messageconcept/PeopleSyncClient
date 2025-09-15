@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.push
+package com.messageconcept.peoplesyncclient.push
 
-import at.bitfire.davdroid.di.ApplicationScope
+import com.messageconcept.peoplesyncclient.di.ApplicationScope
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.groups
+package com.messageconcept.peoplesyncclient.sync.groups
 
 import at.bitfire.vcard4android.Contact
 

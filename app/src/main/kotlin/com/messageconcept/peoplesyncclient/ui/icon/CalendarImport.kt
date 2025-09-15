@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.icon
+package com.messageconcept.peoplesyncclient.ui.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.Color

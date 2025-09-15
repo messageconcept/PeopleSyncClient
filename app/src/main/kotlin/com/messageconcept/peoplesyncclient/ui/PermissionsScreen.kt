@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui
+package com.messageconcept.peoplesyncclient.ui
 
 import android.Manifest
 import android.content.Intent
@@ -37,11 +37,11 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.composable.CardWithImage
-import at.bitfire.davdroid.ui.composable.PermissionSwitchRow
-import at.bitfire.davdroid.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.composable.CardWithImage
+import com.messageconcept.peoplesyncclient.ui.composable.PermissionSwitchRow
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import at.bitfire.ical4android.TaskProvider
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -75,7 +75,7 @@ fun PermissionsScreen(
 }
 
 /**
- * Used by [PermissionsScreen] and directly embedded in [at.bitfire.davdroid.ui.intro.PermissionsIntroPage].
+ * Used by [PermissionsScreen] and directly embedded in [com.messageconcept.peoplesyncclient.ui.intro.PermissionsIntroPage].
  */
 @Composable
 fun PermissionsScreen(

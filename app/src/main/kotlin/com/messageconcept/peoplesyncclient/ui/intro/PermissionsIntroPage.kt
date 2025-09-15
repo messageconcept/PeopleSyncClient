@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import at.bitfire.davdroid.ui.PermissionsModel
-import at.bitfire.davdroid.ui.PermissionsScreen
-import at.bitfire.davdroid.util.PermissionUtils
-import at.bitfire.davdroid.util.PermissionUtils.CALENDAR_PERMISSIONS
-import at.bitfire.davdroid.util.PermissionUtils.CONTACT_PERMISSIONS
+import com.messageconcept.peoplesyncclient.ui.PermissionsModel
+import com.messageconcept.peoplesyncclient.ui.PermissionsScreen
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.util.PermissionUtils.CALENDAR_PERMISSIONS
+import com.messageconcept.peoplesyncclient.util.PermissionUtils.CONTACT_PERMISSIONS
 import at.bitfire.ical4android.TaskProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

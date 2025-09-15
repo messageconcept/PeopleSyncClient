@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db
+package com.messageconcept.peoplesyncclient.db
 
 import android.accounts.AccountManager
 import android.app.PendingIntent
@@ -20,13 +20,13 @@ import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.TextTable
-import at.bitfire.davdroid.db.migration.AutoMigration12
-import at.bitfire.davdroid.db.migration.AutoMigration16
-import at.bitfire.davdroid.db.migration.AutoMigration18
-import at.bitfire.davdroid.ui.AccountsActivity
-import at.bitfire.davdroid.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.TextTable
+import com.messageconcept.peoplesyncclient.db.migration.AutoMigration12
+import com.messageconcept.peoplesyncclient.db.migration.AutoMigration16
+import com.messageconcept.peoplesyncclient.db.migration.AutoMigration18
+import com.messageconcept.peoplesyncclient.ui.AccountsActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

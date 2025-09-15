@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
-import at.bitfire.davdroid.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
 
 interface AccountSettingsMigration {
 

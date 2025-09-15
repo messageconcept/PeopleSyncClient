@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.content.Context
 import androidx.work.WorkManager
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.worker.SyncWorkerManager
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav.operation
+package com.messageconcept.peoplesyncclient.webdav.operation
 
 import android.content.Context
 import android.provider.DocumentsContract.Document
@@ -18,14 +18,14 @@ import at.bitfire.dav4jvm.property.webdav.GetLastModified
 import at.bitfire.dav4jvm.property.webdav.QuotaAvailableBytes
 import at.bitfire.dav4jvm.property.webdav.QuotaUsedBytes
 import at.bitfire.dav4jvm.property.webdav.ResourceType
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.WebDavDocument
-import at.bitfire.davdroid.db.WebDavDocumentDao
-import at.bitfire.davdroid.di.IoDispatcher
-import at.bitfire.davdroid.webdav.DavHttpClientBuilder
-import at.bitfire.davdroid.webdav.DocumentSortByMapper
-import at.bitfire.davdroid.webdav.DocumentsCursor
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.WebDavDocument
+import com.messageconcept.peoplesyncclient.db.WebDavDocumentDao
+import com.messageconcept.peoplesyncclient.di.IoDispatcher
+import com.messageconcept.peoplesyncclient.webdav.DavHttpClientBuilder
+import com.messageconcept.peoplesyncclient.webdav.DocumentSortByMapper
+import com.messageconcept.peoplesyncclient.webdav.DocumentsCursor
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher

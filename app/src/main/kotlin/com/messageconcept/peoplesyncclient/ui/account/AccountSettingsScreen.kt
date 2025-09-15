@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
 import android.app.Activity
@@ -55,18 +55,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.settings.AccountSettings.Companion.SYNC_INTERVAL_MANUALLY
-import at.bitfire.davdroid.settings.Credentials
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.ExternalUris
-import at.bitfire.davdroid.ui.composable.ActionCard
-import at.bitfire.davdroid.ui.composable.EditTextInputDialog
-import at.bitfire.davdroid.ui.composable.MultipleChoiceInputDialog
-import at.bitfire.davdroid.ui.composable.Setting
-import at.bitfire.davdroid.ui.composable.SettingsHeader
-import at.bitfire.davdroid.ui.composable.SwitchSetting
-import at.bitfire.davdroid.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.SYNC_INTERVAL_MANUALLY
+import com.messageconcept.peoplesyncclient.settings.Credentials
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.ExternalUris
+import com.messageconcept.peoplesyncclient.ui.composable.ActionCard
+import com.messageconcept.peoplesyncclient.ui.composable.EditTextInputDialog
+import com.messageconcept.peoplesyncclient.ui.composable.MultipleChoiceInputDialog
+import com.messageconcept.peoplesyncclient.ui.composable.Setting
+import com.messageconcept.peoplesyncclient.ui.composable.SettingsHeader
+import com.messageconcept.peoplesyncclient.ui.composable.SwitchSetting
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import at.bitfire.vcard4android.GroupMethod
 import kotlinx.coroutines.launch
 

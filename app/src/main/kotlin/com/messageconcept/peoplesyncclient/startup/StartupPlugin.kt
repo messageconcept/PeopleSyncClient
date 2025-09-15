@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.startup
+package com.messageconcept.peoplesyncclient.startup
 
 interface StartupPlugin {
 
@@ -12,7 +12,7 @@ interface StartupPlugin {
     }
 
     /**
-     * Runs synchronously during [at.bitfire.davdroid.App.onCreate]. Use only for tasks that must be completed before
+     * Runs synchronously during [com.messageconcept.peoplesyncclient.App.onCreate]. Use only for tasks that must be completed before
      * the app can run. Causes the app to start slower.
      *
      * Will be run before [onAppCreateAsync].
@@ -26,7 +26,7 @@ interface StartupPlugin {
 
 
     /**
-     * Runs asynchronously after [at.bitfire.davdroid.App.onCreate]. Use for tasks that can be run in the background.
+     * Runs asynchronously after [com.messageconcept.peoplesyncclient.App.onCreate]. Use for tasks that can be run in the background.
      *
      * Will be run after [onAppCreate].
      *

@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  **************************************************************************************************/
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.content.Context
-import at.bitfire.davdroid.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

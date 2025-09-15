@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.content.Context
 import android.provider.CalendarContract
 import androidx.work.WorkManager
-import at.bitfire.davdroid.sync.AutomaticSyncManager
+import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module
@@ -20,7 +20,7 @@ import dagger.multibindings.IntoMap
 import javax.inject.Inject
 
 /**
- * Sync workers are now not per authority anymore, but per [at.bitfire.davdroid.sync.SyncDataType]. So we have to
+ * Sync workers are now not per authority anymore, but per [com.messageconcept.peoplesyncclient.sync.SyncDataType]. So we have to
  *
  * 1. cancel all current periodic sync workers (which have "authority" input data),
  * 2. re-enqueue periodic sync workers (now with "data type" input data), if applicable.
@@ -34,7 +34,7 @@ class AccountSettingsMigration19 @Inject constructor(
         // cancel old workers
         val workManager = WorkManager.getInstance(context)
         val authorities = listOf(
-            "at.bitfire.davdroid.addressbooks",
+            "com.messageconcept.peoplesyncclient.addressbooks",
             CalendarContract.AUTHORITY,
             *TaskProvider.TASK_PROVIDERS.map { it.authority }.toTypedArray()
         )

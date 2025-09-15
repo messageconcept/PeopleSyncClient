@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource.workaround
+package com.messageconcept.peoplesyncclient.resource.workaround
 
 import android.content.ContentValues
 import android.os.Build
-import at.bitfire.davdroid.resource.LocalAddressBook
-import at.bitfire.davdroid.resource.LocalContact
-import at.bitfire.davdroid.resource.LocalContact.Companion.COLUMN_HASHCODE
+import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
+import com.messageconcept.peoplesyncclient.resource.LocalContact
+import com.messageconcept.peoplesyncclient.resource.LocalContact.Companion.COLUMN_HASHCODE
 import at.bitfire.synctools.storage.BatchOperation
 import at.bitfire.synctools.storage.ContactsBatchOperation
 import dagger.Module

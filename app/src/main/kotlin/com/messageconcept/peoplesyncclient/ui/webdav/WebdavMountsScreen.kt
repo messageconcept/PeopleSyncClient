@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.webdav
+package com.messageconcept.peoplesyncclient.ui.webdav
 
 import android.content.Intent
 import android.net.Uri
@@ -59,14 +59,14 @@ import androidx.core.app.ShareCompat
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.WebDavMount
-import at.bitfire.davdroid.db.WebDavMountWithQuota
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.ExternalUris
-import at.bitfire.davdroid.ui.UiUtils.toAnnotatedString
-import at.bitfire.davdroid.ui.composable.ProgressBar
-import at.bitfire.davdroid.util.DavUtils
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.WebDavMount
+import com.messageconcept.peoplesyncclient.db.WebDavMountWithQuota
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.ExternalUris
+import com.messageconcept.peoplesyncclient.ui.UiUtils.toAnnotatedString
+import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
+import com.messageconcept.peoplesyncclient.util.DavUtils
 import kotlinx.coroutines.delay
 import okhttp3.HttpUrl
 

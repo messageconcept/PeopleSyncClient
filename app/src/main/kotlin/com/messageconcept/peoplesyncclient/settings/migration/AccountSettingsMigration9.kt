@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.content.ContentResolver
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.Service
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.Service
 import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module

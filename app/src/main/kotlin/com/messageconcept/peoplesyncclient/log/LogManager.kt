@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.log
+package com.messageconcept.peoplesyncclient.log
 
 import android.content.Context
 import android.util.Log
-import at.bitfire.davdroid.BuildConfig
-import at.bitfire.davdroid.repository.PreferenceRepository
+import com.messageconcept.peoplesyncclient.BuildConfig
+import com.messageconcept.peoplesyncclient.repository.PreferenceRepository
 import at.bitfire.synctools.log.LogcatHandler
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

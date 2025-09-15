@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.intro
+package com.messageconcept.peoplesyncclient.ui.intro
 
 import androidx.compose.runtime.Composable
-import at.bitfire.davdroid.settings.SettingsManager
-import at.bitfire.davdroid.sync.TasksAppManager
-import at.bitfire.davdroid.ui.TasksCard
-import at.bitfire.davdroid.ui.TasksModel
+import com.messageconcept.peoplesyncclient.settings.SettingsManager
+import com.messageconcept.peoplesyncclient.sync.TasksAppManager
+import com.messageconcept.peoplesyncclient.ui.TasksCard
+import com.messageconcept.peoplesyncclient.ui.TasksModel
 import javax.inject.Inject
 
 class TasksIntroPage @Inject constructor(

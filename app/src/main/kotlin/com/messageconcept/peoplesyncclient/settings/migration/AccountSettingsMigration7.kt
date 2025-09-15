@@ -2,14 +2,14 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
 import android.provider.CalendarContract
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.account.setAndVerifyUserData
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
 import at.bitfire.synctools.storage.calendar.AndroidCalendarProvider
 import dagger.Binds
 import dagger.Module

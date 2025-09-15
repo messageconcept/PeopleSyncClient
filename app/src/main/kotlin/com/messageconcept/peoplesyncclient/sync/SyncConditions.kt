@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.content.Context
 import android.content.Intent
@@ -10,10 +10,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import androidx.core.content.getSystemService
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.ui.NotificationRegistry
-import at.bitfire.davdroid.ui.account.WifiPermissionsActivity
-import at.bitfire.davdroid.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.ui.account.WifiPermissionsActivity
+import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

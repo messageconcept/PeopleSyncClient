@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync.worker
+package com.messageconcept.peoplesyncclient.sync.worker
 
 import android.accounts.Account
 import android.content.Context
 import androidx.hilt.work.HiltWorkerFactory
-import at.bitfire.davdroid.TestUtils
-import at.bitfire.davdroid.TestUtils.workScheduledOrRunning
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.account.TestAccount
+import com.messageconcept.peoplesyncclient.TestUtils
+import com.messageconcept.peoplesyncclient.TestUtils.workScheduledOrRunning
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.account.TestAccount
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
-import at.bitfire.davdroid.network.HttpClient
-import at.bitfire.davdroid.network.MemoryCookieStore
+import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.MemoryCookieStore
 import okhttp3.CookieJar
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Inject

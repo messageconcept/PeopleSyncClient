@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.provider.DocumentsContract.Document
-import at.bitfire.davdroid.db.WebDavDocument
+import com.messageconcept.peoplesyncclient.db.WebDavDocument
 import java.util.logging.Logger
 import javax.inject.Inject
 

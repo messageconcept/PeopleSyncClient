@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.content.AbstractThreadedSyncAdapter
@@ -11,7 +11,7 @@ import android.content.Context
 import android.content.SyncResult
 import android.os.Bundle
 import android.os.IBinder
-import at.bitfire.davdroid.sync.adapter.SyncAdapter
+import com.messageconcept.peoplesyncclient.sync.adapter.SyncAdapter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.logging.Level
 import java.util.logging.Logger

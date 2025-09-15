@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.webdav
+package com.messageconcept.peoplesyncclient.ui.webdav
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,11 +39,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.composable.Assistant
-import at.bitfire.davdroid.ui.composable.PasswordTextField
-import at.bitfire.davdroid.ui.composable.SelectClientCertificateCard
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.composable.Assistant
+import com.messageconcept.peoplesyncclient.ui.composable.PasswordTextField
+import com.messageconcept.peoplesyncclient.ui.composable.SelectClientCertificateCard
 
 @Composable
 fun AddWebdavMountScreen(

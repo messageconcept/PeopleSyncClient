@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.resource
+package com.messageconcept.peoplesyncclient.resource
 
 import android.content.ContentUris
 import android.provider.CalendarContract.Calendars
@@ -25,7 +25,7 @@ import java.util.logging.Logger
 /**
  * Application-specific subclass of [AndroidCalendar] for local calendars.
  *
- * [Calendars._SYNC_ID] corresponds to the database collection ID ([at.bitfire.davdroid.db.Collection.id]).
+ * [Calendars._SYNC_ID] corresponds to the database collection ID ([com.messageconcept.peoplesyncclient.db.Collection.id]).
  */
 class LocalCalendar @AssistedInject constructor(
     @Assisted internal val androidCalendar: AndroidCalendar,

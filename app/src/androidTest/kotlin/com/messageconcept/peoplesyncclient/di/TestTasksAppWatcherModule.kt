@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.di
+package com.messageconcept.peoplesyncclient.di
 
-import at.bitfire.davdroid.startup.StartupPlugin
-import at.bitfire.davdroid.startup.TasksAppWatcher
+import com.messageconcept.peoplesyncclient.startup.StartupPlugin
+import com.messageconcept.peoplesyncclient.startup.TasksAppWatcher
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn

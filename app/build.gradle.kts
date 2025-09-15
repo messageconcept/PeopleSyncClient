@@ -17,7 +17,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "at.bitfire.davdroid"
+        applicationId = "com.messageconcept.peoplesyncclient"
 
         versionCode = 405040005
         versionName = "4.5.4"
@@ -29,7 +29,7 @@ android {
 
         buildConfigField("boolean", "customCertsUI", "true")
 
-        testInstrumentationRunner = "at.bitfire.davdroid.HiltTestRunner"
+        testInstrumentationRunner = "com.messageconcept.peoplesyncclient.HiltTestRunner"
     }
 
     java {
@@ -51,7 +51,7 @@ android {
     }
 
     // Java namespace for our classes (not to be confused with Android package ID)
-    namespace = "at.bitfire.davdroid"
+    namespace = "com.messageconcept.peoplesyncclient"
 
     flavorDimensions += "distribution"
     productFlavors {

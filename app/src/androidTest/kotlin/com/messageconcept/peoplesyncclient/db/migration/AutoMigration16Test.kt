@@ -2,10 +2,10 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.db.migration
+package com.messageconcept.peoplesyncclient.db.migration
 
-import at.bitfire.davdroid.db.Collection.Companion.TYPE_CALENDAR
-import at.bitfire.davdroid.db.Service
+import com.messageconcept.peoplesyncclient.db.Collection.Companion.TYPE_CALENDAR
+import com.messageconcept.peoplesyncclient.db.Service
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

@@ -2,9 +2,9 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.setup
+package com.messageconcept.peoplesyncclient.ui.setup
 
-import at.bitfire.davdroid.settings.Credentials
+import com.messageconcept.peoplesyncclient.settings.Credentials
 import at.bitfire.vcard4android.GroupMethod
 import java.net.URI
 

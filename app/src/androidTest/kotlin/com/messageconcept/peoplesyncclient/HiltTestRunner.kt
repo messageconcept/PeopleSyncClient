@@ -2,15 +2,15 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid
+package com.messageconcept.peoplesyncclient
 
 import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.test.runner.AndroidJUnitRunner
-import at.bitfire.davdroid.di.TestCoroutineDispatchersModule
-import at.bitfire.davdroid.test.BuildConfig
+import com.messageconcept.peoplesyncclient.di.TestCoroutineDispatchersModule
+import com.messageconcept.peoplesyncclient.test.BuildConfig
 import at.bitfire.synctools.log.LogcatHandler
 import dagger.hilt.android.testing.HiltTestApplication
 import java.util.logging.Level

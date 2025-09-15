@@ -2,11 +2,11 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.di
+package com.messageconcept.peoplesyncclient.di
 
-import at.bitfire.davdroid.sync.FakeSyncAdapter
-import at.bitfire.davdroid.sync.adapter.SyncAdapter
-import at.bitfire.davdroid.sync.adapter.SyncAdapterImpl
+import com.messageconcept.peoplesyncclient.sync.FakeSyncAdapter
+import com.messageconcept.peoplesyncclient.sync.adapter.SyncAdapter
+import com.messageconcept.peoplesyncclient.sync.adapter.SyncAdapterImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent

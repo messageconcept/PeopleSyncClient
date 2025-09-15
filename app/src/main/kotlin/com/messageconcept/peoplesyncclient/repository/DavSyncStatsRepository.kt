@@ -2,12 +2,12 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.repository
+package com.messageconcept.peoplesyncclient.repository
 
 import android.content.Context
-import at.bitfire.davdroid.db.AppDatabase
-import at.bitfire.davdroid.db.SyncStats
-import at.bitfire.davdroid.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.db.SyncStats
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

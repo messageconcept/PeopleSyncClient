@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.composable
+package com.messageconcept.peoplesyncclient.ui.composable
 
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.ui.platform.AndroidUriHandler
 import androidx.compose.ui.platform.UriHandler
-import at.bitfire.davdroid.R
+import com.messageconcept.peoplesyncclient.R
 import java.util.logging.Level
 import java.util.logging.Logger
 

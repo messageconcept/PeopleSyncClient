@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.composable
+package com.messageconcept.peoplesyncclient.ui.composable
 
 import android.net.Uri
 import androidx.compose.foundation.focusGroup
@@ -30,9 +30,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.ui.ExternalUris
-import at.bitfire.davdroid.ui.UiUtils.toAnnotatedString
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.ExternalUris
+import com.messageconcept.peoplesyncclient.ui.UiUtils.toAnnotatedString
 
 @Composable
 fun PasswordTextField(

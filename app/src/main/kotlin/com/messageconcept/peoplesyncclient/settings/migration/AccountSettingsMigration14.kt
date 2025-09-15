@@ -2,13 +2,13 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.content.ContentResolver
 import android.provider.CalendarContract
-import at.bitfire.davdroid.settings.AccountSettings
-import at.bitfire.davdroid.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import at.bitfire.ical4android.TaskProvider
 import dagger.Binds
 import dagger.Module
@@ -32,7 +32,7 @@ class AccountSettingsMigration14 @Inject constructor(
         ContentResolver.cancelSync(account, null)
 
         val authorities = listOf(
-            "at.bitfire.davdroid.addressbooks",
+            "com.messageconcept.peoplesyncclient.addressbooks",
             CalendarContract.AUTHORITY,
             TaskProvider.ProviderName.JtxBoard.authority,
             TaskProvider.ProviderName.OpenTasks.authority,

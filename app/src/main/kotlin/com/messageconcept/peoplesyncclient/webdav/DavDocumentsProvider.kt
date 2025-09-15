@@ -2,22 +2,22 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.webdav
+package com.messageconcept.peoplesyncclient.webdav
 
 import android.graphics.Point
 import android.os.CancellationSignal
 import android.provider.DocumentsProvider
-import at.bitfire.davdroid.webdav.operation.CopyDocumentOperation
-import at.bitfire.davdroid.webdav.operation.CreateDocumentOperation
-import at.bitfire.davdroid.webdav.operation.DeleteDocumentOperation
-import at.bitfire.davdroid.webdav.operation.IsChildDocumentOperation
-import at.bitfire.davdroid.webdav.operation.MoveDocumentOperation
-import at.bitfire.davdroid.webdav.operation.OpenDocumentOperation
-import at.bitfire.davdroid.webdav.operation.OpenDocumentThumbnailOperation
-import at.bitfire.davdroid.webdav.operation.QueryChildDocumentsOperation
-import at.bitfire.davdroid.webdav.operation.QueryDocumentOperation
-import at.bitfire.davdroid.webdav.operation.QueryRootsOperation
-import at.bitfire.davdroid.webdav.operation.RenameDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.CopyDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.CreateDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.DeleteDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.IsChildDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.MoveDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.OpenDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.OpenDocumentThumbnailOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.QueryChildDocumentsOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.QueryDocumentOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.QueryRootsOperation
+import com.messageconcept.peoplesyncclient.webdav.operation.RenameDocumentOperation
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

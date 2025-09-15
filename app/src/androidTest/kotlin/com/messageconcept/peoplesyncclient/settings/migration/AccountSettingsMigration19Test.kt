@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.settings.migration
+package com.messageconcept.peoplesyncclient.settings.migration
 
 import android.accounts.Account
 import android.content.Context
@@ -11,7 +11,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import androidx.work.testing.WorkManagerTestInitHelper
-import at.bitfire.davdroid.sync.AutomaticSyncManager
+import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -70,7 +70,7 @@ class AccountSettingsMigration19Test {
         migration.migrate(account)
 
         verify {
-            workManager.cancelUniqueWork("periodic-sync at.bitfire.davdroid.addressbooks Test/Some")
+            workManager.cancelUniqueWork("periodic-sync com.messageconcept.peoplesyncclient.addressbooks Test/Some")
             workManager.cancelUniqueWork("periodic-sync com.android.calendar Test/Some")
             workManager.cancelUniqueWork("periodic-sync at.techbee.jtx.provider Test/Some")
             workManager.cancelUniqueWork("periodic-sync org.dmfs.tasks Test/Some")

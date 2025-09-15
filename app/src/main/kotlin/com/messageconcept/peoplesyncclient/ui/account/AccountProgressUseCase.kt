@@ -2,17 +2,17 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
 import android.content.Context
 import androidx.work.WorkInfo
-import at.bitfire.davdroid.db.Service
-import at.bitfire.davdroid.servicedetection.RefreshCollectionsWorker
-import at.bitfire.davdroid.sync.SyncDataType
-import at.bitfire.davdroid.sync.adapter.SyncFrameworkIntegration
-import at.bitfire.davdroid.sync.worker.OneTimeSyncWorker
-import at.bitfire.davdroid.sync.worker.SyncWorkerManager
+import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
+import com.messageconcept.peoplesyncclient.sync.SyncDataType
+import com.messageconcept.peoplesyncclient.sync.adapter.SyncFrameworkIntegration
+import com.messageconcept.peoplesyncclient.sync.worker.OneTimeSyncWorker
+import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

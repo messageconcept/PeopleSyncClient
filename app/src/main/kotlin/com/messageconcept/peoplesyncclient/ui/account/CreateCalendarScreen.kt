@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.ui.account
+package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
 import androidx.compose.foundation.clickable
@@ -56,12 +56,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.HomeSet
-import at.bitfire.davdroid.ui.AppTheme
-import at.bitfire.davdroid.ui.composable.ExceptionInfoDialog
-import at.bitfire.davdroid.ui.composable.ProgressBar
-import at.bitfire.davdroid.ui.widget.CalendarColorPickerDialog
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.HomeSet
+import com.messageconcept.peoplesyncclient.ui.AppTheme
+import com.messageconcept.peoplesyncclient.ui.composable.ExceptionInfoDialog
+import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
+import com.messageconcept.peoplesyncclient.ui.widget.CalendarColorPickerDialog
 import at.bitfire.synctools.icalendar.Css3Color
 import okhttp3.HttpUrl.Companion.toHttpUrl
 

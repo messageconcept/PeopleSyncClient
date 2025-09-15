@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.log
+package com.messageconcept.peoplesyncclient.log
 
 import at.bitfire.synctools.log.PlainTextFormatter
 import com.google.common.base.Ascii

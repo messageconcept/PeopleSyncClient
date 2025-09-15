@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package at.bitfire.davdroid.sync
+package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.app.PendingIntent
@@ -17,16 +17,16 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import at.bitfire.dav4jvm.exception.UnauthorizedException
-import at.bitfire.davdroid.R
-import at.bitfire.davdroid.db.Collection
-import at.bitfire.davdroid.resource.LocalCollection
-import at.bitfire.davdroid.resource.LocalContact
-import at.bitfire.davdroid.resource.LocalEvent
-import at.bitfire.davdroid.resource.LocalResource
-import at.bitfire.davdroid.resource.LocalTask
-import at.bitfire.davdroid.ui.DebugInfoActivity
-import at.bitfire.davdroid.ui.NotificationRegistry
-import at.bitfire.davdroid.ui.account.AccountSettingsActivity
+import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.db.Collection
+import com.messageconcept.peoplesyncclient.resource.LocalCollection
+import com.messageconcept.peoplesyncclient.resource.LocalContact
+import com.messageconcept.peoplesyncclient.resource.LocalEvent
+import com.messageconcept.peoplesyncclient.resource.LocalResource
+import com.messageconcept.peoplesyncclient.resource.LocalTask
+import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
+import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
+import com.messageconcept.peoplesyncclient.ui.account.AccountSettingsActivity
 import at.bitfire.ical4android.TaskProvider
 import com.google.common.base.Ascii
 import dagger.assisted.Assisted
