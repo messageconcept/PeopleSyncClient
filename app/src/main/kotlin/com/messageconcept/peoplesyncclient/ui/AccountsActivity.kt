@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.ui.account.AccountActivity
 import com.messageconcept.peoplesyncclient.ui.intro.IntroActivity
 import com.messageconcept.peoplesyncclient.ui.setup.LoginActivity
@@ -20,6 +21,9 @@ class AccountsActivity: AppCompatActivity() {
 
     @Inject
     lateinit var accountsDrawerHandler: AccountsDrawerHandler
+
+    @Inject
+    lateinit var managedSettings: ManagedSettings
 
     private val introActivityLauncher = registerForActivityResult(IntroActivity.Contract) { cancelled ->
         if (cancelled)
@@ -41,7 +45,15 @@ class AccountsActivity: AppCompatActivity() {
                 },
                 accountsDrawerHandler = accountsDrawerHandler,
                 onAddAccount = {
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    val intent = Intent(this, LoginActivity::class.java)
+                    // attach infos from managed settings
+                    managedSettings.getBaseUrl()?.let {
+                        intent.putExtra(LoginActivity.EXTRA_URL, it)
+                    }
+                    managedSettings.getUsername()?.let {
+                        intent.putExtra(LoginActivity.EXTRA_USERNAME, it)
+                    }
+                    startActivity(intent)
                 },
                 onShowAccount = { account ->
                     val intent = Intent(this, AccountActivity::class.java)
