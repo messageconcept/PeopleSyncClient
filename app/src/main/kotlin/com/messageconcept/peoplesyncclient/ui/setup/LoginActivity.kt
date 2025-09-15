@@ -89,9 +89,9 @@ class LoginActivity @Inject constructor(): AppCompatActivity() {
             val logger = Logger.getGlobal()
             intent.data?.normalizeScheme()?.let { uri ->
                 val realScheme = when (uri.scheme) {
-                    // replace caldav[s]:// and carddav[s]:// with http[s]://
-                    "caldav", "carddav" -> "http"
-                    "caldavs", "carddavs", "davx5" -> "https"
+                    // replace carddav[s]:// with http[s]://
+                    "carddav" -> "http"
+                    "carddavs" -> "https"
 
                     // keep these
                     "http", "https", "mailto" -> uri.scheme

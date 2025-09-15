@@ -38,7 +38,7 @@ class StandardLoginTypesProvider @Inject constructor(
                     LoginAction(NextcloudLogin, true)
                 uri?.scheme == "mailto" ->
                     LoginAction(EmailLogin, true)
-                listOf("caldavs", "carddavs", "davx5", "http", "https").any { uri?.scheme == it } ->
+                listOf("carddavs", "http", "https").any { uri?.scheme == it } ->
                     LoginAction(UrlLogin, true)
                 else -> {
                     logger.warning("Did not understand login intent: $intent")
