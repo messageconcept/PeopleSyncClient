@@ -24,7 +24,6 @@ class StandardLoginTypesProvider @Inject constructor(
         val specificLoginTypes = listOf(
             FastmailLogin,
             GoogleLogin,
-            NextcloudLogin
         )
     }
 
@@ -33,8 +32,6 @@ class StandardLoginTypesProvider @Inject constructor(
     override fun intentToInitialLoginType(intent: Intent): LoginAction =
         intent.data?.normalizeScheme().let { uri ->
             when {
-                intent.hasExtra(LoginActivity.EXTRA_LOGIN_FLOW) ->
-                    LoginAction(NextcloudLogin, true)
                 uri?.scheme == "mailto" ->
                     LoginAction(EmailLogin, true)
                 listOf("carddavs", "http", "https").any { uri?.scheme == it } ->
