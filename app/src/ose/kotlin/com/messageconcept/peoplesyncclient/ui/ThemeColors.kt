@@ -30,7 +30,7 @@ object M3ColorScheme {
     val darkScheme = darkColorScheme(
         primary = primaryDark,
         secondary = secondaryDark,
-        tertiary = tertiaryDark,
+//        tertiary = tertiaryDark,
     )
 
 }
