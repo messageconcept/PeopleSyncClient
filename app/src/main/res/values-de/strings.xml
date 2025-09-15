@@ -126,7 +126,7 @@
   <string name="navigation_drawer_contribute">Einen Beitrag leisten</string>
   <string name="navigation_drawer_privacy_policy">Datenschutzerklärung</string>
   <string name="account_list_welcome">Willkommen bei PeopleSync!</string>
-  <string name="account_list_empty">Verbinden Sie sich mit Ihrem Server und synchronisieren Sie Ihre Kalender und Kontakte.</string>
+  <string name="account_list_empty">Verbinden Sie sich mit Ihrem Server und synchronisieren Sie Ihre Kontakte.</string>
   <string name="accounts_sync_all">Alle Konten synchronisieren</string>
   <!--Sync warnings-->
   <string name="sync_warning_no_notification_permission">Benachrichtigungen deaktiviert. Sie werden nicht über Fehler bei der Synchronisierung informiert.</string>

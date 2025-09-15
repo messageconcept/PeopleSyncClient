@@ -126,7 +126,7 @@
   <string name="navigation_drawer_contribute">Hoe bijdragen</string>
   <string name="navigation_drawer_privacy_policy">Privacybeleid</string>
   <string name="account_list_welcome">Welkom bij PeopleSync!</string>
-  <string name="account_list_empty">Maak verbinding met je server en houd je agenda\'s en contactpersonen gesynchroniseerd.</string>
+  <string name="account_list_empty">Maak verbinding met je server en houd je contactpersonen gesynchroniseerd.</string>
   <string name="accounts_sync_all">Alle accounts synchroniseren</string>
   <!--Sync warnings-->
   <string name="sync_warning_no_notification_permission">Meldingen uitgeschakeld. U krijgt geen meldingen over synchronisatiefouten.</string>
