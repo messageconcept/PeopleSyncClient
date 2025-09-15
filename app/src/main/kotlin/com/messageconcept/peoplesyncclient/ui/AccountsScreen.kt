@@ -248,14 +248,16 @@ fun AccountsScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         // background image
-                        Image(
-                            painterResource(R.drawable.accounts_background),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .matchParentSize()
-                                .align(Alignment.Center)
-                                .scale(0.7f)
-                        )
+                        if (accounts.isEmpty()) {
+                            Image(
+                                painterResource(R.drawable.accounts_background),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .align(Alignment.Center)
+                                    .scale(0.7f)
+                            )
+                        }
 
                         Column {
                             val notificationsPermissionState =
