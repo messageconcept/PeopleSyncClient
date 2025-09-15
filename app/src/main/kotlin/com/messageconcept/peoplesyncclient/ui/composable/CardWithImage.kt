@@ -53,7 +53,7 @@ fun CardWithImage(
                     contentDescription = imageContentDescription,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 126.dp),
+                        .heightIn(max = 252.dp),
                     contentScale = imageContentScale,
                     alignment = imageAlignment
                 )
