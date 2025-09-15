@@ -434,33 +434,6 @@ fun AccountScreen_Actions(
 
         // GENERAL ACTIONS
 
-        // show only personal
-        DropdownMenuItem(
-            leadingIcon = {
-                CompositionLocalProvider(
-                    LocalMinimumInteractiveComponentSize provides Dp.Unspecified
-                ) {
-                    Checkbox(
-                        checked = showOnlyPersonal,
-                        enabled = !showOnlyPersonalLocked,
-                        onCheckedChange = {
-                            onSetShowOnlyPersonal(it)
-                            overflowOpen = false
-                        },
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                }
-            },
-            text = {
-                Text(stringResource(R.string.account_only_personal))
-            },
-            onClick = {
-                onSetShowOnlyPersonal(!showOnlyPersonal)
-                overflowOpen = false
-            },
-            enabled = !showOnlyPersonalLocked
-        )
-
         // rename account
         DropdownMenuItem(
             leadingIcon = {
