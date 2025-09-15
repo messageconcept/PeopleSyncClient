@@ -438,4 +438,7 @@
   <!--managed configurations-->
   <string name="login_type_managed">Veuillez vous identifier</string>
   <string name="account_list_managed_configuration">Les comptes sont gérés par votre organisation.</string>
+
+  <string name="sync_condition_internet_not_available">Aucune connexion Internet disponible. Abandon de la demande de synchronisation.</string>
+  <string name="sync_condition_wifi_restriction_not_met">Pas de connexion wifi correcte. Abandon de la demande de synchronisation.</string>
 </resources>

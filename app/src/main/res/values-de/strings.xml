@@ -478,4 +478,7 @@
   <!--managed configurations-->
   <string name="login_type_managed">Bitte anmelden</string>
   <string name="account_list_managed_configuration">Die Kontoeinstellungen werden von ihrer Organisation verwaltet.</string>
+
+  <string name="sync_condition_internet_not_available">Keine Internetverbindung. Abbruch der Synchronisation.</string>
+  <string name="sync_condition_wifi_restriction_not_met">Nicht mit dem richtigen WLAN verbunden. Abbruch der Synchronisation.</string>
 </resources>
