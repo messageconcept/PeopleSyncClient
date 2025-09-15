@@ -54,6 +54,9 @@ class AccountsActivity: AppCompatActivity() {
                     managedSettings.getUsername()?.let {
                         intent.putExtra(LoginActivity.EXTRA_USERNAME, it)
                     }
+                    managedSettings.getPassword()?.let {
+                        intent.putExtra(LoginActivity.EXTRA_PASSWORD, it)
+                    }
                     startActivity(intent)
                 },
                 onShowAccount = { account ->

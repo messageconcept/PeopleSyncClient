@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.messageconcept.peoplesyncclient.settings.Credentials
+import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.util.DavUtils.toURIorNull
 import com.messageconcept.peoplesyncclient.util.trimToNull
 import dagger.assisted.Assisted
@@ -22,7 +23,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel(assistedFactory = ManagedLoginModel.Factory::class)
 class ManagedLoginModel @AssistedInject constructor(
-    @Assisted val initialLoginInfo: LoginInfo
+    @Assisted val initialLoginInfo: LoginInfo,
+    val managedSettings: ManagedSettings,
 ): ViewModel() {
 
     @AssistedFactory
@@ -33,7 +35,9 @@ class ManagedLoginModel @AssistedInject constructor(
     data class UiState(
         val url: String = "",
         val username: String = "",
-        val password: String = ""
+        val password: String = "",
+        var isUsernameManaged: Boolean = false,
+        var isPasswordManaged: Boolean = false,
     ) {
 
         val urlWithPrefix =
@@ -63,7 +67,9 @@ class ManagedLoginModel @AssistedInject constructor(
         uiState = UiState(
             url = initialLoginInfo.baseUri?.toString()?.removePrefix("https://") ?: "",
             username = initialLoginInfo.credentials?.username ?: "",
-            password = initialLoginInfo.credentials?.password?.concatToString() ?: ""
+            password = initialLoginInfo.credentials?.password?.concatToString() ?: "",
+            isUsernameManaged = !managedSettings.getUsername().isNullOrEmpty(),
+            isPasswordManaged = !managedSettings.getPassword().isNullOrEmpty(),
         )
     }
 

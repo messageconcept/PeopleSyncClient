@@ -68,7 +68,9 @@ object ManagedLogin : LoginType {
             onLogin = {
                 if (uiState.canContinue)
                     onLogin(uiState.asLoginInfo())
-            }
+            },
+            isUsernameManaged = uiState.isUsernameManaged,
+            isPasswordManaged = uiState.isPasswordManaged,
         )
     }
 
@@ -81,9 +83,16 @@ fun ManagedLoginScreen(
     password: String,
     onSetPassword: (String) -> Unit = {},
     canContinue: Boolean,
-    onLogin: () -> Unit = {}
+    onLogin: () -> Unit = {},
+    isUsernameManaged: Boolean = false,
+    isPasswordManaged: Boolean = false,
 ) {
     val focusRequester = remember { FocusRequester() }
+
+    // If username and password are provided, proceed immediately with the next step
+    if (isUsernameManaged && isPasswordManaged)
+        onLogin()
+
     Assistant(
         nextLabel = stringResource(R.string.login_login),
         nextEnabled = canContinue,
@@ -99,6 +108,7 @@ fun ManagedLoginScreen(
             )
 
             OutlinedTextField(
+                enabled = !isUsernameManaged,
                 value = username,
                 onValueChange = onSetUsername,
                 label = { Text(stringResource(R.string.login_user_name)) },
@@ -116,6 +126,7 @@ fun ManagedLoginScreen(
             )
 
             PasswordTextField(
+                enabled = !isPasswordManaged,
                 password = password,
                 onPasswordChange = onSetPassword,
                 labelText = stringResource(R.string.login_password),
@@ -129,7 +140,12 @@ fun ManagedLoginScreen(
                 keyboardActions = KeyboardActions(
                     onDone = { onLogin() }
                 ),
-                modifier = Modifier.fillMaxWidth()
+                modifier = if (isUsernameManaged)
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester)
+                else
+                    Modifier.fillMaxWidth()
             )
         }
     }
