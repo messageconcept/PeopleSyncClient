@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.UiUtils.isPortrait
 
 @Composable
 fun CardWithImage(
@@ -48,15 +49,17 @@ fun CardWithImage(
             modifier = Modifier.fillMaxWidth()
         ) {
             image?.let {
-                Image(
-                    painter = it,
-                    contentDescription = imageContentDescription,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 252.dp),
-                    contentScale = imageContentScale,
-                    alignment = imageAlignment
-                )
+                if (isPortrait()) {
+                    Image(
+                        painter = it,
+                        contentDescription = imageContentDescription,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 252.dp),
+                        contentScale = imageContentScale,
+                        alignment = imageAlignment
+                    )
+                }
             }
 
             Column(

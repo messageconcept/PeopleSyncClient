@@ -81,6 +81,7 @@ import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.messageconcept.peoplesyncclient.ui.UiUtils.isPortrait
 import com.messageconcept.peoplesyncclient.ui.composable.NotificationCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -260,7 +261,7 @@ fun AccountsScreen(
                                 storageLow ||
                                 contactsStorageDisabled ||
                                 notificationsPermissionUnavailable
-                        if (accounts.isEmpty() && !isWarningActive) {
+                        if (accounts.isEmpty() && !isWarningActive && isPortrait()) {
                             Image(
                                 painterResource(R.drawable.accounts_background),
                                 contentDescription = null,

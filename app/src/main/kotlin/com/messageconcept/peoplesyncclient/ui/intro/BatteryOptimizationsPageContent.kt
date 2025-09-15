@@ -40,6 +40,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.ui.AppTheme
 import com.messageconcept.peoplesyncclient.ui.ExternalUris
 import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
+import com.messageconcept.peoplesyncclient.ui.UiUtils.isPortrait
 import java.util.Locale
 
 @Composable
@@ -93,14 +94,16 @@ fun BatteryOptimizationsPageContent(
         Card(
             modifier = Modifier.padding(8.dp)
         ) {
-            Column {
-                Image(
-                    painter = painterResource(R.drawable.intro_regular_sync),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 252.dp),
-                )
+            if (isPortrait()) {
+                Column {
+                    Image(
+                        painter = painterResource(R.drawable.intro_regular_sync),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 252.dp),
+                    )
+                }
             }
             Column(
                 modifier = Modifier
