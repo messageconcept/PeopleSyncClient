@@ -36,35 +36,6 @@ open class OseAccountsDrawerHandler @Inject constructor(): AccountsDrawerHandler
         // Most important entries
         ImportantEntries(snackbarHostState)
 
-        // News
-        MenuHeading(R.string.navigation_drawer_news_updates)
-        MenuEntry(
-            icon = painterResource(R.drawable.mastodon),
-            title = Social.fediverseHandle,
-            onClick = {
-                uriHandler.openUri(Social.fediverseUrl.toString())
-            }
-        )
-
-        // Support the project
-        MenuHeading(R.string.navigation_drawer_support_project)
-        Contribute(onContribute = {
-            uriHandler.openUri(
-                Homepage.baseUrl.buildUpon()
-                    .appendPath(Homepage.PATH_OPEN_SOURCE)
-                    .withStatParams(javaClass.simpleName)
-                    .build().toString()
-            )
-        })
-        MenuEntry(
-            icon = Icons.Default.Forum,
-            title = stringResource(R.string.navigation_drawer_community),
-            onClick = {
-                uriHandler.openUri(Social.discussionsUrl.toString())
-            }
-        )
-
-
         // External links
         MenuHeading(R.string.navigation_drawer_external_links)
         MenuEntry(
@@ -78,50 +49,6 @@ open class OseAccountsDrawerHandler @Inject constructor(): AccountsDrawerHandler
                     .build().toString())
             }
         )
-        MenuEntry(
-            icon = Icons.Default.Info,
-            title = stringResource(R.string.navigation_drawer_manual),
-            onClick = {
-                uriHandler.openUri(ExternalUris.Manual.baseUrl.toString())
-            }
-        )
-        MenuEntry(
-            icon = Icons.AutoMirrored.Default.HelpCenter,
-            title = stringResource(R.string.navigation_drawer_faq),
-            onClick = {
-                uriHandler.openUri(
-                    Homepage.baseUrl.buildUpon()
-                        .appendPath(Homepage.PATH_FAQ)
-                        .withStatParams(javaClass.simpleName)
-                        .build().toString()
-                )
-            }
-        )
-        MenuEntry(
-            icon = Icons.Default.CorporateFare,
-            title = stringResource(R.string.navigation_drawer_managed),
-            onClick = {
-                uriHandler.openUri(
-                    Homepage.baseUrl.buildUpon()
-                        .appendPath(Homepage.PATH_ORGANIZATIONS)
-                        .appendPath(Homepage.PATH_ORGANIZATIONS_MANAGED)
-                        .withStatParams(javaClass.simpleName)
-                        .build().toString()
-                )
-            }
-        )
-        MenuEntry(
-            icon = Icons.Default.CloudOff,
-            title = stringResource(R.string.navigation_drawer_privacy_policy),
-            onClick = {
-                uriHandler.openUri(
-                    Homepage.baseUrl.buildUpon()
-                        .appendPath(Homepage.PATH_PRIVACY)
-                        .withStatParams(javaClass.simpleName)
-                        .build().toString()
-                )
-            }
-        )
     }
 
     @Composable
@@ -130,16 +57,6 @@ open class OseAccountsDrawerHandler @Inject constructor(): AccountsDrawerHandler
         Column {
             MenuEntries(SnackbarHostState())
         }
-    }
-
-
-    @Composable
-    open fun Contribute(onContribute: () -> Unit) {
-        MenuEntry(
-            icon = Icons.Default.VolunteerActivism,
-            title = stringResource(R.string.navigation_drawer_contribute),
-            onClick = onContribute
-        )
     }
 
 }
