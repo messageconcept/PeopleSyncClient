@@ -10,6 +10,7 @@ import androidx.work.Configuration
 import com.messageconcept.peoplesyncclient.log.LogManager
 import com.messageconcept.peoplesyncclient.startup.StartupPlugin
 import com.messageconcept.peoplesyncclient.settings.ManagedSettings
+import com.messageconcept.peoplesyncclient.settings.UpgradeFixes
 import com.messageconcept.peoplesyncclient.sync.account.AccountsCleanupWorker
 import com.messageconcept.peoplesyncclient.ui.UiUtils
 import dagger.hilt.android.HiltAndroidApp
@@ -46,6 +47,9 @@ class App: Application(), Configuration.Provider {
     @Inject
     lateinit var managedSettings: ManagedSettings
 
+    @Inject
+    lateinit var upgradeFixes: UpgradeFixes
+
     override fun onCreate() {
         super.onCreate()
 
@@ -72,6 +76,8 @@ class App: Application(), Configuration.Provider {
 
             // trigger account updates when managed settings have changed
             managedSettings.updateAccounts()
+            // trigger a (one-time) migration of the account settings for existing accounts
+            upgradeFixes.enableNewAccountSettings()
 
             // run startup plugins (async)
             for (plugin in plugins.sortedBy { it.priorityAsync() }) {

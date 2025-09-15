@@ -57,6 +57,9 @@ class ManagedSettings @Inject constructor(
         }
     }
 
+    @Inject
+    lateinit var accountsettingsFactory: AccountSettings.Factory
+
     init {
         // cache app restrictions to avoid unnecessary disk access
         restrictions = restrictionsManager.applicationRestrictions
