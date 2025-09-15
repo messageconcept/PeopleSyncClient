@@ -39,6 +39,7 @@ class ManagedLoginModel @AssistedInject constructor(
         var isUsernameManaged: Boolean = false,
         var isPasswordManaged: Boolean = false,
         var baseUrl: String = "",
+        var organization: String = "",
     ) {
 
         val urlWithPrefix =
@@ -73,6 +74,7 @@ class ManagedLoginModel @AssistedInject constructor(
             isUsernameManaged = !managedSettings.getUsername().isNullOrEmpty(),
             isPasswordManaged = !managedSettings.getPassword().isNullOrEmpty(),
             baseUrl = managedSettings.getBaseUrl() ?: "",
+            organization = managedSettings.getOrganization() ?: "",
         )
     }
 

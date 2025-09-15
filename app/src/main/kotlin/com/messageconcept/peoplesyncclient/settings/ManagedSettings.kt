@@ -38,6 +38,7 @@ class ManagedSettings @Inject constructor(
         private const val KEY_LOGIN_BASE_URL = "login_base_url"
         private const val KEY_LOGIN_USER_NAME = "login_user_name"
         private const val KEY_LOGIN_PASSWORD = "login_password"
+        private const val KEY_ORGANIZATION = "organization"
     }
 
     private val restrictionsManager = context.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
@@ -72,6 +73,10 @@ class ManagedSettings @Inject constructor(
 
     fun getPassword(): String? {
         return restrictions.getString(KEY_LOGIN_PASSWORD)
+    }
+
+    fun getOrganization(): String? {
+        return restrictions.getString(KEY_ORGANIZATION)
     }
 
     fun updateAccounts() {

@@ -71,6 +71,7 @@ object ManagedLogin : LoginType {
             },
             isUsernameManaged = uiState.isUsernameManaged,
             isPasswordManaged = uiState.isPasswordManaged,
+            organization = uiState.organization,
         )
     }
 
@@ -86,6 +87,7 @@ fun ManagedLoginScreen(
     onLogin: () -> Unit = {},
     isUsernameManaged: Boolean = false,
     isPasswordManaged: Boolean = false,
+    organization: String? = null,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -99,6 +101,16 @@ fun ManagedLoginScreen(
         onNext = onLogin
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
+            organization?.let { organization ->
+                Text(
+                    text = organization,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
+            }
+
             Text(
                 stringResource(R.string.login_type_managed),
                 style = MaterialTheme.typography.headlineMedium,
