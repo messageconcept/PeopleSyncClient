@@ -52,20 +52,6 @@ fun StandardLoginTypePage(
                     selected = type == selectedLoginType,
                     onSelect = { onSelectLoginType(type) }
                 )
-
-            HorizontalDivider(Modifier.padding(vertical = 12.dp))
-
-            val privacyPolicy = ExternalUris.Homepage.baseUrl.buildUpon()
-                .appendPath(ExternalUris.Homepage.PATH_PRIVACY)
-                .withStatParams("StandardLoginTypePage")
-                .build().toString()
-            val privacy = HtmlCompat.fromHtml(
-                stringResource(R.string.login_privacy_hint, stringResource(R.string.app_name), privacyPolicy),
-                HtmlCompat.FROM_HTML_MODE_COMPACT)
-            Text(
-                text = privacy.toAnnotatedString(),
-                style = MaterialTheme.typography.bodyMedium
-            )
         }
     }
 }
