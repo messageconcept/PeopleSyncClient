@@ -248,7 +248,19 @@ fun AccountsScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         // background image
-                        if (accounts.isEmpty()) {
+                        val notificationsPermissionUnavailable =
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !LocalInspectionMode.current)
+                                rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)?.status?.isGranted == false
+                            else
+                                false
+                        val isWarningActive = isManaged ||
+                                internetUnavailable ||
+                                batterySaverActive ||
+                                dataSaverActive ||
+                                storageLow ||
+                                contactsStorageDisabled ||
+                                notificationsPermissionUnavailable
+                        if (accounts.isEmpty() && !isWarningActive) {
                             Image(
                                 painterResource(R.drawable.accounts_background),
                                 contentDescription = null,
