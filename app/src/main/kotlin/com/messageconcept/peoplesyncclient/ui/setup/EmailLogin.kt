@@ -97,19 +97,6 @@ fun EmailLoginScreen(
                     .padding(vertical = 8.dp)
             )
 
-            val manualUrl = ExternalUris.Manual.baseUrl.buildUpon()
-                .appendPath(ExternalUris.Manual.PATH_ACCOUNTS_COLLECTIONS)
-                .fragment(ExternalUris.Manual.FRAGMENT_SERVICE_DISCOVERY)
-                .build()
-            val emailInfo = HtmlCompat.fromHtml(stringResource(R.string.login_email_address_info, manualUrl), HtmlCompat.FROM_HTML_MODE_COMPACT)
-            Text(
-                text = emailInfo.toAnnotatedString(),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, bottom = 16.dp)
-            )
-
             OutlinedTextField(
                 value = email,
                 onValueChange = onSetEmail,

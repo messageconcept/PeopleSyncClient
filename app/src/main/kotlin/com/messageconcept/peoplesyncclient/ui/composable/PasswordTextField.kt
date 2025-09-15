@@ -75,24 +75,8 @@ fun PasswordTextField(
                 }
             }
         )
-        Text(
-            modifier = Modifier.padding(vertical = 8.dp),
-            text = HtmlCompat.fromHtml(
-                stringResource(
-                    R.string.settings_app_password_hint,
-                    appPasswordHelpUrl().toString()
-                ),
-                0
-            ).toAnnotatedString()
-        )
     }
 }
-
-fun appPasswordHelpUrl(): Uri = ExternalUris.Manual.baseUrl.buildUpon()
-    .appendPath(ExternalUris.Manual.PATH_INTRODUCTION)
-    .fragment(ExternalUris.Manual.FRAGMENT_AUTHENTICATION_METHODS)
-    .build()
-
 
 @Composable
 @Preview

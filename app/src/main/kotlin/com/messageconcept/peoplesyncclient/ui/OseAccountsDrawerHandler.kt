@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.ui.ExternalUris.Homepage
-import com.messageconcept.peoplesyncclient.ui.ExternalUris.Social
 import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
 import javax.inject.Inject
 
