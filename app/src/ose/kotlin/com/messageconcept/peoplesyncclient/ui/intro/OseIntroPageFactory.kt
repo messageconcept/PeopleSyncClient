@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 class OseIntroPageFactory @Inject constructor(
     batteryOptimizationsPage: BatteryOptimizationsPage,
-    openSourcePage: OpenSourcePage,
     permissionsIntroPage: PermissionsIntroPage,
     tasksIntroPage: TasksIntroPage
 ): IntroPageFactory {
@@ -18,7 +17,6 @@ class OseIntroPageFactory @Inject constructor(
         tasksIntroPage,
         permissionsIntroPage,
         batteryOptimizationsPage,
-        openSourcePage
     )
 
 }

@@ -21,7 +21,6 @@ import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import com.messageconcept.peoplesyncclient.sync.TasksAppManager
 import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel
-import com.messageconcept.peoplesyncclient.ui.intro.OpenSourcePage
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.broadcastReceiverFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -102,7 +101,6 @@ class AppSettingsModel @Inject constructor(
         settings.remove(BatteryOptimizationsPageModel.HINT_BATTERY_OPTIMIZATIONS)
         settings.remove(BatteryOptimizationsPageModel.HINT_AUTOSTART_PERMISSION)
         settings.remove(TasksModel.HINT_OPENTASKS_NOT_INSTALLED)
-        settings.remove(OpenSourcePage.Model.SETTING_NEXT_DONATION_POPUP)
     }
 
 
