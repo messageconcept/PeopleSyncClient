@@ -411,27 +411,6 @@ fun AccountScreen_Actions(
     ) {
         // TAB-SPECIFIC ACTIONS
 
-        // create collection
-        if (currentPage == idxCardDav && canCreateAddressBook) {
-            // create address book
-            DropdownMenuItem(
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.CreateNewFolder,
-                        contentDescription = stringResource(R.string.create_addressbook),
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                },
-                text = {
-                    Text(stringResource(R.string.create_addressbook))
-                },
-                onClick = {
-                    onCreateAddressBook()
-                    overflowOpen = false
-                }
-            )
-        }
-
         // GENERAL ACTIONS
 
         // rename account
