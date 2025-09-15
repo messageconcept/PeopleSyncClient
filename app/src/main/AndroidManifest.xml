@@ -23,6 +23,16 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
+    <!-- remove unwanted/unnecessary permissions that are dragged in via the synctools library -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" tools:node="remove"/>
+    <uses-permission android:name="org.dmfs.permission.READ_TASKS" tools:node="remove"/>
+    <uses-permission android:name="org.dmfs.permission.WRITE_TASKS" tools:node="remove"/>
+    <uses-permission android:name="org.tasks.permission.READ_TASKS" tools:node="remove"/>
+    <uses-permission android:name="org.tasks.permission.WRITE_TASKS" tools:node="remove"/>
+    <uses-permission android:name="at.techbee.jtx.permission.READ" tools:node="remove"/>
+    <uses-permission android:name="at.techbee.jtx.permission.WRITE" tools:node="remove"/>
+
     <!-- android.permission-group.LOCATION -->
     <!-- getting the WiFi name (for "sync in Wifi only") requires
       - coarse location (Android 8.1)
@@ -260,6 +270,10 @@
         <intent>
             <action android:name="android.support.customtabs.action.CustomTabsService" />
         </intent>
+
+        <package android:name="at.techbee.jtx" tools:node="remove"/>
+        <package android:name="org.dmfs.tasks" tools:node="remove"/>
+        <package android:name="org.tasks" tools:node="remove"/>
     </queries>
 
 </manifest>
