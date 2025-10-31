@@ -23,7 +23,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import net.openid.appauth.AuthState
 import okhttp3.Authenticator
-import okhttp3.Cache
 import okhttp3.ConnectionSpec
 import okhttp3.CookieJar
 import okhttp3.Interceptor
@@ -31,7 +30,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.internal.tls.OkHostnameVerifier
 import okhttp3.logging.HttpLoggingInterceptor
-import java.io.File
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
@@ -46,7 +44,7 @@ class HttpClient(
 ): AutoCloseable {
 
     override fun close() {
-        okHttpClient.cache?.close()
+        // nothing to do, can be removed
     }
 
 
@@ -135,21 +133,6 @@ class HttpClient(
             return this
         }
 
-        private var cache: Cache? = null
-        @Suppress("unused")
-        fun withDiskCache(maxSize: Long = 10*1024*1024): Builder {
-            for (dir in arrayOf(context.externalCacheDir, context.cacheDir).filterNotNull()) {
-                if (dir.exists() && dir.canWrite()) {
-                    val cacheDir = File(dir, "HttpClient")
-                    cacheDir.mkdir()
-                    logger.fine("Using disk cache: $cacheDir")
-                    cache = Cache(cacheDir, maxSize)
-                    break
-                }
-            }
-            return this
-        }
-
 
         // convenience builders from other classes
 
@@ -213,9 +196,6 @@ class HttpClient(
                     ConnectionSpec.CLEARTEXT,
                     ConnectionSpec.MODERN_TLS
                 ))
-
-                // add cache, if requested
-                .cache(cache)
 
             // app-wide custom proxy support
             buildProxy(okBuilder)
