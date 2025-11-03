@@ -14,9 +14,9 @@ plugins {
 }
 
 tasks.cyclonedxBom {
-    projectType = "application"
-    outputName = "sbom-android-app"
-    outputFormat = "json"
+    projectType = org.cyclonedx.model.Component.Type.APPLICATION
+    jsonOutput.set(file("build/reports/cyclonedx/sbom-android-app.json"))
+    xmlOutput.unsetConvention()
     includeLicenseText = false
     componentName = "PeopleSyncClient"
     componentVersion = android.defaultConfig.versionName
