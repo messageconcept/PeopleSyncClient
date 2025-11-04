@@ -6,6 +6,7 @@ package com.messageconcept.peoplesyncclient.sync
 
 import android.accounts.Account
 import android.provider.ContactsContract
+import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
@@ -57,6 +58,7 @@ class AutomaticSyncManager @Inject constructor(
      * @param account   the account to synchronize
      * @param dataType  the data type to synchronize
      */
+    @WorkerThread
     private fun enableAutomaticSync(
         account: Account,
         dataType: SyncDataType
@@ -94,6 +96,7 @@ class AutomaticSyncManager @Inject constructor(
      *
      * @param account   account for which automatic synchronization shall be updated
      */
+    @WorkerThread
     fun updateAutomaticSync(account: Account) {
         for (dataType in SyncDataType.entries)
             updateAutomaticSync(account, dataType)
@@ -109,6 +112,7 @@ class AutomaticSyncManager @Inject constructor(
      * @param account   account for which automatic synchronization shall be updated
      * @param dataType  sync data type for which automatic synchronization shall be updated
      */
+    @WorkerThread
     fun updateAutomaticSync(account: Account, dataType: SyncDataType) {
         val serviceType = when (dataType) {
             SyncDataType.CONTACTS -> Service.TYPE_CARDDAV

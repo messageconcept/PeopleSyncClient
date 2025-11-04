@@ -12,8 +12,9 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Password
@@ -63,7 +64,6 @@ object ManagedLogin : LoginType {
             username = uiState.username,
             onSetUsername = model::setUsername,
             password = uiState.password,
-            onSetPassword = model::setPassword,
             canContinue = uiState.canContinue,
             onLogin = {
                 if (uiState.canContinue)
@@ -81,8 +81,7 @@ object ManagedLogin : LoginType {
 fun ManagedLoginScreen(
     username: String,
     onSetUsername: (String) -> Unit = {},
-    password: String,
-    onSetPassword: (String) -> Unit = {},
+    password: TextFieldState,
     canContinue: Boolean,
     onLogin: () -> Unit = {},
     isUsernameManaged: Boolean = false,
@@ -140,7 +139,6 @@ fun ManagedLoginScreen(
             PasswordTextField(
                 enabled = !isPasswordManaged,
                 password = password,
-                onPasswordChange = onSetPassword,
                 labelText = stringResource(R.string.login_password),
                 leadingIcon = {
                     Icon(Icons.Default.Password, null)
@@ -149,9 +147,10 @@ fun ManagedLoginScreen(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 ),
-                keyboardActions = KeyboardActions(
-                    onDone = { onLogin() }
-                ),
+                onKeyboardAction = {
+                    if (canContinue)
+                        onLogin()
+                },
                 modifier = if (isUsernameManaged)
                     Modifier
                         .fillMaxWidth()
@@ -172,7 +171,7 @@ fun ManagedLoginScreen(
 fun ManagedLoginScreen_Preview() {
     ManagedLoginScreen(
         username = "user",
-        password = "",
+        password = rememberTextFieldState(""),
         canContinue = false
     )
 }

@@ -8,10 +8,12 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
 import android.content.Context
+import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.db.ServiceType
+import com.messageconcept.peoplesyncclient.di.DefaultDispatcher
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
@@ -26,7 +28,7 @@ import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import at.bitfire.vcard4android.GroupMethod
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
@@ -45,6 +47,7 @@ class AccountRepository @Inject constructor(
     private val automaticSyncManager: Lazy<AutomaticSyncManager>,
     @ApplicationContext private val context: Context,
     private val collectionRepository: DavCollectionRepository,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val homeSetRepository: DavHomeSetRepository,
     private val localAddressBookStore: Lazy<LocalAddressBookStore>,
     private val logger: Logger,
@@ -66,6 +69,7 @@ class AccountRepository @Inject constructor(
      *
      * @return account if account creation was successful; null otherwise (for instance because an account with this name already exists)
      */
+    @WorkerThread
     fun createBlocking(accountName: String, credentials: Credentials?, config: DavResourceFinder.Configuration, groupMethod: GroupMethod): Account? {
         val account = fromName(accountName)
 
@@ -141,7 +145,7 @@ class AccountRepository @Inject constructor(
         val listener = OnAccountsUpdateListener { accounts ->
             trySend(accounts.filter { it.type == accountType }.toSet())
         }
-        withContext(Dispatchers.Default) {  // causes disk I/O
+        withContext(defaultDispatcher) {  // causes disk I/O
             accountManager.addOnAccountsUpdatedListener(listener, null, true)
         }
 
@@ -163,7 +167,7 @@ class AccountRepository @Inject constructor(
      * @throws IllegalArgumentException if the new account name already exists
      * @throws Exception (or sub-classes) on other errors
      */
-    suspend fun rename(oldName: String, newName: String) {
+    suspend fun rename(oldName: String, newName: String): Unit = withContext(defaultDispatcher) {
         val oldAccount = fromName(oldName)
         val newAccount = fromName(newName)
 
@@ -185,13 +189,10 @@ class AccountRepository @Inject constructor(
             // rename account (also moves AccountSettings)
             val future = accountManager.renameAccount(oldAccount, newName, null, null)
 
-            // wait for operation to complete
-            withContext(Dispatchers.Default) {
-                // blocks calling thread
-                val newNameFromApi: Account = future.result
-                if (newNameFromApi.name != newName)
-                    throw IllegalStateException("renameAccount returned ${newNameFromApi.name} instead of $newName")
-            }
+            // wait for operation to complete (blocks calling thread)
+            val newNameFromApi: Account = future.result
+            if (newNameFromApi.name != newName)
+                throw IllegalStateException("renameAccount returned ${newNameFromApi.name} instead of $newName")
 
             // account renamed, cancel maybe running synchronization of old account
             syncWorkerManager.get().cancelAllWork(oldAccount)

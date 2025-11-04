@@ -11,6 +11,7 @@ import at.bitfire.dav4jvm.property.webdav.ResourceType
 import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder.Configuration.ServiceInfo
 import com.messageconcept.peoplesyncclient.settings.Credentials
+import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.Dispatcher
@@ -70,7 +71,7 @@ class DavResourceFinderTest {
             start()
         }
 
-        val credentials = Credentials(username = "mock", password = "12345".toCharArray())
+        val credentials = Credentials(username = "mock", password = "12345".toSensitiveString())
         client = httpClientBuilder
                 .authenticate(host = null, getCredentials = { credentials })
                 .build()

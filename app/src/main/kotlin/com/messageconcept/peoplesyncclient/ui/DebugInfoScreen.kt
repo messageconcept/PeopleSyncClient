@@ -36,6 +36,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -57,11 +58,14 @@ fun DebugInfoScreen(
     syncDataType: String?,
     cause: Throwable?,
     localResource: String?,
+    canViewResource: Boolean,
     remoteResource: String?,
     logs: String?,
     timestamp: Long?,
     onShareZipFile: (File) -> Unit,
     onViewFile: (File) -> Unit,
+    onCopyRemoteUrl: () -> Unit,
+    onViewLocalResource: () -> Unit,
     onNavUp: () -> Unit
 ) {
     val model: DebugInfoModel = hiltViewModel(
@@ -100,7 +104,7 @@ fun DebugInfoScreen(
         zipProgress = zipInProgress,
         showModelCause = cause != null,
         modelCauseTitle = when (cause) {
-            is HttpException -> stringResource(if (cause.code / 100 == 5) R.string.debug_info_server_error else R.string.debug_info_http_error)
+            is HttpException -> stringResource(if (cause.isServerError) R.string.debug_info_server_error else R.string.debug_info_http_error)
             is DavException -> stringResource(R.string.debug_info_webdav_error)
             is IOException, is IOError -> stringResource(R.string.debug_info_io_error)
             else -> cause?.let { it::class.java.simpleName }
@@ -109,20 +113,24 @@ fun DebugInfoScreen(
         modelCauseMessage = stringResource(
             if (cause is HttpException)
                 when {
-                    cause.code == 403 -> R.string.debug_info_http_403_description
-                    cause.code == 404 -> R.string.debug_info_http_404_description
-                    cause.code / 100 == 5 -> R.string.debug_info_http_5xx_description
+                    cause.statusCode == 403 -> R.string.debug_info_http_403_description
+                    cause.statusCode == 404 -> R.string.debug_info_http_404_description
+                    cause.statusCode == 405 -> R.string.debug_info_http_405_description
+                    cause.isServerError -> R.string.debug_info_http_5xx_description
                     else -> R.string.debug_info_unexpected_error
                 }
             else
                 R.string.debug_info_unexpected_error
         ),
         localResource = localResource,
+        canViewResource = canViewResource,
         remoteResource = remoteResource,
         hasLogFile = logFile != null,
         onShareZip = { model.generateZip() },
         onViewLogsFile = { logFile?.let { onViewFile(it) } },
         onViewDebugFile = { debugInfo?.let { onViewFile(it) } },
+        onCopyRemoteUrl = onCopyRemoteUrl,
+        onViewLocalResource = onViewLocalResource,
         onNavUp = onNavUp
     )
 }
@@ -139,11 +147,14 @@ fun DebugInfoScreen(
     modelCauseSubtitle: String?,
     modelCauseMessage: String?,
     localResource: String?,
+    canViewResource: Boolean,
     remoteResource: String?,
     hasLogFile: Boolean,
     onShareZip: () -> Unit = {},
     onViewLogsFile: () -> Unit = {},
     onViewDebugFile: () -> Unit = {},
+    onCopyRemoteUrl: () -> Unit = {},
+    onViewLocalResource: () -> Unit = {},
     onNavUp: () -> Unit = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -158,6 +169,7 @@ fun DebugInfoScreen(
         }
     }
 
+    val uriHandler = LocalUriHandler.current
     AppTheme {
         Scaffold(
             floatingActionButton = {
@@ -237,25 +249,32 @@ fun DebugInfoScreen(
                         icon = Icons.Rounded.Adb,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
                     ) {
-                        remoteResource?.let {
+                        remoteResource?.let { remoteUrl ->
                             Text(
                                 text = stringResource(R.string.debug_info_involved_remote),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             SelectionContainer {
                                 Text(
-                                    text = it,
+                                    text = remoteUrl,
                                     style = MaterialTheme.typography.bodySmall.copy(
                                         fontFamily = FontFamily.Monospace
                                     ),
                                     modifier = Modifier.padding(bottom = 8.dp)
                                 )
                             }
+                            OutlinedButton(
+                                onClick = onCopyRemoteUrl,
+                                modifier = Modifier.padding(end = 8.dp)
+                            ) {
+                                Text(stringResource(R.string.debug_info_copy_remote_url))
+                            }
                         }
                         localResource?.let {
                             Text(
                                 text = stringResource(R.string.debug_info_involved_local),
-                                style = MaterialTheme.typography.bodyLarge
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(top = 12.dp)
                             )
                             Text(
                                 text = it,
@@ -265,6 +284,15 @@ fun DebugInfoScreen(
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
+                        if (canViewResource)
+                            OutlinedButton(
+                                onClick = { onViewLocalResource() },
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            ) {
+                                Text(
+                                    stringResource(R.string.debug_info_view_local_resource)
+                                )
+                            }
                     }
 
                 if (hasLogFile) {
@@ -324,6 +352,7 @@ fun DebugInfoScreen_Preview() {
         modelCauseSubtitle = "ModelCauseSubtitle",
         modelCauseMessage = "ModelCauseMessage",
         localResource = "local-resource-string",
+        canViewResource = true,
         remoteResource = "remote-resource-string",
         hasLogFile = true
     )

@@ -18,6 +18,7 @@ import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
+import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
 import com.messageconcept.peoplesyncclient.util.trimToNull
 import at.bitfire.vcard4android.GroupMethod
 import dagger.assisted.Assisted
@@ -106,7 +107,7 @@ class AccountSettings @AssistedInject constructor(
 
     fun credentials() = Credentials(
         accountManager.getUserData(account, KEY_USERNAME),
-        accountManager.getPassword(account)?.toCharArray(),
+        accountManager.getPassword(account)?.toSensitiveString(),
 
         accountManager.getUserData(account, KEY_CERTIFICATE_ALIAS),
 
@@ -118,7 +119,7 @@ class AccountSettings @AssistedInject constructor(
     fun credentials(credentials: Credentials) {
         // Basic/Digest auth
         accountManager.setAndVerifyUserData(account, KEY_USERNAME, credentials.username)
-        accountManager.setPassword(account, credentials.password?.concatToString())
+        accountManager.setPassword(account, credentials.password?.asString())
 
         // client certificate
         accountManager.setAndVerifyUserData(account, KEY_CERTIFICATE_ALIAS, credentials.certificateAlias)

@@ -40,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -52,8 +53,10 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.di.IoDispatcher
 import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
 import com.messageconcept.peoplesyncclient.ui.composable.PixelBoxes
+import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import com.mikepenz.aboutlibraries.util.withContext
 import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -175,7 +178,10 @@ class AboutActivity: AppCompatActivity() {
                                     ),
                                     dimensions = LibraryDefaults.libraryDimensions(
                                         itemSpacing = 8.dp
-                                    )
+                                    ),
+                                    libraries = Libs.Builder()
+                                        .withContext(LocalContext.current)
+                                        .build()
                                 )
                             }
                         }

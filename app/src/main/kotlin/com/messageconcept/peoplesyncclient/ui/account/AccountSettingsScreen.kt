@@ -67,6 +67,7 @@ import com.messageconcept.peoplesyncclient.ui.composable.Setting
 import com.messageconcept.peoplesyncclient.ui.composable.SettingsHeader
 import com.messageconcept.peoplesyncclient.ui.composable.SwitchSetting
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
+import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
 import at.bitfire.vcard4android.GroupMethod
 import kotlinx.coroutines.launch
 
@@ -483,7 +484,7 @@ fun AuthenticationSettings(
                         initialValue = null, // Do not show the existing password
                         passwordField = true,
                         onValueEntered = { newValue ->
-                            onUpdateCredentials(credentials.copy(password = newValue.toCharArray()))
+                            onUpdateCredentials(credentials.copy(password = newValue.toSensitiveString()))
                         },
                         onDismiss = { showPasswordDialog = false }
                     )
@@ -654,7 +655,7 @@ fun AccountSettingsScreen_Preview() {
             onUpdateIgnoreVpns = {},
 
             // Authentication Settings
-            credentials = Credentials(username = "test", password = "test".toCharArray()),
+            credentials = Credentials(username = "test", password = "test".toSensitiveString()),
             onUpdateCredentials = {},
             isCredentialsUpdateAllowed = true,
 
