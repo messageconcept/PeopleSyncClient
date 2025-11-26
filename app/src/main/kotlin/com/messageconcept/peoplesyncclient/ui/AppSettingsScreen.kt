@@ -67,6 +67,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.ui.composable.EditTextInputDialog
@@ -105,10 +106,11 @@ fun AppSettingsScreen(
             onProxyPortUpdated = model::updateProxyPort,
 
             // Security
+            onNavPermissionsScreen = onNavPermissionsScreen,
+            showCertSettings = BuildConfig.allowCustomCerts,
             distrustSystemCerts = model.distrustSystemCertificates().collectAsStateWithLifecycle(null).value ?: false,
             onDistrustSystemCertsUpdated = model::updateDistrustSystemCertificates,
             onResetCertificates = model::resetCertificates,
-            onNavPermissionsScreen = onNavPermissionsScreen,
 
             // User interface
             onShowNotificationSettings = onShowNotificationSettings,
@@ -139,10 +141,11 @@ fun AppSettingsScreen(
     onProxyPortUpdated: (Int) -> Unit,
 
     // AppSettings security
+    onNavPermissionsScreen: () -> Unit,
+    showCertSettings: Boolean,
     distrustSystemCerts: Boolean,
     onDistrustSystemCertsUpdated: (Boolean) -> Unit,
     onResetCertificates: () -> Unit,
-    onNavPermissionsScreen: () -> Unit,
 
     // AppSettings UserInterface
     theme: Int,
@@ -195,6 +198,8 @@ fun AppSettingsScreen(
 
                 val resetCertificatesSuccessMessage = stringResource(R.string.app_settings_reset_certificates_success)
                 AppSettings_Security(
+                    onNavPermissionsScreen = onNavPermissionsScreen,
+                    showCertSettings = showCertSettings,
                     distrustSystemCerts = distrustSystemCerts,
                     onDistrustSystemCertsUpdated = onDistrustSystemCertsUpdated,
                     onResetCertificates = {
@@ -202,8 +207,7 @@ fun AppSettingsScreen(
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(resetCertificatesSuccessMessage)
                         }
-                    },
-                    onNavPermissionsScreen = onNavPermissionsScreen
+                    }
                 )
 
                 val resetHintsSuccessMessage = stringResource(R.string.app_settings_reset_hints_success)
@@ -244,9 +248,10 @@ fun AppSettingsScreen_Preview() {
             onNavUp = {},
             onProxyTypeUpdated = {},
             onProxyPortUpdated = {},
+            onNavPermissionsScreen = {},
+            showCertSettings = true,
             onDistrustSystemCertsUpdated = {},
             onResetCertificates = {},
-            onNavPermissionsScreen = {},
             onThemeSelected = {},
             onResetHints = {},
         )
@@ -376,48 +381,51 @@ fun AppSettings_Connection(
 
 @Composable
 fun AppSettings_Security(
+    onNavPermissionsScreen: () -> Unit,
+    showCertSettings: Boolean,
     distrustSystemCerts: Boolean,
     onDistrustSystemCertsUpdated: (Boolean) -> Unit,
-    onResetCertificates: () -> Unit,
-    onNavPermissionsScreen: () -> Unit
+    onResetCertificates: () -> Unit
 ) {
     SettingsHeader(divider = true) {
         Text(stringResource(R.string.app_settings_security))
     }
-
-    var showingDistrustWarning by remember { mutableStateOf(false) }
-    if (showingDistrustWarning) {
-        DistrustSystemCertificatesAlertDialog(
-            onDistrustSystemCertsRequested = { onDistrustSystemCertsUpdated(true) },
-            onDismissRequested = { showingDistrustWarning = false }
-        )
-    }
-
-    SwitchSetting(
-        checked = distrustSystemCerts,
-        name = stringResource(R.string.app_settings_distrust_system_certs),
-        summaryOn = stringResource(R.string.app_settings_distrust_system_certs_on),
-        summaryOff = stringResource(R.string.app_settings_distrust_system_certs_off)
-    ) { checked ->
-        if (checked) {
-            // Show warning before enabling.
-            showingDistrustWarning = true
-        } else {
-            onDistrustSystemCertsUpdated(false)
-        }
-    }
-
-    Setting(
-        name = stringResource(R.string.app_settings_reset_certificates),
-        summary = stringResource(R.string.app_settings_reset_certificates_summary),
-        onClick = onResetCertificates
-    )
 
     Setting(
         name = stringResource(R.string.app_settings_security_app_permissions),
         summary = stringResource(R.string.app_settings_security_app_permissions_summary),
         onClick = onNavPermissionsScreen
     )
+
+    if (showCertSettings) {
+        var showingDistrustWarning by remember { mutableStateOf(false) }
+        if (showingDistrustWarning) {
+            DistrustSystemCertificatesAlertDialog(
+                onDistrustSystemCertsRequested = { onDistrustSystemCertsUpdated(true) },
+                onDismissRequested = { showingDistrustWarning = false }
+            )
+        }
+
+        SwitchSetting(
+            checked = distrustSystemCerts,
+            name = stringResource(R.string.app_settings_distrust_system_certs),
+            summaryOn = stringResource(R.string.app_settings_distrust_system_certs_on),
+            summaryOff = stringResource(R.string.app_settings_distrust_system_certs_off)
+        ) { checked ->
+            if (checked) {
+                // Show warning before enabling.
+                showingDistrustWarning = true
+            } else {
+                onDistrustSystemCertsUpdated(false)
+            }
+        }
+
+        Setting(
+            name = stringResource(R.string.app_settings_reset_certificates),
+            summary = stringResource(R.string.app_settings_reset_certificates_summary),
+            onClick = onResetCertificates
+        )
+    }
 }
 
 @Composable

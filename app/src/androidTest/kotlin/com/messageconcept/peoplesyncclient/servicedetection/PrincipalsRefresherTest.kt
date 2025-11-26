@@ -9,7 +9,7 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Principal
 import com.messageconcept.peoplesyncclient.db.Service
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -17,6 +17,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
 import junit.framework.TestCase.assertEquals
+import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -36,7 +37,7 @@ class PrincipalsRefresherTest {
     lateinit var db: AppDatabase
 
     @Inject
-    lateinit var httpClientBuilder: HttpClient.Builder
+    lateinit var httpClientBuilder: HttpClientBuilder
 
     @Inject
     lateinit var logger: Logger
@@ -54,7 +55,7 @@ class PrincipalsRefresherTest {
     @get:Rule
     val mockKRule = MockKRule(this)
 
-    private lateinit var client: HttpClient
+    private lateinit var client: OkHttpClient
     private lateinit var mockServer: MockWebServer
     private lateinit var service: Service
 
@@ -81,7 +82,6 @@ class PrincipalsRefresherTest {
 
     @After
     fun tearDown() {
-        client.close()
         mockServer.shutdown()
     }
 
@@ -110,7 +110,7 @@ class PrincipalsRefresherTest {
         )
 
         // Refresh principals
-        principalsRefresher.create(service, client.okHttpClient).refreshPrincipals()
+        principalsRefresher.create(service, client).refreshPrincipals()
 
         // Check principal was not updated
         val principals = db.principalDao().getByService(service.id)
@@ -143,7 +143,7 @@ class PrincipalsRefresherTest {
         )
 
         // Refresh principals
-        principalsRefresher.create(service, client.okHttpClient).refreshPrincipals()
+        principalsRefresher.create(service, client).refreshPrincipals()
 
         // Check principal now got a display name
         val principals = db.principalDao().getByService(service.id)
@@ -164,7 +164,7 @@ class PrincipalsRefresherTest {
         )
 
         // Refresh principals - detecting it does not own collections
-        principalsRefresher.create(service, client.okHttpClient).refreshPrincipals()
+        principalsRefresher.create(service, client).refreshPrincipals()
 
         // Check principal was deleted
         val principals = db.principalDao().getByService(service.id)

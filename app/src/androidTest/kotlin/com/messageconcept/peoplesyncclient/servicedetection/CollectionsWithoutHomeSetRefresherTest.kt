@@ -8,7 +8,7 @@ import android.security.NetworkSecurityPolicy
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.testing.BindValue
@@ -16,6 +16,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
+import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -42,7 +43,7 @@ class CollectionsWithoutHomeSetRefresherTest {
     lateinit var db: AppDatabase
 
     @Inject
-    lateinit var httpClientBuilder: HttpClient.Builder
+    lateinit var httpClientBuilder: HttpClientBuilder
 
     @Inject
     lateinit var logger: Logger
@@ -54,7 +55,7 @@ class CollectionsWithoutHomeSetRefresherTest {
     @MockK(relaxed = true)
     lateinit var settings: SettingsManager
 
-    private lateinit var client: HttpClient
+    private lateinit var client: OkHttpClient
     private lateinit var mockServer: MockWebServer
     private lateinit var service: Service
 
@@ -81,7 +82,6 @@ class CollectionsWithoutHomeSetRefresherTest {
 
     @After
     fun tearDown() {
-        client.close()
         mockServer.shutdown()
     }
 
@@ -103,7 +103,7 @@ class CollectionsWithoutHomeSetRefresherTest {
         )
 
         // Refresh
-        refresherFactory.create(service, client.okHttpClient).refreshCollectionsWithoutHomeSet()
+        refresherFactory.create(service, client).refreshCollectionsWithoutHomeSet()
 
         // Check the collection got updated - with display name and description
         assertEquals(
@@ -137,7 +137,7 @@ class CollectionsWithoutHomeSetRefresherTest {
         )
 
         // Refresh - should delete collection
-        refresherFactory.create(service, client.okHttpClient).refreshCollectionsWithoutHomeSet()
+        refresherFactory.create(service, client).refreshCollectionsWithoutHomeSet()
 
         // Check the collection got deleted
         assertEquals(null, db.collectionDao().get(collectionId))
@@ -159,7 +159,7 @@ class CollectionsWithoutHomeSetRefresherTest {
 
         // Refresh homeless collections
         assertEquals(0, db.principalDao().getByService(service.id).size)
-        refresherFactory.create(service, client.okHttpClient).refreshCollectionsWithoutHomeSet()
+        refresherFactory.create(service, client).refreshCollectionsWithoutHomeSet()
 
         // Check principal saved and the collection was updated with its reference
         val principals = db.principalDao().getByService(service.id)

@@ -6,12 +6,12 @@ package com.messageconcept.peoplesyncclient.repository
 
 import android.accounts.Account
 import android.content.Context
-import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.XmlUtils
 import at.bitfire.dav4jvm.XmlUtils.insertTag
-import at.bitfire.dav4jvm.exception.GoneException
-import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.dav4jvm.exception.NotFoundException
+import at.bitfire.dav4jvm.okhttp.DavResource
+import at.bitfire.dav4jvm.okhttp.exception.GoneException
+import at.bitfire.dav4jvm.okhttp.exception.HttpException
+import at.bitfire.dav4jvm.okhttp.exception.NotFoundException
 import at.bitfire.dav4jvm.property.caldav.CalendarColor
 import at.bitfire.dav4jvm.property.caldav.CalendarDescription
 import at.bitfire.dav4jvm.property.caldav.CalendarTimezone
@@ -30,7 +30,7 @@ import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.CollectionType
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.di.IoDispatcher
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.util.DavUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -50,7 +50,7 @@ class DavCollectionRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val db: AppDatabase,
     private val logger: Logger,
-    private val httpClientBuilder: Provider<HttpClient.Builder>,
+    private val httpClientBuilder: Provider<HttpClientBuilder>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val serviceRepository: DavServiceRepository
 ) {
@@ -164,21 +164,20 @@ class DavCollectionRepository @Inject constructor(
         val service = serviceRepository.getBlocking(collection.serviceId) ?: throw IllegalArgumentException("Service not found")
         val account = Account(service.accountName, context.getString(R.string.account_type))
 
-        httpClientBuilder.get().fromAccount(account).build().use { httpClient ->
-            runInterruptible(ioDispatcher) {
-                try {
-                    DavResource(httpClient.okHttpClient, collection.url).delete {
-                        // success, otherwise an exception would have been thrown → delete locally, too
-                        delete(collection)
-                    }
-                } catch (e: HttpException) {
-                    if (e is NotFoundException || e is GoneException) {
-                        // HTTP 404 Not Found or 410 Gone (collection is not there anymore) -> delete locally, too
-                        logger.info("Collection ${collection.url} not found on server, deleting locally")
-                        delete(collection)
-                    } else
-                        throw e
+        val httpClient = httpClientBuilder.get().fromAccount(account).build()
+        runInterruptible(ioDispatcher) {
+            try {
+                DavResource(httpClient, collection.url).delete {
+                    // success, otherwise an exception would have been thrown → delete locally, too
+                    delete(collection)
                 }
+            } catch (e: HttpException) {
+                if (e is NotFoundException || e is GoneException) {
+                    // HTTP 404 Not Found or 410 Gone (collection is not there anymore) -> delete locally, too
+                    logger.info("Collection ${collection.url} not found on server, deleting locally")
+                    delete(collection)
+                } else
+                    throw e
             }
         }
     }
@@ -195,20 +194,6 @@ class DavCollectionRepository @Inject constructor(
     fun getByServiceAndUrl(serviceId: Long, url: String) = dao.getByServiceAndUrl(serviceId, url)
 
     fun getByServiceAndSync(serviceId: Long) = dao.getByServiceAndSync(serviceId)
-
-    fun getSyncCalendars(serviceId: Long) = dao.getSyncCalendars(serviceId)
-
-    fun getSyncJtxCollections(serviceId: Long) = dao.getSyncJtxCollections(serviceId)
-
-    fun getSyncTaskLists(serviceId: Long) = dao.getSyncTaskLists(serviceId)
-
-    /** Returns all collections that are both selected for synchronization and push-capable. */
-    suspend fun getPushCapableAndSyncable(serviceId: Long) = dao.getPushCapableSyncCollections(serviceId)
-
-    suspend fun getPushRegistered(serviceId: Long) = dao.getPushRegistered(serviceId)
-    suspend fun getPushRegisteredAndNotSyncable(serviceId: Long) = dao.getPushRegisteredAndNotSyncable(serviceId)
-
-    suspend fun getVapidKey(serviceId: Long) = dao.getFirstVapidKey(serviceId)
 
     /**
      * Inserts or updates the collection.
@@ -281,19 +266,17 @@ class DavCollectionRepository @Inject constructor(
     // helpers
 
     private suspend fun createOnServer(account: Account, url: HttpUrl, method: String, xmlBody: String) {
-        httpClientBuilder.get()
+        val httpClient = httpClientBuilder.get()
             .fromAccount(account)
             .build()
-            .use { httpClient ->
-                runInterruptible(ioDispatcher) {
-                    DavResource(httpClient.okHttpClient, url).mkCol(
-                        xmlBody = xmlBody,
-                        method = method
-                    ) {
-                        // success, otherwise an exception would have been thrown
-                    }
-                }
+        runInterruptible(ioDispatcher) {
+            DavResource(httpClient, url).mkCol(
+                xmlBody = xmlBody,
+                method = method
+            ) {
+                // success, otherwise an exception would have been thrown
             }
+        }
     }
 
     private fun generateMkColXml(

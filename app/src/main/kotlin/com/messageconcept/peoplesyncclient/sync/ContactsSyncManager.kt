@@ -7,10 +7,10 @@ package com.messageconcept.peoplesyncclient.sync
 import android.accounts.Account
 import android.content.ContentProviderClient
 import android.text.format.Formatter
-import at.bitfire.dav4jvm.DavAddressBook
-import at.bitfire.dav4jvm.MultiResponseCallback
-import at.bitfire.dav4jvm.Response
-import at.bitfire.dav4jvm.exception.DavException
+import at.bitfire.dav4jvm.okhttp.DavAddressBook
+import at.bitfire.dav4jvm.okhttp.MultiResponseCallback
+import at.bitfire.dav4jvm.okhttp.Response
+import at.bitfire.dav4jvm.okhttp.exception.DavException
 import at.bitfire.dav4jvm.property.caldav.GetCTag
 import at.bitfire.dav4jvm.property.carddav.AddressData
 import at.bitfire.dav4jvm.property.carddav.MaxResourceSize
@@ -24,7 +24,7 @@ import com.messageconcept.peoplesyncclient.Constants
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.di.SyncDispatcher
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.resource.LocalAddress
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.resource.LocalContact
@@ -50,8 +50,9 @@ import kotlinx.coroutines.runInterruptible
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -100,7 +101,7 @@ import kotlin.jvm.optionals.getOrNull
  */
 class ContactsSyncManager @AssistedInject constructor(
     @Assisted account: Account,
-    @Assisted httpClient: HttpClient,
+    @Assisted httpClient: OkHttpClient,
     @Assisted syncResult: SyncResult,
     @Assisted val provider: ContentProviderClient,
     @Assisted localAddressBook: LocalAddressBook,
@@ -109,7 +110,7 @@ class ContactsSyncManager @AssistedInject constructor(
     @Assisted val syncFrameworkUpload: Boolean,
     val dirtyVerifier: Optional<ContactDirtyVerifier>,
     accountSettingsFactory: AccountSettings.Factory,
-    private val httpClientBuilder: HttpClient.Builder,
+    private val httpClientBuilder: HttpClientBuilder,
     @SyncDispatcher syncDispatcher: CoroutineDispatcher
 ): SyncManager<LocalAddress, LocalAddressBook, DavAddressBook>(
     account,
@@ -126,7 +127,7 @@ class ContactsSyncManager @AssistedInject constructor(
     interface Factory {
         fun contactsSyncManager(
             account: Account,
-            httpClient: HttpClient,
+            httpClient: OkHttpClient,
             syncResult: SyncResult,
             provider: ContentProviderClient,
             localAddressBook: LocalAddressBook,
@@ -162,7 +163,7 @@ class ContactsSyncManager @AssistedInject constructor(
                 return false
         }
 
-        davCollection = DavAddressBook(httpClient.okHttpClient, collection.url)
+        davCollection = DavAddressBook(httpClient, collection.url)
         resourceDownloader = ResourceDownloader(davCollection.location)
 
         logger.info("Contact group strategy: ${groupStrategy::class.java.simpleName}")
@@ -272,35 +273,45 @@ class ContactsSyncManager @AssistedInject constructor(
         return modified or superModified
     }
 
-    override fun generateUpload(resource: LocalAddress): RequestBody =
-        SyncException.wrapWithLocalResource(resource) {
-            val contact: Contact = when (resource) {
-                is LocalContact -> resource.getContact()
-                is LocalGroup -> resource.getContact()
-                else -> throw IllegalArgumentException("resource must be LocalContact or LocalGroup")
-            }
-
-            logger.log(Level.FINE, "Preparing upload of vCard ${resource.fileName}", contact)
-
-            val os = ByteArrayOutputStream()
-            val mimeType: MediaType
-            when {
-                hasJCard -> {
-                    mimeType = DavAddressBook.MIME_JCARD
-                    contact.writeJCard(os, Constants.vCardProdId)
-                }
-                hasVCard4 -> {
-                    mimeType = DavAddressBook.MIME_VCARD4
-                    contact.writeVCard(VCardVersion.V4_0, os, Constants.vCardProdId)
-                }
-                else -> {
-                    mimeType = DavAddressBook.MIME_VCARD3_UTF8
-                    contact.writeVCard(VCardVersion.V3_0, os, Constants.vCardProdId)
-                }
-            }
-
-            return@wrapWithLocalResource os.toByteArray().toRequestBody(mimeType)
+    override fun generateUpload(resource: LocalAddress): GeneratedResource {
+        val contact: Contact = when (resource) {
+            is LocalContact -> resource.getContact()
+            is LocalGroup -> resource.getContact()
+            else -> throw IllegalArgumentException("resource must be LocalContact or LocalGroup")
         }
+        logger.log(Level.FINE, "Preparing upload of vCard #${resource.id}", contact)
+
+        // get/create UID
+        val (uid, uidIsGenerated) = DavUtils.generateUidIfNecessary(contact.uid)
+        if (uidIsGenerated) {
+            // modify in Contact and persist to contacts provider
+            contact.uid = uid
+            resource.updateUid(uid)
+        }
+
+        // generate vCard and convert to request body
+        val os = ByteArrayOutputStream()
+        val mimeType: MediaType
+        when {
+            hasJCard -> {
+                mimeType = DavAddressBook.MIME_JCARD
+                contact.writeJCard(os, Constants.vCardProdId)
+            }
+            hasVCard4 -> {
+                mimeType = DavAddressBook.MIME_VCARD4
+                contact.writeVCard(VCardVersion.V4_0, os, Constants.vCardProdId)
+            }
+            else -> {
+                mimeType = DavAddressBook.MIME_VCARD3_UTF8
+                contact.writeVCard(VCardVersion.V3_0, os, Constants.vCardProdId)
+            }
+        }
+
+        return GeneratedResource(
+            suggestedFileName = DavUtils.fileNameFromUid(uid, "vcf"),
+            requestBody = os.toByteArray().toRequestBody(mimeType)
+        )
+    }
 
     override suspend fun listAllRemote(callback: MultiResponseCallback) =
         SyncException.wrapWithRemoteResourceSuspending(collection.url) {
@@ -347,7 +358,7 @@ class ContactsSyncManager @AssistedInject constructor(
                             ?: throw DavException("Received multi-get response without ETag")
 
                         var isJCard = hasJCard      // assume that server has sent what we have requested (we ask for jCard only when the server advertises it)
-                        response[GetContentType::class.java]?.type?.let { type ->
+                        response[GetContentType::class.java]?.type?.toMediaTypeOrNull()?.let { type ->
                             isJCard = type.sameTypeAs(DavUtils.MEDIA_TYPE_JCARD)
                         }
 
@@ -476,25 +487,23 @@ class ContactsSyncManager @AssistedInject constructor(
             }
 
             // authenticate only against a certain host, and only upon request
-            httpClientBuilder
+            val hostHttpClient = httpClientBuilder
                 .fromAccount(account, onlyHost = baseUrl.host)
                 .followRedirects(true)      // allow redirects
                 .build()
-                .use { httpClient ->
-                    try {
-                        val response = httpClient.okHttpClient.newCall(Request.Builder()
-                            .get()
-                            .url(httpUrl)
-                            .build()).execute()
+            try {
+                val response = hostHttpClient.newCall(Request.Builder()
+                    .get()
+                    .url(httpUrl)
+                    .build()).execute()
 
-                        if (response.isSuccessful)
-                            return response.body.bytes()
-                        else
-                            logger.warning("Couldn't download external resource")
-                    } catch(e: IOException) {
-                        logger.log(Level.SEVERE, "Couldn't download external resource", e)
-                    }
-                }
+                if (response.isSuccessful)
+                    return response.body.bytes()
+                else
+                    logger.warning("Couldn't download external resource")
+            } catch(e: IOException) {
+                logger.log(Level.SEVERE, "Couldn't download external resource", e)
+            }
 
             return null
         }

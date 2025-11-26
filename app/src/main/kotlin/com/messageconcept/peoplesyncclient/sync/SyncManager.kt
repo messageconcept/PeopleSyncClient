@@ -8,28 +8,28 @@ import android.accounts.Account
 import android.content.Context
 import android.os.DeadObjectException
 import android.os.RemoteException
-import at.bitfire.dav4jvm.DavCollection
-import at.bitfire.dav4jvm.DavResource
+import androidx.annotation.VisibleForTesting
 import at.bitfire.dav4jvm.Error
-import at.bitfire.dav4jvm.MultiResponseCallback
 import at.bitfire.dav4jvm.QuotedStringUtils
-import at.bitfire.dav4jvm.Response
-import at.bitfire.dav4jvm.exception.ConflictException
-import at.bitfire.dav4jvm.exception.DavException
-import at.bitfire.dav4jvm.exception.ForbiddenException
-import at.bitfire.dav4jvm.exception.GoneException
-import at.bitfire.dav4jvm.exception.HttpException
-import at.bitfire.dav4jvm.exception.NotFoundException
-import at.bitfire.dav4jvm.exception.PreconditionFailedException
-import at.bitfire.dav4jvm.exception.ServiceUnavailableException
-import at.bitfire.dav4jvm.exception.UnauthorizedException
+import at.bitfire.dav4jvm.okhttp.DavCollection
+import at.bitfire.dav4jvm.okhttp.DavResource
+import at.bitfire.dav4jvm.okhttp.MultiResponseCallback
+import at.bitfire.dav4jvm.okhttp.Response
+import at.bitfire.dav4jvm.okhttp.exception.ConflictException
+import at.bitfire.dav4jvm.okhttp.exception.DavException
+import at.bitfire.dav4jvm.okhttp.exception.ForbiddenException
+import at.bitfire.dav4jvm.okhttp.exception.GoneException
+import at.bitfire.dav4jvm.okhttp.exception.HttpException
+import at.bitfire.dav4jvm.okhttp.exception.NotFoundException
+import at.bitfire.dav4jvm.okhttp.exception.PreconditionFailedException
+import at.bitfire.dav4jvm.okhttp.exception.ServiceUnavailableException
+import at.bitfire.dav4jvm.okhttp.exception.UnauthorizedException
 import at.bitfire.dav4jvm.property.caldav.GetCTag
 import at.bitfire.dav4jvm.property.caldav.ScheduleTag
 import at.bitfire.dav4jvm.property.webdav.GetETag
 import at.bitfire.dav4jvm.property.webdav.SyncToken
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
-import com.messageconcept.peoplesyncclient.network.HttpClient
 import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
-import okhttp3.RequestBody
+import okhttp3.OkHttpClient
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.security.cert.CertificateException
@@ -74,9 +74,9 @@ import javax.net.ssl.SSLHandshakeException
  * @param collection            collection info in the database
  * @param resync                whether re-synchronization is requested
  */
-abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: LocalCollection<ResourceType>, RemoteType: DavCollection>(
+abstract class SyncManager<ResourceType: LocalResource, out CollectionType: LocalCollection<ResourceType>, RemoteType: DavCollection>(
     val account: Account,
-    val httpClient: HttpClient,
+    val httpClient: OkHttpClient,
     val dataType: SyncDataType,
     val syncResult: SyncResult,
     val localCollection: CollectionType,
@@ -247,7 +247,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                 logger.info("Remote collection didn't change, no reason to sync")
 
         } catch (potentiallyWrappedException: Throwable) {
-            var local: LocalResource<*>? = null
+            var local: LocalResource? = null
             var remote: HttpUrl? = null
 
             val e = SyncException.unwrap(potentiallyWrappedException) {
@@ -256,9 +256,10 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
             }
 
             when (e) {
-                // DeadObjectException (may occur when syncing takes too long and process is demoted to cached):
-                // re-throw to base Syncer → will cause soft error and restart the sync process
-                is DeadObjectException ->
+                /* LocalStorageException with cause DeadObjectException may occur when syncing takes too long
+                and process is demoted to cached. In this case, we re-throw to the base Syncer which will
+                treat it as a soft error and re-schedule the sync process. */
+                is LocalStorageException if e.cause is DeadObjectException ->
                     throw e
 
                 // sync was cancelled or account has been removed: re-throw to Syncer
@@ -331,7 +332,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                     logger.info("$fileName has been deleted locally -> deleting from server (ETag $lastETag / schedule-tag $lastScheduleTag)")
 
                     val url = collection.url.newBuilder().addPathSegment(fileName).build()
-                    val remote = DavResource(httpClient.okHttpClient, url)
+                    val remote = DavResource(httpClient, url)
                     SyncException.wrapWithRemoteResourceSuspending(url) {
                         try {
                             runInterruptible {
@@ -388,30 +389,24 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
      */
     protected open suspend fun uploadDirty(local: ResourceType, forceAsNew: Boolean = false) {
         val existingFileName = local.fileName
-        val fileName = if (existingFileName != null) {
-            // prepare upload (for UID etc), but ignore returned file name suggestion
-            local.prepareForUpload()
-            existingFileName
-        } else {
-            // prepare upload and use returned file name suggestion as new file name
-            local.prepareForUpload()
-        }
 
+        val upload = generateUpload(local)
+
+        val fileName = existingFileName ?: upload.suggestedFileName
         val uploadUrl = collection.url.newBuilder().addPathSegment(fileName).build()
-        val remote = DavResource(httpClient.okHttpClient, uploadUrl)
+        val remote = DavResource(httpClient, uploadUrl)
 
         try {
             SyncException.wrapWithRemoteResourceSuspending(uploadUrl) {
                 if (existingFileName == null || forceAsNew) {
                     // create new resource on server
                     logger.info("Uploading new resource ${local.id} -> $fileName")
-                    val bodyToUpload = generateUpload(local)
 
                     var newETag: String? = null
                     var newScheduleTag: String? = null
                     runInterruptible {
                         remote.put(
-                            bodyToUpload,
+                            upload.requestBody,
                             ifNoneMatch = true,     // fails if there's already a resource with that name
                             callback = { response ->
                                 newETag = GetETag.fromResponse(response)?.eTag
@@ -421,10 +416,8 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                         )
                     }
 
-                    logger.fine("Upload successful; new ETag=$newETag / Schedule-Tag=$newScheduleTag")
-
                     // success (no exception thrown)
-                    onSuccessfulUpload(local, fileName, newETag, newScheduleTag)
+                    onSuccessfulUpload(local, fileName, newETag, newScheduleTag, upload.onSuccessContext)
 
                 } else {
                     // update resource on server
@@ -432,13 +425,12 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                     val ifETag = if (ifScheduleTag == null) local.eTag else null
 
                     logger.info("Uploading modified resource ${local.id} -> $fileName (if ETag=$ifETag / Schedule-Tag=$ifScheduleTag)")
-                    val bodyToUpload = generateUpload(local)
 
                     var updatedETag: String? = null
                     var updatedScheduleTag: String? = null
                     runInterruptible {
                         remote.put(
-                            bodyToUpload,
+                            upload.requestBody,
                             ifETag = ifETag,
                             ifScheduleTag = ifScheduleTag,
                             callback = { response ->
@@ -449,10 +441,8 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
                         )
                     }
 
-                    logger.fine("Upload successful; updated ETag=$updatedETag / Schedule-Tag=$updatedScheduleTag")
-
                     // success (no exception thrown)
-                    onSuccessfulUpload(local, fileName, updatedETag, updatedScheduleTag)
+                    onSuccessfulUpload(local, fileName, updatedETag, updatedScheduleTag, upload.onSuccessContext)
                 }
             }
 
@@ -493,23 +483,46 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     }
 
     /**
-     * Called after a successful upload (either of a new or an updated resource) so that the local
-     * _dirty_ state can be reset.
-     *
-     * Note: [CalendarSyncManager] overrides this method to additionally store the updated SEQUENCE.
-     */
-    protected open fun onSuccessfulUpload(local: ResourceType, newFileName: String, eTag: String?, scheduleTag: String?) {
-        local.clearDirty(Optional.of(newFileName), eTag, scheduleTag)
-    }
-
-    /**
      * Generates the request body (iCalendar or vCard) from a local resource.
      *
      * @param resource local resource to generate the body from
      *
      * @return iCalendar or vCard (content + Content-Type) that can be uploaded to the server
      */
-    protected abstract fun generateUpload(resource: ResourceType): RequestBody
+    @VisibleForTesting
+    internal abstract fun generateUpload(resource: ResourceType): GeneratedResource
+
+    /**
+     * Called after a successful upload (either of a new or an updated resource) so that the local
+     * _dirty_ state can be reset. Also updates some other local properties.
+     *
+     * @param local         local resource that has been uploaded successfully
+     * @param newFileName   file name that has been used for uploading
+     * @param eTag          resulting `ETag` of the upload (from the server)
+     * @param scheduleTag   resulting `Schedule-Tag` of the upload (from the server)
+     * @param context       properties that have been generated before the upload and that shall be persisted by this method
+     */
+    private fun onSuccessfulUpload(
+        local: ResourceType,
+        newFileName: String,
+        eTag: String?,
+        scheduleTag: String?,
+        context: GeneratedResource.OnSuccessContext?
+    ) {
+        logger.log(Level.FINE, "Upload successful", arrayOf(
+            "File name = $newFileName",
+            "ETag = $eTag",
+            "Schedule-Tag = $scheduleTag",
+            "context = $context"
+        ))
+
+        // update SEQUENCE, if necessary
+        if (context?.sequence != null)
+            local.updateSequence(context.sequence)
+
+        // clear dirty flag and update ETag/Schedule-Tag
+        local.clearDirty(Optional.of(newFileName), eTag, scheduleTag)
+    }
 
 
     /**
@@ -745,7 +758,7 @@ abstract class SyncManager<ResourceType: LocalResource<*>, out CollectionType: L
     /**
      * Logs the exception, updates sync result and shows a notification to the user.
      */
-    private fun handleException(e: Throwable, local: LocalResource<*>?, remote: HttpUrl?) {
+    private fun handleException(e: Throwable, local: LocalResource?, remote: HttpUrl?) {
         var message: String
         when (e) {
             is IOException -> {

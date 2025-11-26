@@ -11,7 +11,7 @@ import android.os.DeadObjectException
 import androidx.annotation.VisibleForTesting
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.ServiceType
-import com.messageconcept.peoplesyncclient.network.HttpClient
+import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.resource.LocalCollection
@@ -21,8 +21,10 @@ import com.messageconcept.peoplesyncclient.servicedetection.HomeSetRefresher
 import com.messageconcept.peoplesyncclient.servicedetection.PrincipalsRefresher
 import com.messageconcept.peoplesyncclient.servicedetection.ServiceRefresher
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
+import at.bitfire.synctools.storage.LocalStorageException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.runInterruptible
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
@@ -51,7 +53,7 @@ abstract class Syncer<StoreType: LocalDataStore<CollectionType>, CollectionType:
     lateinit var collectionRepository: DavCollectionRepository
 
     @Inject
-    lateinit var httpClientBuilder: HttpClient.Builder
+    lateinit var httpClientBuilder: HttpClientBuilder
 
     @Inject
     lateinit var logger: Logger
@@ -81,7 +83,7 @@ abstract class Syncer<StoreType: LocalDataStore<CollectionType>, CollectionType:
         syncNotificationManagerFactory.create(account)
     }
 
-    val httpClient = lazy {
+    val httpClient by lazy {
         httpClientBuilder.fromAccount(account).build()
     }
 
@@ -120,27 +122,24 @@ abstract class Syncer<StoreType: LocalDataStore<CollectionType>, CollectionType:
         val dbCollections = mutableMapOf<Long, Collection>()
         serviceRepository.getByAccountAndType(account.name, serviceType)?.let { service ->
             logger.log(Level.INFO,"Refreshing collections")
+
             try {
-                httpClientBuilder
-                    .fromAccount(account)
-                    .build().use { client ->
-                        val httpClient = client.okHttpClient
-
-                        // refresh home set list (from principal url)
-                        service.principal?.let { principalUrl ->
-                            logger.fine("Querying principal $principalUrl for home sets")
-                            serviceRefresherFactory.create(service, httpClient).discoverHomesets(principalUrl)
-                        }
-
-                        // refresh home sets and their member collections
-                        homeSetRefresherFactory.create(service, httpClient).refreshHomesetsAndTheirCollections()
-
-                        // also refresh collections without a home set
-                        collectionsRefresherFactory.create(service, httpClient).refreshCollectionsWithoutHomeSet()
-
-                        // Lastly, refresh the principals (collection owners)
-                        principalsRefresherFactory.create(service, httpClient).refreshPrincipals()
+                runInterruptible {
+                    // refresh home set list (from principal url)
+                    service.principal?.let { principalUrl ->
+                        logger.fine("Querying principal $principalUrl for home sets")
+                        serviceRefresherFactory.create(service, httpClient).discoverHomesets(principalUrl)
                     }
+
+                    // refresh home sets and their member collections
+                    homeSetRefresherFactory.create(service, httpClient).refreshHomesetsAndTheirCollections()
+
+                    // also refresh collections without a home set
+                    collectionsRefresherFactory.create(service, httpClient).refreshCollectionsWithoutHomeSet()
+
+                    // Lastly, refresh the principals (collection owners)
+                    principalsRefresherFactory.create(service, httpClient).refreshPrincipals()
+                }
             } catch(e: Exception) {
                 logger.log(Level.SEVERE, "Failed to refresh collections", e)
             }
@@ -301,22 +300,30 @@ abstract class Syncer<StoreType: LocalDataStore<CollectionType>, CollectionType:
                 if (runSync)
                     sync(provider)
                 Unit
-            } catch (e: DeadObjectException) {
-                /* May happen when the remote process dies or (since Android 14) when IPC (for instance with the calendar provider)
-                is suddenly forbidden because our sync process was demoted from a "service process" to a "cached process". */
-                logger.log(Level.WARNING, "Received DeadObjectException, treating as soft error", e)
-                syncResult.numDeadObjectExceptions++
-
-            } catch (e: InvalidAccountException) {
-                logger.log(Level.WARNING, "Account was removed during synchronization", e)
 
             } catch (e: Exception) {
-                logger.log(Level.SEVERE, "Couldn't sync ${dataStore.authority}", e)
-                syncResult.numUnclassifiedErrors++ // Hard sync error
+                /* Handle sync exceptions. Note that most exceptions that occur during synchronization of a specific
+                collection are already handled in SyncManager. The exceptions here usually
+                - have occurred during Syncer operation (for instance when creating/deleting local collections),
+                - or have been re-thrown from SyncManager (like the wrapped DeadObjectException). */
+                when (e) {
+                    /* May happen when the remote process dies or (since Android 14) when IPC (for instance with the calendar provider)
+                    is suddenly forbidden because our sync process was demoted from a "service process" to a "cached process". */
+                    is LocalStorageException if e.cause is DeadObjectException -> {
+                        logger.log(Level.WARNING, "Received DeadObjectException, treating as soft error", e)
+                        syncResult.numDeadObjectExceptions++
+                    }
+
+                    is InvalidAccountException ->
+                        logger.log(Level.WARNING, "Account was removed during synchronization", e)
+
+                    else -> {
+                        logger.log(Level.SEVERE, "Couldn't sync ${dataStore.authority}", e)
+                        syncResult.numUnclassifiedErrors++ // Hard sync error
+                    }
+                }
 
             } finally {
-                if (httpClient.isInitialized())
-                    httpClient.value.close()
                 logger.info("${dataStore.authority} sync of $account finished")
             }
         }

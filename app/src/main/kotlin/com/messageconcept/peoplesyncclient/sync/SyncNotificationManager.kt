@@ -14,7 +14,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
-import at.bitfire.dav4jvm.exception.UnauthorizedException
+import at.bitfire.dav4jvm.okhttp.exception.UnauthorizedException
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalCollection
@@ -107,7 +107,7 @@ class SyncNotificationManager @AssistedInject constructor(
         message: String,
         localCollection: LocalCollection<*>,
         e: Throwable,
-        local: LocalResource<*>?,
+        local: LocalResource?,
         remote: HttpUrl?
     ) = notificationRegistry.notifyIfPossible(NotificationRegistry.NOTIFY_SYNC_ERROR, tag = notificationTag) {
         val contentIntent: Intent
@@ -214,7 +214,7 @@ class SyncNotificationManager @AssistedInject constructor(
     private fun buildDebugInfoIntent(
         dataType: SyncDataType,
         e: Throwable,
-        local: LocalResource<*>?,
+        local: LocalResource?,
         remote: HttpUrl?
     ): Intent {
         val builder = DebugInfoActivity.IntentBuilder(context)
