@@ -30,8 +30,8 @@ android {
         applicationId = "com.messageconcept.peoplesyncclient"
 
         //noinspection HighAppVersionCode
-        versionCode = 2070040502
-        versionName = "4.5-2"
+        versionCode = 2070040503
+        versionName = "4.5-3"
 
         base.archivesName = "PeopleSyncClient-$versionName"
 
