@@ -166,7 +166,7 @@ class AccountRepositoryTest {
         accountRepository.rename(account.name, newName)
 
         val newAccount = accountRepository.fromName(newName)
-        coVerify { localAddressBookStore.updateAccount(account, newAccount) }
+        coVerify { localAddressBookStore.updateAccount(account, newAccount, any()) }
     }
 
     @Test

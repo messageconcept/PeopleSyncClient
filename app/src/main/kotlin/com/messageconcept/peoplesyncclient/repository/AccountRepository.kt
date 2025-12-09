@@ -206,7 +206,7 @@ class AccountRepository @Inject constructor(
 
             try {
                 // update address books
-                localAddressBookStore.get().updateAccount(oldAccount, newAccount)
+                localAddressBookStore.get().updateAccount(oldAccount, newAccount, null)
             } catch (e: Exception) {
                 logger.log(Level.WARNING, "Couldn't change address books to renamed account", e)
             }

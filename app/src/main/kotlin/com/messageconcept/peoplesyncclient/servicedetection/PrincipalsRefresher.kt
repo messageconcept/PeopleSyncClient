@@ -6,8 +6,7 @@ package com.messageconcept.peoplesyncclient.servicedetection
 
 import at.bitfire.dav4jvm.okhttp.DavResource
 import at.bitfire.dav4jvm.okhttp.exception.HttpException
-import at.bitfire.dav4jvm.property.webdav.DisplayName
-import at.bitfire.dav4jvm.property.webdav.ResourceType
+import at.bitfire.dav4jvm.property.webdav.WebDAV
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Principal
 import com.messageconcept.peoplesyncclient.db.Service
@@ -36,8 +35,8 @@ class PrincipalsRefresher @AssistedInject constructor(
      * Principal properties to ask the server for.
      */
     private val principalProperties = arrayOf(
-        DisplayName.NAME,
-        ResourceType.NAME
+        WebDAV.DisplayName,
+        WebDAV.ResourceType
     )
 
     /**

@@ -13,19 +13,15 @@ import at.bitfire.dav4jvm.okhttp.UrlUtils
 import at.bitfire.dav4jvm.okhttp.exception.DavException
 import at.bitfire.dav4jvm.okhttp.exception.HttpException
 import at.bitfire.dav4jvm.okhttp.exception.UnauthorizedException
-import at.bitfire.dav4jvm.property.caldav.CalendarColor
-import at.bitfire.dav4jvm.property.caldav.CalendarDescription
+import at.bitfire.dav4jvm.property.caldav.CalDAV
 import at.bitfire.dav4jvm.property.caldav.CalendarHomeSet
-import at.bitfire.dav4jvm.property.caldav.CalendarTimezone
 import at.bitfire.dav4jvm.property.caldav.CalendarUserAddressSet
-import at.bitfire.dav4jvm.property.caldav.SupportedCalendarComponentSet
-import at.bitfire.dav4jvm.property.carddav.AddressbookDescription
 import at.bitfire.dav4jvm.property.carddav.AddressbookHomeSet
+import at.bitfire.dav4jvm.property.carddav.CardDAV
 import at.bitfire.dav4jvm.property.common.HrefListProperty
 import at.bitfire.dav4jvm.property.webdav.CurrentUserPrincipal
-import at.bitfire.dav4jvm.property.webdav.CurrentUserPrivilegeSet
-import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.ResourceType
+import at.bitfire.dav4jvm.property.webdav.WebDAV
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.log.StringHandler
 import com.messageconcept.peoplesyncclient.network.DnsRecordResolver
@@ -86,7 +82,7 @@ class DavResourceFinder @AssistedInject constructor(
         .apply {
             if (credentials != null)
                 authenticate(
-                    host = null,
+                    domain = null,
                     getCredentials = { credentials }
                 )
             }
@@ -216,11 +212,12 @@ class DavResourceFinder @AssistedInject constructor(
                 Service.CARDDAV -> {
                     davBaseURL.propfind(
                         0,
-                        ResourceType.NAME, DisplayName.NAME, AddressbookDescription.NAME,
-                        AddressbookHomeSet.NAME,
-                        CurrentUserPrincipal.NAME
+                        WebDAV.ResourceType, WebDAV.DisplayName,
+                        WebDAV.CurrentUserPrincipal,
+                        CardDAV.AddressbookHomeSet,
+                        CardDAV.AddressbookDescription
                     ) { response, _ ->
-                        scanResponse(ResourceType.ADDRESSBOOK, response, config)
+                        scanResponse(CardDAV.Addressbook, response, config)
                     }
                 }
             }
@@ -238,7 +235,7 @@ class DavResourceFinder @AssistedInject constructor(
     fun queryEmailAddress(principal: HttpUrl): List<String> {
         val mailboxes = LinkedList<String>()
         try {
-            DavResource(httpClient, principal, log).propfind(0, CalendarUserAddressSet.NAME) { response, _ ->
+            DavResource(httpClient, principal, log).propfind(0, CalDAV.CalendarUserAddressSet) { response, _ ->
                 response[CalendarUserAddressSet::class.java]?.let { addressSet ->
                     for (href in addressSet.hrefs)
                         try {
@@ -277,7 +274,7 @@ class DavResourceFinder @AssistedInject constructor(
         val homeSetClass: Class<out HrefListProperty>
         val serviceType: Service
         when (resourceType) {
-            ResourceType.ADDRESSBOOK -> {
+            CardDAV.Addressbook -> {
                 homeSetClass = AddressbookHomeSet::class.java
                 serviceType = Service.CARDDAV
             }
@@ -298,7 +295,7 @@ class DavResourceFinder @AssistedInject constructor(
                 }
 
             // ... and/or a principal?
-            if (it.types.contains(ResourceType.PRINCIPAL))
+            if (it.types.contains(WebDAV.Principal))
                 principal = davResponse.href
         }
 
@@ -431,7 +428,7 @@ class DavResourceFinder @AssistedInject constructor(
      */
     fun getCurrentUserPrincipal(url: HttpUrl, service: Service?): HttpUrl? {
         var principal: HttpUrl? = null
-        DavResource(httpClient, url, log).propfind(0, CurrentUserPrincipal.NAME) { response, _ ->
+        DavResource(httpClient, url, log).propfind(0, WebDAV.CurrentUserPrincipal) { response, _ ->
             response[CurrentUserPrincipal::class.java]?.href?.let { href ->
                 response.requestedUrl.resolve(href)?.let {
                     log.info("Found current-user-principal: $it")
