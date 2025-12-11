@@ -5,6 +5,7 @@
 package com.messageconcept.peoplesyncclient.ui.account
 
 import android.accounts.Account
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.security.KeyChain
 import androidx.activity.compose.rememberLauncherForActivityResult
