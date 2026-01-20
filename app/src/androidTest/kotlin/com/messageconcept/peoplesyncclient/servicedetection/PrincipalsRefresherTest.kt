@@ -4,7 +4,6 @@
 
 package com.messageconcept.peoplesyncclient.servicedetection
 
-import android.security.NetworkSecurityPolicy
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Principal
@@ -23,7 +22,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
-import org.junit.Assume
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -71,7 +69,6 @@ class PrincipalsRefresherTest {
 
         // build HTTP client
         client = httpClientBuilder.build()
-        Assume.assumeTrue(NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted)
 
         // insert test service
         val serviceId = db.serviceDao().insertOrReplace(

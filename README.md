@@ -1,7 +1,6 @@
 ![PeopleSync logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 PeopleSync Client App
-=====================
 
 Please see the [PeopleSync product website](https://peoplesync.messageconcept.com) for
 detailed information about the software.
