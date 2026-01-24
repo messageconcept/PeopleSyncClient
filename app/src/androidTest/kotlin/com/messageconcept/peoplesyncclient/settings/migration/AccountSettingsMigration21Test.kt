@@ -9,7 +9,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SyncRequest
 import android.os.Bundle
-import android.provider.CalendarContract
+import android.provider.ContactsContract
 import androidx.test.filters.SdkSuppress
 import com.messageconcept.peoplesyncclient.sync.account.TestAccount
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -47,7 +47,7 @@ class AccountSettingsMigration21Test {
     lateinit var logger: Logger
 
     lateinit var account: Account
-    val authority = CalendarContract.AUTHORITY
+    val authority = ContactsContract.AUTHORITY
 
     private val inPendingState = MutableStateFlow(false)
     private var statusChangeListener: Any? = null
@@ -56,7 +56,7 @@ class AccountSettingsMigration21Test {
     fun setUp() {
         hiltRule.inject()
 
-        account = TestAccount.create()
+        account = TestAccount.createAddressbookAccount()
 
         // Enable sync globally and for the test account
         ContentResolver.setIsSyncable(account, authority, 1)
