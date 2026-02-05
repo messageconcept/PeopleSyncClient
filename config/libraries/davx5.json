@@ -6,7 +6,7 @@
       "organisationUrl": "https://www.davx5.com/"
     }
   ],
-  "artifactVersion": "4.5.8-ose",
+  "artifactVersion": "4.5.9-ose",
   "description": "DAVx⁵ is a CalDAV/CardDAV management and sync app for Android.",
   "name": "bitfireAT/davx5-ose",
   "website": "https://github.com/bitfireAT/davx5-ose",
