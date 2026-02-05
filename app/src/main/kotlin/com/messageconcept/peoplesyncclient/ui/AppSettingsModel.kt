@@ -17,7 +17,6 @@ import com.messageconcept.peoplesyncclient.di.IoDispatcher
 import com.messageconcept.peoplesyncclient.repository.PreferenceRepository
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.ui.intro.BackupsPage
 import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.broadcastReceiverFlow
@@ -95,7 +94,6 @@ class AppSettingsModel @Inject constructor(
     }
 
     fun resetHints() = runBlocking(ioDispatcher) {
-        settings.remove(BackupsPage.Model.SETTING_BACKUPS_ACCEPTED)
         settings.remove(BatteryOptimizationsPageModel.HINT_BATTERY_OPTIMIZATIONS)
         settings.remove(BatteryOptimizationsPageModel.HINT_AUTOSTART_PERMISSION)
     }

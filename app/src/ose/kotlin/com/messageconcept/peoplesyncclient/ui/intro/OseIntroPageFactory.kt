@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.ui.intro
 import javax.inject.Inject
 
 class OseIntroPageFactory @Inject constructor(
-    backupsPage: BackupsPage,
     batteryOptimizationsPage: BatteryOptimizationsPage,
     permissionsIntroPage: PermissionsIntroPage
 ): IntroPageFactory {
@@ -15,8 +14,7 @@ class OseIntroPageFactory @Inject constructor(
     override val introPages = arrayOf(
         WelcomePage(),
         permissionsIntroPage,
-        batteryOptimizationsPage,
-        backupsPage,
+        batteryOptimizationsPage
     )
 
 }
