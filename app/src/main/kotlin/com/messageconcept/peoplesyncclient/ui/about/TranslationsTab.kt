@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.ui.composable.WebViewCompat
 
 @Composable
 fun TranslationsTab(
@@ -34,11 +33,6 @@ fun TranslationsTab(
         val sideBySide = windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
         if (sideBySide)
             Row {
-                Translations_Engage(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                )
                 Translations_Translators(
                     weblateTranslators = weblateTranslators,
                     transifexTranslators = transifexTranslators,
@@ -54,7 +48,6 @@ fun TranslationsTab(
                     transifexTranslators,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-                Translations_Engage()
             }
     }
 }
@@ -93,14 +86,6 @@ fun Translations_Translators(
             style = MaterialTheme.typography.bodyMedium
         )
     }
-}
-
-@Composable
-fun Translations_Engage(modifier: Modifier = Modifier) {
-    WebViewCompat(
-        url = "https://hosted.weblate.org/engage/davx5/",
-        modifier = modifier
-    )
 }
 
 @Composable
