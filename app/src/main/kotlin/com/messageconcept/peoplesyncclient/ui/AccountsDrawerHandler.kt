@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.ui.about.AboutActivity
 import kotlinx.coroutines.launch
 import java.net.URI
 

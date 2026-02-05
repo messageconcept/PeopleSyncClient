@@ -4,13 +4,12 @@
 
 package com.messageconcept.peoplesyncclient.di
 
-import com.messageconcept.peoplesyncclient.ui.intro.OseIntroPageFactory
-
-import com.messageconcept.peoplesyncclient.ui.AboutActivity
 import com.messageconcept.peoplesyncclient.ui.AccountsDrawerHandler
-import com.messageconcept.peoplesyncclient.ui.OpenSourceLicenseInfoProvider
 import com.messageconcept.peoplesyncclient.ui.OseAccountsDrawerHandler
+import com.messageconcept.peoplesyncclient.ui.about.AboutActivity
+import com.messageconcept.peoplesyncclient.ui.about.OpenSourceLicenseInfoProvider
 import com.messageconcept.peoplesyncclient.ui.intro.IntroPageFactory
+import com.messageconcept.peoplesyncclient.ui.intro.OseIntroPageFactory
 import com.messageconcept.peoplesyncclient.ui.setup.LoginTypesProvider
 import com.messageconcept.peoplesyncclient.ui.setup.StandardLoginTypesProvider
 import dagger.Binds

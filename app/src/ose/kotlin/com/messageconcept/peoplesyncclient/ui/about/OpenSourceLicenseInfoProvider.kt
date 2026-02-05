@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package com.messageconcept.peoplesyncclient.ui
+package com.messageconcept.peoplesyncclient.ui.about
 
 import android.app.Application
 import android.text.Spanned
@@ -20,9 +20,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.messageconcept.peoplesyncclient.ui.UiUtils.toAnnotatedString
 import com.google.common.io.CharStreams
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class OpenSourceLicenseInfoProvider @Inject constructor(): AboutActivity.AppLicenseInfoProvider {
 
