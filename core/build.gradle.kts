@@ -9,17 +9,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.mikepenz.aboutLibraries.android)
-    alias(libs.plugins.cyclonedx)
 }
 
-tasks.cyclonedxBom {
-    projectType = org.cyclonedx.model.Component.Type.APPLICATION
-    jsonOutput.set(file("build/reports/cyclonedx/sbom-android-app.json"))
-    xmlOutput.unsetConvention()
-    includeLicenseText = false
-    componentName = "PeopleSyncClient"
-    componentVersion = android.defaultConfig.versionName
-}
 
 // Android configuration
 android {
