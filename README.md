@@ -1,6 +1,7 @@
-![PeopleSync logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+![PeopleSync logo](core/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 PeopleSync Client App
+=====================
 
 Please see the [PeopleSync product website](https://peoplesync.messageconcept.com) for
 detailed information about the software.
@@ -8,7 +9,7 @@ detailed information about the software.
 The software is a CardDAV client for businesses using our PeopleSync server
 software. It synchronizes all address lists from the PeopleSync server. The
 management, which address lists will be synchronized, happens centrally on
-server side by the IT staff. Therefore for the personal usage of CardDAV and
+server side by the IT staff. Therefore, for the personal usage of CardDAV and
 CalDAV we recommend to use the [DAVx⁵](https://www.davx5.com)
 app with more configuration options.
 
