@@ -186,7 +186,7 @@
   <string name="account_rename_couldnt_rename">No se puede renombrar la cuenta</string>
   <string name="account_delete">Eliminar cuenta</string>
   <string name="account_delete_confirmation_title">¿Seguro que deseas eliminar la cuenta?</string>
-  <string name="account_delete_confirmation_text">Todas las copias locales de tus contactos, calendarios y tareas serán eliminadas.</string>
+  <string name="account_delete_confirmation_text">Todas las copias locales de tus contactos serán eliminadas.</string>
   <string name="account_synchronize_this_collection">sincronizar ésta colección</string>
   <string name="account_read_only">solo lectura</string>
   <string name="account_calendar">calendario</string>

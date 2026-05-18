@@ -211,7 +211,7 @@
     <string name="account_rename_couldnt_rename">Accountnaam is niet gewijzigd</string>
     <string name="account_delete">Account verwijderen</string>
     <string name="account_delete_confirmation_title">Account echt verwijderen?</string>
-    <string name="account_delete_confirmation_text">Alle lokale kopieën van adresboeken, kalenders en takenlijsten worden verwijderd.</string>
+    <string name="account_delete_confirmation_text">Alle lokale kopieën van adresboeken worden verwijderd.</string>
     <string name="account_synchronize_this_collection">deze collectie synchroniseren</string>
     <string name="account_read_only">alleen-lezen</string>
     <string name="account_calendar">kalender</string>

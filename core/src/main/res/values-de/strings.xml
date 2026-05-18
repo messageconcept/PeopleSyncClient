@@ -212,7 +212,7 @@
     <string name="account_rename_couldnt_rename">Konto konnte nicht umbenannt werden</string>
     <string name="account_delete">Konto löschen</string>
     <string name="account_delete_confirmation_title">Konto wirklich löschen?</string>
-    <string name="account_delete_confirmation_text">Alle Adressbücher, Kalender und Aufgabenlisten werden vom Gerät (nicht am Server) gelöscht.</string>
+    <string name="account_delete_confirmation_text">Alle Adressbücher werden vom Gerät (nicht am Server) gelöscht.</string>
     <string name="account_synchronize_this_collection">Diesen Ordner synchronisieren</string>
     <string name="account_read_only">schreibgeschützt</string>
     <string name="account_calendar">Kalender</string>

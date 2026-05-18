@@ -198,7 +198,7 @@
     <string name="account_rename_couldnt_rename">Impossible de renommer le compte</string>
     <string name="account_delete">Supprimer le compte</string>
     <string name="account_delete_confirmation_title">Voulez-vous vraiment supprimer le compte ?</string>
-    <string name="account_delete_confirmation_text">Toutes les copies locales des carnets d\'adresses, des calendriers et des listes de tâches seront supprimées.</string>
+    <string name="account_delete_confirmation_text">Toutes les copies locales des carnets d\'adresses seront supprimées.</string>
     <string name="account_synchronize_this_collection">Synchroniser cette collection</string>
     <string name="account_read_only">En lecture seulement</string>
     <string name="account_calendar">calendrier</string>
