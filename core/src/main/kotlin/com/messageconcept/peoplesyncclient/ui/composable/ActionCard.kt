@@ -5,20 +5,15 @@
 package com.messageconcept.peoplesyncclient.ui.composable
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationAdd
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -89,21 +84,11 @@ fun NotificationCard(
     icon: ImageVector? = null,
     content: @Composable () -> Unit
 ) {
-    Card(Modifier
-        .fillMaxWidth()
-        .then(modifier)
+    BaseCard(
+        modifier = modifier,
+        icon = icon?.buildComposable()
     ) {
-        Column(Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)) {
-            if (icon != null)
-                Row {
-                    Icon(icon, "", Modifier
-                        .align(Alignment.CenterVertically)
-                        .padding(end = 8.dp))
-                    content()
-                }
-            else
-                content()
-        }
+        content()
     }
 }
 
