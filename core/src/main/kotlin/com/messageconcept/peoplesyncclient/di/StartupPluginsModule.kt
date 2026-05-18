@@ -7,7 +7,6 @@ package com.messageconcept.peoplesyncclient.di
 import com.messageconcept.peoplesyncclient.startup.CrashHandlerSetup
 import com.messageconcept.peoplesyncclient.startup.StartupPlugin
 import dagger.Binds
-import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

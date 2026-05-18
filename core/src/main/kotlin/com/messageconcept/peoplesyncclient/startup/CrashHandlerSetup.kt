@@ -10,13 +10,7 @@ import android.os.StrictMode
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.startup.StartupPlugin.Companion.PRIORITY_DEFAULT
 import com.messageconcept.peoplesyncclient.startup.StartupPlugin.Companion.PRIORITY_HIGHEST
-import dagger.Binds
-import dagger.BindsOptionalOf
-import dagger.Module
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.IntoSet
 import java.util.Optional
 import java.util.logging.Logger
 import javax.inject.Inject

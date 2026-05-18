@@ -7,8 +7,6 @@ package com.messageconcept.peoplesyncclient.resource
 import android.accounts.Account
 import android.content.ContentProviderClient
 import android.content.Context
-import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
-import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.sync.adapter.SyncFrameworkIntegration
 import at.bitfire.vcard4android.GroupMethod
@@ -28,21 +26,18 @@ class LocalTestAddressBook @AssistedInject constructor(
     @Assisted provider: ContentProviderClient,
     @Assisted override val groupMethod: GroupMethod,
     accountSettingsFactory: AccountSettings.Factory,
-    collectionRepository: DavCollectionRepository,
     @ApplicationContext context: Context,
     logger: Logger,
-    serviceRepository: DavServiceRepository,
     syncFramework: SyncFrameworkIntegration
 ): LocalAddressBook(
     account = account,
     _addressBookAccount = addressBookAccount,
     provider = provider,
+    groupMethod = groupMethod,
     accountSettingsFactory = accountSettingsFactory,
-    collectionRepository = collectionRepository,
     context = context,
     dirtyVerifier = Optional.empty(),
     logger = logger,
-    serviceRepository = serviceRepository,
     syncFramework = syncFramework
 ) {
 

@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CloudSync
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.DoNotDisturbOn
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,12 +46,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.repository.DavSyncStatsRepository
@@ -69,8 +72,8 @@ fun CollectionScreen(
     onFinish: () -> Unit,
     onNavUp: () -> Unit
 ) {
-    val model: CollectionScreenModel = hiltViewModel(
-        creationCallback = { factory: CollectionScreenModel.Factory ->
+    val model: CollectionScreenViewModel = hiltViewModel(
+        creationCallback = { factory: CollectionScreenViewModel.Factory ->
             factory.create(collectionId)
         }
     )
@@ -89,12 +92,14 @@ fun CollectionScreen(
         color = collection.color,
         sync = collection.sync,
         onSetSync = model::setSync,
-        readOnly = model.readOnly.collectAsStateWithLifecycle(CollectionScreenModel.ReadOnlyState.READ_WRITE).value,
+        readOnly = model.readOnly.collectAsStateWithLifecycle(CollectionScreenViewModel.ReadOnlyState.READ_WRITE).value,
         onSetForceReadOnly = model::setForceReadOnly,
         title = collection.title(),
         displayName = collection.displayName,
         description = collection.description,
         owner = model.owner.collectAsStateWithLifecycle(null).value,
+        localItemCounts = model.localItemCounts.collectAsStateWithLifecycle(initialValue = emptyList()).value,
+        pastEventTimeLimit = model.pastEventTimeLimit.collectAsStateWithLifecycle(null).value,
         lastSynced = model.lastSynced.collectAsStateWithLifecycle(emptyList()).value,
         supportsWebPush = collection.supportsWebPush,
         pushSubscriptionCreated = collection.pushSubscriptionCreated,
@@ -114,13 +119,15 @@ fun CollectionScreen(
     color: Int?,
     sync: Boolean,
     onSetSync: (Boolean) -> Unit = {},
-    readOnly: CollectionScreenModel.ReadOnlyState,
+    readOnly: CollectionScreenViewModel.ReadOnlyState,
     onSetForceReadOnly: (Boolean) -> Unit = {},
     title: String,
     displayName: String? = null,
     description: String? = null,
     owner: String? = null,
     lastSynced: List<DavSyncStatsRepository.LastSynced> = emptyList(),
+    localItemCounts: List<CollectionScreenViewModel.LocalItemsCount>,
+    pastEventTimeLimit: Int?,
     supportsWebPush: Boolean = false,
     pushSubscriptionCreated: Long? = null,
     pushSubscriptionExpires: Long? = null,
@@ -195,11 +202,11 @@ fun CollectionScreen(
                         icon = Icons.Default.DoNotDisturbOn,
                         title = stringResource(R.string.collection_read_only),
                         text = when (readOnly) {
-                            CollectionScreenModel.ReadOnlyState.READ_ONLY_BY_SERVER ->
+                            CollectionScreenViewModel.ReadOnlyState.READ_ONLY_BY_SERVER ->
                                 stringResource(R.string.collection_read_only_by_server)
-                            CollectionScreenModel.ReadOnlyState.READ_ONLY_BY_SETTING ->
+                            CollectionScreenViewModel.ReadOnlyState.READ_ONLY_BY_SETTING ->
                                 stringResource(R.string.collection_read_only_by_setting)
-                            CollectionScreenModel.ReadOnlyState.READ_ONLY_BY_USER ->
+                            CollectionScreenViewModel.ReadOnlyState.READ_ONLY_BY_USER ->
                                 stringResource(R.string.collection_read_only_forced)
                             else -> stringResource(R.string.collection_read_write)
                         }
@@ -224,6 +231,60 @@ fun CollectionScreen(
                             text = owner
                         )
 
+                    if (localItemCounts.isNotEmpty())
+                        CollectionScreen_Entry(
+                            icon = Icons.Default.BarChart,
+                            title = stringResource(R.string.collection_synced_items_title)
+                        ) {
+                            for (count in localItemCounts) {
+                                Text(
+                                    text = pluralStringResource(R.plurals.collection_synced_items_total, count.total, count.total, count.contentProviderName),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                                Text(
+                                    text = pluralStringResource( R.plurals.collection_synced_items_modified, count.modified, count.modified),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    text = pluralStringResource( R.plurals.collection_synced_items_deleted, count.deleted, count.deleted),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            if (pastEventTimeLimit != null)
+                                Text(
+                                    text = pluralStringResource( R.plurals.collection_synced_items_past_event_time_limit, pastEventTimeLimit, pastEventTimeLimit),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                        }
+
+                    if (sync && lastSynced.isNotEmpty())
+                        CollectionScreen_Entry {
+                            val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+
+                            for ((idx, lastSync) in lastSynced.withIndex()) {
+                                if (idx != 0)
+                                    Spacer(Modifier.height(8.dp))
+
+                                val dataType = when (lastSync.dataType) {
+                                    SyncDataType.CONTACTS.name -> stringResource(R.string.collection_datatype_contacts)
+                                    else -> lastSync.dataType
+                                }
+                                Text(
+                                    text = stringResource(R.string.collection_last_sync, dataType),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+
+                                val time = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastSync.lastSynced), ZoneId.systemDefault())
+                                Text(
+                                    text = formatter.format(time),
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
+
                     if (supportsWebPush) {
                         val text =
                             if (pushSubscriptionCreated != null && pushSubscriptionExpires != null) {
@@ -242,39 +303,14 @@ fun CollectionScreen(
                         )
                     }
 
-                    Column(Modifier.padding(start = 44.dp)) {
-                        if (sync && lastSynced.isNotEmpty()) {
-                            val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-
-                            for (lastSync in lastSynced) {
-                                val dataType = when (lastSync.dataType) {
-                                    SyncDataType.CONTACTS.name -> stringResource(R.string.collection_datatype_contacts)
-                                    else -> lastSync.dataType
-                                }
-                                Text(
-                                    text = stringResource(R.string.collection_last_sync, dataType),
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-
-                                val time = ZonedDateTime.ofInstant(Instant.ofEpochMilli(lastSync.lastSynced), ZoneId.systemDefault())
-                                Text(
-                                    text = formatter.format(time),
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-
-                                Spacer(Modifier.height(16.dp))
-                            }
-                        }
-
-                        Text(
-                            text = stringResource(R.string.collection_url),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                    CollectionScreen_Entry(
+                        title = stringResource(R.string.collection_url),
+                        isLast = true
+                    ) {
                         SelectionContainer {
                             Text(
                                 text = url,
-                                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-                                modifier = Modifier
+                                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace)
                             )
                         }
                     }
@@ -289,11 +325,12 @@ fun CollectionScreen_Entry(
     icon: ImageVector? = null,
     title: String? = null,
     text: String? = null,
-    control: @Composable (() -> Unit)? = null
+    isLast: Boolean = false,
+    control: @Composable (() -> Unit)? = null,
+    content: @Composable (() -> Unit)? = null
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 16.dp)
+        verticalAlignment = if (content != null) Alignment.Top else Alignment.CenterVertically
     ) {
         if (icon != null)
             Icon(
@@ -318,10 +355,18 @@ fun CollectionScreen_Entry(
                     text = text,
                     style = MaterialTheme.typography.bodyLarge
                 )
+
+            content?.invoke()
         }
 
         if (control != null)
             control()
+    }
+
+    Spacer(Modifier.height(12.dp))
+    if (!isLast) {
+        HorizontalDivider(modifier = Modifier.padding(start = 44.dp))
+        Spacer(Modifier.height(12.dp))
     }
 }
 
@@ -332,7 +377,7 @@ fun CollectionScreen_Preview() {
         inProgress = true,
         color = 0xff14c0c4.toInt(),
         sync = true,
-        readOnly = CollectionScreenModel.ReadOnlyState.READ_ONLY_BY_USER,
+        readOnly = CollectionScreenViewModel.ReadOnlyState.READ_ONLY_BY_USER,
         url = "https://example.com/calendar",
         title = "Some Calendar, with some additional text to make it wrap around and stuff.",
         displayName = "Some Calendar, with some additional text to make it wrap around and stuff.",
@@ -342,6 +387,21 @@ fun CollectionScreen_Preview() {
             DavSyncStatsRepository.LastSynced(
                 dataType = "Some Sync Data Type",
                 lastSynced = 1234567890
+            )
+        ),
+        pastEventTimeLimit = 90,
+        localItemCounts = listOf(
+            CollectionScreenViewModel.LocalItemsCount(
+                contentProviderName = "Calender Storage",
+                total = 150,
+                modified = 2,
+                deleted = 1
+            ),
+            CollectionScreenViewModel.LocalItemsCount(
+                contentProviderName = "Some Tasks App",
+                total = 10,
+                modified = 0,
+                deleted = 1
             )
         ),
         supportsWebPush = true,

@@ -9,7 +9,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Looper
 import androidx.annotation.WorkerThread
-import androidx.core.os.bundleOf
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.CREDENTIALS_LOCK
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.CREDENTIALS_LOCK_AT_LOGIN_AND_SETTINGS
@@ -69,11 +68,7 @@ class AccountSettings @AssistedInject constructor(
 
     val accountManager: AccountManager = AccountManager.get(context)
     init {
-        val allowedAccountTypes = arrayOf(
-            context.getString(R.string.account_type),
-            "com.messageconcept.peoplesyncclient.test"      // R.strings.account_type_test in androidTest
-        )
-        if (!allowedAccountTypes.contains(account.type))
+        if (account.type != context.getString(R.string.account_type))
             throw IllegalArgumentException("Invalid account type for AccountSettings(): ${account.type}")
 
         // synchronize because account migration must only be run one time
@@ -314,6 +309,8 @@ class AccountSettings @AssistedInject constructor(
         /** OAuth [AuthState] (serialized as JSON) */
         const val KEY_AUTH_STATE = "auth_state"
 
+        const val KEY_PRECONFIGURATION_URL = "preconfiguration_url"
+
         const val KEY_BASE_URL = "base_url"
 
         const val KEY_WIFI_ONLY = "wifi_only"               // sync on WiFi only (default: false)
@@ -336,8 +333,10 @@ class AccountSettings @AssistedInject constructor(
         /** Static property to remember which AccountSettings updates/migrations are currently running */
         val currentlyUpdating = Collections.synchronizedSet(mutableSetOf<Account>())
 
-        fun initialUserData(credentials: Credentials?): Bundle {
-            val bundle = bundleOf(KEY_SETTINGS_VERSION to CURRENT_VERSION.toString())
+        fun initialUserData(credentials: Credentials?, preconfigurationUrl: String?): Bundle {
+            val bundle = Bundle().apply {
+                putString(KEY_SETTINGS_VERSION, CURRENT_VERSION.toString())
+            }
 
             if (credentials != null) {
                 if (credentials.username != null)
@@ -351,6 +350,9 @@ class AccountSettings @AssistedInject constructor(
 
                 if (credentials.baseUrl != null)
                     bundle.putString(KEY_BASE_URL, credentials.baseUrl)
+            }
+            if (preconfigurationUrl != null) {
+                bundle.putString(KEY_PRECONFIGURATION_URL, preconfigurationUrl)
             }
 
             return bundle

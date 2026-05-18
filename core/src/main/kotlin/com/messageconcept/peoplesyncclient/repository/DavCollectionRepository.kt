@@ -25,6 +25,8 @@ import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
 import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.util.DavUtils
+import at.bitfire.synctools.icalendar.componentListOf
+import at.bitfire.synctools.icalendar.propertyListOf
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -52,9 +54,37 @@ class DavCollectionRepository @Inject constructor(
     private val dao = db.collectionDao()
 
     /**
-     * Whether there are any collections that are registered for push.
+     * Returns the number of collections that are push capable.
      */
-    suspend fun anyPushCapable() = dao.anyPushCapable()
+    suspend fun countSyncEnabledPushCapable() =  dao.countSyncEnabledPushCapable()
+
+    /**
+     * Returns the total number of collections in all accounts that are user enabled for synchronization.
+     */
+    suspend fun countSyncEnabled() = dao.countSyncEnabled()
+
+    /**
+     * Determines the amount of sync-enabled push capable collections in all accounts combined.
+     * @return
+     *  - [PushCollectionsAmount.All] if all the sync-enabled collections in all accounts are push-capable OR if zero sync-enabled collections exist
+     *  - [PushCollectionsAmount.Some] if some (but not all) sync-enabled collections are push-capable
+     *  - [PushCollectionsAmount.None] if no sync-enabled collections are push-capable
+     */
+    suspend fun getAmountPushCapable(): PushCollectionsAmount {
+        val syncEnabled = countSyncEnabled()
+        val syncEnabledPushCapable = countSyncEnabledPushCapable()
+
+        return when (syncEnabledPushCapable) {
+            syncEnabled -> PushCollectionsAmount.All // Also matches zero sync-enabled collections
+            0 -> PushCollectionsAmount.None
+            else -> PushCollectionsAmount.Some
+        }
+    }
+
+    /**
+     * Whether there are any collections that are push capable.
+     */
+    suspend fun anyPushCapable(): Boolean = dao.anyPushCapable()
 
     /**
      * Creates address book collection on server and locally
@@ -245,9 +275,18 @@ class DavCollectionRepository @Inject constructor(
         dao.updateSync(id, forceReadOnly)
     }
 
-    suspend fun updatePushSubscription(id: Long, subscriptionUrl: String?, expires: Long?) {
+    /**
+     * Updates the push subscription details for a collection with the given ID.
+     *
+     * @param id ID of the collection to update.
+     * @param subscriptionUrl New push subscription URL (can be `null` to clear the value).
+     * @param registeredEndpoint New registered endpoint URL (can be `null` to clear the value).
+     * @param expires New expiration timestamp for the push subscription (can be `null` to clear the value).
+     */
+    suspend fun updatePushSubscription(id: Long, subscriptionUrl: String?, registeredEndpoint: String?, expires: Long?) {
         dao.updatePushSubscription(
             id = id,
+            pushRegisteredEndpoint = registeredEndpoint,
             pushSubscription = subscriptionUrl,
             pushSubscriptionExpires = expires
         )
@@ -335,6 +374,12 @@ class DavCollectionRepository @Inject constructor(
             endDocument()
         }
         return writer.toString()
+    }
+
+    enum class PushCollectionsAmount {
+        All,     // All collections are push-capable
+        Some,    // Some collections are push-capable
+        None;    // Zero collections are push-capable
     }
 
 }

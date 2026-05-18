@@ -21,6 +21,7 @@
     <string name="navigate_up">Navigate up</string>
     <string name="options_menu">Options menu</string>
     <string name="share">Share</string>
+    <string name="dismiss_forever">Dismiss forever</string>
     <string name="sync_started">Synchronization started/enqueued</string>
 
     <string name="database_destructive_migration_title">Database corrupted</string>
@@ -36,6 +37,8 @@
     <string name="notification_channel_sync_warnings_desc">Non-fatal synchronization problems like certain invalid files</string>
     <string name="notification_channel_sync_io_errors">Network and I/O errors</string>
     <string name="notification_channel_sync_io_errors_desc">Timeouts, connection problems, etc. (often temporary)</string>
+    <string name="notification_channel_user_interaction">User Interaction</string>
+    <string name="notification_channel_user_interaction_desc">User interaction required. A problem or issue has to be addressed manually.</string>
 
     <!-- IntroActivity -->
     <string name="intro_slogan1">PeopleSync</string>
@@ -154,6 +157,7 @@
     <string name="account_list_welcome">Welcome to PeopleSync!</string>
     <string name="account_list_empty">Connect to your server and keep your contacts synchronized.</string>
     <string name="accounts_sync_all">Sync all accounts</string>
+    <string name="keep_android_open"><![CDATA[Android’s openness is under threat. Learn how you can help at <a href="%s">keepandroidopen.org</a>.]]></string>
 
     <!-- Sync warnings -->
     <string name="sync_warning_no_notification_permission">Notifications disabled. You won\'t be notified about sync errors.</string>
@@ -238,14 +242,23 @@
     <string name="app_settings_integration">Integration</string>
     <string name="app_settings_tasks_provider">Tasks app</string>
     <string name="app_settings_tasks_provider_none">No compatible tasks app found</string>
-    <string name="app_settings_unifiedpush">UnifiedPush (experimental)</string>
-    <string name="app_settings_unifiedpush_disable">None (disable push)</string>
-    <string name="app_settings_unifiedpush_choose_distributor">Choose a distributor</string>
-    <string name="app_settings_unifiedpush_no_distributor">No push distributor installed</string>
     <string name="app_settings_unifiedpush_no_endpoint">No endpoint configured</string>
-    <string name="app_settings_unifiedpush_ready">Ready to receive push messages over %s</string>
     <string name="app_settings_unifiedpush_distributor_fcm">FCM (Google Play)</string>
-    <string name="app_settings_unifiedpush_encrypted">Push messages are always encrypted.</string>
+    <string name="app_settings_push_enabled_summary">On, %s</string>
+    <string name="app_settings_push_disabled_summary">Off</string>
+
+    <string name="app_settings_push_title">Push</string>
+    <string name="app_settings_push_description">Use Push to have CardDAV/WebDAV servers instantly notify %s of available changes to your data on the server.</string>
+    <string name="app_settings_push_use_push">Use Push</string>
+    <string name="app_settings_push_no_push_services_found"><![CDATA[No Push Services found. Visit <a href=\"%1$s\">%2$s</a> for a list of Distributor Apps.]]></string>
+    <string name="app_settings_push_unified_push_url_text" translatable="false">UnifiedPush.org</string>
+    <string name="app_settings_push_info_text"><![CDATA[Push messages are always encrypted. Learn more about WebDAV-Push from <a href=\"%s\">the manual</a>.]]></string>
+    <string name="app_settings_push_push_services">Push Service</string>
+    <string name="app_settings_push_default_distributor_text">(system default)</string>
+    <string name="app_settings_push_capability_none">None of your sync enabled server collections currently support WebDAV-Push.</string>
+    <string name="app_settings_push_capability_some">Only some of your sync enabled server collections currently support WebDAV-Push.</string>
+    <string name="app_settings_push_select_default_distributor_description">There are multiple UnifiedPush Distributor Apps installed. You can set a system-wide default here, so other UnifiedPush-enabled apps don\'t have to ask which one to use.</string>
+    <string name="app_settings_push_select_default_distributor_action">Set default</string>
 
     <!-- AccountScreen -->
     <string name="account_invalid_account">Account has been removed</string>
@@ -338,6 +351,10 @@
     <string name="login_check_credentials">Please also double-check authentication (usually username and password).</string>
     <string name="login_logs_available">Further technical information is available in the logs.</string>
     <string name="login_view_logs">View logs</string>
+    <string name="login_invalid_use_case">Invalid use-case</string>
+    <string name="login_invalid_use_case_info"><![CDATA[This variant %s of the app can only be used with selected services.]]></string>
+    <string name="login_download_regular_davx5"><![CDATA[Instead, please use <a href="%s">PeopleSync</a>, which can be used with all services.]]></string>
+    <string name="login_download_button">Download PeopleSync</string>
 
     <!-- AccountSettingsActivity -->
     <string name="settings_sync">Synchronization</string>
@@ -441,6 +458,9 @@
     <string name="collection_datatype_contacts">contacts</string>
     <string name="collection_datatype_events">events</string>
     <string name="collection_datatype_tasks">tasks</string>
+    <string name="collection_datatype_contacts_count">%1$d contacts</string>
+    <string name="collection_datatype_events_count">%1$d events</string>
+    <string name="collection_datatype_tasks_count">%1$d tasks</string>
     <string name="collection_delete">Delete collection</string>
     <string name="collection_delete_warning">This collection (%s) and all its data will be removed permanently, both locally and on the server.</string>
     <string name="collection_synchronization">Synchronization</string>
@@ -454,14 +474,35 @@
     <string name="collection_title">Title</string>
     <string name="collection_description">Description</string>
     <string name="collection_owner">Owner</string>
+    <string name="collection_last_sync">Last sync (%s)</string>
+    <string name="collection_synced_items_title">Local item count</string>
+    <plurals name="collection_synced_items_total">
+        <item quantity="zero">No items in %2$s</item>
+        <item quantity="one">%1$d item in %2$s</item>
+        <item quantity="other">%1$d items in %2$s</item>
+    </plurals>
+    <plurals name="collection_synced_items_modified">
+        <!-- Note: Mirror box drawing for RTL -->
+        <item quantity="one">├ %d unsynced modification</item>
+        <item quantity="other">├ %d unsynced modifications</item>
+    </plurals>
+    <plurals name="collection_synced_items_deleted">
+        <!-- Note: Mirror box drawing for RTL -->
+        <item quantity="one">└ %d unsynced deletion</item>
+        <item quantity="other">└ %d unsynced deletions</item>
+    </plurals>
+    <plurals name="collection_synced_items_past_event_time_limit">
+        <item quantity="one">Items older than %d day are not synchronized (see account settings).</item>
+        <item quantity="other">Items older than %d days are not synchronized (see account settings).</item>
+    </plurals>
     <string name="collection_push_support">Push support</string>
     <string name="collection_push_web_push">Server advertises Push support</string>
     <string name="collection_push_subscribed_at">Subscribed at %1$s, expires at %2$s</string>
-    <string name="collection_last_sync">Last sync (%s)</string>
     <string name="collection_url">Address (URL)</string>
 
     <!-- debugging and DebugInfoActivity -->
-    <string name="authority_debug_provider" translatable="false">com.messageconcept.peoplesyncclient.debug</string>
+    <!-- Test-only placeholder; always overridden by resValue in the app module (e.g. app-ose). -->
+    <string name="authority_debug_provider" translatable="false">core.test.provider.debug</string>
     <string name="debug_info_title">Debug info</string>
     <string name="debug_info_archive_caption">ZIP archive</string>
     <string name="debug_info_archive_subtitle">Contains debug info and logs</string>
@@ -499,7 +540,8 @@
     <string name="exception_show_details">Show details</string>
 
     <!-- WebDAV accounts -->
-    <string name="webdav_authority" translatable="false">com.messageconcept.peoplesyncclient.webdav</string>
+    <!-- Test-only placeholder; always overridden by resValue in the app module (e.g. app-ose). -->
+    <string name="webdav_authority" translatable="false">core.test.provider.webdav</string>
     <string name="webdav_mounts_title">WebDAV mounts</string>
     <string name="webdav_mounts_quota_used_available">Quota used: %1$s / available: %2$s</string>
     <string name="webdav_mounts_share_content">Share content</string>
@@ -541,6 +583,10 @@
     <string name="sync_invalid_resources_ignoring">Ignoring one or more invalid resources</string>
     <string name="sync_notification_pending_push_title">Sync pending</string>
     <string name="sync_notification_pending_push_message">Remote data have changed</string>
+
+    <!-- push -->
+    <string name="push_distributor_selection_required_title">Distributor selection required</string>
+    <string name="push_distributor_selection_required_message">A default UnifiedPush distributor could not be resolved. Tap to select one.</string>
 
     <!-- widgets -->
     <string name="widget_sync_all">Sync all</string>

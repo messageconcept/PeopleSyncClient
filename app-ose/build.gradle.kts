@@ -20,8 +20,21 @@ tasks.cyclonedxBom {
     componentVersion = android.defaultConfig.versionName
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+kotlin {
+    compilerOptions {
+        // use new defaulting rule for qualifiers to avoid `@param:` prefix for DI annotations
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
+    }
+}
+
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24        // Android 7.0
@@ -29,19 +42,38 @@ android {
 
         applicationId = "com.messageconcept.peoplesyncclient"
 
+        /*
+         * Version names use Semantic Versioning. Pre-release identifiers are "alpha" (closed alpha in
+         * internal track), "beta" (public beta track) and "rc" (public beta track).
+         *
+         * Version codes are derived from the version name like this:
+         *
+         * MmmppIIII   (example `405120000`)   where
+         *
+         * - M is the major version (`4` in the example)
+         * - mm the minor version (two decimal digits, `05` in the example),
+         * - pp the patch level (two decimal digits, `12` in the example), and
+         * - IIII an increasing number (four decimal digits) that starts with `0000` and is increased for
+         *   every release with the same major/minor/patch version (alpha-1, alpha-2, beta-1, ..., final).
+         *   So usually the first pre-release has `0000` and the final version has the greatest number.
+         */
         //noinspection HighAppVersionCode
         versionCode = 2070040507
         versionName = "4.5-7"
 
         base.archivesName = "PeopleSyncClient-$versionName"
 
-        // currently no instrumentation tests for app-ose, so no testInstrumentationRunner
-    }
+        /* Android prevents having two apps installed with the same provider authority name. In that case,
+        Google Play just shows a generic "Can't install PeopleSync" message. So we derive the authority names
+        from the package ID, so that the build variants (and clones) have their own authority names and
+        can be installed beside PeopleSync. */
+        val debugInfoAuthority = "${applicationId}.provider.debuginfo"
+        manifestPlaceholders["debugInfoAuthority"] = debugInfoAuthority
+        /* Override the default string values from the core library (core/src/main/res/values/strings.xml)
+        so that code using getString(R.string.webdav_authority) etc. gets the correct authority. */
+        resValue("string", "authority_debug_provider", debugInfoAuthority)
 
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
+        // Currently no instrumentation tests for app-ose, so no testInstrumentationRunner
     }
 
     compileOptions {
@@ -50,6 +82,7 @@ android {
 
     buildFeatures {
         compose = true
+        resValues = true
     }
 
     // Java namespace for our classes (not to be confused with Android package ID)

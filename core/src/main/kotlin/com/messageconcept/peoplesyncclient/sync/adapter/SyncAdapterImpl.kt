@@ -26,8 +26,8 @@ import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import com.messageconcept.peoplesyncclient.sync.worker.BaseSyncWorker
 import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
-import dagger.Lazy
 import dagger.Binds
+import dagger.Lazy
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext

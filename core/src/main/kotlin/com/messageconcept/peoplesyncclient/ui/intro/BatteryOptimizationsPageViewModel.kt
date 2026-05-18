@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel.Companion.evilManufacturers
+import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageViewModel.Companion.evilManufacturers
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.broadcastReceiverFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +26,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class BatteryOptimizationsPageModel @Inject constructor(
+class BatteryOptimizationsPageViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private val settings: SettingsManager
 ): ViewModel() {

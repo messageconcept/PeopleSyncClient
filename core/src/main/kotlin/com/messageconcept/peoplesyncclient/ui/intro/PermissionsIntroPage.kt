@@ -6,8 +6,8 @@ package com.messageconcept.peoplesyncclient.ui.intro
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import com.messageconcept.peoplesyncclient.ui.PermissionsModel
 import com.messageconcept.peoplesyncclient.ui.PermissionsScreen
+import com.messageconcept.peoplesyncclient.ui.PermissionsViewModel
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.PermissionUtils.CONTACT_PERMISSIONS
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,7 +17,7 @@ class PermissionsIntroPage @Inject constructor(
     @ApplicationContext private val context: Context
 ): IntroPage() {
 
-    var model: PermissionsModel? = null
+    var model: PermissionsViewModel? = null
 
     override fun getShowPolicy(): ShowPolicy {
         // show PermissionsFragment as intro fragment when no permissions are granted

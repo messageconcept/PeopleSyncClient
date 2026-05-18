@@ -18,14 +18,14 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-@HiltViewModel(assistedFactory = UrlLoginModel.Factory::class)
-class UrlLoginModel @AssistedInject constructor(
+@HiltViewModel(assistedFactory = UrlLoginViewModel.Factory::class)
+class UrlLoginViewModel @AssistedInject constructor(
     @Assisted val initialLoginInfo: LoginInfo
 ): ViewModel() {
 
     @AssistedFactory
     interface Factory {
-        fun create(loginInfo: LoginInfo): UrlLoginModel
+        fun create(loginInfo: LoginInfo): UrlLoginViewModel
     }
 
     data class UiState(

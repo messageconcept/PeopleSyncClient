@@ -16,6 +16,7 @@ import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.resource.LocalTestAddressBookProvider
+import com.messageconcept.peoplesyncclient.sync.account.TestAccount
 import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
 import at.bitfire.vcard4android.GroupMethod
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,6 +25,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.junit4.MockKRule
 import io.mockk.mockk
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -56,18 +58,25 @@ class AccountSettingsMigration20Test {
         Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS,
     )
 
-    val accountManager by lazy { AccountManager.get(context) }
+    private val accountManager by lazy { AccountManager.get(context) }
+    private lateinit var account: Account
 
     @Before
     fun setUp() {
         hiltRule.inject()
+
+        account = TestAccount.create(version = 19)
+    }
+
+    @After
+    fun cleanUp() {
+        TestAccount.remove(account)
     }
 
 
     @Test
     fun testMigrateAddressBooks_UrlMatchesCollection() {
         // set up legacy address-book with URL, but without collection ID
-        val account = Account("test", "test")
         val url = "https://example.com/"
 
         db.serviceDao().insertOrReplace(Service(id = 1, accountName = account.name, type = Service.TYPE_CARDDAV, principal = null))

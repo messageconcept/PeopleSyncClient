@@ -4,7 +4,6 @@
 
 package com.messageconcept.peoplesyncclient.network
 
-import androidx.annotation.VisibleForTesting
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl

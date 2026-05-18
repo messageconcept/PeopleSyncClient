@@ -55,7 +55,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.SYNC_INTERVAL_MANUALLY
 import com.messageconcept.peoplesyncclient.settings.Credentials
@@ -78,7 +78,7 @@ fun AccountSettingsScreen(
     account: Account,
     onNavWifiPermissionsScreen: () -> Unit
 ) {
-    val model = hiltViewModel { factory: AccountSettingsModel.Factory ->
+    val model = hiltViewModel { factory: AccountSettingsViewModel.Factory ->
         factory.create(account)
     }
     val uiState by model.uiState.collectAsState()
@@ -306,7 +306,7 @@ fun SyncSettings(
     onUpdateIgnoreVpns: (Boolean) -> Unit = {}
 ) {
     Column {
-        SettingsHeader(false) {
+        SettingsHeader(divider = false) {
             Text(stringResource(R.string.settings_sync))
         }
 
@@ -442,7 +442,7 @@ fun AuthenticationSettings(
 
     if (credentials.authState != null || credentials.username != null || credentials.password != null || credentials.certificateAlias != null)
         Column {
-            SettingsHeader(false) {
+            SettingsHeader(divider = true) {
                 Text(stringResource(R.string.settings_authentication))
             }
 
@@ -516,7 +516,7 @@ fun CalDavSettings(
     onUpdateEventColors: (Boolean) -> Unit = {}
 ) {
     Column {
-        SettingsHeader {
+        SettingsHeader(divider = true) {
             Text(stringResource(R.string.settings_caldav))
         }
 
@@ -604,7 +604,7 @@ fun CardDavSettings(
     onUpdateContactGroupMethod: (GroupMethod) -> Unit = {}
 ) {
     Column {
-        SettingsHeader {
+        SettingsHeader(divider = true) {
             Text(stringResource(R.string.settings_carddav))
         }
 

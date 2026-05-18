@@ -6,6 +6,7 @@ package com.messageconcept.peoplesyncclient.resource
 
 import android.accounts.Account
 import android.content.ContentProviderClient
+import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.db.Collection
 import javax.annotation.WillNotClose
 
@@ -55,6 +56,19 @@ interface LocalDataStore<T: LocalCollection<*>> {
      * @return a list of all local collections
      */
     fun getAll(account: Account, client: ContentProviderClient): List<T>
+
+    /**
+     * Retrieves a local collection by its database collection ID.
+     *
+     * @param account The account associated with the collection.
+     * @param client The content provider client used to access the data store.
+     * @param dbCollectionId The database collection ID which the requested local collection corresponds to.
+     *
+     * @return The local collection with the specified DB collection ID, or `null` if not found.
+     * @throws UnsupportedOperationException if the operation is not supported on this data store (jtx Board)
+     */
+    @WorkerThread
+    fun getByDbCollectionId(account: Account, client: ContentProviderClient, dbCollectionId: Long): T?
 
     /**
      * Updates the local collection with the data from the given (remote) collection info.

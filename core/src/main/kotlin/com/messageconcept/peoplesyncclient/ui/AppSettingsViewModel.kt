@@ -8,15 +8,17 @@ import android.content.Context
 import android.content.IntentFilter
 import android.graphics.drawable.Drawable
 import android.os.PowerManager
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.bitfire.cert4android.CustomCertStore
+import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
 import com.messageconcept.peoplesyncclient.repository.PreferenceRepository
 import com.messageconcept.peoplesyncclient.settings.Settings
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel
+import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageViewModel
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.broadcastReceiverFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +36,7 @@ import javax.inject.Inject
 import kotlin.jvm.optionals.getOrNull
 
 @HiltViewModel
-class AppSettingsModel @Inject constructor(
+class AppSettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val customCertStore: Optional<CustomCertStore>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -97,8 +99,8 @@ class AppSettingsModel @Inject constructor(
     }
 
     fun resetHints() = runBlocking(ioDispatcher) {
-        settings.remove(BatteryOptimizationsPageModel.HINT_BATTERY_OPTIMIZATIONS)
-        settings.remove(BatteryOptimizationsPageModel.HINT_AUTOSTART_PERMISSION)
+        settings.remove(BatteryOptimizationsPageViewModel.HINT_BATTERY_OPTIMIZATIONS)
+        settings.remove(BatteryOptimizationsPageViewModel.HINT_AUTOSTART_PERMISSION)
     }
 
 }

@@ -28,12 +28,4 @@ outsourced into these libraries:
 * [dav4jvm](https://github.com/bitfireAT/dav4jvm) – WebDAV/CalDav/CardDAV framework
 * [synctools](https://github.com/bitfireAT/synctools) – iCalendar/vCard/Tasks processing and content provider access
 
-
-USED THIRD-PARTY LIBRARIES
-==========================
-
-* [dnsjava](https://github.com/dnsjava/dnsjava) – [BSD License](https://github.com/dnsjava/dnsjava/blob/master/LICENSE)
-* [ez-vcard](https://github.com/mangstadt/ez-vcard) – [New BSD License](https://github.com/mangstadt/ez-vcard/blob/master/LICENSE)
-* [okhttp](https://square.github.io/okhttp) – [Apache License, Version 2.0](https://square.github.io/okhttp/#license)
-
 See _About / Libraries_ in the app for all used libraries and their licenses.

@@ -178,17 +178,6 @@
                 android:resource="@xml/contacts"/>
         </service>
 
-        <!-- provider to share debug info/logs -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="@string/authority_debug_provider"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/debug_paths" />
-        </provider>
-
         <!-- Widgets -->
         <receiver android:name=".ui.widget.LabeledSyncButtonWidgetReceiver"
             android:label="@string/widget_labeled_sync_label"

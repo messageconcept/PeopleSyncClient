@@ -59,6 +59,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -75,7 +76,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -83,7 +84,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.ui.PermissionsActivity
 import com.messageconcept.peoplesyncclient.ui.account.AccountProgress
-import com.messageconcept.peoplesyncclient.ui.account.AccountScreenModel
+import com.messageconcept.peoplesyncclient.ui.account.AccountScreenViewModel
 import com.messageconcept.peoplesyncclient.ui.account.CollectionsList
 import com.messageconcept.peoplesyncclient.ui.account.RenameAccountDialog
 import com.messageconcept.peoplesyncclient.ui.composable.ActionCard
@@ -103,8 +104,8 @@ fun AccountScreen(
     onNavUp: () -> Unit,
     onFinish: () -> Unit
 ) {
-    val model: AccountScreenModel = hiltViewModel(
-        creationCallback = { factory: AccountScreenModel.Factory ->
+    val model: AccountScreenViewModel = hiltViewModel(
+        creationCallback = { factory: AccountScreenViewModel.Factory ->
             factory.create(account)
         }
     )
@@ -197,7 +198,7 @@ fun AccountScreen(
         @Suppress("KotlinConstantConditions")
         val idxCardDav: Int? = if (hasCardDav) ++nextIdx else null
         val nrPages = (if (idxCardDav != null) 1 else 0)
-        val pagerState = rememberPagerState(pageCount = { nrPages })
+        val pagerState = key(nrPages) { rememberPagerState(pageCount = { nrPages }) }
 
         val calDavScrollState = rememberLazyListState()
         val cardDavScrollState = rememberLazyListState()

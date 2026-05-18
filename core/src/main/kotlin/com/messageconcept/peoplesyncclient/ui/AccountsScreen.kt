@@ -71,12 +71,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.ui.account.AccountProgress
 import com.messageconcept.peoplesyncclient.ui.composable.ActionCard
 import com.messageconcept.peoplesyncclient.ui.composable.AppTheme
+import com.messageconcept.peoplesyncclient.ui.composable.FlavorComposable
 import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -94,15 +95,15 @@ fun AccountsScreen(
     onAddAccount: () -> Unit,
     onShowAccount: (Account) -> Unit,
     onManagePermissions: () -> Unit,
-    model: AccountsModel = hiltViewModel(
-        creationCallback = { factory: AccountsModel.Factory ->
+    model: AccountsViewModel = hiltViewModel(
+        creationCallback = { factory: AccountsViewModel.Factory ->
             factory.create(initialSyncAccounts)
         }
     )
 ) {
     val accounts by model.accountInfos.collectAsStateWithLifecycle(emptyList())
     val showSyncAll by model.showSyncAll.collectAsStateWithLifecycle(true)
-    val showAddAccount by model.showAddAccount.collectAsStateWithLifecycle(AccountsModel.FABStyle.Standard)
+    val showAddAccount by model.showAddAccount.collectAsStateWithLifecycle(AccountsViewModel.FABStyle.Standard)
 
     // Remember shown state, so the intro does not restart on rotation or theme-change
     var shown by rememberSaveable { mutableStateOf(false) }
@@ -115,6 +116,7 @@ fun AccountsScreen(
     }
 
     AccountsScreen(
+        flavorComposables = model.composableItems,
         accountsDrawerHandler = accountsDrawerHandler,
         accounts = accounts,
         showSyncAll = showSyncAll,
@@ -136,11 +138,12 @@ fun AccountsScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun AccountsScreen(
+    flavorComposables: Set<FlavorComposable> = emptySet(),
     accountsDrawerHandler: AccountsDrawerHandler,
-    accounts: List<AccountsModel.AccountInfo>,
+    accounts: List<AccountsViewModel.AccountInfo>,
     showSyncAll: Boolean = true,
     onSyncAll: () -> Unit = {},
-    showAddAccount: AccountsModel.FABStyle = AccountsModel.FABStyle.Standard,
+    showAddAccount: AccountsViewModel.FABStyle = AccountsViewModel.FABStyle.Standard,
     onAddAccount: () -> Unit = {},
     onShowAccount: (Account) -> Unit = {},
     onManagePermissions: () -> Unit = {},
@@ -205,7 +208,7 @@ fun AccountsScreen(
                 },
                 floatingActionButton = {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        if (showAddAccount == AccountsModel.FABStyle.WithText)
+                        if (showAddAccount == AccountsViewModel.FABStyle.WithText)
                             ExtendedFloatingActionButton(
                                 text = { Text(stringResource(R.string.login_add_account)) },
                                 icon = { Icon(Icons.Filled.Add, stringResource(R.string.login_add_account)) },
@@ -213,7 +216,7 @@ fun AccountsScreen(
                                 contentColor = MaterialTheme.colorScheme.onPrimary,
                                 onClick = onAddAccount
                             )
-                        else if (showAddAccount == AccountsModel.FABStyle.Standard)
+                        else if (showAddAccount == AccountsViewModel.FABStyle.Standard)
                             FloatingActionButton(
                                 onClick = onAddAccount,
                                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -318,8 +321,13 @@ fun AccountsScreen(
                                     val intent = Intent(Settings.ACTION_APPLICATION_SETTINGS)
                                     if (intent.resolveActivity(context.packageManager) != null)
                                         context.startActivity(intent)
-                                },
+                                }
                             )
+
+                            // Additional flavor specific composable items to show
+                            flavorComposables.forEach { composable ->
+                                composable.Render(Modifier.padding(horizontal = 8.dp))
+                            }
 
                             // account list
                             AccountList(
@@ -350,7 +358,7 @@ fun AccountsScreen_Preview_Empty() {
             }
         },
         accounts = emptyList(),
-        showAddAccount = AccountsModel.FABStyle.WithText,
+        showAddAccount = AccountsViewModel.FABStyle.WithText,
         showSyncAll = false
     )
 }
@@ -366,7 +374,7 @@ fun AccountsScreen_Preview_OneAccount() {
             }
         },
         accounts = listOf(
-            AccountsModel.AccountInfo(
+            AccountsViewModel.AccountInfo(
                 Account("Account Name", "test"),
                 AccountProgress.Idle
             )
@@ -376,7 +384,7 @@ fun AccountsScreen_Preview_OneAccount() {
 
 @Composable
 fun AccountList(
-    accounts: List<AccountsModel.AccountInfo>,
+    accounts: List<AccountsViewModel.AccountInfo>,
     modifier: Modifier = Modifier,
     onClickAccount: (Account) -> Unit = {}
 ) {
@@ -463,7 +471,7 @@ fun AccountList_Preview_Idle() {
     AppTheme {
         AccountList(
             listOf(
-                AccountsModel.AccountInfo(
+                AccountsViewModel.AccountInfo(
                     Account("Account Name", "test"),
                     AccountProgress.Idle
                 )
@@ -478,7 +486,7 @@ fun AccountList_Preview_SyncPending() {
     AppTheme {
         AccountList(
             listOf(
-                AccountsModel.AccountInfo(
+                AccountsViewModel.AccountInfo(
                     Account("Account Name", "test"),
                     AccountProgress.Pending
                 )
@@ -493,7 +501,7 @@ fun AccountList_Preview_Syncing() {
     AppTheme {
         AccountList(
             listOf(
-                AccountsModel.AccountInfo(
+                AccountsViewModel.AccountInfo(
                     Account("Account Name", "test"),
                     AccountProgress.Active
                 )
@@ -609,6 +617,7 @@ fun SyncWarnings(
                     Text(stringResource(R.string.sync_warning_contacts_storage_disabled_description))
                 }
             }
+
     }
 }
 

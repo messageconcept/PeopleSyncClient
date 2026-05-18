@@ -11,8 +11,8 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.Composable
 import androidx.core.net.toUri
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel.Companion.HINT_AUTOSTART_PERMISSION
-import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageModel.Companion.HINT_BATTERY_OPTIMIZATIONS
+import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageViewModel.Companion.HINT_AUTOSTART_PERMISSION
+import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageViewModel.Companion.HINT_BATTERY_OPTIMIZATIONS
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -27,8 +27,8 @@ class BatteryOptimizationsPage @Inject constructor(
         // 2a. evil manufacturer AND
         // 2b. "don't show anymore" has not been clicked
         return if (
-            (!BatteryOptimizationsPageModel.isExempted(context) && settingsManager.getBooleanOrNull(HINT_BATTERY_OPTIMIZATIONS) != false) ||
-            (BatteryOptimizationsPageModel.manufacturerWarning && settingsManager.getBooleanOrNull(HINT_AUTOSTART_PERMISSION) != false)
+            (!BatteryOptimizationsPageViewModel.isExempted(context) && settingsManager.getBooleanOrNull(HINT_BATTERY_OPTIMIZATIONS) != false) ||
+            (BatteryOptimizationsPageViewModel.manufacturerWarning && settingsManager.getBooleanOrNull(HINT_AUTOSTART_PERMISSION) != false)
         )
             ShowPolicy.SHOW_ALWAYS
         else
