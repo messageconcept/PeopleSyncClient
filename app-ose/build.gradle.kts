@@ -20,6 +20,13 @@ tasks.cyclonedxBom {
     componentVersion = android.defaultConfig.versionName
 }
 
+aboutLibraries {
+    collect {
+        // path to our custom library definitions
+        configPath = file("../config")
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)

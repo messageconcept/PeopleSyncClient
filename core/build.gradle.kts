@@ -95,11 +95,6 @@ android {
 }
 
 aboutLibraries {
-    collect {
-        // path to our custom library definitions
-        configPath = file("../config")
-    }
-
     export {
         // exclude timestamps for reproducible builds [https://github.com/bitfireAT/davx5-ose/issues/994]
         excludeFields.add("generated")
