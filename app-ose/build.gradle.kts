@@ -65,8 +65,8 @@ android {
          *   So usually the first pre-release has `0000` and the final version has the greatest number.
          */
         //noinspection HighAppVersionCode
-        versionCode = 2070040507
-        versionName = "4.5-7"
+        versionCode = 2070040508
+        versionName = "4.5-8"
 
         base.archivesName = "PeopleSyncClient-$versionName"
 
