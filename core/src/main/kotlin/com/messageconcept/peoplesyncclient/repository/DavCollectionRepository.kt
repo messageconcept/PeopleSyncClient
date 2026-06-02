@@ -25,8 +25,6 @@ import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
 import com.messageconcept.peoplesyncclient.util.DavUtils
-import at.bitfire.synctools.icalendar.componentListOf
-import at.bitfire.synctools.icalendar.propertyListOf
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.ktor.http.Url
