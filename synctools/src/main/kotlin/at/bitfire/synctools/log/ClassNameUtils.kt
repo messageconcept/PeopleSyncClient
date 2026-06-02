@@ -16,7 +16,7 @@ object ClassNameUtils {
 
         val packageName = withoutSuffix.substring(0, idxDot)
         val className = withoutSuffix.substring(idxDot + 1)
-        val shortenedPackageName = packageName.removePrefix("at.bitfire")
+        val shortenedPackageName = packageName.removePrefix("com.messageconcept")
         return if (classNameFirst)
             "$className/$shortenedPackageName"
         else
