@@ -16,6 +16,7 @@ import com.messageconcept.peoplesyncclient.log.LogFileHandler.Companion.debugDir
 import com.messageconcept.peoplesyncclient.ui.AppSettingsActivity
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
+import at.bitfire.synctools.log.PlainTextFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.Closeable
 import java.io.File
