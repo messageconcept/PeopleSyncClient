@@ -13,10 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import at.bitfire.synctools.util.SensitiveString.Companion.toSensitiveString
 import com.messageconcept.peoplesyncclient.settings.Credentials
 import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.util.DavUtils.toURIorNull
-import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
 import com.messageconcept.peoplesyncclient.util.trimToNull
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

@@ -68,8 +68,8 @@ import com.messageconcept.peoplesyncclient.ui.composable.Setting
 import com.messageconcept.peoplesyncclient.ui.composable.SettingsHeader
 import com.messageconcept.peoplesyncclient.ui.composable.SwitchSetting
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
-import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
-import at.bitfire.vcard4android.GroupMethod
+import at.bitfire.synctools.util.SensitiveString.Companion.toSensitiveString
+import at.bitfire.synctools.vcard.GroupMethod
 import kotlinx.coroutines.launch
 
 @Composable

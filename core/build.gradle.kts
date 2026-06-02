@@ -102,6 +102,9 @@ aboutLibraries {
 }
 
 dependencies {
+    // gradle project dependencies
+    implementation(project(":synctools"))
+
     // Kotlin / Android
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines)
@@ -154,10 +157,6 @@ dependencies {
         exclude(group="junit")
         exclude(group="org.ogce", module="xpp3")    // Android has its own XmlPullParser implementation
     }
-    implementation(libs.bitfire.synctools) {
-        exclude(group="androidx.test")              // synctools declares test rules, but we don't want them in non-test code
-        exclude(group = "junit")
-    }
 
     // third-party libs
     implementation(libs.conscrypt)
@@ -172,6 +171,10 @@ dependencies {
     implementation(libs.okhttp.brotli)
     implementation(libs.okhttp.logging)
     implementation(libs.openid.appauth)
+
+    // force some versions for compatibility with our minSdk level (see version catalog for details)
+    implementation(libs.commons.codec)
+    implementation(libs.commons.lang)
 
     // for tests
     androidTestImplementation(libs.androidx.arch.core.testing)

@@ -5,7 +5,7 @@
 package com.messageconcept.peoplesyncclient.ui.setup
 
 import com.messageconcept.peoplesyncclient.settings.Credentials
-import at.bitfire.vcard4android.GroupMethod
+import at.bitfire.synctools.vcard.GroupMethod
 import java.net.URI
 
 data class LoginInfo(

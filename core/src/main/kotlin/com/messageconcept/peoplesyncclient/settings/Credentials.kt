@@ -4,7 +4,7 @@
 
 package com.messageconcept.peoplesyncclient.settings
 
-import com.messageconcept.peoplesyncclient.util.SensitiveString
+import at.bitfire.synctools.util.SensitiveString
 import net.openid.appauth.AuthState
 
 /**

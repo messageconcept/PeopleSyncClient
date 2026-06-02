@@ -10,7 +10,7 @@ import at.bitfire.dav4jvm.property.webdav.WebDAV
 import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder.Configuration.ServiceInfo
 import com.messageconcept.peoplesyncclient.settings.Credentials
-import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
+import at.bitfire.synctools.util.SensitiveString.Companion.toSensitiveString
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.OkHttpClient

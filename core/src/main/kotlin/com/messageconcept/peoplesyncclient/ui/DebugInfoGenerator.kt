@@ -56,7 +56,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import kotlin.use
-import at.bitfire.vcard4android.Utils.asSyncAdapter as asContactsSyncAdapter
+import at.bitfire.synctools.util.Utils.asSyncAdapter as asContactsSyncAdapter
 
 @WorkerThread
 class DebugInfoGenerator @Inject constructor(

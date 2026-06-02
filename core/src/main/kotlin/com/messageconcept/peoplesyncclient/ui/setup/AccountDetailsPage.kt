@@ -46,7 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.ui.composable.Assistant
-import at.bitfire.vcard4android.GroupMethod
+import at.bitfire.synctools.vcard.GroupMethod
 
 @Composable
 fun AccountDetailsPage(

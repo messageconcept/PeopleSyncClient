@@ -127,7 +127,6 @@ abstract class Syncer<StoreType: LocalDataStore<CollectionType>, CollectionType:
         val dbCollections = mutableMapOf<Long, Collection>()
         serviceRepository.getByAccountAndType(account.name, serviceType)?.let { service ->
             logger.log(Level.INFO,"Refreshing collections")
-
             try {
                 runInterruptible {
                     // refresh home set list (from principal url)

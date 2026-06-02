@@ -6,7 +6,6 @@ package com.messageconcept.peoplesyncclient.settings
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
-import android.os.Bundle
 import android.os.Looper
 import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.R
@@ -16,10 +15,10 @@ import com.messageconcept.peoplesyncclient.settings.migration.AccountSettingsMig
 import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
-import com.messageconcept.peoplesyncclient.sync.account.setAndVerifyUserData
-import com.messageconcept.peoplesyncclient.util.SensitiveString.Companion.toSensitiveString
 import com.messageconcept.peoplesyncclient.util.trimToNull
-import at.bitfire.vcard4android.GroupMethod
+import at.bitfire.synctools.util.SensitiveString.Companion.toSensitiveString
+import at.bitfire.synctools.util.setAndVerifyUserData
+import at.bitfire.synctools.vcard.GroupMethod
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -331,31 +330,36 @@ class AccountSettings @AssistedInject constructor(
         internal const val SYNC_INTERVAL_MANUALLY = -1L
 
         /** Static property to remember which AccountSettings updates/migrations are currently running */
-        val currentlyUpdating = Collections.synchronizedSet(mutableSetOf<Account>())
+        private val currentlyUpdating = Collections.synchronizedSet(mutableSetOf<Account>())
 
-        fun initialUserData(credentials: Credentials?, preconfigurationUrl: String?): Bundle {
-            val bundle = Bundle().apply {
-                putString(KEY_SETTINGS_VERSION, CURRENT_VERSION.toString())
-            }
+        /**
+         * Returns the initial user data (as in [AccountManager.setUserData]) for creating a new account.
+         * Processed user data:
+         *
+         * - account settings scheme version
+         * - authentication details
+         * - client certificate alias
+         * - preconfiguration URL
+         */
+        fun initialUserData(credentials: Credentials?, preconfigurationUrl: String?) = buildMap<String, String> {
+            put(KEY_SETTINGS_VERSION, CURRENT_VERSION.toString())
 
             if (credentials != null) {
                 if (credentials.username != null)
-                    bundle.putString(KEY_USERNAME, credentials.username)
+                    put(KEY_USERNAME, credentials.username)
 
                 if (credentials.certificateAlias != null)
-                    bundle.putString(KEY_CERTIFICATE_ALIAS, credentials.certificateAlias)
+                    put(KEY_CERTIFICATE_ALIAS, credentials.certificateAlias)
 
                 if (credentials.authState != null)
-                    bundle.putString(KEY_AUTH_STATE, credentials.authState.jsonSerializeString())
+                    put(KEY_AUTH_STATE, credentials.authState.jsonSerializeString())
 
                 if (credentials.baseUrl != null)
-                    bundle.putString(KEY_BASE_URL, credentials.baseUrl)
-            }
-            if (preconfigurationUrl != null) {
-                bundle.putString(KEY_PRECONFIGURATION_URL, preconfigurationUrl)
+                    put(KEY_BASE_URL, credentials.baseUrl)
             }
 
-            return bundle
+            if (preconfigurationUrl != null)
+                put(KEY_PRECONFIGURATION_URL, preconfigurationUrl)
         }
 
     }

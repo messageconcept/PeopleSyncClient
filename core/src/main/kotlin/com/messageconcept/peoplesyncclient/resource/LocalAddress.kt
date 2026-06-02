@@ -4,7 +4,7 @@
 
 package com.messageconcept.peoplesyncclient.resource
 
-import at.bitfire.vcard4android.Contact
+import at.bitfire.synctools.mapping.contacts.Contact
 
 interface LocalAddress: LocalResource {
 
