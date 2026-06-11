@@ -26,6 +26,5 @@ outsourced into these libraries:
 
 * [cert4android](https://github.com/bitfireAT/cert4android) – custom certificate management
 * [dav4jvm](https://github.com/bitfireAT/dav4jvm) – WebDAV/CalDav/CardDAV framework
-* [synctools](https://github.com/bitfireAT/synctools) – iCalendar/vCard/Tasks processing and content provider access
 
 See _About / Libraries_ in the app for all used libraries and their licenses.
