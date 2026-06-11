@@ -28,7 +28,7 @@ import at.bitfire.dav4jvm.property.webdav.CurrentUserPrivilegeSet
 import at.bitfire.dav4jvm.property.webdav.DisplayName
 import at.bitfire.dav4jvm.property.webdav.ResourceType
 import com.messageconcept.peoplesyncclient.util.DavUtils.lastSegment
-import com.messageconcept.peoplesyncclient.util.trimToNull
+import at.bitfire.synctools.util.trimToNull
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 

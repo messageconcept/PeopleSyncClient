@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import com.messageconcept.peoplesyncclient.settings.Credentials
 import com.messageconcept.peoplesyncclient.util.DavUtils.toURIorNull
 import at.bitfire.synctools.util.SensitiveString.Companion.toSensitiveString
-import com.messageconcept.peoplesyncclient.util.trimToNull
+import at.bitfire.synctools.util.trimToNull
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

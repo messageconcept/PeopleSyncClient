@@ -15,9 +15,9 @@ import com.messageconcept.peoplesyncclient.settings.migration.AccountSettingsMig
 import com.messageconcept.peoplesyncclient.sync.AutomaticSyncManager
 import com.messageconcept.peoplesyncclient.sync.SyncDataType
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
-import com.messageconcept.peoplesyncclient.util.trimToNull
 import at.bitfire.synctools.util.SensitiveString.Companion.toSensitiveString
 import at.bitfire.synctools.util.setAndVerifyUserData
+import at.bitfire.synctools.util.trimToNull
 import at.bitfire.synctools.vcard.GroupMethod
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
