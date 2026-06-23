@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package davx5.buildlogic
+package peoplesyncclient.buildlogic
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
@@ -79,7 +79,7 @@ class CommonBuildConfigPlugin : Plugin<Project> {
 
             // Set Java toolchain version
             val javaExtension = extensions.findByType(JavaPluginExtension::class.java)
-                ?: error("davx5.common-buildconfig requires Java toolchain support for $pluginId")
+                ?: error("peoplesyncclient.common-buildconfig requires Java toolchain support for $pluginId")
             javaExtension.toolchain.languageVersion.set(JavaLanguageVersion.of(javaToolchainVersion))
         }
     }

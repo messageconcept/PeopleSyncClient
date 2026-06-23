@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.mikepenz.aboutLibraries.android)
-    id("davx5.common-buildconfig")
+    id("peoplesyncclient.common-buildconfig")
 }
 
 ksp {

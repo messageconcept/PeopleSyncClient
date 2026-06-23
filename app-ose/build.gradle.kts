@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.mikepenz.aboutLibraries.android)
     alias(libs.plugins.cyclonedx)
-    id("davx5.common-buildconfig")
+    id("peoplesyncclient.common-buildconfig")
 }
 
 tasks.cyclonedxBom {

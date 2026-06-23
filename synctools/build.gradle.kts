@@ -4,7 +4,7 @@
 
 plugins {
     alias(libs.plugins.android.library)
-    id("davx5.common-buildconfig")
+    id("peoplesyncclient.common-buildconfig")
 }
 
 android {

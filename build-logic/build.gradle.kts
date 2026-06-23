@@ -23,8 +23,8 @@ java {
 gradlePlugin {
     plugins {
         register("commonBuildConfig") {
-            id = "davx5.common-buildconfig"
-            implementationClass = "davx5.buildlogic.CommonBuildConfigPlugin"
+            id = "peoplesyncclient.common-buildconfig"
+            implementationClass = "peoplesyncclient.buildlogic.CommonBuildConfigPlugin"
         }
     }
 }

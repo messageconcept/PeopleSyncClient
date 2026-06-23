@@ -2,7 +2,7 @@
  * Copyright © All Contributors. See LICENSE and AUTHORS in the root directory for details.
  */
 
-package davx5.buildlogic
+package peoplesyncclient.buildlogic
 
 /**
  * Centralized version information for DAVx5 app variants.
