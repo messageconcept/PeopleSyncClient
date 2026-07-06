@@ -506,6 +506,10 @@
     <string name="login_download_regular_davx5"><![CDATA[Stattdessen bitte <a href="%s">PeopleSync</a>, nutzen, das mit allen Diensten genutzt werden kann.]]></string>
     <string name="dismiss_forever">Dauerhaft verwerfen</string>
     <string name="keep_android_open"><![CDATA[Androids Plattformoffenheit ist in Gefahr. Erfahre wie du helfen kannst auf <a href="%s">keepandroidopen.org</a>.]]></string>
+    <string name="notification_channel_user_interaction">Benutzerinteraktion</string>
+    <string name="app_settings_push_enabled_summary">Ein, %s</string>
+    <string name="app_settings_push_disabled_summary">Aus</string>
+    <string name="app_settings_push_default_distributor_text">(Systemstandard)</string>
     <!--managed configurations-->
     <string name="login_type_managed">Bitte anmelden</string>
     <string name="account_list_managed_configuration">Die Kontoeinstellungen werden von ihrer Organisation verwaltet.</string>

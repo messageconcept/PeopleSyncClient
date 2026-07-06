@@ -14,11 +14,11 @@ import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.sync.account.TestAccount
+import com.messageconcept.peoplesyncclient.util.DavUtils.toUrl
 import at.bitfire.synctools.util.setAndVerifyUserData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -76,7 +76,7 @@ class AccountSettingsMigration17Test {
                     Collection(
                         id = 100,
                         serviceId = 1,
-                        url = url.toHttpUrl(),
+                        url = url.toUrl(),
                         type = Collection.TYPE_ADDRESSBOOK,
                         displayName = "Some Address Book"
                     )

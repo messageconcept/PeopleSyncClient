@@ -15,8 +15,9 @@ import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
-import com.messageconcept.peoplesyncclient.resource.LocalTestAddressBookProvider
+import com.messageconcept.peoplesyncclient.resource.LocalTestAddressBook
 import com.messageconcept.peoplesyncclient.sync.account.TestAccount
+import com.messageconcept.peoplesyncclient.util.DavUtils.toUrl
 import at.bitfire.synctools.util.setAndVerifyUserData
 import at.bitfire.synctools.vcard.GroupMethod
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,7 +25,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.junit4.MockKRule
 import io.mockk.mockk
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -45,7 +45,7 @@ class AccountSettingsMigration20Test {
     lateinit var migration: AccountSettingsMigration20
 
     @Inject
-    lateinit var localTestAddressBookProvider: LocalTestAddressBookProvider
+    lateinit var localTestAddressBook: LocalTestAddressBook
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
@@ -83,10 +83,10 @@ class AccountSettingsMigration20Test {
         val collectionId = db.collectionDao().insert(Collection(
             serviceId = 1,
             type = Collection.Companion.TYPE_ADDRESSBOOK,
-            url = url.toHttpUrl()
+            url = url.toUrl()
         ))
 
-        localTestAddressBookProvider.provide(account, mockk(relaxed = true), GroupMethod.GROUP_VCARDS) { addressBook ->
+        localTestAddressBook.provide(account, mockk(relaxed = true), GroupMethod.GROUP_VCARDS) { addressBook ->
 
             accountManager.setAndVerifyUserData(addressBook.addressBookAccount, LocalAddressBook.USER_DATA_ACCOUNT_NAME, account.name)
             accountManager.setAndVerifyUserData(addressBook.addressBookAccount, LocalAddressBook.USER_DATA_ACCOUNT_TYPE, account.type)

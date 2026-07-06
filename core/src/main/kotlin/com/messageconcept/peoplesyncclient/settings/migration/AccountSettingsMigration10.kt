@@ -20,7 +20,6 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntKey
 import dagger.multibindings.IntoMap
 import javax.inject.Inject
-import kotlin.use
 
 /**
  * Task synchronization now handles alarms, categories, relations and unknown properties.

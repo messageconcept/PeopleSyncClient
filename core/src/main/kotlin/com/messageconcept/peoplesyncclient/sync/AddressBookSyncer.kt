@@ -13,12 +13,12 @@ import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
+import at.bitfire.synctools.storage.contacts.AddressContract.asSyncAdapter
 import at.bitfire.synctools.util.setAndVerifyUserData
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.runBlocking
-import okhttp3.OkHttpClient
+import io.ktor.client.HttpClient
 import java.util.logging.Level
 
 /**
@@ -53,7 +53,11 @@ class AddressBookSyncer @AssistedInject constructor(
     override fun getDbSyncCollections(serviceId: Long): List<Collection> =
         collectionRepository.getByServiceAndSync(serviceId)
 
-    override fun syncCollection(provider: ContentProviderClient, localCollection: LocalAddressBook, remoteCollection: Collection) {
+    override suspend fun syncCollection(
+        provider: ContentProviderClient,
+        localCollection: LocalAddressBook,
+        remoteCollection: Collection
+    ) {
         logger.info("Synchronizing address book: ${localCollection.addressBookAccount.name}")
         syncAddressBook(
             account = account,
@@ -74,10 +78,10 @@ class AddressBookSyncer @AssistedInject constructor(
      * @param syncResult        stores hard and soft sync errors
      * @param collection        the database collection associated with this address book
      */
-    private fun syncAddressBook(
+    private suspend fun syncAddressBook(
         account: Account,
         addressBook: LocalAddressBook,
-        provideHttpClient: () -> OkHttpClient,
+        provideHttpClient: () -> HttpClient,
         provider: ContentProviderClient,
         syncResult: SyncResult,
         collection: Collection
@@ -93,8 +97,8 @@ class AddressBookSyncer @AssistedInject constructor(
                     logger.info("Group method changed, deleting all local contacts/groups")
 
                     // delete all local contacts and groups so that they will be downloaded again
-                    provider.delete(addressBook.syncAdapterURI(ContactsContract.RawContacts.CONTENT_URI), null, null)
-                    provider.delete(addressBook.syncAdapterURI(ContactsContract.Groups.CONTENT_URI), null, null)
+                    provider.delete(ContactsContract.RawContacts.CONTENT_URI.asSyncAdapter(addressBook.addressBookAccount), null, null)
+                    provider.delete(ContactsContract.Groups.CONTENT_URI.asSyncAdapter(addressBook.addressBookAccount), null, null)
 
                     // reset sync state
                     addressBook.syncState = null
@@ -112,9 +116,7 @@ class AddressBookSyncer @AssistedInject constructor(
                 resync,
                 syncFrameworkUpload
             )
-            runBlocking {
-                syncManager.performSync()
-            }
+            syncManager.performSync()
 
         } catch(e: Exception) {
             logger.log(Level.SEVERE, "Couldn't sync contacts", e)

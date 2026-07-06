@@ -30,12 +30,12 @@ import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.log.DebugDirectory
 import com.messageconcept.peoplesyncclient.ui.DebugInfoActivity
 import com.messageconcept.peoplesyncclient.ui.ExternalUris
 import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
 import com.messageconcept.peoplesyncclient.ui.UiUtils.toAnnotatedString
 import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
-
 @Composable
 fun DetectResourcesPage(
     model: LoginScreenViewModel = viewModel()
@@ -46,7 +46,7 @@ fun DetectResourcesPage(
         foundNothing = uiState.foundNothing,
         encountered401 = uiState.encountered401,
         loginValidationFailed = uiState.loginValidationFailed,
-        logs = uiState.logs
+        debugLogFileName = uiState.debugLogFileName
     )
 }
 
@@ -56,7 +56,7 @@ fun DetectResourcesPageContent(
     foundNothing: Boolean,
     encountered401: Boolean,
     loginValidationFailed: Boolean,
-    logs: String?
+    debugLogFileName: DebugDirectory.FileName?
 ) {
     Column(Modifier
         .fillMaxWidth()
@@ -69,7 +69,7 @@ fun DetectResourcesPageContent(
         else if (foundNothing)
             DetectResourcesPageContent_NothingFound(
                 encountered401 = encountered401,
-                logs = logs
+                debugLogFileName = debugLogFileName
             )
     }
 }
@@ -101,7 +101,7 @@ fun DetectResourcesPageContent_InProgress() {
 @Composable
 fun DetectResourcesPageContent_NothingFound(
     encountered401: Boolean,
-    logs: String?
+    debugLogFileName: DebugDirectory.FileName?
 ) {
     Column(Modifier.padding(8.dp)) {
         Text(
@@ -136,7 +136,7 @@ fun DetectResourcesPageContent_NothingFound(
                         style = MaterialTheme.typography.bodyLarge
                     )
 
-                if (logs != null && logs.isNotEmpty()) {
+                if (debugLogFileName != null) {
                     Text(
                         stringResource(R.string.login_logs_available),
                         style = MaterialTheme.typography.bodyLarge,
@@ -146,7 +146,7 @@ fun DetectResourcesPageContent_NothingFound(
                     Button(
                         onClick = {
                             val intent = DebugInfoActivity.IntentBuilder(context)
-                                .withLogs(logs)
+                                .withDebugLogFile(debugLogFileName)
                                 .build()
                             context.startActivity(intent)
                         }
@@ -214,7 +214,7 @@ fun DetectResourcesPageContent_LoginValidationFailed() {
 fun DetectResourcesPageContent_NothingFound() {
     DetectResourcesPageContent_NothingFound(
         encountered401 = false,
-        logs = "SOME LOGS"
+        debugLogFileName = DebugDirectory.FileName("davdroid-detection.log")
     )
 }
 
@@ -223,7 +223,7 @@ fun DetectResourcesPageContent_NothingFound() {
 fun DetectResourcesPage_NothingFound_401() {
     DetectResourcesPageContent_NothingFound(
         encountered401 = true,
-        logs = ""
+        debugLogFileName = null
     )
 }
 

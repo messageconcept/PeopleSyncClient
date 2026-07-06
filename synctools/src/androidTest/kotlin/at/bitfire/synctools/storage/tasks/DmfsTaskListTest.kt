@@ -10,10 +10,9 @@ import android.content.ContentValues
 import android.content.Entity
 import android.database.DatabaseUtils
 import androidx.core.content.contentValuesOf
-import at.bitfire.ical4android.DmfsStyleProvidersTaskTest
-import at.bitfire.ical4android.Task
-import at.bitfire.ical4android.TaskProvider
-import net.fortuna.ical4j.model.property.RelatedTo
+import at.bitfire.synctools.storage.TaskProvider
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.test.runTest
 import org.dmfs.tasks.contract.TaskContract
 import org.dmfs.tasks.contract.TaskContract.Property
 import org.dmfs.tasks.contract.TaskContract.TaskLists
@@ -21,7 +20,6 @@ import org.dmfs.tasks.contract.TaskContract.Tasks
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
@@ -37,43 +35,43 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
         info.put(TaskLists.SYNC_ENABLED, 1)
         info.put(TaskLists.VISIBLE, 1)
 
-        val dmfsTaskListProvider = DmfsTaskListProvider(testAccount, provider.client, providerName)
-        val id = dmfsTaskListProvider.createTaskList(info)
-        assertNotNull(id)
-
-        return dmfsTaskListProvider.getTaskList(id)!!
+        val dmfsTaskListProvider = DmfsTaskListProvider(testAccount, provider, providerName)
+        return dmfsTaskListProvider.createAndGetTaskList(info)
     }
 
     @Test
     fun testTouchRelations() {
         val taskList = createTaskList()
         try {
-            val parent = Task()
-            parent.uid = "parent"
-            parent.summary = "Parent task"
-
-            val child = Task()
-            child.uid = "child"
-            child.summary = "Child task"
-            child.relatedTo.add(RelatedTo(parent.uid))
-
             // insert child before parent
-            val childContentUri = DmfsTask(
-                taskList,
-                child,
-                "452a5672-e2b0-434e-92b4-bc70a7a51ef2",
-                null,
-                0
-            ).add()
-            val childId = ContentUris.parseId(childContentUri)
-            val parentContentUri = DmfsTask(
-                taskList,
-                parent,
-                "452a5672-e2b0-434e-92b4-bc70a7a51ef2",
-                null,
-                0
-            ).add()
-            val parentId = ContentUris.parseId(parentContentUri)
+            val childId = taskList.addTask(
+                Entity(
+                    contentValuesOf(
+                        Tasks.LIST_ID to taskList.id,
+                        Tasks._UID to "child",
+                        Tasks.TITLE to "Child task",
+                        Tasks.PARENT_ID to null
+                    )
+                ).apply {
+                    addSubValue(
+                        taskList.tasksPropertiesUri(),
+                        contentValuesOf(
+                            TaskContract.Properties.MIMETYPE to Property.Relation.CONTENT_ITEM_TYPE,
+                            Property.Relation.RELATED_UID to "parent",
+                            Property.Relation.RELATED_TYPE to Property.Relation.RELTYPE_PARENT
+                        )
+                    )
+                }
+            )
+            val parentId = taskList.addTask(
+                Entity(
+                    contentValuesOf(
+                        Tasks.LIST_ID to taskList.id,
+                        Tasks._UID to "parent",
+                        Tasks.TITLE to "Parent task"
+                    )
+                )
+            )
 
             // OpenTasks should provide the correct relation
             taskList.provider.client.query(
@@ -96,7 +94,7 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
                     row.getAsLong(Property.Relation.RELATED_ID)
                 )
                 assertEquals(
-                    parent.uid,
+                    "parent",
                     row.getAsString(Property.Relation.RELATED_UID)
                 )
                 assertEquals(
@@ -109,13 +107,9 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
             taskList.touchRelations()
 
             // now parent_id should bet set
-            taskList.provider.client.query(
-                childContentUri, arrayOf(Tasks.PARENT_ID),
-                null, null, null
-            )!!.use { cursor ->
-                assertTrue(cursor.moveToNext())
-                assertEquals(parentId, cursor.getLong(0))
-            }
+            val child = taskList.getTaskRow(childId, arrayOf(Tasks.PARENT_ID))
+            assertNotNull(child)
+            assertEquals(parentId, child?.getAsLong(Tasks.PARENT_ID))
         } finally {
             taskList.delete()
         }
@@ -187,18 +181,18 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
     fun testCountTasks_withFilter() {
         val taskList = createTaskList()
         try {
-            // Add tasks with different UIDs
-            val task1 = Task().apply {
-                uid = "filter-uid-1"
-                summary = "Filter Test 1"
-            }
-            val task2 = Task().apply {
-                uid = "filter-uid-2"
-                summary = "Filter Test 2"
-            }
-
-            DmfsTask(taskList, task1, "sync-id-1", null, 0).add()
-            DmfsTask(taskList, task2, "sync-id-2", null, 0).add()
+            taskList.addTask(Entity(contentValuesOf(
+                Tasks.LIST_ID to taskList.id,
+                Tasks._SYNC_ID to "sync-id-1",
+                Tasks._UID to "filter-uid-1",
+                Tasks.TITLE to "Filter Test 1"
+            )))
+            taskList.addTask(Entity(contentValuesOf(
+                Tasks.LIST_ID to taskList.id,
+                Tasks._SYNC_ID to "sync-id-2",
+                Tasks._UID to "filter-uid-2",
+                Tasks.TITLE to "Filter Test 2"
+            )))
 
             // Test counting with UID filter
             val filteredCount = taskList.countTasks("${Tasks._UID}=?", arrayOf("filter-uid-1"))
@@ -212,18 +206,18 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
     fun testCountTasks_withoutFilter() {
         val taskList = createTaskList()
         try {
-            // Add multiple tasks
-            val task1 = Task().apply {
-                uid = "task-1"
-                summary = "Test Task 1"
-            }
-            val task2 = Task().apply {
-                uid = "task-2"
-                summary = "Test Task 2"
-            }
-
-            DmfsTask(taskList, task1, "sync-id-1", null, 0).add()
-            DmfsTask(taskList, task2, "sync-id-2", null, 0).add()
+            taskList.addTask(Entity(contentValuesOf(
+                Tasks.LIST_ID to taskList.id,
+                Tasks._SYNC_ID to "sync-id-1",
+                Tasks._UID to "task-1",
+                Tasks.TITLE to "Test Task 1"
+            )))
+            taskList.addTask(Entity(contentValuesOf(
+                Tasks.LIST_ID to taskList.id,
+                Tasks._SYNC_ID to "sync-id-2",
+                Tasks._UID to "task-2",
+                Tasks.TITLE to "Test Task 2"
+            )))
 
             val count = taskList.countTasks(null, null)
             assertEquals(2, count)
@@ -278,37 +272,6 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
             // Find non-existent
             val notFound = taskList.findTask("${Tasks._SYNC_ID}=?", arrayOf("non-existent"))
             assertNull(notFound)
-        } finally {
-            taskList.delete()
-        }
-    }
-
-    @Test
-    fun testFindTasks() {
-        val taskList = createTaskList()
-        try {
-            taskList.addTask(
-                Entity(
-                    contentValuesOf(
-                        Tasks.LIST_ID to taskList.id,
-                        Tasks.TITLE to "Task 1"
-                    )
-                )
-            )
-            taskList.addTask(
-                Entity(
-                    contentValuesOf(
-                        Tasks.LIST_ID to taskList.id,
-                        Tasks.TITLE to "Task 2"
-                    )
-                )
-            )
-
-            val tasks = taskList.findTasks()
-            assertEquals(2, tasks.size)
-
-            val titles = tasks.map { it.entityValues.getAsString(Tasks.TITLE) }.toSet()
-            assertEquals(setOf("Task 1", "Task 2"), titles)
         } finally {
             taskList.delete()
         }
@@ -410,7 +373,7 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
     }
 
     @Test
-    fun testIterateTasks() {
+    fun testIterateTasks() = runTest {
         val taskList = createTaskList()
         try {
             // Add tasks directly via Entity
@@ -443,10 +406,7 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
                 )
             )
 
-            val result = mutableListOf<Entity>()
-            taskList.iterateTasks(null, null) { entity ->
-                result += entity
-            }
+            val result = taskList.queryTasks(null, null).toList()
 
             assertEquals(2, result.size)
             val uids = result.mapNotNull { it.entityValues.getAsString(Tasks._UID) }.toSet()
@@ -619,7 +579,7 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
     }
 
     @Test
-    fun testUpdateTasks() {
+    fun testUpdateTasks() = runTest {
         val taskList = createTaskList()
         try {
             // Add tasks
@@ -653,7 +613,7 @@ class DmfsTaskListTest(providerName: TaskProvider.ProviderName) :
             assertEquals(2, updatedCount)
 
             // Verify updates
-            val tasks = taskList.findTasks()
+            val tasks = taskList.queryTasks(null, null).toList()
             assertEquals(2, tasks.size)
             for (task in tasks) {
                 assertEquals("Updated Title", task.entityValues.getAsString(Tasks.TITLE))

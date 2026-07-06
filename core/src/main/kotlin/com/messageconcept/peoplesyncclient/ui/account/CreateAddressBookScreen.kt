@@ -35,12 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import at.bitfire.dav4jvm.ktor.toUrlOrNull
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.ui.composable.AppTheme
 import com.messageconcept.peoplesyncclient.ui.composable.ExceptionInfoDialog
 import com.messageconcept.peoplesyncclient.ui.composable.ProgressBar
-import okhttp3.HttpUrl.Companion.toHttpUrl
 
 @Composable
 fun CreateAddressBookScreen(
@@ -197,7 +197,7 @@ fun CreateAddressBookScreen_Preview() {
     CreateAddressBookScreen(
         displayName = "Address Book",
         homeSets = listOf(
-            HomeSet(0, 0, true, "https://example.com/some/homeset".toHttpUrl())
+            HomeSet(0, 0, true, "https://example.com/some/homeset".toUrlOrNull()!!)
         )
     )
 }

@@ -9,19 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.mikepenz.aboutLibraries.android)
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-kotlin {
-    compilerOptions {
-        // use new defaulting rule for qualifiers to avoid `@param:` prefix for DI annotations
-        freeCompilerArgs.add("-Xannotation-default-target=param-property")
-    }
+    id("davx5.common-buildconfig")
 }
 
 ksp {
@@ -29,22 +17,11 @@ ksp {
 }
 
 android {
-    compileSdk = 37
-
     defaultConfig {
-        minSdk = 24        // Android 7.0
-
         testInstrumentationRunner = "com.messageconcept.peoplesyncclient.HiltTestRunner"
 
         // include these rules in the app that uses the core library
         consumerProguardFile("core-proguard-rules.pro")
-    }
-
-    compileOptions {
-        // required for
-        // - dnsjava 3.x: java.nio.file.Path
-        // - ical4android: time API
-        isCoreLibraryDesugaringEnabled = true
     }
 
     buildFeatures {
@@ -164,12 +141,12 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.encoding)
+    implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.mikepenz.aboutLibraries.m3)
     implementation(libs.okhttp.base)
-    implementation(libs.okhttp.brotli)
-    implementation(libs.okhttp.logging)
     implementation(libs.openid.appauth)
 
     // force some versions for compatibility with our minSdk level (see version catalog for details)
@@ -187,12 +164,16 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.ktor.client.mock)
     androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.okhttp.mockwebserver)
+    androidTestImplementation(testFixtures(project(":synctools")))
 
     testImplementation(libs.bitfire.dav4jvm)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.robolectric)
+    testImplementation(testFixtures(project(":synctools")))
 }

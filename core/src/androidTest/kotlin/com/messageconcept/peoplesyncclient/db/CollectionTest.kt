@@ -4,75 +4,63 @@
 
 package com.messageconcept.peoplesyncclient.db
 
-import androidx.test.filters.SmallTest
-import at.bitfire.dav4jvm.okhttp.DavResource
+import at.bitfire.dav4jvm.ktor.DavResource
 import at.bitfire.dav4jvm.property.webdav.WebDAV
-import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
+import com.messageconcept.peoplesyncclient.util.DavUtils.toUrl
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.Url
+import io.ktor.http.headersOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
 
-@HiltAndroidTest
 class CollectionTest {
 
-    @Inject
-    lateinit var httpClientBuilder: HttpClientBuilder
+    private val xmlHeaders = headersOf(HttpHeaders.ContentType, "application/xml; charset=UTF-8")
+    private val baseUrl = Url("https://dav.example.com/")
 
-    @get:Rule
-    val hiltRule = HiltAndroidRule(this)
-
-    private lateinit var httpClient: OkHttpClient
-    private val server = MockWebServer()
-
-    @Before
-    fun setup() {
-        hiltRule.inject()
-
-        httpClient = httpClientBuilder.build()
-    }
+    private fun mockClient(xmlBody: String): HttpClient =
+        HttpClient(MockEngine { respond(xmlBody, HttpStatusCode.MultiStatus, xmlHeaders) })
 
 
     @Test
-    @SmallTest
-    fun testFromDavResponseAddressBook() {
-        // r/w address book
-        server.enqueue(MockResponse()
-                .setResponseCode(207)
-                .setBody("<multistatus xmlns='DAV:' xmlns:CARD='urn:ietf:params:xml:ns:carddav'>" +
-                        "<response>" +
-                        "   <href>/</href>" +
-                        "   <propstat><prop>" +
-                        "       <resourcetype><collection/><CARD:addressbook/></resourcetype>" +
-                        "       <displayname>My Contacts</displayname>" +
-                        "       <CARD:addressbook-description>My Contacts Description</CARD:addressbook-description>" +
-                        "   </prop></propstat>" +
-                        "</response>" +
-                        "</multistatus>"))
-
-        lateinit var info: Collection
-        DavResource(httpClient, server.url("/"))
-                .propfind(0, WebDAV.ResourceType) { response, _ ->
-            info = Collection.fromDavResponse(response) ?: throw IllegalArgumentException()
+    fun testFromDavResponseAddressBook() = runTest {
+        mockClient(
+            "<multistatus xmlns='DAV:' xmlns:CARD='urn:ietf:params:xml:ns:carddav'>" +
+                    "<response>" +
+                    "   <href>/</href>" +
+                    "   <propstat><prop>" +
+                    "       <resourcetype><collection/><CARD:addressbook/></resourcetype>" +
+                    "       <displayname>My Contacts</displayname>" +
+                    "       <CARD:addressbook-description>My Contacts Description</CARD:addressbook-description>" +
+                    "   </prop></propstat>" +
+                    "</response>" +
+                    "</multistatus>"
+        ).use { client ->
+            val davResource = DavResource(client, baseUrl)
+            var collectionFromResponse: Collection? = null
+            davResource.propfind(0, WebDAV.ResourceType) { response, _ ->
+                collectionFromResponse = Collection.fromDavResponse(response)
+            }
+            assertNotNull(collectionFromResponse)
+            val collection = collectionFromResponse!!
+            assertEquals(Collection.TYPE_ADDRESSBOOK, collection.type)
+            assertTrue(collection.privWriteContent)
+            assertTrue(collection.privUnbind)
+            assertNull(collection.supportsVEVENT)
+            assertNull(collection.supportsVTODO)
+            assertNull(collection.supportsVJOURNAL)
+            assertEquals("My Contacts", collection.displayName)
+            assertEquals("My Contacts Description", collection.description)
         }
-        assertEquals(Collection.TYPE_ADDRESSBOOK, info.type)
-        assertTrue(info.privWriteContent)
-        assertTrue(info.privUnbind)
-        assertNull(info.supportsVEVENT)
-        assertNull(info.supportsVTODO)
-        assertNull(info.supportsVJOURNAL)
-        assertEquals("My Contacts", info.displayName)
-        assertEquals("My Contacts Description", info.description)
     }
 
 }

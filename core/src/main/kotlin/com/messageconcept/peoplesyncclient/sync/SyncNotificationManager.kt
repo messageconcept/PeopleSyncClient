@@ -14,7 +14,8 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
-import at.bitfire.dav4jvm.okhttp.exception.UnauthorizedException
+import at.bitfire.dav4jvm.ktor.exception.UnauthorizedException
+import at.bitfire.dav4jvm.ktor.resolve
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalCollection
@@ -26,7 +27,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.HttpUrl
+import io.ktor.http.Url
 import java.io.IOException
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -108,7 +109,7 @@ class SyncNotificationManager @AssistedInject constructor(
         localCollection: LocalCollection<*>,
         e: Throwable,
         local: LocalResource?,
-        remote: HttpUrl?
+        remote: Url?
     ) = notificationRegistry.notifyIfPossible(NotificationRegistry.NOTIFY_SYNC_ERROR, tag = notificationTag) {
         val contentIntent: Intent
         if (e is UnauthorizedException) {
@@ -215,7 +216,7 @@ class SyncNotificationManager @AssistedInject constructor(
         dataType: SyncDataType,
         e: Throwable,
         local: LocalResource?,
-        remote: HttpUrl?
+        remote: Url?
     ): Intent {
         val builder = DebugInfoActivity.IntentBuilder(context)
             .withAccount(account)

@@ -9,6 +9,7 @@ import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
+import com.messageconcept.peoplesyncclient.util.DavUtils.toUrl
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -18,7 +19,6 @@ import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -39,7 +39,7 @@ class CollectionSelectedUseCaseTest {
         id = 2,
         serviceId = 1,
         type = Collection.Companion.TYPE_CALENDAR,
-        url = "https://example.com".toHttpUrl()
+        url = "https://example.com".toUrl()
     )
 
     @Inject

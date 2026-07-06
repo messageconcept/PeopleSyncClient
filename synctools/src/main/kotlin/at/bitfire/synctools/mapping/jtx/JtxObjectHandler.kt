@@ -6,10 +6,36 @@ package at.bitfire.synctools.mapping.jtx
 
 import android.content.Entity
 import at.bitfire.synctools.icalendar.AssociatedComponents
+import at.bitfire.synctools.mapping.jtx.handler.AttachmentFetcher
+import at.bitfire.synctools.mapping.jtx.handler.AttachmentsHandler
+import at.bitfire.synctools.mapping.jtx.handler.AttendeesHandler
 import at.bitfire.synctools.mapping.jtx.handler.CategoriesHandler
+import at.bitfire.synctools.mapping.jtx.handler.ClassificationHandler
+import at.bitfire.synctools.mapping.jtx.handler.ColorHandler
 import at.bitfire.synctools.mapping.jtx.handler.CommentsHandler
+import at.bitfire.synctools.mapping.jtx.handler.CompletedHandler
+import at.bitfire.synctools.mapping.jtx.handler.ContactHandler
+import at.bitfire.synctools.mapping.jtx.handler.CreatedHandler
 import at.bitfire.synctools.mapping.jtx.handler.DescriptionHandler
-import at.bitfire.synctools.mapping.jtx.handler.JtxFieldHandler
+import at.bitfire.synctools.mapping.jtx.handler.GeoHandler
+import at.bitfire.synctools.mapping.jtx.handler.JtxObjectEntityHandler
+import at.bitfire.synctools.mapping.jtx.handler.LastModifiedHandler
+import at.bitfire.synctools.mapping.jtx.handler.LocationHandler
+import at.bitfire.synctools.mapping.jtx.handler.OrganizerHandler
+import at.bitfire.synctools.mapping.jtx.handler.PercentCompleteHandler
+import at.bitfire.synctools.mapping.jtx.handler.PriorityHandler
+import at.bitfire.synctools.mapping.jtx.handler.RecurrenceFieldsHandler
+import at.bitfire.synctools.mapping.jtx.handler.RelatedToHandler
+import at.bitfire.synctools.mapping.jtx.handler.RemindersHandler
+import at.bitfire.synctools.mapping.jtx.handler.ResourcesHandler
+import at.bitfire.synctools.mapping.jtx.handler.SequenceHandler
+import at.bitfire.synctools.mapping.jtx.handler.StatusHandler
+import at.bitfire.synctools.mapping.jtx.handler.SummaryHandler
+import at.bitfire.synctools.mapping.jtx.handler.TimeFieldsHandler
+import at.bitfire.synctools.mapping.jtx.handler.UidHandler
+import at.bitfire.synctools.mapping.jtx.handler.UnknownPropertiesHandler
+import at.bitfire.synctools.mapping.jtx.handler.UrlHandler
+import at.bitfire.synctools.mapping.jtx.handler.ExtendedStatusHandler
 import at.bitfire.synctools.storage.jtx.JtxObjectAndExceptions
 import at.techbee.jtx.JtxContract
 import net.fortuna.ical4j.model.Property
@@ -24,14 +50,46 @@ import java.util.UUID
  * Mapper from jtx Board object main + data rows to [VJournal] or [VToDo].
  *
  * @param prodId the `PRODID` to use
+ * @param attachmentFetcher An implementation of [AttachmentFetcher] to fetch attachments from the JTX database
  */
 class JtxObjectHandler(
-    private val prodId: ProdId
+    private val prodId: ProdId,
+    attachmentFetcher: AttachmentFetcher
 ) {
-    private val fieldHandlers: Array<JtxFieldHandler> = arrayOf(
+
+    /* Note: the storage layer (JtxCollection) doesn't read/write all sub-rows,
+    but only those defined in JtxCollection.SUB_VALUE_URIS – so all sub-rows
+    that are supported by builders/handlers should also be present there. */
+
+    private val entityHandlers: Array<JtxObjectEntityHandler> = arrayOf(
+        AttachmentsHandler(attachmentFetcher),
+        AttendeesHandler(),
         CategoriesHandler(),
+        ClassificationHandler(),
+        ColorHandler(),
         CommentsHandler(),
-        DescriptionHandler()
+        CompletedHandler(),
+        ContactHandler(),
+        CreatedHandler(),
+        DescriptionHandler(),
+        GeoHandler(),
+        LastModifiedHandler(),
+        LocationHandler(),
+        OrganizerHandler(),
+        PercentCompleteHandler(),
+        PriorityHandler(),
+        RecurrenceFieldsHandler(),
+        RelatedToHandler(),
+        RemindersHandler(),
+        ResourcesHandler(),
+        SequenceHandler(),
+        StatusHandler(),
+        SummaryHandler(),
+        TimeFieldsHandler(),
+        UidHandler(),
+        UnknownPropertiesHandler(),
+        UrlHandler(),
+        ExtendedStatusHandler(),
     )
 
     /**
@@ -45,8 +103,10 @@ class JtxObjectHandler(
         var generatedUid = false
         val mainValues = jtxObjectAndExceptions.main.entityValues
         val uid = mainValues.getAsString(JtxContract.JtxICalObject.UID) ?: run {
+            val newUid = UUID.randomUUID().toString()
+            mainValues.put(JtxContract.JtxICalObject.UID, newUid)
             generatedUid = true
-            UUID.randomUUID().toString()
+            newUid
         }
 
         // map main jtx object
@@ -100,7 +160,7 @@ class JtxObjectHandler(
             JtxContract.JtxICalObject.Component.VTODO -> VToDo()
         }
 
-        for (handler in fieldHandlers) {
+        for (handler in entityHandlers) {
             handler.process(from = entity, main = main, to = calendarComponent)
         }
 

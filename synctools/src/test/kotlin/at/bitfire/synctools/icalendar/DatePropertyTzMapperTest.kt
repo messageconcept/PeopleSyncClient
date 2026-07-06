@@ -5,15 +5,19 @@
 package at.bitfire.synctools.icalendar
 
 import at.bitfire.DefaultTimezoneRule
+import at.bitfire.dateTimeValue
 import at.bitfire.synctools.exception.ResourceMappingException
 import at.bitfire.synctools.icalendar.DatePropertyTzMapper.normalizedDate
+import at.bitfire.synctools.icalendar.DatePropertyTzMapper.normalizedDates
 import net.fortuna.ical4j.data.CalendarBuilder
 import net.fortuna.ical4j.model.Component
 import net.fortuna.ical4j.model.Parameter
 import net.fortuna.ical4j.model.ParameterList
+import net.fortuna.ical4j.model.Property
 import net.fortuna.ical4j.model.component.VEvent
 import net.fortuna.ical4j.model.parameter.TzId
 import net.fortuna.ical4j.model.property.DtStart
+import net.fortuna.ical4j.model.property.ExDate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertSame
@@ -21,9 +25,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import java.io.StringReader
-import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -83,18 +87,19 @@ class DatePropertyTzMapperTest {
         val vEvent = cal.getComponent<VEvent>(Component.VEVENT).get()
         val dtStart = vEvent.requireDtStart<Temporal>()
 
-        // ical4j returns ZonedDatetime with custom timezone from VTIMEZONE
+        // ical4j returns ZonedDateTime with the system timezone; the custom VTIMEZONE is ignored
+        // because "Europe/Berlin" is a system-known TZID (SystemAwareTimeZoneRegistry skips registration)
         val ical4jDate = dtStart.date as ZonedDateTime
-        assertTrue(ical4jDate.zone.id.startsWith("ical4j-local-"))
+        assertEquals("Europe/Berlin", ical4jDate.zone.id)
 
-        // normalizedDate returns ZonedDatetime (with other timestamp because TZ OFFSET is different) with system time zone
+        // normalizedDate returns the same ZonedDateTime (already uses system timezone)
         val normalizedDate = dtStart.normalizedDate() as ZonedDateTime
         assertEquals(ZonedDateTime.of(
             LocalDate.of(2025, 8, 28),
             LocalTime.of(13, 0, 0),
             ZoneId.of("Europe/Berlin")
         ), normalizedDate)
-        assertNotEquals(ical4jDate.toInstant(), normalizedDate.toInstant())
+        assertEquals(ical4jDate.toInstant(), normalizedDate.toInstant())
     }
 
     @Test
@@ -141,7 +146,49 @@ class DatePropertyTzMapperTest {
     }
 
     @Test
-    fun `normalizedDate with TZID unknown and without VTIMEZONE fails`() {
+    fun `normalizedDates with TZID unknown to system`() {
+        val calendar = CalendarBuilder().build(StringReader(
+            """
+            BEGIN:VCALENDAR
+            VERSION:2.0
+            BEGIN:VTIMEZONE
+            TZID:Etc/ABC
+            BEGIN:STANDARD
+            TZNAME:-03
+            TZOFFSETFROM:-0300
+            TZOFFSETTO:-0300
+            DTSTART:19700101T000000
+            END:STANDARD
+            END:VTIMEZONE
+            BEGIN:VEVENT
+            SUMMARY:Test Timezones
+            DTSTART;TZID=Etc/ABC:20250828T130000
+            RRULE:FREQ=DAILY;COUNT=5
+            EXDATE;TZID=Etc/ABC:20250829T130000,20250830T130000
+            END:VEVENT
+            END:VCALENDAR
+            """.trimIndent()
+        ))
+        val event = calendar.getComponent<VEvent>(Component.VEVENT).get()
+        val exDate = event.getRequiredProperty<ExDate<Temporal>>(Property.EXDATE)
+
+        // ical4j returns ZonedDatetime with custom timezone from VTIMEZONE
+        assertTrue(exDate.dates.all { date -> (date as ZonedDateTime).zone.id.startsWith("ical4j-local-") })
+
+        // normalizedDate returns ZonedDatetime (at same timestamp) with system time zone
+        assertEquals(
+            listOf(
+                dateTimeValue("20250829T180000", tzRule.defaultZoneId),
+                dateTimeValue("20250830T180000", tzRule.defaultZoneId)
+            ),
+            exDate.normalizedDates()
+        )
+    }
+
+    @Test
+    fun `normalizedDate with TZID unknown and without VTIMEZONE uses floating time`() {
+        // ical4j 4.3.0: DateProperty.getDate() no longer throws for unknown TZID under relaxed
+        // validation; instead it returns the value as a floating LocalDateTime (TZID is ignored).
         val cal = CalendarBuilder().build(StringReader("BEGIN:VCALENDAR\r\n" +
                 "VERSION:2.0\n" +
                 "BEGIN:VEVENT\n" +
@@ -153,11 +200,32 @@ class DatePropertyTzMapperTest {
         val vEvent = cal.getComponent<VEvent>(Component.VEVENT).get()
         val dtStart = vEvent.requireDtStart<Temporal>()
 
-        assertFailsWith<DateTimeException>("Expected date call to fail with unknown timezone") {
-            dtStart.date
-        }
-        assertFailsWith<ResourceMappingException>("Expected normalizedDate call to fail with unknown timezone") {
-            dtStart.normalizedDate()
+        // ical4j returns a floating LocalDateTime (TZID ignored)
+        assertEquals(LocalDateTime.of(2025, 8, 28, 13, 0, 0), dtStart.date)
+        // normalizedDate returns the same LocalDateTime as-is (else branch)
+        assertEquals(LocalDateTime.of(2025, 8, 28, 13, 0, 0), dtStart.normalizedDate())
+    }
+
+    @Test
+    fun `normalizedDates with TZID unknown and without VTIMEZONE fails`() {
+        val calendar = CalendarBuilder().build(StringReader(
+            """
+            BEGIN:VCALENDAR
+            VERSION:2.0
+            BEGIN:VEVENT
+            SUMMARY:Test Timezones
+            DTSTART;TZID=Etc/ABC:20250828T130000
+            RRULE:FREQ=DAILY;COUNT=5
+            EXDATE;TZID=Etc/ABC:20250829T130000,20250830T130000
+            END:VEVENT
+            END:VCALENDAR
+            """.trimIndent()
+        ))
+        val event = calendar.getComponent<VEvent>(Component.VEVENT).get()
+        val exDates = event.getRequiredProperty<ExDate<Temporal>>(Property.EXDATE)
+
+        assertFailsWith<ResourceMappingException>("Expected normalizedDates call to fail because of unknown timezone") {
+            exDates.normalizedDates()
         }
     }
 

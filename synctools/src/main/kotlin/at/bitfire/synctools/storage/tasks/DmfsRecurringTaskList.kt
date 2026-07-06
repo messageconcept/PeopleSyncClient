@@ -13,6 +13,10 @@ import androidx.core.content.contentValuesOf
 import at.bitfire.synctools.storage.BatchOperation.CpoBuilder
 import at.bitfire.synctools.storage.LocalStorageException
 import at.bitfire.synctools.storage.containsNotNull
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.dmfs.tasks.contract.TaskContract
 import org.dmfs.tasks.contract.TaskContract.Tasks
 import java.util.logging.Level
@@ -68,58 +72,43 @@ class DmfsRecurringTaskList(
     }
 
     /**
-     * Find first task (including exceptions) of [taskList] that matches the query from the content provider.
+     * Find first main task of [taskList] that matches the query from the content provider and attach its exceptions.
      *
      * Note that the exceptions may contain deleted tasks.
      *
      * @param where         selection
      * @param whereArgs     arguments for selection
      */
-    fun findTaskAndExceptions(where: String?, whereArgs: Array<String>?): TaskAndExceptions? {
-        val main = taskList.findTask(where, whereArgs) ?: return null
-
-        // attach exceptions
-        val mainTaskId = main.entityValues.getAsLong(Tasks._ID)
-        return TaskAndExceptions(
-            main = main,
-            exceptions = findExceptions(mainTaskId)
-        )
-    }
+    suspend fun findTaskAndExceptions(where: String?, whereArgs: Array<String>?): TaskAndExceptions? =
+        queryTasksAndExceptions(where, whereArgs).firstOrNull()
 
     /**
-     * Retrieves a task and its exceptions from the content provider.
+     * Retrieves a main task and its exceptions from the content provider.
      *
      * @param mainTaskId   [TaskContract.Tasks._ID] of the main task
      *
      * @return the task and its exceptions, or _null_ if no task with the given id was found
      */
-    fun getById(mainTaskId: Long): TaskAndExceptions? {
-        val mainTask = taskList.getTask(mainTaskId) ?: return null
-        return TaskAndExceptions(
-            main = mainTask,
-            exceptions = findExceptions(mainTaskId)
-        )
-    }
+    suspend fun getById(mainTaskId: Long): TaskAndExceptions? =
+        findTaskAndExceptions("${Tasks._ID}=?", arrayOf(mainTaskId.toString()))
 
     /**
-     * Iterates through tasks in [taskList] together with their exceptions.
+     * Cold [Flow] of main tasks together with their exceptions; the per-main exceptions lookup
+     * stays a small bounded query (exceptions of a single task are not streamed).
      *
      * Note that the exceptions may contain deleted tasks.
      *
      * @param where         selection
      * @param whereArgs     arguments for selection
-     * @param body          callback that is called for each task (including exceptions)
      */
-    fun iterateTaskAndExceptions(where: String?, whereArgs: Array<String>?, body: (TaskAndExceptions) -> Unit) {
-        taskList.iterateTasks(where, whereArgs) { main ->
-            val mainTaskId = main.entityValues.getAsLong(Tasks._ID)
-            body(
-                TaskAndExceptions(
-                    main = main,
-                    exceptions = findExceptions(mainTaskId)
-                )
-            )
-        }
+    fun queryTasksAndExceptions(where: String?, whereArgs: Array<String>?): Flow<TaskAndExceptions> {
+        val (mainWhere, mainWhereArgs) = whereWithMainTasksOnly(where, whereArgs)
+        return taskList
+            .queryTasks(mainWhere, mainWhereArgs)
+            .map { main ->
+                val mainTaskId = main.entityValues.getAsLong(Tasks._ID)
+                TaskAndExceptions(main = main, exceptions = findExceptions(mainTaskId))
+            }
     }
 
     /**
@@ -367,7 +356,13 @@ class DmfsRecurringTaskList(
      * @param mainTaskId   The [Tasks._ID] of the main task
      * @return List of exception entities linked to the main task
      */
-    private fun findExceptions(mainTaskId: Long): List<Entity> =
-        taskList.findTasks("${Tasks.ORIGINAL_INSTANCE_ID}=?", arrayOf(mainTaskId.toString()))
+    private suspend fun findExceptions(mainTaskId: Long): List<Entity> =
+        taskList.queryTasks("${Tasks.ORIGINAL_INSTANCE_ID}=?", arrayOf(mainTaskId.toString())).toList()
+
+    private fun whereWithMainTasksOnly(where: String?, whereArgs: Array<String>?): Pair<String, Array<String>> {
+        val protectedWhere = "(${where ?: "1"}) AND ${Tasks.ORIGINAL_INSTANCE_ID} IS NULL"
+        val protectedWhereArgs = whereArgs ?: arrayOf()
+        return Pair(protectedWhere, protectedWhereArgs)
+    }
 
 }

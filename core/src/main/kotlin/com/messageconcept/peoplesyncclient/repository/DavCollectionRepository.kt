@@ -6,13 +6,13 @@ package com.messageconcept.peoplesyncclient.repository
 
 import android.accounts.Account
 import android.content.Context
-import at.bitfire.dav4jvm.HttpUtils.toKtorUrl
 import at.bitfire.dav4jvm.XmlUtils
 import at.bitfire.dav4jvm.XmlUtils.insertTag
 import at.bitfire.dav4jvm.ktor.DavResource
 import at.bitfire.dav4jvm.ktor.exception.GoneException
 import at.bitfire.dav4jvm.ktor.exception.HttpException
 import at.bitfire.dav4jvm.ktor.exception.NotFoundException
+import at.bitfire.dav4jvm.ktor.withTrailingSlash
 import at.bitfire.dav4jvm.property.caldav.CalDAV
 import at.bitfire.dav4jvm.property.carddav.CardDAV
 import at.bitfire.dav4jvm.property.webdav.WebDAV
@@ -27,7 +27,9 @@ import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWo
 import com.messageconcept.peoplesyncclient.util.DavUtils
 import dagger.Lazy
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.ktor.http.URLBuilder
 import io.ktor.http.Url
+import io.ktor.http.appendPathSegments
 import java.io.StringWriter
 import java.util.UUID
 import java.util.logging.Logger
@@ -91,15 +93,15 @@ class DavCollectionRepository @Inject constructor(
         description: String?
     ) {
         val folderName = UUID.randomUUID().toString()
-        val url = homeSet.url.newBuilder()
-            .addPathSegment(folderName)
-            .addPathSegment("")     // trailing slash
+        val url = URLBuilder(homeSet.url)
+            .appendPathSegments(folderName, encodeSlash = true)
             .build()
+            .withTrailingSlash()
 
         // create collection on server
         createOnServer(
             account = account,
-            url = url.toKtorUrl(),
+            url = url,
             method = "MKCOL",
             xmlBody = generateMkColXml(
                 addressBook = true,
@@ -135,15 +137,15 @@ class DavCollectionRepository @Inject constructor(
         supportVJOURNAL: Boolean
     ) {
         val folderName = UUID.randomUUID().toString()
-        val url = homeSet.url.newBuilder()
-            .addPathSegment(folderName)
-            .addPathSegment("")     // trailing slash
+        val url = URLBuilder(homeSet.url)
+            .appendPathSegments(folderName, encodeSlash = true)
             .build()
+            .withTrailingSlash()
 
         // create collection on server
         createOnServer(
             account = account,
-            url = url.toKtorUrl(),
+            url = url,
             method = "MKCALENDAR",
             xmlBody = generateMkColXml(
                 addressBook = false,
@@ -188,7 +190,7 @@ class DavCollectionRepository @Inject constructor(
             .buildKtor()
             .use { httpClient ->
                 try {
-                    DavResource(httpClient, collection.url.toKtorUrl()).delete {
+                    DavResource(httpClient, collection.url).delete {
                         // success, otherwise an exception would have been thrown → delete locally, too
                         delete(collection)
                     }
