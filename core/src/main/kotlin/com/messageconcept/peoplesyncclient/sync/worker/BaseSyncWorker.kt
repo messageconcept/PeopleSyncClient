@@ -31,7 +31,6 @@ import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
 import dagger.Lazy
 import kotlinx.coroutines.delay
 import java.util.Collections
-import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -178,7 +177,7 @@ abstract class BaseSyncWorker(
 
             // On soft errors the sync is retried a few times before considered failed
             if (syncResult.hasSoftError()) {
-                logger.log(Level.WARNING, "Soft error while syncing", syncResult)
+                logger.warning("Soft error while syncing: $syncResult")
                 if (runAttemptCount < MAX_RUN_ATTEMPTS) {
                     val blockDuration = syncResult.delayUntil - System.currentTimeMillis() / 1000
                     logger.warning("Waiting for $blockDuration seconds, before retrying ...")
@@ -219,12 +218,12 @@ abstract class BaseSyncWorker(
             // On a hard error - fail with an error message
             // Note: SyncManager should have notified the user
             if (syncResult.hasHardError()) {
-                logger.log(Level.WARNING, "Hard error while syncing", syncResult)
+                logger.warning("Hard error while syncing: $syncResult")
                 return Result.failure(output.build())
             }
         }
 
-        logger.log(Level.INFO, "Sync worker succeeded", syncResult)
+        logger.info("Sync worker succeeded: $syncResult")
         return Result.success(output.build())
     }
 

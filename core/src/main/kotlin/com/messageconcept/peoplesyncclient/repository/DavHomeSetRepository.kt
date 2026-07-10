@@ -5,6 +5,7 @@
 package com.messageconcept.peoplesyncclient.repository
 
 import android.accounts.Account
+import com.messageconcept.peoplesyncclient.accounts.AccountId
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Service
@@ -25,8 +26,8 @@ class DavHomeSetRepository @Inject constructor(
 
     fun getByServiceBlocking(serviceId: Long) = dao.getByService(serviceId)
 
-    fun getCalendarHomeSetsFlow(account: Account) =
-        dao.getBindableByAccountAndServiceTypeFlow(account.name, Service.TYPE_CALDAV)
+    fun getCalendarHomeSetsFlow(accountId: AccountId) =
+        dao.getBindableByAccountAndServiceTypeFlow(accountId, Service.TYPE_CALDAV)
 
     fun insertOrUpdateByUrlBlocking(homeSet: HomeSet): Long =
         dao.insertOrUpdateByUrlBlocking(homeSet)
