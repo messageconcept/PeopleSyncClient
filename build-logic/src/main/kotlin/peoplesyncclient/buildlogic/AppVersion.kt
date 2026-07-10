@@ -23,7 +23,7 @@ package peoplesyncclient.buildlogic
  */
 object AppVersion {
 
-    const val CODE: Int = 2070040509
-    const val NAME: String = "4.5-9"
+    const val CODE: Int = 2070040510
+    const val NAME: String = "4.5-10"
 
 }
