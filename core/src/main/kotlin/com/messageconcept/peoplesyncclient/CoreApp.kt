@@ -6,7 +6,7 @@ package com.messageconcept.peoplesyncclient
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
-import com.messageconcept.peoplesyncclient.di.qualifier.DefaultDispatcher
+import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
 import com.messageconcept.peoplesyncclient.log.LogManager
 import com.messageconcept.peoplesyncclient.startup.StartupPlugin
 import com.messageconcept.peoplesyncclient.settings.ManagedSettings
@@ -36,8 +36,8 @@ abstract class CoreApp: Application() {
     lateinit var logManager: LogManager
 
     @Inject
-    @DefaultDispatcher
-    lateinit var defaultDispatcher: CoroutineDispatcher
+    @IoDispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
 
     @Inject
     lateinit var plugins: Set<@JvmSuppressWildcards StartupPlugin>
@@ -68,9 +68,9 @@ abstract class CoreApp: Application() {
 
         // don't block UI for some background checks
         @OptIn(DelicateCoroutinesApi::class)
-        GlobalScope.launch(defaultDispatcher) {
+        GlobalScope.launch(ioDispatcher) {
             // clean up orphaned accounts in DB from time to time
-            AccountsCleanupWorker.Companion.enable(this@CoreApp)
+            AccountsCleanupWorker.enable(this@CoreApp)
 
             // create/update app shortcuts
             UiUtils.updateShortcuts(this@CoreApp)

@@ -24,13 +24,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.messageconcept.peoplesyncclient.R
-import com.messageconcept.peoplesyncclient.ui.ExternalUris
-import com.messageconcept.peoplesyncclient.ui.ExternalUris.withStatParams
 import com.messageconcept.peoplesyncclient.ui.composable.AppTheme
 
 @Composable
@@ -89,6 +86,14 @@ fun LoginScreenContent(
                     title = {
                         Text(stringResource(R.string.login_title))
                     },
+                    actions = {
+                        if (helpUri != null) {
+                            val uriHandler = LocalUriHandler.current
+                            IconButton(onClick = { uriHandler.openUri(helpUri.toString()) }) {
+                                Icon(Icons.AutoMirrored.Default.Help, stringResource(R.string.help))
+                            }
+                        }
+                    }
                 )
             },
             snackbarHost = { SnackbarHost(snackbarHostState) }

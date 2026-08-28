@@ -24,11 +24,9 @@ class BatteryOptimizationsPage @Inject constructor(
     override fun getShowPolicy(): ShowPolicy {
         // show fragment when:
         // 1. PeopleSync is not whitelisted yet and "don't show anymore" has not been clicked, and/or
-        // 2a. evil manufacturer AND
-        // 2b. "don't show anymore" has not been clicked
+        // 2. "don't show anymore" has not been clicked
         return if (
-            (!BatteryOptimizationsPageViewModel.isExempted(context) && settingsManager.getBooleanOrNull(HINT_BATTERY_OPTIMIZATIONS) != false) ||
-            (BatteryOptimizationsPageViewModel.manufacturerWarning && settingsManager.getBooleanOrNull(HINT_AUTOSTART_PERMISSION) != false)
+            (!BatteryOptimizationsPageViewModel.isExempted(context) && settingsManager.getBooleanOrNull(HINT_BATTERY_OPTIMIZATIONS) != false)
         )
             ShowPolicy.SHOW_ALWAYS
         else

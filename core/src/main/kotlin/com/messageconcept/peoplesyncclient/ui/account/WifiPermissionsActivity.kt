@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.IntentCompat
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.accounts.toAccountId
 import com.messageconcept.peoplesyncclient.ui.account.AccountSettingsActivity.Companion.editAccountSettingsActivityIntent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,7 +58,7 @@ class WifiPermissionsActivity: AppCompatActivity() {
     override fun supportShouldUpRecreateTask(targetIntent: Intent) = true
 
     override fun onPrepareSupportNavigateUpTaskStack(builder: TaskStackBuilder) {
-        builder.editIntentAt(builder.intentCount - 1)?.editAccountSettingsActivityIntent(account)
+        builder.editIntentAt(builder.intentCount - 1)?.editAccountSettingsActivityIntent(account.toAccountId())
     }
 
 }

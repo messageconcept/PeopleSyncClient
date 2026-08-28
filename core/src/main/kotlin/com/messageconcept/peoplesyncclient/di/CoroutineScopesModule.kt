@@ -5,13 +5,12 @@
 package com.messageconcept.peoplesyncclient.di
 
 import com.messageconcept.peoplesyncclient.di.qualifier.ApplicationScope
-import com.messageconcept.peoplesyncclient.di.qualifier.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
@@ -22,6 +21,6 @@ class CoroutineScopesModule {
     @Singleton
     @Provides
     @ApplicationScope
-    fun applicationScope(@MainDispatcher mainDispatcher: CoroutineDispatcher): CoroutineScope = CoroutineScope(SupervisorJob() + mainDispatcher)
+    fun applicationScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
 }

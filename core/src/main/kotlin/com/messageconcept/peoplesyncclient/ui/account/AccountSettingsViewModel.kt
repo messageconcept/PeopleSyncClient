@@ -4,15 +4,17 @@
 
 package com.messageconcept.peoplesyncclient.ui.account
 
-import android.accounts.Account
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.accounts.AccountId
+import com.messageconcept.peoplesyncclient.accounts.toAndroidAccount
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Service
-import com.messageconcept.peoplesyncclient.di.qualifier.DefaultDispatcher
+import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
 import com.messageconcept.peoplesyncclient.network.OAuthIntegration
+import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.settings.AccountSettings
 import com.messageconcept.peoplesyncclient.settings.Credentials
 import com.messageconcept.peoplesyncclient.settings.ManagedSettings
@@ -42,12 +44,13 @@ import java.util.logging.Logger
 
 @HiltViewModel(assistedFactory = AccountSettingsViewModel.Factory::class)
 class AccountSettingsViewModel @AssistedInject constructor(
-    @Assisted val account: Account,
+    @Assisted val accountId: AccountId,
+    private val accountRepository: AccountRepository,
     private val accountSettingsFactory: AccountSettings.Factory,
     private val authService: AuthorizationService,
     @ApplicationContext val context: Context,
     db: AppDatabase,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val logger: Logger,
     private val oAuthIntegration: OAuthIntegration,
     private val settings: SettingsManager,
@@ -57,19 +60,16 @@ class AccountSettingsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(account: Account): AccountSettingsViewModel
+        fun create(accountId: AccountId): AccountSettingsViewModel
     }
 
     // settings
     data class UiState(
+        val accountName: String = "",
         val status: String? = null,
 
         val hasContactsSync: Boolean = false,
         val syncIntervalContacts: Long? = null,
-        val hasCalendarsSync: Boolean = false,
-        val syncIntervalCalendars: Long? = null,
-        val hasTasksSync: Boolean = false,
-        val syncIntervalTasks: Long? = null,
 
         val syncWifiOnly: Boolean = false,
         val syncWifiOnlySSIDs: List<String>? = null,
@@ -77,11 +77,6 @@ class AccountSettingsViewModel @AssistedInject constructor(
 
         val credentials: Credentials = Credentials(),
         val allowCredentialsChange: Boolean = true,
-
-        val timeRangePastDays: Int? = null,
-        val defaultAlarmMinBefore: Int? = null,
-        val manageCalendarColors: Boolean = false,
-        val eventColors: Boolean = false,
 
         val contactGroupMethod: GroupMethod = GroupMethod.GROUP_VCARDS,
 
@@ -97,13 +92,19 @@ class AccountSettingsViewModel @AssistedInject constructor(
     /**
      * Only acquire account settings on a worker thread!
      */
-    private val accountSettings by lazy { accountSettingsFactory.create(account) }
+    private val accountSettings by lazy { accountSettingsFactory.create(accountId.toAndroidAccount()) }
 
 
     init {
         settings.addOnChangeListener(this)
         viewModelScope.launch {
             reload()
+            
+            accountRepository.getAccountNameFlow(accountId).collect { accountName ->
+                _uiState.update { 
+                    it.copy(accountName = accountName)
+                }
+            }
         }
     }
 
@@ -118,46 +119,50 @@ class AccountSettingsViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun reload() = withContext(defaultDispatcher) {
-        val hasContactsSync = serviceDao.getByAccountAndType(account.name, Service.TYPE_CARDDAV) != null
+    private suspend fun reload() = withContext(ioDispatcher) {
+        val hasContactsSync = serviceDao.getByAccountAndType(accountId, Service.TYPE_CARDDAV) != null
 
-        _uiState.value = UiState(
-            hasContactsSync = hasContactsSync,
-            syncIntervalContacts = accountSettings.getSyncInterval(SyncDataType.CONTACTS),
+        _uiState.update { 
+            it.copy(
+                status = null,
 
-            syncWifiOnly = accountSettings.getSyncWifiOnly(),
-            syncWifiOnlySSIDs = accountSettings.getSyncWifiOnlySSIDs(),
-            ignoreVpns = accountSettings.getIgnoreVpns(),
+                hasContactsSync = hasContactsSync,
+                syncIntervalContacts = accountSettings.getSyncInterval(SyncDataType.CONTACTS),
 
-            credentials = accountSettings.credentials(),
-            allowCredentialsChange = accountSettings.changingCredentialsAllowed(),
+                syncWifiOnly = accountSettings.getSyncWifiOnly(),
+                syncWifiOnlySSIDs = accountSettings.getSyncWifiOnlySSIDs(),
+                ignoreVpns = accountSettings.getIgnoreVpns(),
 
-            contactGroupMethod = accountSettings.getGroupMethod(),
+                credentials = accountSettings.credentials(),
+                allowCredentialsChange = accountSettings.changingCredentialsAllowed(),
 
-            allowUsernameChange = managedSettings.getUsername().isNullOrEmpty(),
-            allowPasswordChange = managedSettings.getPassword().isNullOrEmpty(),
-        )
+                contactGroupMethod = accountSettings.getGroupMethod(),
+
+                allowUsernameChange = managedSettings.getUsername().isNullOrEmpty(),
+                allowPasswordChange = managedSettings.getPassword().isNullOrEmpty(),
+            )
+        }
     }
 
 
     fun updateContactsSyncInterval(syncInterval: Long) {
-        CoroutineScope(defaultDispatcher).launch {
+        CoroutineScope(ioDispatcher).launch {
             accountSettings.setSyncInterval(SyncDataType.CONTACTS, syncInterval.takeUnless { it == -1L })
             reload()
         }
     }
 
-    fun updateSyncWifiOnly(wifiOnly: Boolean) = CoroutineScope(defaultDispatcher).launch {
+    fun updateSyncWifiOnly(wifiOnly: Boolean) = CoroutineScope(ioDispatcher).launch {
         accountSettings.setSyncWiFiOnly(wifiOnly)
         reload()
     }
 
-    fun updateSyncWifiOnlySSIDs(ssids: List<String>?) = CoroutineScope(defaultDispatcher).launch {
+    fun updateSyncWifiOnlySSIDs(ssids: List<String>?) = CoroutineScope(ioDispatcher).launch {
         accountSettings.setSyncWifiOnlySSIDs(ssids)
         reload()
     }
 
-    fun updateIgnoreVpns(ignoreVpns: Boolean) = CoroutineScope(defaultDispatcher).launch {
+    fun updateIgnoreVpns(ignoreVpns: Boolean) = CoroutineScope(ioDispatcher).launch {
         accountSettings.setIgnoreVpns(ignoreVpns)
         reload()
     }
@@ -169,7 +174,7 @@ class AccountSettingsViewModel @AssistedInject constructor(
         accountSettings.credentials().authState?.lastAuthorizationResponse?.request
 
     fun authenticate(authResponse: AuthorizationResponse) {
-        CoroutineScope(defaultDispatcher).launch {
+        CoroutineScope(ioDispatcher).launch {
             try {
                 // save new credentials
                 val authState = oAuthIntegration.authenticate(authService, authResponse)
@@ -193,13 +198,12 @@ class AccountSettingsViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateCredentials(credentials: Credentials) = CoroutineScope(defaultDispatcher).launch {
+    fun updateCredentials(credentials: Credentials) = CoroutineScope(ioDispatcher).launch {
         accountSettings.credentials(credentials)
         reload()
     }
 
-
-    fun updateContactGroupMethod(groupMethod: GroupMethod) = CoroutineScope(defaultDispatcher).launch {
+    fun updateContactGroupMethod(groupMethod: GroupMethod) = CoroutineScope(ioDispatcher).launch {
         accountSettings.setGroupMethod(groupMethod)
         reload()
 
@@ -214,7 +218,7 @@ class AccountSettingsViewModel @AssistedInject constructor(
      *                  themselves (full resync) shall be downloaded again
      */
     private fun resync(dataType: SyncDataType, resync: ResyncType) {
-        syncWorkerManager.enqueueOneTime(account, dataType = dataType, resync = resync)
+        syncWorkerManager.enqueueOneTime(accountId.toAndroidAccount(), dataType = dataType, resync = resync)
     }
 
 }

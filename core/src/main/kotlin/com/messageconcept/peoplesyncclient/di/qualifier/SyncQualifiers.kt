@@ -6,16 +6,6 @@ package com.messageconcept.peoplesyncclient.di.qualifier
 
 import javax.inject.Qualifier
 
-
-// CoroutineScope qualifiers
-
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class ApplicationScope
-
-
-// CoroutineDispatcher qualifiers
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class IoDispatcher
+annotation class SyncTransferSemaphore

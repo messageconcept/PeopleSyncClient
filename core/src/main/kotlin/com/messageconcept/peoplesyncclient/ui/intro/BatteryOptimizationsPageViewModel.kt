@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.messageconcept.peoplesyncclient.BuildConfig
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
-import com.messageconcept.peoplesyncclient.ui.intro.BatteryOptimizationsPageViewModel.Companion.evilManufacturers
 import com.messageconcept.peoplesyncclient.util.PermissionUtils
 import com.messageconcept.peoplesyncclient.util.broadcastReceiverFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,26 +47,6 @@ class BatteryOptimizationsPageViewModel @Inject constructor(
          * Type: Boolean
          */
         const val HINT_AUTOSTART_PERMISSION = "hint_AutostartPermissions"
-
-        /**
-         * List of manufacturers which are known to restrict background processes or otherwise
-         * block synchronization.
-         *
-         * See https://www.davx5.com/faq/synchronization-is-not-run-as-expected for why this is evil.
-         * See https://github.com/jaredrummler/AndroidDeviceNames/blob/master/json/ for manufacturer values.
-         */
-        private val evilManufacturers = arrayOf(
-            "asus", "lenovo", "letv", "meizu", "nokia",
-            "oneplus", "oppo", "sony", "vivo", "wiko", "xiaomi", "zte")
-
-        /**
-         * Whether the device has been produced by an evil manufacturer.
-         *
-         * Always true for debug builds (to test the UI).
-         *
-         * @see evilManufacturers
-         */
-        val manufacturerWarning = false
 
         fun isExempted(context: Context) =
             context.getSystemService<PowerManager>()!!.isIgnoringBatteryOptimizations(context.packageName)

@@ -6,7 +6,7 @@ package com.messageconcept.peoplesyncclient.ui
 
 import android.accounts.Account
 import com.messageconcept.peoplesyncclient.di.qualifier.ApplicationScope
-import com.messageconcept.peoplesyncclient.di.qualifier.DefaultDispatcher
+import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
 import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
@@ -29,7 +29,7 @@ class CollectionSelectedUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     @ApplicationScope private val applicationScope: CoroutineScope,
     private val collectionRepository: DavCollectionRepository,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val serviceRepository: DavServiceRepository,
     private val syncWorkerManager: SyncWorkerManager
 ) {
@@ -54,7 +54,7 @@ class CollectionSelectedUseCase @Inject constructor(
             // Stop previous delay, if exists
             previousJob?.cancel()
 
-            applicationScope.launch(defaultDispatcher) {
+            applicationScope.launch(ioDispatcher) {
                 // wait
                 delay(DELAY_MS)
 

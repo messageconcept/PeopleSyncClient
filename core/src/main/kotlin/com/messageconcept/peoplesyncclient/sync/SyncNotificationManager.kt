@@ -17,6 +17,7 @@ import androidx.core.net.toUri
 import at.bitfire.dav4jvm.ktor.exception.UnauthorizedException
 import at.bitfire.dav4jvm.ktor.resolve
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.accounts.toAccountId
 import com.messageconcept.peoplesyncclient.db.Collection
 import com.messageconcept.peoplesyncclient.resource.LocalCollection
 import com.messageconcept.peoplesyncclient.resource.LocalResource
@@ -112,7 +113,7 @@ class SyncNotificationManager @AssistedInject constructor(
     ) = notificationRegistry.notifyIfPossible(NotificationRegistry.NOTIFY_SYNC_ERROR, tag = notificationTag) {
         val contentIntent: Intent
         if (e is UnauthorizedException) {
-            contentIntent = AccountSettingsActivity.createIntent(context, account)
+            contentIntent = AccountSettingsActivity.createIntent(context, account.toAccountId())
         } else {
             contentIntent = buildDebugInfoIntent(syncDataType, e, local, remote)
         }

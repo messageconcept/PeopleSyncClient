@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.Collection
-import com.messageconcept.peoplesyncclient.di.qualifier.DefaultDispatcher
+import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
 import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.repository.DavCollectionRepository
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
@@ -50,7 +50,7 @@ class AccountScreenViewModel @AssistedInject constructor(
     private val collectionRepository: DavCollectionRepository,
     @ApplicationContext val context: Context,
     private val collectionSelectedUseCase: Lazy<CollectionSelectedUseCase>,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     getBindableHomesetsFromService: GetBindableHomeSetsFromServiceUseCase,
     getServiceCollectionPager: GetServiceCollectionPagerUseCase,
     private val logger: Logger,
@@ -89,13 +89,13 @@ class AccountScreenViewModel @AssistedInject constructor(
      */
     private val _showOnlyPersonal = MutableStateFlow(false)
     val showOnlyPersonal = _showOnlyPersonal.asStateFlow()
-    private suspend fun reloadShowOnlyPersonal() = withContext(Dispatchers.Default) {
+    private suspend fun reloadShowOnlyPersonal() = withContext(ioDispatcher) {
         accountSettings?.let {
             _showOnlyPersonal.value = it.getShowOnlyPersonal()
         }
     }
     fun setShowOnlyPersonal(showOnlyPersonal: Boolean) {
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch(ioDispatcher) {
             accountSettings?.setShowOnlyPersonal(showOnlyPersonal)
             reloadShowOnlyPersonal()
         }
@@ -106,7 +106,7 @@ class AccountScreenViewModel @AssistedInject constructor(
      */
     private var _showOnlyPersonalLocked = MutableStateFlow(false)
     val showOnlyPersonalLocked = _showOnlyPersonalLocked.asStateFlow()
-    private suspend fun reloadShowOnlyPersonalLocked() = withContext(Dispatchers.Default) {
+    private suspend fun reloadShowOnlyPersonalLocked() = withContext(ioDispatcher) {
         accountSettings?.let {
             _showOnlyPersonalLocked.value = it.getShowOnlyPersonalLocked()
         }

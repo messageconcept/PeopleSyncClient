@@ -12,7 +12,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.hilt.work.HiltWorker
-import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
@@ -23,7 +22,9 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import at.bitfire.dav4jvm.ktor.exception.UnauthorizedException
+import com.messageconcept.peoplesyncclient.IoCoroutineWorker
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.accounts.toAccountId
 import com.messageconcept.peoplesyncclient.network.HttpClientBuilder
 import com.messageconcept.peoplesyncclient.repository.DavServiceRepository
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker.Companion.ARG_SERVICE_ID
@@ -68,7 +69,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
     private val principalsRefresherFactory: PrincipalsRefresher.Factory,
     private val serviceRefresherFactory: ServiceRefresher.Factory,
     serviceRepository: DavServiceRepository
-): CoroutineWorker(appContext, workerParams) {
+) : IoCoroutineWorker(appContext, workerParams) {
 
     companion object {
 
@@ -136,7 +137,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
         Account(service.accountName, applicationContext.getString(R.string.account_type))
     }
 
-    override suspend fun doWork(): Result {
+    override suspend fun doIoWork(): Result {
         if (service == null || account == null) {
             logger.warning("Missing service or account with service ID: $serviceId")
             return Result.failure()
@@ -181,7 +182,7 @@ class RefreshCollectionsWorker @AssistedInject constructor(
         } catch (e: UnauthorizedException) {
             logger.log(Level.SEVERE, "Not authorized (anymore)", e)
             // notify that we need to re-authenticate in the account settings
-            val settingsIntent = AccountSettingsActivity.createIntent(applicationContext, account)
+            val settingsIntent = AccountSettingsActivity.createIntent(applicationContext, account.toAccountId())
             notifyRefreshError(
                 applicationContext.getString(R.string.sync_error_authentication_failed),
                 settingsIntent
