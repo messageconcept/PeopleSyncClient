@@ -327,11 +327,11 @@ class DavResourceFinder @AssistedInject constructor(
      * @return principal URL, or null if none found
      */
     suspend fun discoverPrincipalUrl(domain: String, service: Service): Url? {
-        var query = "_${service.wellKnownName}s._tcp.$domain"
+        val query = "_${service.wellKnownName}s._tcp.$domain"
         log.fine("Looking up SRV/TXT records for $query")
 
-        var srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
-        var srv = dnsRecordResolver.bestSRVRecord(srvRecords)
+        val srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
+        val srv = dnsRecordResolver.bestSRVRecord(srvRecords)
 
         val fqdn: String
         val port: Int
@@ -341,23 +341,10 @@ class DavResourceFinder @AssistedInject constructor(
             port = srv.port
             log.info("Found $service service at https://$fqdn:$port")
         } else {
-            // try peoplesync SRV record
-            query = "_peoplesync._tcp.$domain"
-            log.fine("Looking up SRV records for $query")
-            srvRecords = dnsRecordResolver.resolve(query, Type.SRV)
-            srv = dnsRecordResolver.bestSRVRecord(srvRecords)
-            if (srv != null && srv.weight == 0) {
-                // Weight 0 means https, 1 means http.
-                // Don't allow non-encrypted auto-configuration.
-                fqdn = srv.target.toString(true)
-                port = srv.port
-                log.info("Found $service service at https://$fqdn:$port")
-            } else {
-                // no SRV records, try domain name as FQDN
-                fqdn = domain
-                port = 443
-                log.info("Didn't find $service service, trying at https://$domain:$port")
-            }
+            // no SRV records, try domain name as FQDN
+            fqdn = domain
+            port = 443
+            log.info("Didn't find $service service, trying at https://$domain:$port")
         }
 
         // there can be multiple paths to try
