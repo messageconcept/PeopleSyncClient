@@ -12,6 +12,7 @@ import com.messageconcept.peoplesyncclient.startup.StartupPlugin
 import com.messageconcept.peoplesyncclient.settings.ManagedSettings
 import com.messageconcept.peoplesyncclient.settings.UpgradeFixes
 import com.messageconcept.peoplesyncclient.sync.account.AccountsCleanupWorker
+import com.messageconcept.peoplesyncclient.sync.account.SystemAccountAuditLogger
 import com.messageconcept.peoplesyncclient.ui.UiUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -49,12 +50,16 @@ abstract class CoreApp: Application() {
     lateinit var managedSettings: ManagedSettings
 
     @Inject
+    lateinit var systemAccountAuditLogger: SystemAccountAuditLogger
+
+    @Inject
     lateinit var upgradeFixes: UpgradeFixes
 
     override fun onCreate() {
         super.onCreate()
 
         logger.fine("Logging using LogManager $logManager")
+        systemAccountAuditLogger.start()
 
         // set light/dark mode
         UiUtils.updateTheme(this)   // when this is called in the asynchronous thread below, it recreates

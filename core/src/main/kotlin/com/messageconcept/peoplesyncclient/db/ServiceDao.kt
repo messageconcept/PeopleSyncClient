@@ -43,13 +43,13 @@ interface ServiceDao {
     fun insertOrReplace(service: Service): Long
 
     @Query("DELETE FROM service")
-    fun deleteAll()
+    fun deleteAll(): Int
 
     @Query("DELETE FROM service WHERE accountName=:accountName")
     suspend fun deleteByAccount(accountName: String)
 
     @Query("DELETE FROM service WHERE accountName NOT IN (:accountNames)")
-    fun deleteExceptAccounts(accountNames: Array<String>)
+    fun deleteExceptAccounts(accountNames: Array<String>): Int
 
     @Query("UPDATE service SET accountName=:newName WHERE accountName=:oldName")
     suspend fun renameAccount(oldName: String, newName: String)

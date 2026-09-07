@@ -14,6 +14,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.TestUtils
 import com.messageconcept.peoplesyncclient.db.AppDatabase
 import com.messageconcept.peoplesyncclient.db.Service
+import com.messageconcept.peoplesyncclient.log.AuditLogger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import com.messageconcept.peoplesyncclient.settings.SettingsManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -37,6 +38,9 @@ class AccountsCleanupWorkerTest {
 
     @Inject
     lateinit var accountsCleanupWorkerFactory: AccountsCleanupWorker.Factory
+
+    @Inject
+    lateinit var auditLogger: AuditLogger
 
     @Inject @ApplicationContext
     lateinit var context: Context
@@ -65,6 +69,7 @@ class AccountsCleanupWorkerTest {
 
         addressBookAccountType = context.getString(R.string.account_type_address_book)
         addressBookAccount = Account("Fancy address book account", addressBookAccountType)
+        auditLogger.clear()
     }
 
     @After
@@ -88,6 +93,7 @@ class AccountsCleanupWorkerTest {
 
         // Verify that service is deleted
         assertNull(db.serviceDao().get(1))
+        assertTrue(auditLogger.snapshots().single().contents.decodeToString().contains("Deleted 1 database service"))
     }
 
     @Test
@@ -127,6 +133,7 @@ class AccountsCleanupWorkerTest {
 
         // Verify account was deleted
         assertTrue(accountManager.getAccountsByType(addressBookAccountType).isEmpty())
+        assertTrue(auditLogger.snapshots().single().contents.decodeToString().contains("Deleting address book account"))
     }
 
     @Test

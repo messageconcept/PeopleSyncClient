@@ -16,6 +16,7 @@ import com.messageconcept.peoplesyncclient.db.HomeSet
 import com.messageconcept.peoplesyncclient.db.Service
 import com.messageconcept.peoplesyncclient.db.ServiceType
 import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
+import com.messageconcept.peoplesyncclient.log.AuditLogger
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBookStore
 import com.messageconcept.peoplesyncclient.servicedetection.DavResourceFinder
 import com.messageconcept.peoplesyncclient.servicedetection.RefreshCollectionsWorker
@@ -49,6 +50,7 @@ import javax.inject.Inject
  */
 class AccountRepository @Inject constructor(
     private val accountSettingsFactory: AccountSettings.Factory,
+    private val auditLogger: AuditLogger,
     private val automaticSyncManager: Lazy<AutomaticSyncManager>,
     @ApplicationContext private val context: Context,
     private val collectionRepository: DavCollectionRepository,
@@ -108,13 +110,16 @@ class AccountRepository @Inject constructor(
 
         // create Android account
         val userData = AccountSettings.initialUserData(credentials, preconfigurationUrl)
-        logger.log(Level.INFO, "Creating Android account {0} with initial config {1}", arrayOf(account, userData))
+        auditLogger.log(Level.INFO, "AccountRepository: Creating Android account {0} with initial config {1}", arrayOf(account, userData))
 
-        if (!AndroidAccountUtils.createAccount(context, account, userData, credentials?.password))
+        if (!AndroidAccountUtils.createAccount(context, account, userData, credentials?.password)) {
+            auditLogger.log(Level.WARNING, "AccountRepository: Couldn't create system account: $account")
             return null
+        }
+        auditLogger.log(Level.INFO, "AccountRepository: Created system account: $account")
 
         // add entries for account to database
-        logger.log(Level.INFO, "Writing account configuration to database: {0}", arrayOf(config))
+        auditLogger.log(Level.INFO, "AccountRepository: Writing account configuration to database: {0}", arrayOf(config))
         try {
             if (config.cardDAV != null) {
                 // insert CardDAV service
@@ -132,17 +137,22 @@ class AccountRepository @Inject constructor(
             automaticSyncManager.get().updateAutomaticSync(account)
 
         } catch (e: InvalidAccountException) {
-            logger.log(Level.SEVERE, "Couldn't access account settings", e)
+            auditLogger.log(Level.SEVERE, "AccountRepository: Couldn't access account settings for account: $account", e)
             return null
+        } catch (e: Exception) {
+            auditLogger.log(Level.SEVERE, "AccountRepository: Couldn't configure newly created system account: $account", e)
+            throw e
         }
         return account
     }
 
-    suspend fun delete(accountName: String): Boolean {
+    suspend fun delete(accountName: String): Boolean = withContext(ioDispatcher) {
         val account = fromName(accountName)
         // remove account directly (bypassing the authenticator, which is our own)
-        return try {
-            accountManager.removeAccountExplicitly(account)
+        try {
+            auditLogger.log(Level.WARNING, "AccountRepository: Deleting system account: $account")
+            val removed = accountManager.removeAccountExplicitly(account)
+            auditLogger.log(Level.WARNING, "AccountRepository: System account deletion result: account=$account, removed=$removed")
 
             // delete address books (= address book accounts)
             serviceRepository.getByAccountAndType(accountName, Service.TYPE_CARDDAV)?.let { service ->
@@ -153,10 +163,11 @@ class AccountRepository @Inject constructor(
 
             // delete from database
             serviceRepository.deleteByAccount(accountName)
+            auditLogger.log(Level.INFO, "AccountRepository: Deleted local account data: $account")
 
             true
         } catch (e: Exception) {
-            logger.log(Level.WARNING, "Couldn't remove account $accountName", e)
+            auditLogger.log(Level.SEVERE, "AccountRepository: Couldn't complete account deletion: $account", e)
             false
         }
     }
@@ -210,6 +221,7 @@ class AccountRepository @Inject constructor(
 
         // rename account
         try {
+            auditLogger.log(Level.INFO, "AccountRepository: Renaming system account from $oldAccount to $newAccount")
             /* https://github.com/bitfireAT/davx5/issues/135
             Lock accounts cleanup so that the AccountsCleanupWorker doesn't run while we rename the account
             because this can cause problems when:
@@ -243,11 +255,15 @@ class AccountRepository @Inject constructor(
                 // update address books
                 localAddressBookStore.get().updateAccount(oldAccount, newAccount, null)
             } catch (e: Exception) {
-                logger.log(Level.WARNING, "Couldn't change address books to renamed account", e)
+                auditLogger.log(Level.WARNING, "AccountRepository: Couldn't rename address book account from $oldAccount to $newAccount", e)
             }
 
             // update automatic sync
             automaticSyncManager.get().updateAutomaticSync(newAccount)
+            auditLogger.log(Level.INFO, "AccountRepository: Renamed system account from $oldAccount to $newAccount")
+        } catch (e: Exception) {
+            auditLogger.log(Level.SEVERE, "AccountRepository: Couldn't rename system account from $oldAccount to $newAccount", e)
+            throw e
         } finally {
             // release AccountsCleanupWorker mutex at the end of this async coroutine
             AccountsCleanupWorker.unlockAccountsCleanup()
