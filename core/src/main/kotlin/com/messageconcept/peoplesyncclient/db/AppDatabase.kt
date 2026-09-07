@@ -24,6 +24,7 @@ import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.migration.AutoMigration12
 import com.messageconcept.peoplesyncclient.db.migration.AutoMigration16
 import com.messageconcept.peoplesyncclient.db.migration.AutoMigration18
+import com.messageconcept.peoplesyncclient.log.AuditLogger
 import com.messageconcept.peoplesyncclient.ui.AccountsActivity
 import com.messageconcept.peoplesyncclient.ui.NotificationRegistry
 import com.messageconcept.peoplesyncclient.util.TextTable
@@ -33,6 +34,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.io.Writer
+import java.util.logging.Level
 import javax.inject.Singleton
 
 /**
@@ -74,7 +76,8 @@ abstract class AppDatabase: RoomDatabase() {
             autoMigrations: Set<@JvmSuppressWildcards AutoMigrationSpec>,
             @ApplicationContext context: Context,
             manualMigrations: Set<@JvmSuppressWildcards Migration>,
-            notificationRegistry: NotificationRegistry
+            notificationRegistry: NotificationRegistry,
+            auditLogger: AuditLogger
         ): AppDatabase = Room
             .databaseBuilder(context, AppDatabase::class.java, "services.db")
             .addMigrations(*manualMigrations.toTypedArray())
@@ -103,8 +106,13 @@ abstract class AppDatabase: RoomDatabase() {
 
                     // remove all accounts because they're unfortunately useless without database
                     val am = AccountManager.get(context)
-                    for (account in am.getAccountsByType(context.getString(R.string.account_type)))
-                        am.removeAccountExplicitly(account)
+                    val accounts = am.getAccountsByType(context.getString(R.string.account_type))
+                    auditLogger.log(Level.SEVERE, "AppDatabase: Destructive migration; system accounts=${accounts.contentToString()}")
+                    for (account in accounts) {
+                        auditLogger.log(Level.SEVERE, "AppDatabase: Deleting system account after destructive migration: $account")
+                        val removed = am.removeAccountExplicitly(account)
+                        auditLogger.log(Level.SEVERE, "AppDatabase: System account deletion result: account=$account, removed=$removed")
+                    }
                 }
             })
             .build()

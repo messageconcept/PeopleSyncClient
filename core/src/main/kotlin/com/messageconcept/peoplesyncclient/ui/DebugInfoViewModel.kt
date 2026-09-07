@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
+import com.messageconcept.peoplesyncclient.log.AuditLogger
 import com.messageconcept.peoplesyncclient.log.DebugDirectory
 import com.messageconcept.peoplesyncclient.log.LogFileHandler
 import com.messageconcept.peoplesyncclient.ui.DebugInfoViewModel.Companion.FILE_DEBUG_INFO
@@ -34,6 +35,7 @@ import java.util.zip.ZipOutputStream
 class DebugInfoViewModel @AssistedInject constructor(
     @Assisted private val details: DebugInfoDetails,
     @ApplicationContext val context: Context,
+    private val auditLogger: AuditLogger,
     private val debugDirectory: DebugDirectory,
     private val debugInfoGenerator: DebugInfoGenerator,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -137,6 +139,12 @@ class DebugInfoViewModel @AssistedInject constructor(
                 uiState.debugInfo?.let { debugInfo ->
                     zip.putNextEntry(ZipEntry("debug-info.txt"))
                     Files.copy(debugInfo, zip)
+                    zip.closeEntry()
+                }
+
+                for (auditLog in auditLogger.snapshots()) {
+                    zip.putNextEntry(ZipEntry(auditLog.name))
+                    zip.write(auditLog.contents)
                     zip.closeEntry()
                 }
 

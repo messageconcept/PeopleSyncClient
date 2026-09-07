@@ -16,6 +16,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.messageconcept.peoplesyncclient.R
 import com.messageconcept.peoplesyncclient.db.AppDatabase
+import com.messageconcept.peoplesyncclient.log.AuditLogger
 import com.messageconcept.peoplesyncclient.repository.AccountRepository
 import com.messageconcept.peoplesyncclient.resource.LocalAddressBook
 import dagger.assisted.Assisted
@@ -23,6 +24,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import java.time.Duration
 import java.util.concurrent.Semaphore
+import java.util.logging.Level
 import java.util.logging.Logger
 
 @HiltWorker
@@ -30,6 +32,7 @@ class AccountsCleanupWorker @AssistedInject constructor(
     @Assisted val context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val accountRepository: AccountRepository,
+    private val auditLogger: AuditLogger,
     private val db: AppDatabase,
     private val logger: Logger
 ): Worker(context, workerParameters) {
@@ -62,12 +65,22 @@ class AccountsCleanupWorker @AssistedInject constructor(
 
         // Delete orphaned services in DB – only necessary as long as accounts are implemented as system accounts (not in DB)
         val accounts = accountRepository.getAll()
-        logger.info("Cleaning up accounts. Currently existing accounts: $accounts")
+        logger.log(Level.INFO,"Currently existing accounts: ${accounts.contentToString()}")
         val serviceDao = db.serviceDao()
-        if (accounts.isEmpty())
-            serviceDao.deleteAll()
-        else
-            serviceDao.deleteExceptAccounts(accounts.map { it.name }.toTypedArray())
+        val deleted = try {
+            if (accounts.isEmpty())
+                serviceDao.deleteAll()
+            else
+                serviceDao.deleteExceptAccounts(accounts.map { it.name }.toTypedArray())
+        } catch (e: Exception) {
+            auditLogger.log(Level.SEVERE, "AccountsCleanupWorker: Couldn't delete database services", e)
+            throw e
+        }
+        if (deleted > 0)
+            auditLogger.log(
+                Level.WARNING,
+                "AccountsCleanupWorker: Deleted $deleted database service(s); system accounts=${accounts.contentToString()}"
+            )
     }
 
     /**
@@ -81,8 +94,24 @@ class AccountsCleanupWorker @AssistedInject constructor(
             val accountType = accountManager.getUserData(addressBookAccount, LocalAddressBook.USER_DATA_ACCOUNT_TYPE)
             if (!accounts.any { it.name == accountName && it.type == accountType }) {
                 // If no valid account exists for this address book, we can delete it
-                logger.info("Deleting address book account without valid account: $addressBookAccount")
-                accountManager.removeAccountExplicitly(addressBookAccount)
+                auditLogger.log(
+                    Level.WARNING,
+                    "AccountsCleanupWorker: Deleting address book account without valid main account: $addressBookAccount"
+                )
+                val removed = try {
+                    accountManager.removeAccountExplicitly(addressBookAccount)
+                } catch (e: Exception) {
+                    auditLogger.log(
+                        Level.SEVERE,
+                        "AccountsCleanupWorker: Couldn't delete address book account: $addressBookAccount",
+                        e
+                    )
+                    throw e
+                }
+                auditLogger.log(
+                    Level.WARNING,
+                    "AccountsCleanupWorker: Address book account deletion result: account=$addressBookAccount, removed=$removed"
+                )
             }
         }
     }

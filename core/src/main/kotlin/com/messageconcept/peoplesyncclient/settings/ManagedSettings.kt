@@ -16,21 +16,28 @@ import android.content.Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED
 import android.content.IntentFilter
 import android.content.RestrictionsManager
 import android.os.Bundle
+import androidx.annotation.WorkerThread
 import com.messageconcept.peoplesyncclient.R
+import com.messageconcept.peoplesyncclient.di.qualifier.IoDispatcher
+import com.messageconcept.peoplesyncclient.log.AuditLogger
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_BASE_URL
 import com.messageconcept.peoplesyncclient.settings.AccountSettings.Companion.KEY_USERNAME
 import com.messageconcept.peoplesyncclient.sync.account.InvalidAccountException
 import com.messageconcept.peoplesyncclient.sync.worker.SyncWorkerManager
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.util.logging.Level
-import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ManagedSettings @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val logger: Logger,
+    private val auditLogger: AuditLogger,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher,
     private val syncWorkerManager: SyncWorkerManager
 ) {
 
@@ -42,16 +49,26 @@ class ManagedSettings @Inject constructor(
     }
 
     private val restrictionsManager = context.getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
+    private val scope = CoroutineScope(SupervisorJob() + ioDispatcher)
 
+    @Volatile
     private var restrictions: Bundle
 
     private val broadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 ACTION_APPLICATION_RESTRICTIONS_CHANGED -> {
-                    // update cached app restrictions
-                    restrictions = restrictionsManager.applicationRestrictions
-                    updateAccounts()
+                    val pendingResult = goAsync()
+                    scope.launch {
+                        try {
+                            auditLogger.log(Level.INFO, "ManagedSettings: Application restrictions changed")
+                            // update cached app restrictions
+                            restrictions = restrictionsManager.applicationRestrictions
+                            updateAccounts()
+                        } finally {
+                            pendingResult.finish()
+                        }
+                    }
                 }
             }
         }
@@ -82,10 +99,12 @@ class ManagedSettings @Inject constructor(
         return restrictions.getString(KEY_ORGANIZATION)
     }
 
+    @WorkerThread
     fun updateAccounts() {
         val accountManager = AccountManager.get(context)
+        val accounts = accountManager.getAccountsByType(context.getString(R.string.account_type))
 
-        for (account in accountManager.getAccountsByType(context.getString(R.string.account_type)))
+        for (account in accounts)
             try {
                 val baseUrl = accountManager.getUserData(account, KEY_BASE_URL)
 
@@ -103,24 +122,35 @@ class ManagedSettings @Inject constructor(
                     // failures. The alternative would be to delete the account, but this might
                     // be unexpected, so do nothing instead.
                     if (managedPassword.isNullOrEmpty()) {
-                        logger.log(Level.INFO,"${account.name}: Managed login password has been deleted. Doing nothing.")
+                        auditLogger.log(Level.INFO, "ManagedSettings: ${account.name}: Managed login password has been deleted. Doing nothing.")
                         return
                     }
                     // check if baseUrl and userName match
                     if (managedBaseUrl == baseUrl && managedUsername == username) {
                         if (managedPassword != password) {
-                            logger.log(Level.INFO,"${account.name}: Managed login password changed. Updating account settings and requesting sync.")
+                            auditLogger.log(Level.INFO, "ManagedSettings: ${account.name}: Managed login password changed. Updating account settings and requesting sync.")
                             accountManager.setPassword(account, managedPassword)
                             // Request an explicit sync after we changed the account password.
                             // This should also clear any error notifications.
                             syncWorkerManager.enqueueOneTimeAllAuthorities(account, manual = true)
+                            auditLogger.log(Level.INFO, "ManagedSettings: ${account.name}: Managed login password updated and sync requested.")
                         } else {
                             // Password is up-to-date
                         }
+                    } else {
+                        auditLogger.log(
+                            Level.INFO,
+                            "ManagedSettings: ${account.name}: Skipping password update; " +
+                                "baseUrlMatches=${managedBaseUrl == baseUrl}, usernameMatches=${managedUsername == username}"
+                        )
                     }
                 }
-            } catch (ignored: InvalidAccountException) {
+            } catch (e: InvalidAccountException) {
                 // account doesn't exist (anymore)
+                auditLogger.log(Level.WARNING, "ManagedSettings: ${account.name}: Account no longer exists.", e)
+            } catch (e: Exception) {
+                auditLogger.log(Level.SEVERE, "ManagedSettings: ${account.name}: Couldn't update managed account.", e)
+                throw e
             }
     }
 
