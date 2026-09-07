@@ -30,7 +30,7 @@ import peoplesyncclient.buildlogic.AppVersion.NAME
  */
 object AppVersion {
 
-    const val CODE: Int = 2070040511
-    const val NAME: String = "4.5-11"
+    const val CODE: Int = 2070040512
+    const val NAME: String = "4.5-12"
 
 }
